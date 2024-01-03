@@ -18,36 +18,32 @@ final class SignInViewController: UIViewController {
     private let email = CustomInputView(label: "이메일",
                                         placeHolder: "이메일을 입력하세요",
                                         keyboardType: .emailAddress,
-                                        secureEntry: false,
-                                        validation: true)
+                                        secureEntry: false)
     
     private let nickname = CustomInputView(label: "닉네임",
                                            placeHolder: "닉네임을 입력하세요",
                                            keyboardType: .default,
-                                           secureEntry: false,
-                                           validation: true)
+                                           secureEntry: false)
     
     private let contact = CustomInputView(label: "연락처",
                                           placeHolder: "연락처를 입력하세요",
                                           keyboardType: .phonePad,
-                                          secureEntry: false,
-                                          validation: true)
+                                          secureEntry: false)
     
     private let passcode = CustomInputView(label: "비밀번호",
                                            placeHolder: "비밀번호를 입력하세요",
                                            keyboardType: .default,
-                                           secureEntry: true,
-                                           validation: true)
+                                           secureEntry: true)
     
     private let passcodeConfirm = CustomInputView(label: "비밀번호 확인",
                                                   placeHolder: "비밀번호를 한번 더 입력하세요",
                                                   keyboardType: .default,
-                                                  secureEntry: true,
-                                                  validation: true)
+                                                  secureEntry: true)
     
     private let emailCheckButton = CustomButton(title: "중복 확인")
     private let signInButton = CustomButton(title: "가입하기")
     private let disposeBag = DisposeBag()
+    private var invalidInputArray:[CustomInputView] = []
 
     private lazy var components:[CustomInputView] = [nickname, contact, passcode, passcodeConfirm]
     
@@ -79,6 +75,12 @@ final class SignInViewController: UIViewController {
             .bind(to: viewModel.passcodeConfirmSubject)
             .disposed(by: disposeBag)
         
+        signInButton.rx.tap
+            .subscribe(with: self) { owner, _ in
+                owner.checkEachInputs()
+            }
+            .disposed(by: disposeBag)
+        
         viewModel.isFormValid
             .subscribe(with: self) { owner, validation in
                 owner.signInButton.validationBinder
@@ -86,6 +88,34 @@ final class SignInViewController: UIViewController {
                 print(validation)
             }
             .disposed(by: disposeBag)
+    }
+
+    private func checkEachInputs() {
+        checkInput(email, validationClosure: viewModel.validateEmail)
+        checkInput(nickname, validationClosure: viewModel.validateNickname)
+        checkInput(contact, validationClosure: viewModel.validateContact)
+        checkInput(passcode, validationClosure: viewModel.validatePasscode)
+        
+        let confirmText = passcodeConfirm.textField.text ?? ""
+        let confirmValidation = viewModel.confirmPasscode(passcode.textField.text ?? "", confirmText)
+        passcodeConfirm.validationBinder.onNext(confirmValidation)
+        
+        if !confirmValidation {
+            invalidInputArray.append(passcodeConfirm)
+        }
+
+        invalidInputArray.first?.textField.becomeFirstResponder()
+        invalidInputArray.removeAll()
+    }
+    
+    private func checkInput(_ input: CustomInputView, validationClosure: (String) -> Bool) {
+        let text = input.textField.text ?? ""
+        let validation = validationClosure(text)
+        input.validationBinder.onNext(validation)
+
+        if !validation {
+            invalidInputArray.append(input)
+        }
     }
     
     private func configure() {

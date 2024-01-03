@@ -14,7 +14,7 @@ final class CustomInputView: UIView {
     private let placeHolder: String
     private let secureEntry: Bool
     private let keyboardType: UIKeyboardType
-    private let validationBinder = PublishSubject<Bool>()
+    let validationBinder = PublishSubject<Bool>()
     
     private let label = UILabel()
     lazy var textField = CustomTextField(placeHolder: placeHolder,
@@ -22,7 +22,7 @@ final class CustomInputView: UIView {
                                          ,keyboardType: keyboardType)
     private let disposeBag = DisposeBag()
     
-    init(label:String, placeHolder: String, keyboardType:UIKeyboardType, secureEntry: Bool, validation: Bool) {
+    init(label:String, placeHolder: String, keyboardType:UIKeyboardType, secureEntry: Bool) {
         self.label.text = label
         self.placeHolder = placeHolder
         self.secureEntry = secureEntry
@@ -37,8 +37,7 @@ final class CustomInputView: UIView {
         self.init(label: label,
                   placeHolder: placeHolder,
                   keyboardType: keyboardType,
-                  secureEntry: false,
-                  validation: true)
+                  secureEntry: false)
     }
     
     required init?(coder: NSCoder) {

@@ -82,29 +82,31 @@ final class SignInViewModel {
             }
     }
     
-    private func validateEmail(_ email: String) -> Bool {
+    func validateEmail(_ email: String) -> Bool {
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,20}"
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegex)
         return emailTest.evaluate(with: email)
     }
     
-    private func validateNickname(_ nickname: String) -> Bool {
+    func validateNickname(_ nickname: String) -> Bool {
         let nickNameRegex = "^(?=.*[가-힣A-Za-z])[가-힣A-Za-z0-9]+$"
         let nickNameTest = NSPredicate(format:"SELF MATCHES %@", nickNameRegex)
         return nickNameTest.evaluate(with: nickname)
     }
     
-    private func validatePasscode(_ passcode: String) -> Bool {
+    func validatePasscode(_ passcode: String) -> Bool {
         let passcodeRegex = "(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+{}:<>?])[A-Za-z\\d!@#$%^&*()_+{}:<>?]{8,}"
         let passcodeTest = NSPredicate(format: "SELF MATCHES %@", passcodeRegex)
         return passcodeTest.evaluate(with: passcode)
     }
     
-    private func confirmPasscode(_ passcode: String,_ confirmedPasscode: String) -> Bool {
+    func confirmPasscode(_ passcode: String, _ confirmedPasscode: String) -> Bool {
+        guard !passcode.isEmpty else { return false }
         return passcode == confirmedPasscode
     }
     
-    private func validateContact(_ contact: String) -> Bool {
+    func validateContact(_ contact: String) -> Bool {
+        guard !contact.isEmpty else { return false }
         let numericCharacterSet = CharacterSet.decimalDigits
         let inputCharacterSet = CharacterSet(charactersIn: contact)
         return numericCharacterSet.isSuperset(of: inputCharacterSet)
