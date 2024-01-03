@@ -9,13 +9,31 @@
 /* Begin PBXBuildFile section */
 		DE5CD4052B4556FA002546CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4042B4556FA002546CD /* AppDelegate.swift */; };
 		DE5CD4072B4556FA002546CD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4062B4556FA002546CD /* SceneDelegate.swift */; };
-		DE5CD4092B4556FA002546CD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4082B4556FA002546CD /* ViewController.swift */; };
-		DE5CD40C2B4556FA002546CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE5CD40A2B4556FA002546CD /* Main.storyboard */; };
+		DE5CD4092B4556FA002546CD /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4082B4556FA002546CD /* SignInViewController.swift */; };
 		DE5CD40E2B4556FB002546CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE5CD40D2B4556FB002546CD /* Assets.xcassets */; };
 		DE5CD4112B4556FB002546CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE5CD40F2B4556FB002546CD /* LaunchScreen.storyboard */; };
 		DE5CD41C2B4556FB002546CD /* SeSACTalkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD41B2B4556FB002546CD /* SeSACTalkTests.swift */; };
 		DE5CD4262B4556FB002546CD /* SeSACTalkUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4252B4556FB002546CD /* SeSACTalkUITests.swift */; };
 		DE5CD4282B4556FB002546CD /* SeSACTalkUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4272B4556FB002546CD /* SeSACTalkUITestsLaunchTests.swift */; };
+		DE5CD4362B45587A002546CD /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = DE5CD4352B45587A002546CD /* RxCocoa */; };
+		DE5CD4382B45587A002546CD /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = DE5CD4372B45587A002546CD /* RxRelay */; };
+		DE5CD43A2B45587A002546CD /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DE5CD4392B45587A002546CD /* RxSwift */; };
+		DE5CD43D2B45588F002546CD /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = DE5CD43C2B45588F002546CD /* SnapKit */; };
+		DE5CD4402B4558BF002546CD /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = DE5CD43F2B4558BF002546CD /* Moya */; };
+		DE5CD4422B4558BF002546CD /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = DE5CD4412B4558BF002546CD /* RxMoya */; };
+		DE5CD4492B45597D002546CD /* .gitIgnore in Resources */ = {isa = PBXBuildFile; fileRef = DE5CD4482B45597D002546CD /* .gitIgnore */; };
+		DE5CD44C2B4559CC002546CD /* EndPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD44B2B4559CC002546CD /* EndPoints.swift */; };
+		DE5CD44F2B455B0A002546CD /* Typegraphy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD44E2B455B0A002546CD /* Typegraphy.swift */; };
+		DE5CD4512B455DF4002546CD /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4502B455DF4002546CD /* Colors.swift */; };
+		DE5CD4532B45657C002546CD /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4522B45657C002546CD /* SignInViewModel.swift */; };
+		DE5CD4592B4566DE002546CD /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4582B4566DE002546CD /* CustomTextField.swift */; };
+		DE5CD45B2B45699B002546CD /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD45A2B45699B002546CD /* CustomLabel.swift */; };
+		DE5CD45D2B456BE7002546CD /* CustomInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD45C2B456BE7002546CD /* CustomInputView.swift */; };
+		DE5CD4602B45785B002546CD /* SF-Pro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DE5CD45F2B45785B002546CD /* SF-Pro.ttf */; };
+		DE5CD4622B458319002546CD /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4612B458319002546CD /* CustomButton.swift */; };
+		DE5CD4652B45909F002546CD /* SignInRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4642B45909F002546CD /* SignInRequest.swift */; };
+		DE5CD4692B459129002546CD /* SignInResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4682B459129002546CD /* SignInResponse.swift */; };
+		DEE310502B4595A1009209F0 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = DEE3104F2B4595A1009209F0 /* RxKeyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,8 +57,7 @@
 		DE5CD4012B4556FA002546CD /* SeSACTalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeSACTalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE5CD4042B4556FA002546CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DE5CD4062B4556FA002546CD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		DE5CD4082B4556FA002546CD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		DE5CD40B2B4556FA002546CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		DE5CD4082B4556FA002546CD /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		DE5CD40D2B4556FB002546CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DE5CD4102B4556FB002546CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DE5CD4122B4556FB002546CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -49,6 +66,18 @@
 		DE5CD4212B4556FB002546CD /* SeSACTalkUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SeSACTalkUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE5CD4252B4556FB002546CD /* SeSACTalkUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeSACTalkUITests.swift; sourceTree = "<group>"; };
 		DE5CD4272B4556FB002546CD /* SeSACTalkUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeSACTalkUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		DE5CD4482B45597D002546CD /* .gitIgnore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitIgnore; sourceTree = "<group>"; };
+		DE5CD44B2B4559CC002546CD /* EndPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPoints.swift; sourceTree = "<group>"; };
+		DE5CD44E2B455B0A002546CD /* Typegraphy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typegraphy.swift; sourceTree = "<group>"; };
+		DE5CD4502B455DF4002546CD /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		DE5CD4522B45657C002546CD /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		DE5CD4582B4566DE002546CD /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		DE5CD45A2B45699B002546CD /* CustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
+		DE5CD45C2B456BE7002546CD /* CustomInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInputView.swift; sourceTree = "<group>"; };
+		DE5CD45F2B45785B002546CD /* SF-Pro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro.ttf"; sourceTree = "<group>"; };
+		DE5CD4612B458319002546CD /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		DE5CD4642B45909F002546CD /* SignInRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInRequest.swift; sourceTree = "<group>"; };
+		DE5CD4682B459129002546CD /* SignInResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +85,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE5CD4422B4558BF002546CD /* RxMoya in Frameworks */,
+				DE5CD43A2B45587A002546CD /* RxSwift in Frameworks */,
+				DE5CD43D2B45588F002546CD /* SnapKit in Frameworks */,
+				DEE310502B4595A1009209F0 /* RxKeyboard in Frameworks */,
+				DE5CD4382B45587A002546CD /* RxRelay in Frameworks */,
+				DE5CD4402B4558BF002546CD /* Moya in Frameworks */,
+				DE5CD4362B45587A002546CD /* RxCocoa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,13 +135,20 @@
 		DE5CD4032B4556FA002546CD /* SeSACTalk */ = {
 			isa = PBXGroup;
 			children = (
-				DE5CD4042B4556FA002546CD /* AppDelegate.swift */,
-				DE5CD4062B4556FA002546CD /* SceneDelegate.swift */,
-				DE5CD4082B4556FA002546CD /* ViewController.swift */,
-				DE5CD40A2B4556FA002546CD /* Main.storyboard */,
+				DE5CD45E2B45784A002546CD /* Font */,
+				DE5CD4572B4566D1002546CD /* Components */,
+				DE5CD44A2B4559A7002546CD /* Security */,
+				DE5CD44D2B455A01002546CD /* Constant */,
+				DE5CD4472B455954002546CD /* Extensions */,
+				DE5CD4462B45594C002546CD /* Network */,
+				DE5CD4632B459086002546CD /* Model */,
+				DE5CD4452B4558FF002546CD /* View */,
+				DE5CD4442B4558F5002546CD /* ViewModel */,
+				DE5CD4432B4558E6002546CD /* App */,
 				DE5CD40D2B4556FB002546CD /* Assets.xcassets */,
 				DE5CD40F2B4556FB002546CD /* LaunchScreen.storyboard */,
 				DE5CD4122B4556FB002546CD /* Info.plist */,
+				DE5CD4482B45597D002546CD /* .gitIgnore */,
 			);
 			path = SeSACTalk;
 			sourceTree = "<group>";
@@ -127,6 +170,106 @@
 			path = SeSACTalkUITests;
 			sourceTree = "<group>";
 		};
+		DE5CD4432B4558E6002546CD /* App */ = {
+			isa = PBXGroup;
+			children = (
+				DE5CD4042B4556FA002546CD /* AppDelegate.swift */,
+				DE5CD4062B4556FA002546CD /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		DE5CD4442B4558F5002546CD /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DE5CD4522B45657C002546CD /* SignInViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DE5CD4452B4558FF002546CD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DE5CD4082B4556FA002546CD /* SignInViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DE5CD4462B45594C002546CD /* Network */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		DE5CD4472B455954002546CD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		DE5CD44A2B4559A7002546CD /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				DE5CD44B2B4559CC002546CD /* EndPoints.swift */,
+			);
+			path = Security;
+			sourceTree = "<group>";
+		};
+		DE5CD44D2B455A01002546CD /* Constant */ = {
+			isa = PBXGroup;
+			children = (
+				DE5CD44E2B455B0A002546CD /* Typegraphy.swift */,
+				DE5CD4502B455DF4002546CD /* Colors.swift */,
+			);
+			path = Constant;
+			sourceTree = "<group>";
+		};
+		DE5CD4572B4566D1002546CD /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				DE5CD4582B4566DE002546CD /* CustomTextField.swift */,
+				DE5CD45A2B45699B002546CD /* CustomLabel.swift */,
+				DE5CD45C2B456BE7002546CD /* CustomInputView.swift */,
+				DE5CD4612B458319002546CD /* CustomButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		DE5CD45E2B45784A002546CD /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				DE5CD45F2B45785B002546CD /* SF-Pro.ttf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
+		DE5CD4632B459086002546CD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DE5CD4672B459120002546CD /* Response */,
+				DE5CD4662B45911A002546CD /* Request */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DE5CD4662B45911A002546CD /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				DE5CD4642B45909F002546CD /* SignInRequest.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		DE5CD4672B459120002546CD /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				DE5CD4682B459129002546CD /* SignInResponse.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -143,6 +286,15 @@
 			dependencies = (
 			);
 			name = SeSACTalk;
+			packageProductDependencies = (
+				DE5CD4352B45587A002546CD /* RxCocoa */,
+				DE5CD4372B45587A002546CD /* RxRelay */,
+				DE5CD4392B45587A002546CD /* RxSwift */,
+				DE5CD43C2B45588F002546CD /* SnapKit */,
+				DE5CD43F2B4558BF002546CD /* Moya */,
+				DE5CD4412B4558BF002546CD /* RxMoya */,
+				DEE3104F2B4595A1009209F0 /* RxKeyboard */,
+			);
 			productName = SeSACTalk;
 			productReference = DE5CD4012B4556FA002546CD /* SeSACTalk.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +367,12 @@
 				Base,
 			);
 			mainGroup = DE5CD3F82B4556FA002546CD;
+			packageReferences = (
+				DE5CD4342B45587A002546CD /* XCRemoteSwiftPackageReference "RxSwift" */,
+				DE5CD43B2B45588F002546CD /* XCRemoteSwiftPackageReference "SnapKit" */,
+				DE5CD43E2B4558BF002546CD /* XCRemoteSwiftPackageReference "Moya" */,
+				DEE3104E2B4595A1009209F0 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
+			);
 			productRefGroup = DE5CD4022B4556FA002546CD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -232,8 +390,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE5CD4112B4556FB002546CD /* LaunchScreen.storyboard in Resources */,
+				DE5CD4602B45785B002546CD /* SF-Pro.ttf in Resources */,
 				DE5CD40E2B4556FB002546CD /* Assets.xcassets in Resources */,
-				DE5CD40C2B4556FA002546CD /* Main.storyboard in Resources */,
+				DE5CD4492B45597D002546CD /* .gitIgnore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,9 +417,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE5CD4092B4556FA002546CD /* ViewController.swift in Sources */,
+				DE5CD4092B4556FA002546CD /* SignInViewController.swift in Sources */,
+				DE5CD45B2B45699B002546CD /* CustomLabel.swift in Sources */,
+				DE5CD4532B45657C002546CD /* SignInViewModel.swift in Sources */,
+				DE5CD4512B455DF4002546CD /* Colors.swift in Sources */,
 				DE5CD4052B4556FA002546CD /* AppDelegate.swift in Sources */,
+				DE5CD44C2B4559CC002546CD /* EndPoints.swift in Sources */,
 				DE5CD4072B4556FA002546CD /* SceneDelegate.swift in Sources */,
+				DE5CD4622B458319002546CD /* CustomButton.swift in Sources */,
+				DE5CD44F2B455B0A002546CD /* Typegraphy.swift in Sources */,
+				DE5CD45D2B456BE7002546CD /* CustomInputView.swift in Sources */,
+				DE5CD4592B4566DE002546CD /* CustomTextField.swift in Sources */,
+				DE5CD4692B459129002546CD /* SignInResponse.swift in Sources */,
+				DE5CD4652B45909F002546CD /* SignInRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,14 +466,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		DE5CD40A2B4556FA002546CD /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DE5CD40B2B4556FA002546CD /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		DE5CD40F2B4556FB002546CD /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -368,7 +529,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -425,7 +586,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -447,9 +608,9 @@
 				INFOPLIST_FILE = SeSACTalk/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -457,9 +618,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = unicus.fortis.SeSACTalk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -475,9 +639,9 @@
 				INFOPLIST_FILE = SeSACTalk/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -485,9 +649,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = unicus.fortis.SeSACTalk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -607,6 +774,79 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DE5CD4342B45587A002546CD /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.6.0;
+			};
+		};
+		DE5CD43B2B45588F002546CD /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.0;
+			};
+		};
+		DE5CD43E2B4558BF002546CD /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.3;
+			};
+		};
+		DEE3104E2B4595A1009209F0 /* XCRemoteSwiftPackageReference "RxKeyboard" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxKeyboard";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DE5CD4352B45587A002546CD /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DE5CD4342B45587A002546CD /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		DE5CD4372B45587A002546CD /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DE5CD4342B45587A002546CD /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
+		};
+		DE5CD4392B45587A002546CD /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DE5CD4342B45587A002546CD /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		DE5CD43C2B45588F002546CD /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DE5CD43B2B45588F002546CD /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		DE5CD43F2B4558BF002546CD /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DE5CD43E2B4558BF002546CD /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+		DE5CD4412B4558BF002546CD /* RxMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DE5CD43E2B4558BF002546CD /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = RxMoya;
+		};
+		DEE3104F2B4595A1009209F0 /* RxKeyboard */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DEE3104E2B4595A1009209F0 /* XCRemoteSwiftPackageReference "RxKeyboard" */;
+			productName = RxKeyboard;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DE5CD3F92B4556FA002546CD /* Project object */;
 }
