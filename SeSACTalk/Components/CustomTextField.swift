@@ -21,10 +21,11 @@ final class CustomTextField: UITextField {
         fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init(placeHolder: String, secureEntry: Bool) {
+    convenience init(placeHolder: String, secureEntry: Bool, keyboardType: UIKeyboardType) {
         self.init()
         configure(placeHolder: placeHolder)
         self.isSecureTextEntry = secureEntry
+        self.keyboardType = keyboardType
     }
     
     private func configure(placeHolder: String) {
@@ -42,6 +43,9 @@ final class CustomTextField: UITextField {
         self.backgroundColor = .white
         self.textColor = .black
         self.layer.cornerRadius = 8
+        self.autocorrectionType = .no
+        self.smartQuotesType = .no
+        self.textContentType = .oneTimeCode
     }
     
     

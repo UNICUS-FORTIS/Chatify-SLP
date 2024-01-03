@@ -13,25 +13,32 @@ final class CustomInputView: UIView {
 
     private let placeHolder: String
     private let secureEntry: Bool
+    private let keyboardType: UIKeyboardType
     private let validationBinder = PublishSubject<Bool>()
     
     private let label = UILabel()
     lazy var textField = CustomTextField(placeHolder: placeHolder,
-                                                 secureEntry: secureEntry)
+                                                 secureEntry: secureEntry
+                                         ,keyboardType: keyboardType)
     private let disposeBag = DisposeBag()
     
-    init(label:String, placeHolder: String, secureEntry: Bool, validation: Bool) {
+    init(label:String, placeHolder: String, keyboardType:UIKeyboardType, secureEntry: Bool, validation: Bool) {
         self.label.text = label
         self.placeHolder = placeHolder
         self.secureEntry = secureEntry
+        self.keyboardType = keyboardType
         super.init(frame: .zero)
         configure()
         setConstraints()
         bindValidationColor()
     }
     
-    convenience init(label: String, placeHolder: String ) {
-        self.init(label: label, placeHolder: placeHolder, secureEntry: false, validation: true)
+    convenience init(label: String, placeHolder: String, keyboardType:UIKeyboardType ) {
+        self.init(label: label,
+                  placeHolder: placeHolder,
+                  keyboardType: keyboardType,
+                  secureEntry: false,
+                  validation: true)
     }
     
     required init?(coder: NSCoder) {
