@@ -51,31 +51,42 @@ final class SignInViewModel {
     var isFormValid: Observable<Bool> {
         return Observable
             .combineLatest(emailSubject,
+                           emailValidationSubject,
                            nicknameSubject,
                            contactSubject,
                            passcodeSubject,
                            passcodeConfirmSubject
-            ) { email,
+            )
+            .map { email,
+                emailValidation,
                 nickname,
                 contact,
                 passcode,
                 passcodeConfirm in
                 
                 let emailValid = self.validateEmail(email)
+                let emailValidation = emailValidation
                 let nicknameValid = self.validateNickname(nickname)
-                let contact = self.validateContact(contact)
+                let contactValid = self.validateContact(contact)
                 let passcodeValid = self.validatePasscode(passcode)
-                let passcodeConfirmValid = self.confirmPasscode(passcode,
-                                                                passcodeConfirm)
+                let passcodeConfirmValid = self.confirmPasscode(passcode, passcodeConfirm)
                 
+                print(emailValid &&
+                      emailValidation &&
+                      nicknameValid &&
+                      contactValid &&
+                      passcodeValid &&
+                      passcodeConfirmValid)
                 
                 return emailValid &&
+                emailValidation &&
                 nicknameValid &&
-                contact &&
+                contactValid &&
                 passcodeValid &&
                 passcodeConfirmValid
             }
     }
+    
     
     var isPasscodeEqualityValid: Observable<Bool> {
         return Observable.combineLatest(passcodeSubject, passcodeConfirmSubject)

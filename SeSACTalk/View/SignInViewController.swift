@@ -92,7 +92,9 @@ final class SignInViewController: UIViewController {
                 case .success(let successCode):
                     if successCode == 200 {
                         owner.emailCheckButton.validationBinder.onNext(true)
+                        owner.viewModel.emailValidationSubject.onNext(true)
                     }
+                    // MARK: - 에러 처리 필요.
                 case .failure(let error):
                     print(error)
                 }
@@ -102,8 +104,10 @@ final class SignInViewController: UIViewController {
         email.textField.rx.controlEvent(.editingChanged)
             .subscribe(with: self) { owner, _ in
                 owner.emailCheckButton.validationBinder.onNext(false)
+                owner.viewModel.emailValidationSubject.onNext(false)
             }
             .disposed(by: disposeBag)
+        
         
         
         
