@@ -12,11 +12,21 @@ import RxCocoa
 
 final class SignInViewModel {
     
+    let networkService = NetworkService.shared
     let emailSubject = PublishSubject<String>()
     let nicknameSubject = PublishSubject<String>()
     let contactSubject = PublishSubject<String>()
     let passcodeSubject = PublishSubject<String>()
     let passcodeConfirmSubject = PublishSubject<String>()
+    
+    let emailValidationSubject = BehaviorSubject<Bool>(value: false)
+    
+    func checkEmailStatusCode(code: Int) -> Bool {
+        switch code {
+        case 200...299: return true
+        default: return false
+        }
+    }
     
     var SignInRequestForm: Observable<SignInRequest> {
         return Observable.combineLatest(emailSubject,

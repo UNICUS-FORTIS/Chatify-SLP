@@ -33,6 +33,12 @@
 		DE5CD4622B458319002546CD /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4612B458319002546CD /* CustomButton.swift */; };
 		DE5CD4652B45909F002546CD /* SignInRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4642B45909F002546CD /* SignInRequest.swift */; };
 		DE5CD4692B459129002546CD /* SignInResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4682B459129002546CD /* SignInResponse.swift */; };
+		DE7171502B466A2900B619D4 /* SecureKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE71714F2B466A2900B619D4 /* SecureKeys.swift */; };
+		DE7171522B466C1A00B619D4 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7171512B466C1A00B619D4 /* APIService.swift */; };
+		DE7171542B466E3B00B619D4 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7171532B466E3B00B619D4 /* ErrorResponse.swift */; };
+		DE7171562B466E4900B619D4 /* EmailValidationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7171552B466E4900B619D4 /* EmailValidationRequest.swift */; };
+		DE7171582B46793100B619D4 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7171572B46793100B619D4 /* NetworkService.swift */; };
+		DE71715A2B467D7200B619D4 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7171592B467D7200B619D4 /* APIError.swift */; };
 		DEE310502B4595A1009209F0 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = DEE3104F2B4595A1009209F0 /* RxKeyboard */; };
 /* End PBXBuildFile section */
 
@@ -78,6 +84,12 @@
 		DE5CD4612B458319002546CD /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		DE5CD4642B45909F002546CD /* SignInRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInRequest.swift; sourceTree = "<group>"; };
 		DE5CD4682B459129002546CD /* SignInResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInResponse.swift; sourceTree = "<group>"; };
+		DE71714F2B466A2900B619D4 /* SecureKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureKeys.swift; sourceTree = "<group>"; };
+		DE7171512B466C1A00B619D4 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		DE7171532B466E3B00B619D4 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
+		DE7171552B466E4900B619D4 /* EmailValidationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailValidationRequest.swift; sourceTree = "<group>"; };
+		DE7171572B46793100B619D4 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		DE7171592B467D7200B619D4 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,9 +149,9 @@
 			children = (
 				DE5CD45E2B45784A002546CD /* Font */,
 				DE5CD4572B4566D1002546CD /* Components */,
-				DE5CD44A2B4559A7002546CD /* Security */,
 				DE5CD44D2B455A01002546CD /* Constant */,
 				DE5CD4472B455954002546CD /* Extensions */,
+				DE5CD44A2B4559A7002546CD /* Security */,
 				DE5CD4462B45594C002546CD /* Network */,
 				DE5CD4632B459086002546CD /* Model */,
 				DE5CD4452B4558FF002546CD /* View */,
@@ -198,6 +210,9 @@
 		DE5CD4462B45594C002546CD /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				DE7171512B466C1A00B619D4 /* APIService.swift */,
+				DE7171572B46793100B619D4 /* NetworkService.swift */,
+				DE7171592B467D7200B619D4 /* APIError.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -213,6 +228,7 @@
 			isa = PBXGroup;
 			children = (
 				DE5CD44B2B4559CC002546CD /* EndPoints.swift */,
+				DE71714F2B466A2900B619D4 /* SecureKeys.swift */,
 			);
 			path = Security;
 			sourceTree = "<group>";
@@ -258,6 +274,7 @@
 			isa = PBXGroup;
 			children = (
 				DE5CD4642B45909F002546CD /* SignInRequest.swift */,
+				DE7171552B466E4900B619D4 /* EmailValidationRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -266,6 +283,7 @@
 			isa = PBXGroup;
 			children = (
 				DE5CD4682B459129002546CD /* SignInResponse.swift */,
+				DE7171532B466E3B00B619D4 /* ErrorResponse.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -418,13 +436,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE5CD4092B4556FA002546CD /* SignInViewController.swift in Sources */,
+				DE7171522B466C1A00B619D4 /* APIService.swift in Sources */,
 				DE5CD45B2B45699B002546CD /* CustomLabel.swift in Sources */,
 				DE5CD4532B45657C002546CD /* SignInViewModel.swift in Sources */,
+				DE7171582B46793100B619D4 /* NetworkService.swift in Sources */,
 				DE5CD4512B455DF4002546CD /* Colors.swift in Sources */,
 				DE5CD4052B4556FA002546CD /* AppDelegate.swift in Sources */,
 				DE5CD44C2B4559CC002546CD /* EndPoints.swift in Sources */,
+				DE71715A2B467D7200B619D4 /* APIError.swift in Sources */,
 				DE5CD4072B4556FA002546CD /* SceneDelegate.swift in Sources */,
 				DE5CD4622B458319002546CD /* CustomButton.swift in Sources */,
+				DE7171502B466A2900B619D4 /* SecureKeys.swift in Sources */,
+				DE7171542B466E3B00B619D4 /* ErrorResponse.swift in Sources */,
+				DE7171562B466E4900B619D4 /* EmailValidationRequest.swift in Sources */,
 				DE5CD44F2B455B0A002546CD /* Typegraphy.swift in Sources */,
 				DE5CD45D2B456BE7002546CD /* CustomInputView.swift in Sources */,
 				DE5CD4592B4566DE002546CD /* CustomTextField.swift in Sources */,

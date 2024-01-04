@@ -44,7 +44,7 @@ final class SignInViewController: UIViewController {
     private let signInButton = CustomButton(title: "가입하기")
     private let disposeBag = DisposeBag()
     private var invalidInputArray:[CustomInputView] = []
-
+    
     private lazy var components:[CustomInputView] = [nickname, contact, passcode, passcodeConfirm]
     
     override func viewDidLoad() {
@@ -81,6 +81,27 @@ final class SignInViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        emailCheckButton.rx.tap
+            .flatMap { _ -> Observable<Result<Int,Error>> in
+                guard let text = self.email.textField.text else { return Observable.empty() }
+                let result = self.viewModel.networkService.fetchRequest(info: EmailValidationRequest(email: text))
+                return result.asObservable()
+            }
+            .subscribe(with: self) { owner, result in
+                switch result {
+                case .success(let successCode):
+                    if successCode == 200 {
+                        print(successCode)
+                        owner.emailCheckButton.validationBinder.onNext(true)
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        
+        
         viewModel.isFormValid
             .subscribe(with: self) { owner, validation in
                 owner.signInButton.validationBinder
@@ -89,7 +110,7 @@ final class SignInViewController: UIViewController {
             }
             .disposed(by: disposeBag)
     }
-
+    
     private func checkEachInputs() {
         checkInput(email, validationClosure: viewModel.validateEmail)
         checkInput(nickname, validationClosure: viewModel.validateNickname)
@@ -103,7 +124,7 @@ final class SignInViewController: UIViewController {
         if !confirmValidation {
             invalidInputArray.append(passcodeConfirm)
         }
-
+        
         invalidInputArray.first?.textField.becomeFirstResponder()
         invalidInputArray.removeAll()
     }
@@ -112,7 +133,7 @@ final class SignInViewController: UIViewController {
         let text = input.textField.text ?? ""
         let validation = validationClosure(text)
         input.validationBinder.onNext(validation)
-
+        
         if !validation {
             invalidInputArray.append(input)
         }
