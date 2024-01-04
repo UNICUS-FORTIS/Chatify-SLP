@@ -91,12 +91,17 @@ final class SignInViewController: UIViewController {
                 switch result {
                 case .success(let successCode):
                     if successCode == 200 {
-                        print(successCode)
                         owner.emailCheckButton.validationBinder.onNext(true)
                     }
                 case .failure(let error):
                     print(error)
                 }
+            }
+            .disposed(by: disposeBag)
+        
+        email.textField.rx.controlEvent(.editingChanged)
+            .subscribe(with: self) { owner, _ in
+                owner.emailCheckButton.validationBinder.onNext(false)
             }
             .disposed(by: disposeBag)
         
