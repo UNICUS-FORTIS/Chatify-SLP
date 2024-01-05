@@ -12,6 +12,7 @@ import Moya
 enum APIService {
     
     case emailValidation(model: EmailValidationRequest)
+    case join(model: SignInRequest)
     
 }
 
@@ -24,6 +25,8 @@ extension APIService: TargetType {
         switch self {
         case .emailValidation :
             return EndPoints.Paths.emailValidate
+        case .join :
+            return EndPoints.Paths.join
         }
         
     }
@@ -32,8 +35,8 @@ extension APIService: TargetType {
         
         switch self {
             
-        case .emailValidation: return .post
-            
+        case .emailValidation, .join:
+            return .post
 //        default : return .get
             
         }
@@ -44,12 +47,14 @@ extension APIService: TargetType {
         switch self {
         case .emailValidation(let model):
             return .requestJSONEncodable(model)
+        case .join(let model):
+            return .requestJSONEncodable(model)
         }
     }
     
     var headers: [String : String]? {
         switch self {
-        case .emailValidation:
+        case .emailValidation, .join:
             return [
                 SecureKeys.Headers.contentsType : SecureKeys.Headers.contentsTypePair,
                 SecureKeys.Headers.Headerkey : SecureKeys.APIKey.secretKey

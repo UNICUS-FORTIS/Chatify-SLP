@@ -33,4 +33,10 @@ final class NetworkService {
                 }
         }
     }
+    
+//    func fetchSigninRequest(info: SignInRequest) -> Single<Result<SignInRequest, Error>> {
+//        return Single.create { single in
+//            self.provider.rx.request(.)
+//        }
+//    }
 }

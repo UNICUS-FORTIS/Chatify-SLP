@@ -28,7 +28,7 @@ final class SignInViewModel {
         }
     }
     
-    var SignInRequestForm: Observable<SignInRequest> {
+    var signInRequestForm: Observable<SignInRequest> {
         return Observable.combineLatest(emailSubject,
                                         nicknameSubject,
                                         contactSubject,

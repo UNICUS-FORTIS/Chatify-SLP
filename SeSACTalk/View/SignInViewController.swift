@@ -82,6 +82,12 @@ final class SignInViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+//        signInButton.rx.tap
+//            .withLatestFrom(viewModel.signInRequestForm)
+//            .flatMapLatest { form -> Observable<Result<SignInResponse,Error>> in
+//                return self.viewModel.networkService.fetchRequest(info: <#T##EmailValidationRequest#>)
+//            }
+        
         emailCheckButton.rx.tap
             .flatMap { _ -> Observable<Result<Int,Error>> in
                 guard let text = self.email.textField.text else { return Observable.empty() }
@@ -122,7 +128,6 @@ final class SignInViewController: UIViewController {
             .subscribe(with: self) { owner, validation in
                 owner.signInButton.validationBinder
                     .onNext(validation)
-                print(validation)
             }
             .disposed(by: disposeBag)
     }
