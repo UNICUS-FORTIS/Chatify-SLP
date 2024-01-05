@@ -82,9 +82,26 @@ final class SignInViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        email.textField.rx.text.orEmpty
+            .subscribe(with: self) { owner, text in
+                if text.count > 0 {
+                    owner.viewModel.emailTextfieldisInputed.onNext(true)
+                    owner.emailCheckButton.validationBinder.onNext(true)
+                } else {
+                    owner.viewModel.emailTextfieldisInputed.onNext(false)
+                    owner.emailCheckButton.validationBinder.onNext(false)
+                }
+            }
+            .disposed(by: disposeBag)
+        
         emailCheckButton.rx.tap
             .flatMap { _ -> Observable<Result<Int, ErrorResponse>> in
-                guard let text = self.email.textField.text else { return Observable.empty() }
+                guard let text = self.email.textField.text,
+                self.viewModel.validateEmail(text) else {
+                    self.createInformationToast(message: ToastMessages.Join.invalidEmail.description,
+                                           backgroundColor: Colors.Brand.error,
+                                           aboveView: self.signInButton)
+                    return Observable.empty() }
                 let result = self.viewModel.networkService.fetchRequest(info: EmailValidationRequest(email: text))
                 return result.asObservable()
             }
@@ -103,15 +120,14 @@ final class SignInViewController: UIViewController {
                     print(error)
                     let responseCode = error.errorCode
                     owner.createInformationToast(message: APIError.ErrorCodes(rawValue: responseCode)?.description ?? "",
-                                                     backgroundColor: Colors.Brand.error,
-                                                     aboveView: owner.signInButton)
+                                                 backgroundColor: Colors.Brand.error,
+                                                 aboveView: owner.signInButton)
                 }
             }
             .disposed(by: disposeBag)
         
         email.textField.rx.controlEvent(.editingChanged)
             .subscribe(with: self) { owner, _ in
-                owner.emailCheckButton.validationBinder.onNext(false)
                 owner.viewModel.emailValidationSubject.onNext(false)
             }
             .disposed(by: disposeBag)

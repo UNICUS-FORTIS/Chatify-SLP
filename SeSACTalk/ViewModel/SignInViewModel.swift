@@ -20,6 +20,7 @@ final class SignInViewModel {
     let passcodeConfirmSubject = PublishSubject<String>()
     
     let emailValidationSubject = BehaviorSubject<Bool>(value: false)
+    let emailTextfieldisInputed = BehaviorSubject<Bool>(value: false)
     
     func checkEmailStatusCode(code: Int) -> Bool {
         switch code {

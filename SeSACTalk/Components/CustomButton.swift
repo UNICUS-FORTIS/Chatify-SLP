@@ -55,7 +55,7 @@ final class CustomButton: UIButton {
                 updatedConfiguration?.background.backgroundColor = validation ?
                 Colors.Brand.green :
                 Colors.Brand.inactive
-                
+                self.isEnabled = validation
                 self.configuration = updatedConfiguration
             }
             .disposed(by: disposeBag)

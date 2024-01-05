@@ -33,7 +33,6 @@ final class NetworkService {
                             single(.success(.failure(decodedError)))
                         } catch {
                             let unknownError = APIError(rawValue: response.statusCode)
-                            print(unknownError)
                         }
                     }
                 }
