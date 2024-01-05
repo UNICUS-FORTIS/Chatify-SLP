@@ -100,6 +100,9 @@ final class SignInViewController: UIViewController {
                 let previous = self.viewModel.validatedEmail
                 let current = self.email.textField.text
                 if previous == current {
+                    self.createInformationToast(message: ToastMessages.Join.availiableEmail.description,
+                                                backgroundColor: Colors.Brand.green,
+                                                aboveView: self.signInButton)
                     return true
                 } else {
                     return false
@@ -107,10 +110,10 @@ final class SignInViewController: UIViewController {
             })
             .flatMap { _ -> Observable<Result<Int, ErrorResponse>> in
                 guard let text = self.email.textField.text,
-                self.viewModel.validateEmail(text) else {
+                      self.viewModel.validateEmail(text) else {
                     self.createInformationToast(message: ToastMessages.Join.invalidEmail.description,
-                                           backgroundColor: Colors.Brand.error,
-                                           aboveView: self.signInButton)
+                                                backgroundColor: Colors.Brand.error,
+                                                aboveView: self.signInButton)
                     return Observable.empty()
                 }
                 let result = self.viewModel.networkService.fetchRequest(info: EmailValidationRequest(email: text))
@@ -123,7 +126,7 @@ final class SignInViewController: UIViewController {
                         owner.viewModel.validatedEmail = owner.email.textField.text
                         owner.emailCheckButton.validationBinder.onNext(true)
                         owner.viewModel.emailValidationSubject.onNext(true)
-                        owner.createInformationToast(message: "사용 가능한 이메일입니다",
+                        owner.createInformationToast(message: ToastMessages.Join.availiableEmail.description,
                                                      backgroundColor: Colors.Brand.green,
                                                      aboveView: owner.signInButton)
                     }
@@ -142,6 +145,18 @@ final class SignInViewController: UIViewController {
             .subscribe(with: self) { owner, _ in
                 owner.viewModel.emailValidationSubject.onNext(false)
             }
+            .disposed(by: disposeBag)
+        
+        contact.textField.rx.text.orEmpty
+            .map { text in
+                switch text.count {
+                case 13:
+                    return text.formated(by: "###-####-####")
+                default:
+                    return text.formated(by: "###-###-####")
+                }
+            }
+            .bind(to: contact.textField.rx.text)
             .disposed(by: disposeBag)
         
         viewModel.isFormValid

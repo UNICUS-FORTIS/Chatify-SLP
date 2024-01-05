@@ -42,6 +42,7 @@
 		DE71715D2B46B5C000B619D4 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = DE71715C2B46B5C000B619D4 /* Toast */; };
 		DE7171622B46B71000B619D4 /* ToastPresentableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7171612B46B71000B619D4 /* ToastPresentableProtocol.swift */; };
 		DE9539F32B482C8D009B196A /* ToastMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9539F22B482C8D009B196A /* ToastMessages.swift */; };
+		DE9539F52B486286009B196A /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9539F42B486286009B196A /* String+Extension.swift */; };
 		DEE310502B4595A1009209F0 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = DEE3104F2B4595A1009209F0 /* RxKeyboard */; };
 /* End PBXBuildFile section */
 
@@ -96,6 +97,7 @@
 		DE7171592B467D7200B619D4 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		DE7171612B46B71000B619D4 /* ToastPresentableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastPresentableProtocol.swift; sourceTree = "<group>"; };
 		DE9539F22B482C8D009B196A /* ToastMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastMessages.swift; sourceTree = "<group>"; };
+		DE9539F42B486286009B196A /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,6 +231,7 @@
 		DE5CD4472B455954002546CD /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				DE9539F42B486286009B196A /* String+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -467,6 +470,7 @@
 				DE71715A2B467D7200B619D4 /* APIError.swift in Sources */,
 				DE5CD4072B4556FA002546CD /* SceneDelegate.swift in Sources */,
 				DE5CD4622B458319002546CD /* CustomButton.swift in Sources */,
+				DE9539F52B486286009B196A /* String+Extension.swift in Sources */,
 				DE7171502B466A2900B619D4 /* SecureKeys.swift in Sources */,
 				DE7171542B466E3B00B619D4 /* ErrorResponse.swift in Sources */,
 				DE7171562B466E4900B619D4 /* EmailValidationRequest.swift in Sources */,
