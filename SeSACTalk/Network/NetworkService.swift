@@ -22,7 +22,6 @@ final class NetworkService {
         print(#function)
         return Single.create { single in
             self.provider.rx.request(.emailValidation(model: info))
-                .filterSuccessfulStatusCodes()
                 .map { $0.statusCode }
                 .subscribe(with: self) { owner, status in
                     switch status {

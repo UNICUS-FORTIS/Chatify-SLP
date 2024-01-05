@@ -39,6 +39,8 @@
 		DE7171562B466E4900B619D4 /* EmailValidationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7171552B466E4900B619D4 /* EmailValidationRequest.swift */; };
 		DE7171582B46793100B619D4 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7171572B46793100B619D4 /* NetworkService.swift */; };
 		DE71715A2B467D7200B619D4 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7171592B467D7200B619D4 /* APIError.swift */; };
+		DE71715D2B46B5C000B619D4 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = DE71715C2B46B5C000B619D4 /* Toast */; };
+		DE7171622B46B71000B619D4 /* ToastPresentableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7171612B46B71000B619D4 /* ToastPresentableProtocol.swift */; };
 		DEE310502B4595A1009209F0 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = DEE3104F2B4595A1009209F0 /* RxKeyboard */; };
 /* End PBXBuildFile section */
 
@@ -90,6 +92,7 @@
 		DE7171552B466E4900B619D4 /* EmailValidationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailValidationRequest.swift; sourceTree = "<group>"; };
 		DE7171572B46793100B619D4 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		DE7171592B467D7200B619D4 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		DE7171612B46B71000B619D4 /* ToastPresentableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastPresentableProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE71715D2B46B5C000B619D4 /* Toast in Frameworks */,
 				DE5CD4422B4558BF002546CD /* RxMoya in Frameworks */,
 				DE5CD43A2B45587A002546CD /* RxSwift in Frameworks */,
 				DE5CD43D2B45588F002546CD /* SnapKit in Frameworks */,
@@ -151,6 +155,7 @@
 				DE5CD4572B4566D1002546CD /* Components */,
 				DE5CD44D2B455A01002546CD /* Constant */,
 				DE5CD4472B455954002546CD /* Extensions */,
+				DE71715E2B46B63800B619D4 /* Protocols */,
 				DE5CD44A2B4559A7002546CD /* Security */,
 				DE5CD4462B45594C002546CD /* Network */,
 				DE5CD4632B459086002546CD /* Model */,
@@ -288,6 +293,14 @@
 			path = Response;
 			sourceTree = "<group>";
 		};
+		DE71715E2B46B63800B619D4 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				DE7171612B46B71000B619D4 /* ToastPresentableProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -312,6 +325,7 @@
 				DE5CD43F2B4558BF002546CD /* Moya */,
 				DE5CD4412B4558BF002546CD /* RxMoya */,
 				DEE3104F2B4595A1009209F0 /* RxKeyboard */,
+				DE71715C2B46B5C000B619D4 /* Toast */,
 			);
 			productName = SeSACTalk;
 			productReference = DE5CD4012B4556FA002546CD /* SeSACTalk.app */;
@@ -390,6 +404,7 @@
 				DE5CD43B2B45588F002546CD /* XCRemoteSwiftPackageReference "SnapKit" */,
 				DE5CD43E2B4558BF002546CD /* XCRemoteSwiftPackageReference "Moya" */,
 				DEE3104E2B4595A1009209F0 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
+				DE71715B2B46B5C000B619D4 /* XCRemoteSwiftPackageReference "Toast-Swift" */,
 			);
 			productRefGroup = DE5CD4022B4556FA002546CD /* Products */;
 			projectDirPath = "";
@@ -438,6 +453,7 @@
 				DE5CD4092B4556FA002546CD /* SignInViewController.swift in Sources */,
 				DE7171522B466C1A00B619D4 /* APIService.swift in Sources */,
 				DE5CD45B2B45699B002546CD /* CustomLabel.swift in Sources */,
+				DE7171622B46B71000B619D4 /* ToastPresentableProtocol.swift in Sources */,
 				DE5CD4532B45657C002546CD /* SignInViewModel.swift in Sources */,
 				DE7171582B46793100B619D4 /* NetworkService.swift in Sources */,
 				DE5CD4512B455DF4002546CD /* Colors.swift in Sources */,
@@ -824,6 +840,14 @@
 				minimumVersion = 15.0.3;
 			};
 		};
+		DE71715B2B46B5C000B619D4 /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scalessec/Toast-Swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
 		DEE3104E2B4595A1009209F0 /* XCRemoteSwiftPackageReference "RxKeyboard" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RxSwiftCommunity/RxKeyboard";
@@ -864,6 +888,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DE5CD43E2B4558BF002546CD /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = RxMoya;
+		};
+		DE71715C2B46B5C000B619D4 /* Toast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DE71715B2B46B5C000B619D4 /* XCRemoteSwiftPackageReference "Toast-Swift" */;
+			productName = Toast;
 		};
 		DEE3104F2B4595A1009209F0 /* RxKeyboard */ = {
 			isa = XCSwiftPackageProductDependency;

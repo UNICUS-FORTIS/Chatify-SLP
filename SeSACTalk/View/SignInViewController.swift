@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import Toast
 
 
 final class SignInViewController: UIViewController {
@@ -93,10 +94,19 @@ final class SignInViewController: UIViewController {
                     if successCode == 200 {
                         owner.emailCheckButton.validationBinder.onNext(true)
                         owner.viewModel.emailValidationSubject.onNext(true)
+                        owner.createInformationToast(message: "사용 가능한 이메일입니다",
+                                                     backgroundColor: Colors.Brand.green,
+                                                     aboveView: owner.signInButton)
                     }
                     // MARK: - 에러 처리 필요.
                 case .failure(let error):
-                    print(error)
+                    if let errorCode = error as? APIError {
+                        if errorCode.rawValue == 400 {
+                            owner.createInformationToast(message: "사용 불가능한 이메일입니다",
+                                                         backgroundColor: Colors.Brand.error,
+                                                         aboveView: owner.signInButton)
+                        }
+                    }
                 }
             }
             .disposed(by: disposeBag)
@@ -107,9 +117,6 @@ final class SignInViewController: UIViewController {
                 owner.viewModel.emailValidationSubject.onNext(false)
             }
             .disposed(by: disposeBag)
-        
-        
-        
         
         viewModel.isFormValid
             .subscribe(with: self) { owner, validation in
@@ -197,5 +204,14 @@ final class SignInViewController: UIViewController {
         super.touchesBegan(touches, with: event)
         view.endEditing(true)
     }
+}
+
+
+extension SignInViewController: ToastPresentableProtocol {
+    
+    func createInformationToast(message: String, backgroundColor: UIColor, aboveView: UIView) {
+        makeToastAboveView(message: message, backgroundColor: backgroundColor, aboveView: aboveView)
+    }
+    
 }
 
