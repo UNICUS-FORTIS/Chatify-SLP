@@ -20,7 +20,9 @@ final class SignInViewModel {
     let passcodeConfirmSubject = PublishSubject<String>()
     
     let emailValidationSubject = BehaviorSubject<Bool>(value: false)
+    var validatedEmail: String?
     let emailTextfieldisInputed = BehaviorSubject<Bool>(value: false)
+    
     
     func checkEmailStatusCode(code: Int) -> Bool {
         switch code {
@@ -111,7 +113,7 @@ final class SignInViewModel {
     }
     
     func validateNickname(_ nickname: String) -> Bool {
-        let nickNameRegex = "^(?=.*[가-힣A-Za-z])[가-힣A-Za-z0-9]+$"
+        let nickNameRegex = "^(?=.*[가-힣A-Za-z])[가-힣A-Za-z0-9]{1,30}$"
         let nickNameTest = NSPredicate(format:"SELF MATCHES %@", nickNameRegex)
         return nickNameTest.evaluate(with: nickname)
     }

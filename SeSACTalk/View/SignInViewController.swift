@@ -95,13 +95,24 @@ final class SignInViewController: UIViewController {
             .disposed(by: disposeBag)
         
         emailCheckButton.rx.tap
+            .debounce(.seconds(1), scheduler: MainScheduler.instance)
+            .distinctUntilChanged({ _ , _ in
+                let previous = self.viewModel.validatedEmail
+                let current = self.email.textField.text
+                if previous == current {
+                    return true
+                } else {
+                    return false
+                }
+            })
             .flatMap { _ -> Observable<Result<Int, ErrorResponse>> in
                 guard let text = self.email.textField.text,
                 self.viewModel.validateEmail(text) else {
                     self.createInformationToast(message: ToastMessages.Join.invalidEmail.description,
                                            backgroundColor: Colors.Brand.error,
                                            aboveView: self.signInButton)
-                    return Observable.empty() }
+                    return Observable.empty()
+                }
                 let result = self.viewModel.networkService.fetchRequest(info: EmailValidationRequest(email: text))
                 return result.asObservable()
             }
@@ -109,6 +120,7 @@ final class SignInViewController: UIViewController {
                 switch result {
                 case .success(let successCode):
                     if successCode == 200 {
+                        owner.viewModel.validatedEmail = owner.email.textField.text
                         owner.emailCheckButton.validationBinder.onNext(true)
                         owner.viewModel.emailValidationSubject.onNext(true)
                         owner.createInformationToast(message: "사용 가능한 이메일입니다",
