@@ -77,8 +77,10 @@ final class SignInViewController: UIViewController {
             .disposed(by: disposeBag)
         
         signInButton.rx.tap
+            .debounce(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(with: self) { owner, _ in
-                owner.checkEachInputs()
+                let validation = owner.checkEachInputs()
+                print(validation)
             }
             .disposed(by: disposeBag)
         
@@ -130,7 +132,7 @@ final class SignInViewController: UIViewController {
                                                      backgroundColor: Colors.Brand.green,
                                                      aboveView: owner.signInButton)
                     }
-                    // MARK: - 에러 처리 필요.
+                    
                 case .failure(let error):
                     print(error)
                     let responseCode = error.errorCode
@@ -159,15 +161,15 @@ final class SignInViewController: UIViewController {
             .bind(to: contact.textField.rx.text)
             .disposed(by: disposeBag)
         
-        viewModel.isFormValid
-            .subscribe(with: self) { owner, validation in
-                owner.signInButton.validationBinder
-                    .onNext(validation)
-            }
-            .disposed(by: disposeBag)
+        //        viewModel.isFormValid
+        //            .subscribe(with: self) { owner, validation in
+        //                owner.signInButton.validationBinder
+        //                    .onNext(validation)
+        //            }
+        //            .disposed(by: disposeBag)
     }
     
-    private func checkEachInputs() {
+    private func checkEachInputs() -> Bool {
         checkInput(email, validationClosure: viewModel.validateEmail)
         checkInput(nickname, validationClosure: viewModel.validateNickname)
         checkInput(contact, validationClosure: viewModel.validateContact)
@@ -181,8 +183,50 @@ final class SignInViewController: UIViewController {
             invalidInputArray.append(passcodeConfirm)
         }
         
-        invalidInputArray.first?.textField.becomeFirstResponder()
-        invalidInputArray.removeAll()
+        if let firstInvalidInput = invalidInputArray.first {
+            firstInvalidInput.textField.becomeFirstResponder()
+            
+            if firstInvalidInput == email {
+                self.makeToastAboveView(message: ToastMessages.Join.invalidEmail.description,
+                                        backgroundColor: Colors.Brand.error, aboveView: signInButton)
+                
+            } else if firstInvalidInput != email {
+                let emailValidation = try? viewModel.emailValidationSubject.value()
+                if emailValidation == false {
+                    makeToastAboveView(message: ToastMessages.Join.validationReck.description,
+                                       backgroundColor: Colors.Brand.error, aboveView: signInButton)
+                } else if firstInvalidInput == nickname {
+                    
+                    self.makeToastAboveView(message: ToastMessages.Join.invalidNickname.description,
+                                            backgroundColor: Colors.Brand.error, aboveView: signInButton)
+                    
+                } else if firstInvalidInput == contact {
+                    
+                    self.makeToastAboveView(message: ToastMessages.Join.invalidPhone.description,
+                                            backgroundColor: Colors.Brand.error, aboveView: signInButton)
+                    
+                } else if firstInvalidInput == passcode {
+                    
+                    self.makeToastAboveView(message: ToastMessages.Join.invalidPassword.description,
+                                            backgroundColor: Colors.Brand.error, aboveView: signInButton)
+                    
+                } else if firstInvalidInput == passcodeConfirm {
+                    
+                    self.makeToastAboveView(message: ToastMessages.Join.invalidPasswordConfirmation.description,
+                                            backgroundColor: Colors.Brand.error, aboveView: signInButton)
+                }
+            }
+            invalidInputArray.removeAll()
+            return false
+        } else {
+            let emailValidation = try? viewModel.emailValidationSubject.value()
+            if emailValidation == false {
+                makeToastAboveView(message: ToastMessages.Join.validationReck.description,
+                                   backgroundColor: Colors.Brand.error, aboveView: signInButton)
+                return false
+            }
+        }
+        return true
     }
     
     private func checkInput(_ input: CustomInputView, validationClosure: (String) -> Bool) {
