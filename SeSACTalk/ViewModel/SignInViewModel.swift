@@ -130,9 +130,8 @@ final class SignInViewModel {
     }
     
     func validateContact(_ contact: String) -> Bool {
-        guard !contact.isEmpty else { return false }
-        let numericCharacterSet = CharacterSet.decimalDigits
-        let inputCharacterSet = CharacterSet(charactersIn: contact)
-        return numericCharacterSet.isSuperset(of: inputCharacterSet)
+        let pattern = #"^\d{3}-\d{3,4}-\d{4}$|^\d{10,11}$"#
+        let predicate = NSPredicate(format: "SELF MATCHES %@", pattern)
+        return predicate.evaluate(with: contact)
     }
 }
