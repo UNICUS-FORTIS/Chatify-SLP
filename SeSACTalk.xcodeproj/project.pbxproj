@@ -41,6 +41,7 @@
 		DE71715A2B467D7200B619D4 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7171592B467D7200B619D4 /* APIError.swift */; };
 		DE71715D2B46B5C000B619D4 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = DE71715C2B46B5C000B619D4 /* Toast */; };
 		DE7171622B46B71000B619D4 /* ToastPresentableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7171612B46B71000B619D4 /* ToastPresentableProtocol.swift */; };
+		DE9539F32B482C8D009B196A /* ToastMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9539F22B482C8D009B196A /* ToastMessages.swift */; };
 		DEE310502B4595A1009209F0 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = DEE3104F2B4595A1009209F0 /* RxKeyboard */; };
 /* End PBXBuildFile section */
 
@@ -94,6 +95,7 @@
 		DE7171572B46793100B619D4 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		DE7171592B467D7200B619D4 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		DE7171612B46B71000B619D4 /* ToastPresentableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastPresentableProtocol.swift; sourceTree = "<group>"; };
+		DE9539F22B482C8D009B196A /* ToastMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastMessages.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -245,6 +247,7 @@
 			children = (
 				DE5CD44E2B455B0A002546CD /* Typegraphy.swift */,
 				DE5CD4502B455DF4002546CD /* Colors.swift */,
+				DE9539F22B482C8D009B196A /* ToastMessages.swift */,
 			);
 			path = Constant;
 			sourceTree = "<group>";
@@ -468,6 +471,7 @@
 				DE7171542B466E3B00B619D4 /* ErrorResponse.swift in Sources */,
 				DE7171562B466E4900B619D4 /* EmailValidationRequest.swift in Sources */,
 				DE5CD44F2B455B0A002546CD /* Typegraphy.swift in Sources */,
+				DE9539F32B482C8D009B196A /* ToastMessages.swift in Sources */,
 				DE5CD45D2B456BE7002546CD /* CustomInputView.swift in Sources */,
 				DE5CD4592B4566DE002546CD /* CustomTextField.swift in Sources */,
 				DE5CD4692B459129002546CD /* SignInResponse.swift in Sources */,

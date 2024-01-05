@@ -8,7 +8,6 @@
 import Foundation
 
 
-struct ErrorRespnse: Decodable {
-
+struct ErrorResponse: Decodable, Error {
     let errorCode: String
 }

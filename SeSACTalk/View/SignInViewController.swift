@@ -82,14 +82,8 @@ final class SignInViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-//        signInButton.rx.tap
-//            .withLatestFrom(viewModel.signInRequestForm)
-//            .flatMapLatest { form -> Observable<Result<SignInResponse,Error>> in
-//                return self.viewModel.networkService.fetchRequest(info: <#T##EmailValidationRequest#>)
-//            }
-        
         emailCheckButton.rx.tap
-            .flatMap { _ -> Observable<Result<Int,Error>> in
+            .flatMap { _ -> Observable<Result<Int, ErrorResponse>> in
                 guard let text = self.email.textField.text else { return Observable.empty() }
                 let result = self.viewModel.networkService.fetchRequest(info: EmailValidationRequest(email: text))
                 return result.asObservable()
@@ -106,13 +100,11 @@ final class SignInViewController: UIViewController {
                     }
                     // MARK: - 에러 처리 필요.
                 case .failure(let error):
-                    if let errorCode = error as? APIError {
-                        if errorCode.rawValue == 400 {
-                            owner.createInformationToast(message: "사용 불가능한 이메일입니다",
-                                                         backgroundColor: Colors.Brand.error,
-                                                         aboveView: owner.signInButton)
-                        }
-                    }
+                    print(error)
+                    let responseCode = error.errorCode
+                    owner.createInformationToast(message: APIError.ErrorCodes(rawValue: responseCode)?.description ?? "",
+                                                     backgroundColor: Colors.Brand.error,
+                                                     aboveView: owner.signInButton)
                 }
             }
             .disposed(by: disposeBag)

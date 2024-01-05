@@ -18,25 +18,25 @@ final class NetworkService {
     private let provider = MoyaProvider<APIService>()
     private let disposeBag = DisposeBag()
     
-    func fetchRequest(info: EmailValidationRequest) -> Single<Result<Int, Error>> {
+    func fetchRequest(info: EmailValidationRequest) -> Single<Result<Int, ErrorResponse>> {
         print(#function)
         return Single.create { single in
             self.provider.rx.request(.emailValidation(model: info))
-                .map { $0.statusCode }
-                .subscribe(with: self) { owner, status in
-                    switch status {
-                    case 200 : single(.success(.success(status)))
-                        print(status)
-                    default : single(.success(.failure(APIError(rawValue: status) ?? .unknownError)))
-                        print(status)
+                .subscribe(with: self) { owner, response in
+                    switch response.statusCode {
+                    case 200:
+                        single(.success(.success(response.statusCode)))
+                        print(response.statusCode)
+                    default:
+                        do {
+                            let decodedError = try JSONDecoder().decode(ErrorResponse.self, from: response.data)
+                            single(.success(.failure(decodedError)))
+                        } catch {
+                            let unknownError = APIError(rawValue: response.statusCode)
+                            print(unknownError)
+                        }
                     }
                 }
         }
     }
-    
-//    func fetchSigninRequest(info: SignInRequest) -> Single<Result<SignInRequest, Error>> {
-//        return Single.create { single in
-//            self.provider.rx.request(.)
-//        }
-//    }
 }
