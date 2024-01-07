@@ -43,6 +43,7 @@
 		DE7171622B46B71000B619D4 /* ToastPresentableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7171612B46B71000B619D4 /* ToastPresentableProtocol.swift */; };
 		DE9539F32B482C8D009B196A /* ToastMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9539F22B482C8D009B196A /* ToastMessages.swift */; };
 		DE9539F52B486286009B196A /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9539F42B486286009B196A /* String+Extension.swift */; };
+		DE9BCA032B4AEE72005DE0B0 /* EmailLogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9BCA022B4AEE72005DE0B0 /* EmailLogInViewController.swift */; };
 		DEE310502B4595A1009209F0 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = DEE3104F2B4595A1009209F0 /* RxKeyboard */; };
 /* End PBXBuildFile section */
 
@@ -98,6 +99,7 @@
 		DE7171612B46B71000B619D4 /* ToastPresentableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastPresentableProtocol.swift; sourceTree = "<group>"; };
 		DE9539F22B482C8D009B196A /* ToastMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastMessages.swift; sourceTree = "<group>"; };
 		DE9539F42B486286009B196A /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		DE9BCA022B4AEE72005DE0B0 /* EmailLogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLogInViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,7 +215,7 @@
 		DE5CD4452B4558FF002546CD /* View */ = {
 			isa = PBXGroup;
 			children = (
-				DE5CD4082B4556FA002546CD /* SignInViewController.swift */,
+				DE9BCA012B4AEE42005DE0B0 /* Join */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -307,6 +309,15 @@
 				DE7171612B46B71000B619D4 /* ToastPresentableProtocol.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		DE9BCA012B4AEE42005DE0B0 /* Join */ = {
+			isa = PBXGroup;
+			children = (
+				DE5CD4082B4556FA002546CD /* SignInViewController.swift */,
+				DE9BCA022B4AEE72005DE0B0 /* EmailLogInViewController.swift */,
+			);
+			path = Join;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -477,6 +488,7 @@
 				DE5CD44F2B455B0A002546CD /* Typegraphy.swift in Sources */,
 				DE9539F32B482C8D009B196A /* ToastMessages.swift in Sources */,
 				DE5CD45D2B456BE7002546CD /* CustomInputView.swift in Sources */,
+				DE9BCA032B4AEE72005DE0B0 /* EmailLogInViewController.swift in Sources */,
 				DE5CD4592B4566DE002546CD /* CustomTextField.swift in Sources */,
 				DE5CD4692B459129002546CD /* SignInResponse.swift in Sources */,
 				DE5CD4652B45909F002546CD /* SignInRequest.swift in Sources */,
