@@ -15,6 +15,8 @@ import Toast
 final class SignInViewController: UIViewController {
     
     private let viewModel = SignInViewModel()
+    private var invalidInputArray:[CustomInputView] = []
+    private lazy var validationCenter = ValidationCenter(invalidComponents: invalidInputArray)
     
     private let email = CustomInputView(label: "이메일",
                                         placeHolder: "이메일을 입력하세요",
@@ -44,7 +46,6 @@ final class SignInViewController: UIViewController {
     private let emailCheckButton = CustomButton(title: "중복 확인")
     private let signInButton = CustomButton(title: "가입하기")
     private let disposeBag = DisposeBag()
-    private var invalidInputArray:[CustomInputView] = []
     
     private lazy var components:[CustomInputView] = [nickname, contact, passcode, passcodeConfirm]
     
@@ -118,7 +119,7 @@ final class SignInViewController: UIViewController {
             })
             .flatMap { _ -> Observable<Result<Int, ErrorResponse>> in
                 guard let text = self.email.textField.text,
-                      self.viewModel.validateEmail(text) else {
+                      self.validationCenter.validateEmail(text) else {
                     self.createInformationToast(message: ToastMessages.Join.invalidEmail.description,
                                                 backgroundColor: Colors.Brand.error,
                                                 aboveView: self.signInButton)
@@ -176,13 +177,13 @@ final class SignInViewController: UIViewController {
     
     private func checkEachInputs() -> Observable<Bool> {
         print(#function)
-        checkInput(email, validationClosure: viewModel.validateEmail)
-        checkInput(nickname, validationClosure: viewModel.validateNickname)
-        checkInput(contact, validationClosure: viewModel.validateContact)
-        checkInput(passcode, validationClosure: viewModel.validatePasscode)
+        validationCenter.checkInput(email, validationClosure: validationCenter.validateEmail)
+        validationCenter.checkInput(nickname, validationClosure: validationCenter.validateNickname)
+        validationCenter.checkInput(contact, validationClosure: validationCenter.validateContact)
+        validationCenter.checkInput(passcode, validationClosure: validationCenter.validatePasscode)
         
         let confirmText = passcodeConfirm.textField.text ?? ""
-        let confirmValidation = viewModel.confirmPasscode(passcode.textField.text ?? "", confirmText)
+        let confirmValidation = validationCenter.confirmPasscode(passcode.textField.text ?? "", confirmText)
         passcodeConfirm.validationBinder.onNext(confirmValidation)
         
         if !confirmValidation {
@@ -235,15 +236,7 @@ final class SignInViewController: UIViewController {
         return Observable.just(true)
     }
     
-    private func checkInput(_ input: CustomInputView, validationClosure: (String) -> Bool) {
-        let text = input.textField.text ?? ""
-        let validation = validationClosure(text)
-        input.validationBinder.onNext(validation)
-        
-        if !validation {
-            invalidInputArray.append(input)
-        }
-    }
+    
     
     private func configure() {
         view.backgroundColor = Colors.Background.primary

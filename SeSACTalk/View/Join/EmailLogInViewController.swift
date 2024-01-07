@@ -13,6 +13,11 @@ import Toast
 
 final class EmailLogInViewController: UIViewController {
     
+    
+    private let viewModel = EmailLoginViewModel()
+    private var invalidInputArray:[CustomInputView] = []
+    private lazy var center = ValidationCenter(invalidComponents: invalidInputArray)
+    
     private let email = CustomInputView(label: "이메일",
                                         placeHolder: "이메일을 입력하세요",
                                         keyboardType: .emailAddress,
@@ -21,16 +26,16 @@ final class EmailLogInViewController: UIViewController {
     private let password = CustomInputView(label: "비밀번호",
                                            placeHolder: "비밀번호를 입력하세요",
                                            keyboardType: .default,
-                                           secureEntry: false)
+                                           secureEntry: true)
     
     private let logInButton = CustomButton(title: "로그인")
+    private let disposeBag = DisposeBag()
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configure()
         setConstraints()
+        bind()
     }
     
     private func configure() {
@@ -49,7 +54,6 @@ final class EmailLogInViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.height.equalTo(76)
         }
-        
 
         password.snp.makeConstraints { make in
             make.top.equalTo(email.snp.bottom).offset(24)
@@ -66,9 +70,68 @@ final class EmailLogInViewController: UIViewController {
         }
     }
     
+    private func bind() {
+        email.textField.rx.text.orEmpty
+            .bind(to: viewModel.emailSubject)
+            .disposed(by: disposeBag)
+        
+        password.textField.rx.text.orEmpty
+            .bind(to: viewModel.passcodeSubject)
+            .disposed(by: disposeBag)
+        
+        viewModel.isFormInputed
+            .subscribe(with: self) { owner, validation in
+                owner.logInButton.validationBinder.onNext(validation)
+                owner.logInButton.buttonEnabler.onNext(validation)
+            }
+            .disposed(by: disposeBag)
+        
+        logInButton.rx.tap
+            .debounce(.seconds(1), scheduler: MainScheduler.instance)
+            .flatMapLatest { self.checkEachInputs() }
+            .filter { $0 }
+            .withLatestFrom(viewModel.isFormValid)
+            .filter { $0 }
+            .withLatestFrom(viewModel.signInRequestForm)
+            .subscribe(with: self) { owner, result in
+                print("정상임", result)
+            }
+            .disposed(by: disposeBag)
+
+    }
+    
+    private func checkEachInputs() -> Observable<Bool> {
+        center.checkInput(email, validationClosure: center.validateEmail)
+        center.checkInput(password, validationClosure: center.validatePasscode)
+        
+        if let firstInvalidInput = invalidInputArray.first {
+            firstInvalidInput.textField.becomeFirstResponder()
+            
+            if firstInvalidInput == email {
+                self.makeToastAboveView(message: ToastMessages.Join.invalidEmail.description,
+                                        backgroundColor: Colors.Brand.error,
+                                        aboveView: logInButton)
+            } else if firstInvalidInput == password {
+                self.makeToastAboveView(message: ToastMessages.Join.invalidPassword.description,
+                                        backgroundColor: Colors.Brand.error,
+                                        aboveView: logInButton)
+            }
+            return Observable.just(false)
+        }
+        return Observable.just(true)
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         view.endEditing(true)
+    }
+    
+}
+
+extension EmailLogInViewController: ToastPresentableProtocol {
+    
+    func createInformationToast(message: String, backgroundColor: UIColor, aboveView: UIView) {
+        makeToastAboveView(message: message, backgroundColor: backgroundColor, aboveView: aboveView)
     }
     
 }

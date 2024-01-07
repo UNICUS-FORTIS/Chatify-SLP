@@ -44,6 +44,9 @@
 		DE9539F32B482C8D009B196A /* ToastMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9539F22B482C8D009B196A /* ToastMessages.swift */; };
 		DE9539F52B486286009B196A /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9539F42B486286009B196A /* String+Extension.swift */; };
 		DE9BCA032B4AEE72005DE0B0 /* EmailLogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9BCA022B4AEE72005DE0B0 /* EmailLogInViewController.swift */; };
+		DE9BCA062B4AFD72005DE0B0 /* EmailLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9BCA052B4AFD72005DE0B0 /* EmailLoginViewModel.swift */; };
+		DE9BCA092B4B02EE005DE0B0 /* ValidationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9BCA082B4B02EE005DE0B0 /* ValidationCenter.swift */; };
+		DE9BCA0B2B4B0C9D005DE0B0 /* EmailLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9BCA0A2B4B0C9D005DE0B0 /* EmailLoginRequest.swift */; };
 		DEE310502B4595A1009209F0 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = DEE3104F2B4595A1009209F0 /* RxKeyboard */; };
 /* End PBXBuildFile section */
 
@@ -100,6 +103,9 @@
 		DE9539F22B482C8D009B196A /* ToastMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastMessages.swift; sourceTree = "<group>"; };
 		DE9539F42B486286009B196A /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		DE9BCA022B4AEE72005DE0B0 /* EmailLogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLogInViewController.swift; sourceTree = "<group>"; };
+		DE9BCA052B4AFD72005DE0B0 /* EmailLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginViewModel.swift; sourceTree = "<group>"; };
+		DE9BCA082B4B02EE005DE0B0 /* ValidationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationCenter.swift; sourceTree = "<group>"; };
+		DE9BCA0A2B4B0C9D005DE0B0 /* EmailLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,7 +213,7 @@
 		DE5CD4442B4558F5002546CD /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				DE5CD4522B45657C002546CD /* SignInViewModel.swift */,
+				DE9BCA042B4AFD60005DE0B0 /* Join */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -279,6 +285,7 @@
 		DE5CD4632B459086002546CD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				DE9BCA072B4B02E4005DE0B0 /* FormValidation */,
 				DE5CD4672B459120002546CD /* Response */,
 				DE5CD4662B45911A002546CD /* Request */,
 			);
@@ -290,6 +297,7 @@
 			children = (
 				DE5CD4642B45909F002546CD /* SignInRequest.swift */,
 				DE7171552B466E4900B619D4 /* EmailValidationRequest.swift */,
+				DE9BCA0A2B4B0C9D005DE0B0 /* EmailLoginRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -318,6 +326,23 @@
 				DE9BCA022B4AEE72005DE0B0 /* EmailLogInViewController.swift */,
 			);
 			path = Join;
+			sourceTree = "<group>";
+		};
+		DE9BCA042B4AFD60005DE0B0 /* Join */ = {
+			isa = PBXGroup;
+			children = (
+				DE5CD4522B45657C002546CD /* SignInViewModel.swift */,
+				DE9BCA052B4AFD72005DE0B0 /* EmailLoginViewModel.swift */,
+			);
+			path = Join;
+			sourceTree = "<group>";
+		};
+		DE9BCA072B4B02E4005DE0B0 /* FormValidation */ = {
+			isa = PBXGroup;
+			children = (
+				DE9BCA082B4B02EE005DE0B0 /* ValidationCenter.swift */,
+			);
+			path = FormValidation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -483,14 +508,17 @@
 				DE5CD4622B458319002546CD /* CustomButton.swift in Sources */,
 				DE9539F52B486286009B196A /* String+Extension.swift in Sources */,
 				DE7171502B466A2900B619D4 /* SecureKeys.swift in Sources */,
+				DE9BCA0B2B4B0C9D005DE0B0 /* EmailLoginRequest.swift in Sources */,
 				DE7171542B466E3B00B619D4 /* ErrorResponse.swift in Sources */,
 				DE7171562B466E4900B619D4 /* EmailValidationRequest.swift in Sources */,
 				DE5CD44F2B455B0A002546CD /* Typegraphy.swift in Sources */,
+				DE9BCA062B4AFD72005DE0B0 /* EmailLoginViewModel.swift in Sources */,
 				DE9539F32B482C8D009B196A /* ToastMessages.swift in Sources */,
 				DE5CD45D2B456BE7002546CD /* CustomInputView.swift in Sources */,
 				DE9BCA032B4AEE72005DE0B0 /* EmailLogInViewController.swift in Sources */,
 				DE5CD4592B4566DE002546CD /* CustomTextField.swift in Sources */,
 				DE5CD4692B459129002546CD /* SignInResponse.swift in Sources */,
+				DE9BCA092B4B02EE005DE0B0 /* ValidationCenter.swift in Sources */,
 				DE5CD4652B45909F002546CD /* SignInRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
