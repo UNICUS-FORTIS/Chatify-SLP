@@ -14,6 +14,7 @@ final class CustomButton: UIButton {
     
     private let title: String
     var validationBinder = PublishSubject<Bool>()
+    var buttonEnabler = PublishSubject<Bool>()
     private let disposeBag = DisposeBag()
     
     
@@ -55,9 +56,15 @@ final class CustomButton: UIButton {
                 updatedConfiguration?.background.backgroundColor = validation ?
                 Colors.Brand.green :
                 Colors.Brand.inactive
-                self.isEnabled = validation
                 self.configuration = updatedConfiguration
             }
             .disposed(by: disposeBag)
+        
+        buttonEnabler
+            .subscribe(with: self) { owner, validation in
+                self.isEnabled = validation
+            }
+            .disposed(by: disposeBag)
+            
     }
 }

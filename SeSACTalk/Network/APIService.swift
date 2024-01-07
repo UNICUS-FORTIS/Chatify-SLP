@@ -35,8 +35,7 @@ extension APIService: TargetType {
         
         switch self {
             
-        case .emailValidation, .join:
-            return .post
+        case .emailValidation, .join: return .post
 //        default : return .get
             
         }
@@ -54,7 +53,12 @@ extension APIService: TargetType {
     
     var headers: [String : String]? {
         switch self {
-        case .emailValidation, .join:
+        case .emailValidation:
+            return [
+                SecureKeys.Headers.contentsType : SecureKeys.Headers.contentsTypePair,
+                SecureKeys.Headers.Headerkey : SecureKeys.APIKey.secretKey
+            ]
+        case .join:
             return [
                 SecureKeys.Headers.contentsType : SecureKeys.Headers.contentsTypePair,
                 SecureKeys.Headers.Headerkey : SecureKeys.APIKey.secretKey

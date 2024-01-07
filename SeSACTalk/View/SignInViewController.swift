@@ -78,9 +78,13 @@ final class SignInViewController: UIViewController {
         
         signInButton.rx.tap
             .debounce(.seconds(1), scheduler: MainScheduler.instance)
-            .subscribe(with: self) { owner, _ in
-                let validation = owner.checkEachInputs()
-                print(validation)
+            .flatMapLatest { self.checkEachInputs() }
+            .filter { $0 }
+            .withLatestFrom(viewModel.isFormValid)
+            .filter { $0 }
+            .withLatestFrom(viewModel.signInRequestForm)
+            .subscribe(with: self) { owner, result in
+                print("결과",result)
             }
             .disposed(by: disposeBag)
         
@@ -89,9 +93,11 @@ final class SignInViewController: UIViewController {
                 if text.count > 0 {
                     owner.viewModel.emailTextfieldisInputed.onNext(true)
                     owner.emailCheckButton.validationBinder.onNext(true)
+                    owner.emailCheckButton.buttonEnabler.onNext(true)
                 } else {
                     owner.viewModel.emailTextfieldisInputed.onNext(false)
                     owner.emailCheckButton.validationBinder.onNext(false)
+                    owner.emailCheckButton.buttonEnabler.onNext(false)
                 }
             }
             .disposed(by: disposeBag)
@@ -118,7 +124,7 @@ final class SignInViewController: UIViewController {
                                                 aboveView: self.signInButton)
                     return Observable.empty()
                 }
-                let result = self.viewModel.networkService.fetchRequest(info: EmailValidationRequest(email: text))
+                let result = self.viewModel.networkService.fetchEmailValidationRequest(info: EmailValidationRequest(email: text))
                 return result.asObservable()
             }
             .subscribe(with: self) { owner, result in
@@ -161,15 +167,15 @@ final class SignInViewController: UIViewController {
             .bind(to: contact.textField.rx.text)
             .disposed(by: disposeBag)
         
-        //        viewModel.isFormValid
-        //            .subscribe(with: self) { owner, validation in
-        //                owner.signInButton.validationBinder
-        //                    .onNext(validation)
-        //            }
-        //            .disposed(by: disposeBag)
+        viewModel.isFormValid
+            .subscribe(with: self) { owner, validation in
+                owner.signInButton.validationBinder.onNext(validation)
+            }
+            .disposed(by: disposeBag)
     }
     
-    private func checkEachInputs() -> Bool {
+    private func checkEachInputs() -> Observable<Bool> {
+        print(#function)
         checkInput(email, validationClosure: viewModel.validateEmail)
         checkInput(nickname, validationClosure: viewModel.validateNickname)
         checkInput(contact, validationClosure: viewModel.validateContact)
@@ -217,16 +223,16 @@ final class SignInViewController: UIViewController {
                 }
             }
             invalidInputArray.removeAll()
-            return false
+            return Observable.just(false)
         } else {
             let emailValidation = try? viewModel.emailValidationSubject.value()
             if emailValidation == false {
                 makeToastAboveView(message: ToastMessages.Join.validationReck.description,
                                    backgroundColor: Colors.Brand.error, aboveView: signInButton)
-                return false
+                return Observable.just(false)
             }
         }
-        return true
+        return Observable.just(true)
     }
     
     private func checkInput(_ input: CustomInputView, validationClosure: (String) -> Bool) {

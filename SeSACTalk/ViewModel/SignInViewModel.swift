@@ -18,6 +18,7 @@ final class SignInViewModel {
     let contactSubject = PublishSubject<String>()
     let passcodeSubject = PublishSubject<String>()
     let passcodeConfirmSubject = PublishSubject<String>()
+    let deviceToken = BehaviorSubject(value: UserDefaults.standard.value(forKey: "tempDeviceToken") as? String)
     
     let emailValidationSubject = BehaviorSubject<Bool>(value: false)
     var validatedEmail: String?
@@ -36,18 +37,18 @@ final class SignInViewModel {
                                         nicknameSubject,
                                         contactSubject,
                                         passcodeSubject,
-                                        passcodeConfirmSubject) {
-            email, nickname, contact, passcode, passcodeConfirm in
+                                        deviceToken) {
+            email, nickname, contact, passcode, deviceToken in
             print(SignInRequest(email: email,
                                 password: passcode,
                                 nickname: nickname,
                                 phone: contact,
-                                deviceToken: passcodeConfirm))
+                                deviceToken: deviceToken ?? ""))
             return SignInRequest(email: email,
                                  password: passcode,
                                  nickname: nickname,
                                  phone: contact,
-                                 deviceToken: passcodeConfirm)
+                                 deviceToken: deviceToken ?? "")
         }
     }
     
