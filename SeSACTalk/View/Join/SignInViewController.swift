@@ -16,7 +16,7 @@ final class SignInViewController: UIViewController {
     
     private let viewModel = SignInViewModel()
     private var invalidInputArray:[CustomInputView] = []
-    private lazy var validationCenter = ValidationCenter(invalidComponents: invalidInputArray)
+    private lazy var center = ValidationCenter()
     
     private let email = CustomInputView(label: "이메일",
                                         placeHolder: "이메일을 입력하세요",
@@ -119,7 +119,7 @@ final class SignInViewController: UIViewController {
             })
             .flatMap { _ -> Observable<Result<Int, ErrorResponse>> in
                 guard let text = self.email.textField.text,
-                      self.validationCenter.validateEmail(text) else {
+                      self.center.validateEmail(text) else {
                     self.createInformationToast(message: ToastMessages.Join.invalidEmail.description,
                                                 backgroundColor: Colors.Brand.error,
                                                 aboveView: self.signInButton)
@@ -177,13 +177,13 @@ final class SignInViewController: UIViewController {
     
     private func checkEachInputs() -> Observable<Bool> {
         print(#function)
-        validationCenter.checkInput(email, validationClosure: validationCenter.validateEmail)
-        validationCenter.checkInput(nickname, validationClosure: validationCenter.validateNickname)
-        validationCenter.checkInput(contact, validationClosure: validationCenter.validateContact)
-        validationCenter.checkInput(passcode, validationClosure: validationCenter.validatePasscode)
+        center.checkInput(email, validationClosure: center.validateEmail)
+        center.checkInput(nickname, validationClosure: center.validateNickname)
+        center.checkInput(contact, validationClosure: center.validateContact)
+        center.checkInput(passcode, validationClosure: center.validatePasscode)
         
         let confirmText = passcodeConfirm.textField.text ?? ""
-        let confirmValidation = validationCenter.confirmPasscode(passcode.textField.text ?? "", confirmText)
+        let confirmValidation = center.confirmPasscode(passcode.textField.text ?? "", confirmText)
         passcodeConfirm.validationBinder.onNext(confirmValidation)
         
         if !confirmValidation {
@@ -223,7 +223,7 @@ final class SignInViewController: UIViewController {
                                             backgroundColor: Colors.Brand.error, aboveView: signInButton)
                 }
             }
-            invalidInputArray.removeAll()
+            center.invalidComponents.removeAll()
             return Observable.just(false)
         } else {
             let emailValidation = try? viewModel.emailValidationSubject.value()

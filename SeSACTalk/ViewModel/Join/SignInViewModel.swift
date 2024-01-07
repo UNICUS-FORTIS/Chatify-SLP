@@ -23,7 +23,7 @@ final class SignInViewModel {
     let emailValidationSubject = BehaviorSubject<Bool>(value: false)
     var validatedEmail: String?
     let emailTextfieldisInputed = BehaviorSubject<Bool>(value: false)
-    private let validationCenter = ValidationCenter(invalidComponents: nil)
+    private let validationCenter = ValidationCenter()
     
     func checkEmailStatusCode(code: Int) -> Bool {
         switch code {

@@ -15,8 +15,7 @@ final class EmailLogInViewController: UIViewController {
     
     
     private let viewModel = EmailLoginViewModel()
-    private var invalidInputArray:[CustomInputView] = []
-    private lazy var center = ValidationCenter(invalidComponents: invalidInputArray)
+    private lazy var center = ValidationCenter()
     
     private let email = CustomInputView(label: "이메일",
                                         placeHolder: "이메일을 입력하세요",
@@ -104,7 +103,7 @@ final class EmailLogInViewController: UIViewController {
         center.checkInput(email, validationClosure: center.validateEmail)
         center.checkInput(password, validationClosure: center.validatePasscode)
         
-        if let firstInvalidInput = invalidInputArray.first {
+        if let firstInvalidInput = center.invalidComponents.first {
             firstInvalidInput.textField.becomeFirstResponder()
             
             if firstInvalidInput == email {
@@ -116,6 +115,8 @@ final class EmailLogInViewController: UIViewController {
                                         backgroundColor: Colors.Brand.error,
                                         aboveView: logInButton)
             }
+            print(center.invalidComponents.count)
+            center.invalidComponents.removeAll()
             return Observable.just(false)
         }
         return Observable.just(true)

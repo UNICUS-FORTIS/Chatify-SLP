@@ -29,7 +29,7 @@ final class EmailLoginViewModel {
         return Observable.combineLatest(emailSubject,
                                         passcodeSubject)
         .map { email, passcode in
-            if email.count > 0 && passcode.count > 0 {
+            if email.count > 0 || passcode.count > 0 {
                 return true
             } else {
                 return false

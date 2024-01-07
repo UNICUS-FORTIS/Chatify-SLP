@@ -40,7 +40,7 @@ enum ToastMessages {
             case .invalidPhone:
                 return "잘못된 전화번호 형식입니다."
             case .invalidPassword:
-                return "비밀번호는 최소 8자 이상, 하나 이상의 대소문자/숫자/특수 문자를 설정해주세요. "
+                return "비밀번호는 최소 8자 이상, 하나 이상의 대소문자 / 숫자 / 특수 문자를 설정해주세요."
             case .invalidPasswordConfirmation:
                 return "작성하신 비밀번호가 일치하지 않습니다."
             case .joinedMember:
