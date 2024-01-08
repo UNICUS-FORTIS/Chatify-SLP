@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE5686052B4C095E00E8BA63 /* EmailLoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5686042B4C095E00E8BA63 /* EmailLoginResponse.swift */; };
 		DE5CD4052B4556FA002546CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4042B4556FA002546CD /* AppDelegate.swift */; };
 		DE5CD4072B4556FA002546CD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4062B4556FA002546CD /* SceneDelegate.swift */; };
 		DE5CD4092B4556FA002546CD /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4082B4556FA002546CD /* SignInViewController.swift */; };
@@ -69,6 +70,7 @@
 
 /* Begin PBXFileReference section */
 		DE3B2B762B481AFB005DD6EF /* SeSACTalk.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SeSACTalk.entitlements; sourceTree = "<group>"; };
+		DE5686042B4C095E00E8BA63 /* EmailLoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginResponse.swift; sourceTree = "<group>"; };
 		DE5CD4012B4556FA002546CD /* SeSACTalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeSACTalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE5CD4042B4556FA002546CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DE5CD4062B4556FA002546CD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -307,6 +309,7 @@
 			children = (
 				DE5CD4682B459129002546CD /* SignInResponse.swift */,
 				DE7171532B466E3B00B619D4 /* ErrorResponse.swift */,
+				DE5686042B4C095E00E8BA63 /* EmailLoginResponse.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -507,6 +510,7 @@
 				DE5CD4072B4556FA002546CD /* SceneDelegate.swift in Sources */,
 				DE5CD4622B458319002546CD /* CustomButton.swift in Sources */,
 				DE9539F52B486286009B196A /* String+Extension.swift in Sources */,
+				DE5686052B4C095E00E8BA63 /* EmailLoginResponse.swift in Sources */,
 				DE7171502B466A2900B619D4 /* SecureKeys.swift in Sources */,
 				DE9BCA0B2B4B0C9D005DE0B0 /* EmailLoginRequest.swift in Sources */,
 				DE7171542B466E3B00B619D4 /* ErrorResponse.swift in Sources */,

@@ -91,9 +91,21 @@ final class EmailLogInViewController: UIViewController {
             .filter { $0 }
             .withLatestFrom(viewModel.isFormValid)
             .filter { $0 }
-            .withLatestFrom(viewModel.signInRequestForm)
+            .withLatestFrom(viewModel.emailLoginRequestForm)
+            .flatMapLatest { form -> Observable<Result<EmailLoginResponse, ErrorResponse>> in
+                let logInForm = EmailLoginRequest(email: form.email,
+                                                  password: form.password,
+                                                  deviceToken: form.deviceToken)
+                let result = self.viewModel.networkService.fetchEmailLoginRequest(info: logInForm)
+                return result.asObservable()
+            }
             .subscribe(with: self) { owner, result in
-                print("정상임", result)
+                switch result {
+                case .success(let response):
+                    print(response)
+                case .failure(let error):
+                    print(error)
+                }
             }
             .disposed(by: disposeBag)
 

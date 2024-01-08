@@ -13,6 +13,7 @@ import RxCocoa
 
 final class EmailLoginViewModel {
     
+    let networkService = NetworkService.shared
     let emailSubject = PublishSubject<String>()
     let passcodeSubject = PublishSubject<String>()
     let deviceToken = BehaviorSubject(value: UserDefaults.standard.value(forKey: "tempDeviceToken") as? String)
@@ -37,7 +38,7 @@ final class EmailLoginViewModel {
         }
     }
     
-    var signInRequestForm: Observable<EmailLoginRequest> {
+    var emailLoginRequestForm: Observable<EmailLoginRequest> {
         return Observable.combineLatest(emailSubject,
                                         passcodeSubject,
                                         deviceToken) {
