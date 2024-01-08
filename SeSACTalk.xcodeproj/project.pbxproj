@@ -11,6 +11,9 @@
 		DE5686082B4C101800E8BA63 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5686072B4C101800E8BA63 /* OnboardingViewController.swift */; };
 		DE56860A2B4C130C00E8BA63 /* CustomTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5686092B4C130C00E8BA63 /* CustomTitleLabel.swift */; };
 		DE56860C2B4C14FA00E8BA63 /* ScreenTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE56860B2B4C14FA00E8BA63 /* ScreenTitles.swift */; };
+		DE56860F2B4C1DA300E8BA63 /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = DE56860E2B4C1DA300E8BA63 /* FloatingPanel */; };
+		DE5686112B4C212500E8BA63 /* OnboadingBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5686102B4C212500E8BA63 /* OnboadingBottomSheetViewController.swift */; };
+		DE5686142B4C27E700E8BA63 /* OnboardingFloatingPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5686132B4C27E700E8BA63 /* OnboardingFloatingPanelLayout.swift */; };
 		DE5CD4052B4556FA002546CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4042B4556FA002546CD /* AppDelegate.swift */; };
 		DE5CD4072B4556FA002546CD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4062B4556FA002546CD /* SceneDelegate.swift */; };
 		DE5CD4092B4556FA002546CD /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4082B4556FA002546CD /* SignInViewController.swift */; };
@@ -27,7 +30,7 @@
 		DE5CD4422B4558BF002546CD /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = DE5CD4412B4558BF002546CD /* RxMoya */; };
 		DE5CD4492B45597D002546CD /* .gitIgnore in Resources */ = {isa = PBXBuildFile; fileRef = DE5CD4482B45597D002546CD /* .gitIgnore */; };
 		DE5CD44C2B4559CC002546CD /* EndPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD44B2B4559CC002546CD /* EndPoints.swift */; };
-		DE5CD44F2B455B0A002546CD /* Typegraphy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD44E2B455B0A002546CD /* Typegraphy.swift */; };
+		DE5CD44F2B455B0A002546CD /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD44E2B455B0A002546CD /* Typography.swift */; };
 		DE5CD4512B455DF4002546CD /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4502B455DF4002546CD /* Colors.swift */; };
 		DE5CD4532B45657C002546CD /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4522B45657C002546CD /* SignInViewModel.swift */; };
 		DE5CD4592B4566DE002546CD /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4582B4566DE002546CD /* CustomTextField.swift */; };
@@ -77,6 +80,8 @@
 		DE5686072B4C101800E8BA63 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		DE5686092B4C130C00E8BA63 /* CustomTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTitleLabel.swift; sourceTree = "<group>"; };
 		DE56860B2B4C14FA00E8BA63 /* ScreenTitles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenTitles.swift; sourceTree = "<group>"; };
+		DE5686102B4C212500E8BA63 /* OnboadingBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboadingBottomSheetViewController.swift; sourceTree = "<group>"; };
+		DE5686132B4C27E700E8BA63 /* OnboardingFloatingPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFloatingPanelLayout.swift; sourceTree = "<group>"; };
 		DE5CD4012B4556FA002546CD /* SeSACTalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeSACTalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE5CD4042B4556FA002546CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DE5CD4062B4556FA002546CD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -91,7 +96,7 @@
 		DE5CD4272B4556FB002546CD /* SeSACTalkUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeSACTalkUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		DE5CD4482B45597D002546CD /* .gitIgnore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitIgnore; sourceTree = "<group>"; };
 		DE5CD44B2B4559CC002546CD /* EndPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPoints.swift; sourceTree = "<group>"; };
-		DE5CD44E2B455B0A002546CD /* Typegraphy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typegraphy.swift; sourceTree = "<group>"; };
+		DE5CD44E2B455B0A002546CD /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
 		DE5CD4502B455DF4002546CD /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		DE5CD4522B45657C002546CD /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		DE5CD4582B4566DE002546CD /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
@@ -121,6 +126,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE56860F2B4C1DA300E8BA63 /* FloatingPanel in Frameworks */,
 				DE71715D2B46B5C000B619D4 /* Toast in Frameworks */,
 				DE5CD4422B4558BF002546CD /* RxMoya in Frameworks */,
 				DE5CD43A2B45587A002546CD /* RxSwift in Frameworks */,
@@ -153,8 +159,17 @@
 			isa = PBXGroup;
 			children = (
 				DE5686072B4C101800E8BA63 /* OnboardingViewController.swift */,
+				DE5686102B4C212500E8BA63 /* OnboadingBottomSheetViewController.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		DE5686122B4C27D500E8BA63 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				DE5686132B4C27E700E8BA63 /* OnboardingFloatingPanelLayout.swift */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		DE5CD3F82B4556FA002546CD = {
@@ -183,6 +198,7 @@
 				DE3B2B762B481AFB005DD6EF /* SeSACTalk.entitlements */,
 				DE5CD45E2B45784A002546CD /* Font */,
 				DE5CD4572B4566D1002546CD /* Components */,
+				DE5686122B4C27D500E8BA63 /* Helper */,
 				DE5CD44D2B455A01002546CD /* Constant */,
 				DE5CD4472B455954002546CD /* Extensions */,
 				DE71715E2B46B63800B619D4 /* Protocols */,
@@ -273,7 +289,7 @@
 		DE5CD44D2B455A01002546CD /* Constant */ = {
 			isa = PBXGroup;
 			children = (
-				DE5CD44E2B455B0A002546CD /* Typegraphy.swift */,
+				DE5CD44E2B455B0A002546CD /* Typography.swift */,
 				DE5CD4502B455DF4002546CD /* Colors.swift */,
 				DE9539F22B482C8D009B196A /* ToastMessages.swift */,
 				DE56860B2B4C14FA00E8BA63 /* ScreenTitles.swift */,
@@ -390,6 +406,7 @@
 				DE5CD4412B4558BF002546CD /* RxMoya */,
 				DEE3104F2B4595A1009209F0 /* RxKeyboard */,
 				DE71715C2B46B5C000B619D4 /* Toast */,
+				DE56860E2B4C1DA300E8BA63 /* FloatingPanel */,
 			);
 			productName = SeSACTalk;
 			productReference = DE5CD4012B4556FA002546CD /* SeSACTalk.app */;
@@ -469,6 +486,7 @@
 				DE5CD43E2B4558BF002546CD /* XCRemoteSwiftPackageReference "Moya" */,
 				DEE3104E2B4595A1009209F0 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 				DE71715B2B46B5C000B619D4 /* XCRemoteSwiftPackageReference "Toast-Swift" */,
+				DE56860D2B4C1DA300E8BA63 /* XCRemoteSwiftPackageReference "FloatingPanel" */,
 			);
 			productRefGroup = DE5CD4022B4556FA002546CD /* Products */;
 			projectDirPath = "";
@@ -535,13 +553,15 @@
 				DE56860C2B4C14FA00E8BA63 /* ScreenTitles.swift in Sources */,
 				DE7171542B466E3B00B619D4 /* ErrorResponse.swift in Sources */,
 				DE7171562B466E4900B619D4 /* EmailValidationRequest.swift in Sources */,
-				DE5CD44F2B455B0A002546CD /* Typegraphy.swift in Sources */,
+				DE5CD44F2B455B0A002546CD /* Typography.swift in Sources */,
 				DE9BCA062B4AFD72005DE0B0 /* EmailLoginViewModel.swift in Sources */,
 				DE9539F32B482C8D009B196A /* ToastMessages.swift in Sources */,
 				DE5CD45D2B456BE7002546CD /* CustomInputView.swift in Sources */,
 				DE9BCA032B4AEE72005DE0B0 /* EmailLogInViewController.swift in Sources */,
 				DE5CD4592B4566DE002546CD /* CustomTextField.swift in Sources */,
+				DE5686142B4C27E700E8BA63 /* OnboardingFloatingPanelLayout.swift in Sources */,
 				DE5CD4692B459129002546CD /* SignInResponse.swift in Sources */,
+				DE5686112B4C212500E8BA63 /* OnboadingBottomSheetViewController.swift in Sources */,
 				DE9BCA092B4B02EE005DE0B0 /* ValidationCenter.swift in Sources */,
 				DE5CD4652B45909F002546CD /* SignInRequest.swift in Sources */,
 			);
@@ -892,6 +912,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		DE56860D2B4C1DA300E8BA63 /* XCRemoteSwiftPackageReference "FloatingPanel" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scenee/FloatingPanel";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.1;
+			};
+		};
 		DE5CD4342B45587A002546CD /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift";
@@ -935,6 +963,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		DE56860E2B4C1DA300E8BA63 /* FloatingPanel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DE56860D2B4C1DA300E8BA63 /* XCRemoteSwiftPackageReference "FloatingPanel" */;
+			productName = FloatingPanel;
+		};
 		DE5CD4352B45587A002546CD /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DE5CD4342B45587A002546CD /* XCRemoteSwiftPackageReference "RxSwift" */;

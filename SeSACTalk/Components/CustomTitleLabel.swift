@@ -29,7 +29,7 @@ final class CustomTitleLabel: UILabel {
     private func configure() {
         
         self.textColor = .black
-        self.font = Typegraphy.title1
+        self.font = Typography.title1
         self.textAlignment = .center
         self.numberOfLines = 0
         

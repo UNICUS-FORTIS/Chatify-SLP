@@ -13,10 +13,10 @@ final class CustomButton: UIButton {
     
     
     private let title: String
+    private var buttonImage: UIImage?
     var validationBinder = PublishSubject<Bool>()
     var buttonEnabler = PublishSubject<Bool>()
     private let disposeBag = DisposeBag()
-    
     
     init(title: String) {
         self.title = title
@@ -25,15 +25,32 @@ final class CustomButton: UIButton {
         bindColor()
     }
     
+    convenience init(_ image: UIImage) {
+        self.init(title: "")
+        self.setImage(image, for: .normal)
+    }
+    
+    convenience init(title: String, _ image: UIImage) {
+        self.init(title: title)
+        self.buttonImage = image
+        configure()
+    }
+    
     private func configure() {
         self.layer.cornerRadius = 8
         
         var configuration = UIButton.Configuration.plain()
         var title = AttributedString(title)
-        title.font = Typegraphy.title2
+        title.font = Typography.title2
         
         var background = UIBackgroundConfiguration.listPlainCell()
         background.backgroundColor = Colors.Brand.inactive
+        
+        if let image = self.buttonImage {
+            configuration.image = image
+//            configuration.imagePlacement = .leading
+            configuration.imagePadding = 4
+        }
         
         configuration.background = background
         configuration.background.cornerRadius = 8

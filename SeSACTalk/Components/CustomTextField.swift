@@ -10,7 +10,7 @@ import UIKit
 
 final class CustomTextField: UITextField {
     
-    let fontStyle = Typegraphy.body
+    let fontStyle = Typography.body
     let color = Colors.Brand.gray
     
     override init(frame: CGRect) {

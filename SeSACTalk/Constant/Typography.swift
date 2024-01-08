@@ -8,7 +8,7 @@
 import UIKit
 
 
-enum Typegraphy {
+enum Typography {
     
     static let title1 = UIFont(name: "SFPro-Bold", size: 22)
     static let title2 = UIFont(name: "SFPro-Bold", size: 14)

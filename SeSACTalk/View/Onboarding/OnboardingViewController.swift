@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import FloatingPanel
 
 
 final class OnboardingViewController: UIViewController {
@@ -17,11 +18,14 @@ final class OnboardingViewController: UIViewController {
     private let mainImage = UIImageView(image: .onboarding)
     private let mainTitle = CustomTitleLabel(ScreenTitles.Onboarding.mainTitle)
     private let startButton = CustomButton(title: ScreenTitles.Onboarding.startButton)
+    private var fpc: FloatingPanelController!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
         setConstraints()
+        setFloatingPanel()
     }
     
     
@@ -32,6 +36,27 @@ final class OnboardingViewController: UIViewController {
         view.addSubview(startButton)
         mainImage.contentMode = .scaleAspectFit
         startButton.validationBinder.onNext(true)
+        
+        startButton.addTarget(self, action: #selector(presentBottomSheet), for: .touchUpInside)
+    }
+    
+    private func setFloatingPanel() {
+        fpc = FloatingPanelController()
+        let appearance = SurfaceAppearance()
+        let contentVC = OnboadingBottomSheetViewController()
+        contentVC.preferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: 300)
+        
+        appearance.cornerRadius = 10
+        fpc.isRemovalInteractionEnabled = true
+        fpc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
+        fpc.layout = OnboardingFloatingPanelLayout()
+        fpc.surfaceView.appearance = appearance
+        fpc.set(contentViewController: contentVC)
+    }
+
+    
+    @objc private func presentBottomSheet() {
+        self.present(fpc, animated: true, completion: nil)
     }
     
     private func setConstraints() {
