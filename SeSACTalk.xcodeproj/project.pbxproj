@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		DE5686052B4C095E00E8BA63 /* EmailLoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5686042B4C095E00E8BA63 /* EmailLoginResponse.swift */; };
+		DE5686082B4C101800E8BA63 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5686072B4C101800E8BA63 /* OnboardingViewController.swift */; };
+		DE56860A2B4C130C00E8BA63 /* CustomTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5686092B4C130C00E8BA63 /* CustomTitleLabel.swift */; };
+		DE56860C2B4C14FA00E8BA63 /* ScreenTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE56860B2B4C14FA00E8BA63 /* ScreenTitles.swift */; };
 		DE5CD4052B4556FA002546CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4042B4556FA002546CD /* AppDelegate.swift */; };
 		DE5CD4072B4556FA002546CD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4062B4556FA002546CD /* SceneDelegate.swift */; };
 		DE5CD4092B4556FA002546CD /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5CD4082B4556FA002546CD /* SignInViewController.swift */; };
@@ -71,6 +74,9 @@
 /* Begin PBXFileReference section */
 		DE3B2B762B481AFB005DD6EF /* SeSACTalk.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SeSACTalk.entitlements; sourceTree = "<group>"; };
 		DE5686042B4C095E00E8BA63 /* EmailLoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginResponse.swift; sourceTree = "<group>"; };
+		DE5686072B4C101800E8BA63 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		DE5686092B4C130C00E8BA63 /* CustomTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTitleLabel.swift; sourceTree = "<group>"; };
+		DE56860B2B4C14FA00E8BA63 /* ScreenTitles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenTitles.swift; sourceTree = "<group>"; };
 		DE5CD4012B4556FA002546CD /* SeSACTalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeSACTalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE5CD4042B4556FA002546CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DE5CD4062B4556FA002546CD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -143,6 +149,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DE5686062B4C100600E8BA63 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				DE5686072B4C101800E8BA63 /* OnboardingViewController.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		DE5CD3F82B4556FA002546CD = {
 			isa = PBXGroup;
 			children = (
@@ -223,6 +237,7 @@
 		DE5CD4452B4558FF002546CD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DE5686062B4C100600E8BA63 /* Onboarding */,
 				DE9BCA012B4AEE42005DE0B0 /* Join */,
 			);
 			path = View;
@@ -261,6 +276,7 @@
 				DE5CD44E2B455B0A002546CD /* Typegraphy.swift */,
 				DE5CD4502B455DF4002546CD /* Colors.swift */,
 				DE9539F22B482C8D009B196A /* ToastMessages.swift */,
+				DE56860B2B4C14FA00E8BA63 /* ScreenTitles.swift */,
 			);
 			path = Constant;
 			sourceTree = "<group>";
@@ -272,6 +288,7 @@
 				DE5CD45A2B45699B002546CD /* CustomLabel.swift */,
 				DE5CD45C2B456BE7002546CD /* CustomInputView.swift */,
 				DE5CD4612B458319002546CD /* CustomButton.swift */,
+				DE5686092B4C130C00E8BA63 /* CustomTitleLabel.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -497,6 +514,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE56860A2B4C130C00E8BA63 /* CustomTitleLabel.swift in Sources */,
 				DE5CD4092B4556FA002546CD /* SignInViewController.swift in Sources */,
 				DE7171522B466C1A00B619D4 /* APIService.swift in Sources */,
 				DE5CD45B2B45699B002546CD /* CustomLabel.swift in Sources */,
@@ -508,11 +526,13 @@
 				DE5CD44C2B4559CC002546CD /* EndPoints.swift in Sources */,
 				DE71715A2B467D7200B619D4 /* APIError.swift in Sources */,
 				DE5CD4072B4556FA002546CD /* SceneDelegate.swift in Sources */,
+				DE5686082B4C101800E8BA63 /* OnboardingViewController.swift in Sources */,
 				DE5CD4622B458319002546CD /* CustomButton.swift in Sources */,
 				DE9539F52B486286009B196A /* String+Extension.swift in Sources */,
 				DE5686052B4C095E00E8BA63 /* EmailLoginResponse.swift in Sources */,
 				DE7171502B466A2900B619D4 /* SecureKeys.swift in Sources */,
 				DE9BCA0B2B4B0C9D005DE0B0 /* EmailLoginRequest.swift in Sources */,
+				DE56860C2B4C14FA00E8BA63 /* ScreenTitles.swift in Sources */,
 				DE7171542B466E3B00B619D4 /* ErrorResponse.swift in Sources */,
 				DE7171562B466E4900B619D4 /* EmailValidationRequest.swift in Sources */,
 				DE5CD44F2B455B0A002546CD /* Typegraphy.swift in Sources */,
