@@ -244,6 +244,11 @@ final class SignInViewController: UIViewController {
         view.addSubview(emailCheckButton)
         view.addSubview(signInButton)
         components.forEach { view.addSubview($0) }
+        navigationController?.setSignInNavigation(target: self,action: #selector(dismissTrigger))
+    }
+    
+    @objc private func dismissTrigger() {
+        self.dismiss(animated: true)
     }
     
     private func setConstraints() {

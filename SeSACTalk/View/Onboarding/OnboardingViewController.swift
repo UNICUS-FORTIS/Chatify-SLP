@@ -36,7 +36,6 @@ final class OnboardingViewController: UIViewController {
         view.addSubview(startButton)
         mainImage.contentMode = .scaleAspectFit
         startButton.validationBinder.onNext(true)
-        
         startButton.addTarget(self, action: #selector(presentBottomSheet), for: .touchUpInside)
     }
     

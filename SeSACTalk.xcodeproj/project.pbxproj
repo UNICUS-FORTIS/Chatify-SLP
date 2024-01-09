@@ -55,6 +55,7 @@
 		DE9BCA092B4B02EE005DE0B0 /* ValidationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9BCA082B4B02EE005DE0B0 /* ValidationCenter.swift */; };
 		DE9BCA0B2B4B0C9D005DE0B0 /* EmailLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9BCA0A2B4B0C9D005DE0B0 /* EmailLoginRequest.swift */; };
 		DEA121B62B4C65C3008E9FC1 /* OnboardingViewmodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA121B52B4C65C3008E9FC1 /* OnboardingViewmodel.swift */; };
+		DED5F42A2B4D821D00BE1D9B /* UINavigationController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED5F4292B4D821D00BE1D9B /* UINavigationController+Extension.swift */; };
 		DEE310502B4595A1009209F0 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = DEE3104F2B4595A1009209F0 /* RxKeyboard */; };
 /* End PBXBuildFile section */
 
@@ -121,6 +122,7 @@
 		DE9BCA082B4B02EE005DE0B0 /* ValidationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationCenter.swift; sourceTree = "<group>"; };
 		DE9BCA0A2B4B0C9D005DE0B0 /* EmailLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginRequest.swift; sourceTree = "<group>"; };
 		DEA121B52B4C65C3008E9FC1 /* OnboardingViewmodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewmodel.swift; sourceTree = "<group>"; };
+		DED5F4292B4D821D00BE1D9B /* UINavigationController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -276,6 +278,7 @@
 			isa = PBXGroup;
 			children = (
 				DE9539F42B486286009B196A /* String+Extension.swift */,
+				DED5F4292B4D821D00BE1D9B /* UINavigationController+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -576,6 +579,7 @@
 				DE5686112B4C212500E8BA63 /* OnboadingBottomSheetViewController.swift in Sources */,
 				DE9BCA092B4B02EE005DE0B0 /* ValidationCenter.swift in Sources */,
 				DE5CD4652B45909F002546CD /* SignInRequest.swift in Sources */,
+				DED5F42A2B4D821D00BE1D9B /* UINavigationController+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
