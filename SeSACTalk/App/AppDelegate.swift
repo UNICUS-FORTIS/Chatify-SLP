@@ -19,15 +19,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         print(#function)
         
-//        UNUserNotificationCenter.current().delegate = self
-//
-//        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-//        UNUserNotificationCenter.current().requestAuthorization(
-//          options: authOptions,
-//          completionHandler: { _, _ in }
-//        )
-//
-//        application.registerForRemoteNotifications()
+        UNUserNotificationCenter.current().delegate = self
+
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(
+          options: authOptions,
+          completionHandler: { _, _ in }
+        )
+
+        application.registerForRemoteNotifications()
         RxKakaoSDK.initSDK(appKey: SecureKeys.NativeAppKey.KakaoNativeAppKey)
 
       
@@ -52,15 +52,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
-//extension AppDelegate: UNUserNotificationCenterDelegate {
-//
-//    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-//        let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-//        UserDefaults.standard.setValue(token, forKey: "tempDeviceToken")
-//        print("디바이스토큰", token)
-//        let value = UserDefaults.standard.value(forKey: "tempDeviceToken")
-//        print("유저디폴트", value)
-//    }
-//    
-//}
+extension AppDelegate: UNUserNotificationCenterDelegate {
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        UserDefaults.standard.setValue(token, forKey: "tempDeviceToken")
+        print("디바이스토큰", token)
+        let value = UserDefaults.standard.value(forKey: "tempDeviceToken")
+        print("유저디폴트", value)
+    }
+    
+}
 

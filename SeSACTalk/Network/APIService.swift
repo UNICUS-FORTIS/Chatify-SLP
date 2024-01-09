@@ -14,6 +14,7 @@ enum APIService {
     case emailValidation(model: EmailValidationRequest)
     case join(model: SignInRequest)
     case emailLogin(model: EmailLoginRequest)
+    case kakaoLogin(model: KakaoLoginRequest)
     
 }
 
@@ -30,6 +31,8 @@ extension APIService: TargetType {
             return EndPoints.Paths.join
         case .emailLogin :
             return EndPoints.Paths.emailLogin
+        case .kakaoLogin :
+            return EndPoints.Paths.kakaoLogin
         }
         
     }
@@ -38,7 +41,7 @@ extension APIService: TargetType {
         
         switch self {
             
-        case .emailValidation, .join, .emailLogin: return .post
+        case .emailValidation, .join, .emailLogin, .kakaoLogin : return .post
             //        default : return .get
             
         }
@@ -53,12 +56,14 @@ extension APIService: TargetType {
             return .requestJSONEncodable(model)
         case .emailLogin(model: let model):
             return .requestJSONEncodable(model)
+        case .kakaoLogin(model: let model):
+            return .requestJSONEncodable(model)
         }
     }
     
     var headers: [String : String]? {
         switch self {
-        case .emailValidation, .join, .emailLogin:
+        case .emailValidation, .join, .emailLogin , .kakaoLogin:
             return [
                 SecureKeys.Headers.contentsType : SecureKeys.Headers.contentsTypePair,
                 SecureKeys.Headers.Headerkey : SecureKeys.APIKey.secretKey

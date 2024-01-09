@@ -63,6 +63,7 @@ final class NetworkService {
         }
     }
     
+    
     func fetchEmailLoginRequest(info: EmailLoginRequest) -> Single<Result<EmailLoginResponse, ErrorResponse>> {
         return Single.create { single in
             self.provider.rx.request(.emailLogin(model: info))
@@ -84,4 +85,28 @@ final class NetworkService {
                 }
         }
     }
+    
+    func fetchKakaoLoginRequest(info: KakaoLoginRequest) -> Single<Result<SignInResponse, ErrorResponse>> {
+        print(#function)
+        return Single.create { single in
+            self.provider.rx.request(.kakaoLogin(model: info))
+                .subscribe(with: self)  { owner, response in
+                    switch response.statusCode {
+                    case 200:
+                        if let decodedResponse = try? JSONDecoder().decode(SignInResponse.self, from: response.data) {
+                            single(.success(.success(decodedResponse)))
+                        }
+                    default:
+                        do {
+                            let decodedError = try JSONDecoder().decode(ErrorResponse.self, from: response.data)
+                            single(.success(.failure(decodedError)))
+                        } catch {
+                            let unknownError = APIError(rawValue: response.statusCode)
+                            print(unknownError)
+                        }
+                    }
+                }
+        }
+    }
+    
 }

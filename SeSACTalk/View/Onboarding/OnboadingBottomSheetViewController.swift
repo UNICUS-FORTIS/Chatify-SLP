@@ -81,10 +81,24 @@ final class OnboadingBottomSheetViewController: UIViewController {
     
     @objc private func startKakaoLogin() {
         print(#function)
+        guard let viewModel = viewModel else { return }
         if (UserApi.isKakaoTalkLoginAvailable()) {
             UserApi.shared.rx.loginWithKakaoTalk()
-                .subscribe(with: self) { owner, token in
-                    print(token)
+                .flatMap { token -> Observable<KakaoLoginRequest> in
+                    viewModel.kakaoOAuthToken.onNext(token.accessToken)
+                    return viewModel.form
+                }
+                .flatMapLatest { request -> Observable<Result<SignInResponse, ErrorResponse>> in
+                    let result = viewModel.networkService.fetchKakaoLoginRequest(info: request)
+                    return result.asObservable()
+                }
+                .subscribe(with: self) { owner, result in
+                    switch result {
+                    case .success(let response):
+                        print("응답왔음",response)
+                    case .failure(let error):
+                        print(error.errorCode)
+                    }
                 }
                 .disposed(by: disposeBag)
         }

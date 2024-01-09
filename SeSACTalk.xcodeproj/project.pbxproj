@@ -58,6 +58,7 @@
 		DED5F42A2B4D821D00BE1D9B /* UINavigationController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED5F4292B4D821D00BE1D9B /* UINavigationController+Extension.swift */; };
 		DED5F4302B4DB91200BE1D9B /* RxKakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DED5F42F2B4DB91200BE1D9B /* RxKakaoSDKAuth */; };
 		DED5F4322B4DB91200BE1D9B /* RxKakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = DED5F4312B4DB91200BE1D9B /* RxKakaoSDKUser */; };
+		DED5F4342B4DC80700BE1D9B /* KakaoLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED5F4332B4DC80700BE1D9B /* KakaoLoginRequest.swift */; };
 		DEE310502B4595A1009209F0 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = DEE3104F2B4595A1009209F0 /* RxKeyboard */; };
 /* End PBXBuildFile section */
 
@@ -125,6 +126,7 @@
 		DE9BCA0A2B4B0C9D005DE0B0 /* EmailLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginRequest.swift; sourceTree = "<group>"; };
 		DEA121B52B4C65C3008E9FC1 /* OnboardingViewmodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewmodel.swift; sourceTree = "<group>"; };
 		DED5F4292B4D821D00BE1D9B /* UINavigationController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extension.swift"; sourceTree = "<group>"; };
+		DED5F4332B4DC80700BE1D9B /* KakaoLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -343,6 +345,7 @@
 				DE5CD4642B45909F002546CD /* SignInRequest.swift */,
 				DE7171552B466E4900B619D4 /* EmailValidationRequest.swift */,
 				DE9BCA0A2B4B0C9D005DE0B0 /* EmailLoginRequest.swift */,
+				DED5F4332B4DC80700BE1D9B /* KakaoLoginRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -570,6 +573,7 @@
 				DE5CD4622B458319002546CD /* CustomButton.swift in Sources */,
 				DE9539F52B486286009B196A /* String+Extension.swift in Sources */,
 				DE5686052B4C095E00E8BA63 /* EmailLoginResponse.swift in Sources */,
+				DED5F4342B4DC80700BE1D9B /* KakaoLoginRequest.swift in Sources */,
 				DE7171502B466A2900B619D4 /* SecureKeys.swift in Sources */,
 				DE9BCA0B2B4B0C9D005DE0B0 /* EmailLoginRequest.swift in Sources */,
 				DE56860C2B4C14FA00E8BA63 /* ScreenTitles.swift in Sources */,
