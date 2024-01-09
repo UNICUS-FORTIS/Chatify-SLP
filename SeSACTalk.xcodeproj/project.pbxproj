@@ -56,6 +56,8 @@
 		DE9BCA0B2B4B0C9D005DE0B0 /* EmailLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9BCA0A2B4B0C9D005DE0B0 /* EmailLoginRequest.swift */; };
 		DEA121B62B4C65C3008E9FC1 /* OnboardingViewmodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA121B52B4C65C3008E9FC1 /* OnboardingViewmodel.swift */; };
 		DED5F42A2B4D821D00BE1D9B /* UINavigationController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED5F4292B4D821D00BE1D9B /* UINavigationController+Extension.swift */; };
+		DED5F4302B4DB91200BE1D9B /* RxKakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DED5F42F2B4DB91200BE1D9B /* RxKakaoSDKAuth */; };
+		DED5F4322B4DB91200BE1D9B /* RxKakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = DED5F4312B4DB91200BE1D9B /* RxKakaoSDKUser */; };
 		DEE310502B4595A1009209F0 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = DEE3104F2B4595A1009209F0 /* RxKeyboard */; };
 /* End PBXBuildFile section */
 
@@ -131,8 +133,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE56860F2B4C1DA300E8BA63 /* FloatingPanel in Frameworks */,
+				DED5F4322B4DB91200BE1D9B /* RxKakaoSDKUser in Frameworks */,
 				DE71715D2B46B5C000B619D4 /* Toast in Frameworks */,
 				DE5CD4422B4558BF002546CD /* RxMoya in Frameworks */,
+				DED5F4302B4DB91200BE1D9B /* RxKakaoSDKAuth in Frameworks */,
 				DE5CD43A2B45587A002546CD /* RxSwift in Frameworks */,
 				DE5CD43D2B45588F002546CD /* SnapKit in Frameworks */,
 				DEE310502B4595A1009209F0 /* RxKeyboard in Frameworks */,
@@ -421,6 +425,8 @@
 				DEE3104F2B4595A1009209F0 /* RxKeyboard */,
 				DE71715C2B46B5C000B619D4 /* Toast */,
 				DE56860E2B4C1DA300E8BA63 /* FloatingPanel */,
+				DED5F42F2B4DB91200BE1D9B /* RxKakaoSDKAuth */,
+				DED5F4312B4DB91200BE1D9B /* RxKakaoSDKUser */,
 			);
 			productName = SeSACTalk;
 			productReference = DE5CD4012B4556FA002546CD /* SeSACTalk.app */;
@@ -501,6 +507,7 @@
 				DEE3104E2B4595A1009209F0 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 				DE71715B2B46B5C000B619D4 /* XCRemoteSwiftPackageReference "Toast-Swift" */,
 				DE56860D2B4C1DA300E8BA63 /* XCRemoteSwiftPackageReference "FloatingPanel" */,
+				DED5F42E2B4DB91200BE1D9B /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
 			);
 			productRefGroup = DE5CD4022B4556FA002546CD /* Products */;
 			projectDirPath = "";
@@ -968,6 +975,14 @@
 				minimumVersion = 5.0.1;
 			};
 		};
+		DED5F42E2B4DB91200BE1D9B /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk-rx";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.20.0;
+			};
+		};
 		DEE3104E2B4595A1009209F0 /* XCRemoteSwiftPackageReference "RxKeyboard" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RxSwiftCommunity/RxKeyboard";
@@ -1018,6 +1033,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DE71715B2B46B5C000B619D4 /* XCRemoteSwiftPackageReference "Toast-Swift" */;
 			productName = Toast;
+		};
+		DED5F42F2B4DB91200BE1D9B /* RxKakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DED5F42E2B4DB91200BE1D9B /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKAuth;
+		};
+		DED5F4312B4DB91200BE1D9B /* RxKakaoSDKUser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DED5F42E2B4DB91200BE1D9B /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKUser;
 		};
 		DEE3104F2B4595A1009209F0 /* RxKeyboard */ = {
 			isa = XCSwiftPackageProductDependency;

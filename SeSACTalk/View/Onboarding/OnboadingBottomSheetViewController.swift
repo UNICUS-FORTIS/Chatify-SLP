@@ -9,6 +9,12 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import KakaoSDKCommon
+import RxKakaoSDKCommon
+import KakaoSDKAuth
+import RxKakaoSDKAuth
+import KakaoSDKUser
+import RxKakaoSDKUser
 
 
 final class OnboadingBottomSheetViewController: UIViewController {
@@ -26,6 +32,7 @@ final class OnboadingBottomSheetViewController: UIViewController {
                                          UIFont.systemFont(ofSize: 13))
     
     private var viewModel: OnboardingViewModel?
+    private let disposeBag = DisposeBag()
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
@@ -45,6 +52,7 @@ final class OnboadingBottomSheetViewController: UIViewController {
         configure()
         setConstraints()
         setButtonBehavior()
+        setKakaoLogin()
     }
     
     
@@ -65,6 +73,21 @@ final class OnboadingBottomSheetViewController: UIViewController {
     @objc private func touch() {
         dismiss(animated: true)
         viewModel?.joinPagePushTrigger?()
+    }
+    
+    private func setKakaoLogin() {
+        kakaoLoginButton.addTarget(self, action: #selector(startKakaoLogin), for: .touchUpInside)
+    }
+    
+    @objc private func startKakaoLogin() {
+        print(#function)
+        if (UserApi.isKakaoTalkLoginAvailable()) {
+            UserApi.shared.rx.loginWithKakaoTalk()
+                .subscribe(with: self) { owner, token in
+                    print(token)
+                }
+                .disposed(by: disposeBag)
+        }
     }
     
     
