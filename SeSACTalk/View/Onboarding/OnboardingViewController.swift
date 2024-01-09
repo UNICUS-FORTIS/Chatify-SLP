@@ -19,7 +19,7 @@ final class OnboardingViewController: UIViewController {
     private let mainTitle = CustomTitleLabel(ScreenTitles.Onboarding.mainTitle)
     private let startButton = CustomButton(title: ScreenTitles.Onboarding.startButton)
     private var fpc: FloatingPanelController!
-
+    private let viewModel = OnboardingViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +43,16 @@ final class OnboardingViewController: UIViewController {
     private func setFloatingPanel() {
         fpc = FloatingPanelController()
         let appearance = SurfaceAppearance()
-        let contentVC = OnboadingBottomSheetViewController()
+        viewModel.joinPagePushTrigger = { [weak self] in
+            let vc = SignInViewController()
+            let NavVC = UINavigationController(rootViewController: vc)
+            if let sheet = NavVC.presentationController as? UISheetPresentationController {
+                sheet.detents = [.large()]
+                sheet.prefersGrabberVisible = true
+                self?.present(NavVC, animated: true, completion: nil)
+            }
+        }
+        let contentVC = OnboadingBottomSheetViewController(viewModel: self.viewModel)
         contentVC.preferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: 300)
         
         appearance.cornerRadius = 10
@@ -53,9 +62,9 @@ final class OnboardingViewController: UIViewController {
         fpc.surfaceView.appearance = appearance
         fpc.set(contentViewController: contentVC)
     }
-
     
     @objc private func presentBottomSheet() {
+
         self.present(fpc, animated: true, completion: nil)
     }
     

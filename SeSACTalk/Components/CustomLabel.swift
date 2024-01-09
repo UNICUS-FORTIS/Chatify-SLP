@@ -23,6 +23,7 @@ final class CustomLabel: UILabel {
         self.attributedText = text
         self.font = font
         self.textAlignment = .center
+        self.isUserInteractionEnabled = true
     }
     
     required init?(coder: NSCoder) {

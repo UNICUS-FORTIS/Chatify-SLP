@@ -54,6 +54,7 @@
 		DE9BCA062B4AFD72005DE0B0 /* EmailLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9BCA052B4AFD72005DE0B0 /* EmailLoginViewModel.swift */; };
 		DE9BCA092B4B02EE005DE0B0 /* ValidationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9BCA082B4B02EE005DE0B0 /* ValidationCenter.swift */; };
 		DE9BCA0B2B4B0C9D005DE0B0 /* EmailLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9BCA0A2B4B0C9D005DE0B0 /* EmailLoginRequest.swift */; };
+		DEA121B62B4C65C3008E9FC1 /* OnboardingViewmodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA121B52B4C65C3008E9FC1 /* OnboardingViewmodel.swift */; };
 		DEE310502B4595A1009209F0 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = DEE3104F2B4595A1009209F0 /* RxKeyboard */; };
 /* End PBXBuildFile section */
 
@@ -119,6 +120,7 @@
 		DE9BCA052B4AFD72005DE0B0 /* EmailLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginViewModel.swift; sourceTree = "<group>"; };
 		DE9BCA082B4B02EE005DE0B0 /* ValidationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationCenter.swift; sourceTree = "<group>"; };
 		DE9BCA0A2B4B0C9D005DE0B0 /* EmailLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginRequest.swift; sourceTree = "<group>"; };
+		DEA121B52B4C65C3008E9FC1 /* OnboardingViewmodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewmodel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -245,6 +247,7 @@
 		DE5CD4442B4558F5002546CD /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				DEA121B42B4C65B7008E9FC1 /* Onboarding */,
 				DE9BCA042B4AFD60005DE0B0 /* Join */,
 			);
 			path = ViewModel;
@@ -379,6 +382,14 @@
 				DE9BCA082B4B02EE005DE0B0 /* ValidationCenter.swift */,
 			);
 			path = FormValidation;
+			sourceTree = "<group>";
+		};
+		DEA121B42B4C65B7008E9FC1 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				DEA121B52B4C65C3008E9FC1 /* OnboardingViewmodel.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -540,6 +551,7 @@
 				DE5CD4532B45657C002546CD /* SignInViewModel.swift in Sources */,
 				DE7171582B46793100B619D4 /* NetworkService.swift in Sources */,
 				DE5CD4512B455DF4002546CD /* Colors.swift in Sources */,
+				DEA121B62B4C65C3008E9FC1 /* OnboardingViewmodel.swift in Sources */,
 				DE5CD4052B4556FA002546CD /* AppDelegate.swift in Sources */,
 				DE5CD44C2B4559CC002546CD /* EndPoints.swift in Sources */,
 				DE71715A2B467D7200B619D4 /* APIError.swift in Sources */,

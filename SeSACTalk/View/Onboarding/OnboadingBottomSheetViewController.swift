@@ -15,14 +15,36 @@ final class OnboadingBottomSheetViewController: UIViewController {
     
     private let appleLoginButton = CustomButton(.appleLogin)
     private let kakaoLoginButton = CustomButton(.kakaoLogin)
-    private let emailLoginButton = CustomButton(title: "이메일로 계속하기", .emailIcon)
-    private let joinButton = CustomLabel("또는 새롭게 회원가입 하기".greenColored(),
-                                         font: Typography.title2 ?? UIFont.systemFont(ofSize: 13))
+    private let emailLoginButton = CustomButton(title: ScreenTitles
+        .Onboarding
+        .BottomSheet
+        .emailLoginButton, .emailIcon)
+    private let joinButton = CustomLabel(ScreenTitles.Onboarding
+        .BottomSheet
+        .joinButton
+        .greenColored(), font: Typography.title2 ??
+                                         UIFont.systemFont(ofSize: 13))
+    
+    private var viewModel: OnboardingViewModel?
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    init(viewModel: OnboardingViewModel) {
+        self.init()
+        self.viewModel = viewModel
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
         setConstraints()
+        setButtonBehavior()
     }
     
     
@@ -34,6 +56,17 @@ final class OnboadingBottomSheetViewController: UIViewController {
         view.addSubview(joinButton)
         emailLoginButton.validationBinder.onNext(true)
     }
+    
+    private func setButtonBehavior() {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(touch))
+        joinButton.addGestureRecognizer(gesture)
+    }
+    
+    @objc private func touch() {
+        dismiss(animated: true)
+        viewModel?.joinPagePushTrigger?()
+    }
+    
     
     private func setConstraints() {
         
@@ -64,7 +97,7 @@ final class OnboadingBottomSheetViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.height.equalTo(20)
         }
-
+        
     }
     
     

@@ -15,7 +15,6 @@ import Toast
 final class SignInViewController: UIViewController {
     
     private let viewModel = SignInViewModel()
-    private var invalidInputArray:[CustomInputView] = []
     private lazy var center = ValidationCenter()
     
     private let email = CustomInputView(label: "이메일",
@@ -187,10 +186,10 @@ final class SignInViewController: UIViewController {
         passcodeConfirm.validationBinder.onNext(confirmValidation)
         
         if !confirmValidation {
-            invalidInputArray.append(passcodeConfirm)
+            center.invalidComponents.append(passcodeConfirm)
         }
         
-        if let firstInvalidInput = invalidInputArray.first {
+        if let firstInvalidInput = center.invalidComponents.first {
             firstInvalidInput.textField.becomeFirstResponder()
             
             if firstInvalidInput == email {
