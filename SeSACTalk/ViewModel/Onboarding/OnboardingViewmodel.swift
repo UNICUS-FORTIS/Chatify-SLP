@@ -16,15 +16,22 @@ final class OnboardingViewModel {
     
     let networkService = NetworkService.shared
     var joinPagePushTrigger: (() -> Void)?
-    let kakaoOAuthToken = PublishSubject<String>()
-    let deviceToken = UserDefaults.standard.value(forKey: "tempDeviceToken")
+    let deviceToken = UserDefaults.standard.value(forKey: "tempDeviceToken") as? String
+    lazy var appleFullName = UserDefaults.standard.string(forKey: "AppleLoginName")
+    lazy var appleEmail = UserDefaults.standard.string(forKey: "AppleLoginEmail")
     
-    var form: Observable<KakaoLoginRequest> {
-        guard let device = deviceToken as? String else { return Observable.empty()}
-        let deviceToken = Observable.just(device)
-        return Observable.combineLatest(kakaoOAuthToken, deviceToken) {
-            oAuth, device in
-            return KakaoLoginRequest(oauthToken: oAuth, deviceToken: device)
-        }
+    private let disposeBag = DisposeBag()
+    
+    func fetchAppleLogin(form: AppleLoginRequest) {
+        networkService.fetchAppleLoginRequest(info: form)
+            .subscribe(with: self) { owner, result in
+                switch result {
+                case .success(let response) :
+                    print(response)
+                case .failure(let error) :
+                    print(error.errorCode)
+                }
+            }
+            .disposed(by: disposeBag)
     }
 }

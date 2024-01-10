@@ -15,12 +15,11 @@ struct SignInResponse: Decodable {
     let profileImage: String?
     let phone: String?
     let vendor: String?
-    let createdAt : String
     let token: Token
     
     enum CodingKeys: String, CodingKey {
         case userID = "user_id"
-        case email, nickname, profileImage, phone, vendor, createdAt, token
+        case email, nickname, profileImage, phone, vendor, token
     }
     
     struct Token: Codable {

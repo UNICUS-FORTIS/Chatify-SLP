@@ -15,6 +15,7 @@ enum APIService {
     case join(model: SignInRequest)
     case emailLogin(model: EmailLoginRequest)
     case kakaoLogin(model: KakaoLoginRequest)
+    case appleLogin(model: AppleLoginRequest)
     
 }
 
@@ -33,6 +34,8 @@ extension APIService: TargetType {
             return EndPoints.Paths.emailLogin
         case .kakaoLogin :
             return EndPoints.Paths.kakaoLogin
+        case .appleLogin :
+            return EndPoints.Paths.appleLogin
         }
         
     }
@@ -40,10 +43,11 @@ extension APIService: TargetType {
     var method: Moya.Method {
         
         switch self {
-            
-        case .emailValidation, .join, .emailLogin, .kakaoLogin : return .post
-            //        default : return .get
-            
+        case .emailValidation,
+                .join,
+                .emailLogin,
+                .kakaoLogin,
+                .appleLogin : return .post
         }
     }
     
@@ -58,12 +62,14 @@ extension APIService: TargetType {
             return .requestJSONEncodable(model)
         case .kakaoLogin(model: let model):
             return .requestJSONEncodable(model)
+        case .appleLogin(model: let model):
+            return .requestJSONEncodable(model)
         }
     }
     
     var headers: [String : String]? {
         switch self {
-        case .emailValidation, .join, .emailLogin , .kakaoLogin:
+        case .emailValidation, .join, .emailLogin , .kakaoLogin, .appleLogin :
             return [
                 SecureKeys.Headers.contentsType : SecureKeys.Headers.contentsTypePair,
                 SecureKeys.Headers.Headerkey : SecureKeys.APIKey.secretKey

@@ -54,6 +54,8 @@
 		DE9BCA062B4AFD72005DE0B0 /* EmailLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9BCA052B4AFD72005DE0B0 /* EmailLoginViewModel.swift */; };
 		DE9BCA092B4B02EE005DE0B0 /* ValidationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9BCA082B4B02EE005DE0B0 /* ValidationCenter.swift */; };
 		DE9BCA0B2B4B0C9D005DE0B0 /* EmailLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9BCA0A2B4B0C9D005DE0B0 /* EmailLoginRequest.swift */; };
+		DE9DEBA62B4E9CAC008D67AD /* AppleLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9DEBA52B4E9CAC008D67AD /* AppleLoginManager.swift */; };
+		DE9DEBA82B4EB38A008D67AD /* AppleLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9DEBA72B4EB38A008D67AD /* AppleLoginRequest.swift */; };
 		DEA121B62B4C65C3008E9FC1 /* OnboardingViewmodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA121B52B4C65C3008E9FC1 /* OnboardingViewmodel.swift */; };
 		DED5F42A2B4D821D00BE1D9B /* UINavigationController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED5F4292B4D821D00BE1D9B /* UINavigationController+Extension.swift */; };
 		DED5F4302B4DB91200BE1D9B /* RxKakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DED5F42F2B4DB91200BE1D9B /* RxKakaoSDKAuth */; };
@@ -124,6 +126,8 @@
 		DE9BCA052B4AFD72005DE0B0 /* EmailLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginViewModel.swift; sourceTree = "<group>"; };
 		DE9BCA082B4B02EE005DE0B0 /* ValidationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationCenter.swift; sourceTree = "<group>"; };
 		DE9BCA0A2B4B0C9D005DE0B0 /* EmailLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginRequest.swift; sourceTree = "<group>"; };
+		DE9DEBA52B4E9CAC008D67AD /* AppleLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginManager.swift; sourceTree = "<group>"; };
+		DE9DEBA72B4EB38A008D67AD /* AppleLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginRequest.swift; sourceTree = "<group>"; };
 		DEA121B52B4C65C3008E9FC1 /* OnboardingViewmodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewmodel.swift; sourceTree = "<group>"; };
 		DED5F4292B4D821D00BE1D9B /* UINavigationController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extension.swift"; sourceTree = "<group>"; };
 		DED5F4332B4DC80700BE1D9B /* KakaoLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginRequest.swift; sourceTree = "<group>"; };
@@ -273,6 +277,7 @@
 		DE5CD4462B45594C002546CD /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				DE9DEBA42B4E9CA0008D67AD /* AppleLogin */,
 				DE7171512B466C1A00B619D4 /* APIService.swift */,
 				DE7171572B46793100B619D4 /* NetworkService.swift */,
 				DE7171592B467D7200B619D4 /* APIError.swift */,
@@ -346,6 +351,7 @@
 				DE7171552B466E4900B619D4 /* EmailValidationRequest.swift */,
 				DE9BCA0A2B4B0C9D005DE0B0 /* EmailLoginRequest.swift */,
 				DED5F4332B4DC80700BE1D9B /* KakaoLoginRequest.swift */,
+				DE9DEBA72B4EB38A008D67AD /* AppleLoginRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -392,6 +398,14 @@
 				DE9BCA082B4B02EE005DE0B0 /* ValidationCenter.swift */,
 			);
 			path = FormValidation;
+			sourceTree = "<group>";
+		};
+		DE9DEBA42B4E9CA0008D67AD /* AppleLogin */ = {
+			isa = PBXGroup;
+			children = (
+				DE9DEBA52B4E9CAC008D67AD /* AppleLoginManager.swift */,
+			);
+			path = AppleLogin;
 			sourceTree = "<group>";
 		};
 		DEA121B42B4C65B7008E9FC1 /* Onboarding */ = {
@@ -564,6 +578,7 @@
 				DE5CD4532B45657C002546CD /* SignInViewModel.swift in Sources */,
 				DE7171582B46793100B619D4 /* NetworkService.swift in Sources */,
 				DE5CD4512B455DF4002546CD /* Colors.swift in Sources */,
+				DE9DEBA62B4E9CAC008D67AD /* AppleLoginManager.swift in Sources */,
 				DEA121B62B4C65C3008E9FC1 /* OnboardingViewmodel.swift in Sources */,
 				DE5CD4052B4556FA002546CD /* AppDelegate.swift in Sources */,
 				DE5CD44C2B4559CC002546CD /* EndPoints.swift in Sources */,
@@ -588,6 +603,7 @@
 				DE5686142B4C27E700E8BA63 /* OnboardingFloatingPanelLayout.swift in Sources */,
 				DE5CD4692B459129002546CD /* SignInResponse.swift in Sources */,
 				DE5686112B4C212500E8BA63 /* OnboadingBottomSheetViewController.swift in Sources */,
+				DE9DEBA82B4EB38A008D67AD /* AppleLoginRequest.swift in Sources */,
 				DE9BCA092B4B02EE005DE0B0 /* ValidationCenter.swift in Sources */,
 				DE5CD4652B45909F002546CD /* SignInRequest.swift in Sources */,
 				DED5F42A2B4D821D00BE1D9B /* UINavigationController+Extension.swift in Sources */,

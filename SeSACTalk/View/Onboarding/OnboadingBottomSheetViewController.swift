@@ -15,6 +15,7 @@ import KakaoSDKAuth
 import RxKakaoSDKAuth
 import KakaoSDKUser
 import RxKakaoSDKUser
+import AuthenticationServices
 
 
 final class OnboadingBottomSheetViewController: UIViewController {
@@ -52,7 +53,7 @@ final class OnboadingBottomSheetViewController: UIViewController {
         configure()
         setConstraints()
         setButtonBehavior()
-        setKakaoLogin()
+        setFlatFormLoginButton()
     }
     
     
@@ -75,7 +76,8 @@ final class OnboadingBottomSheetViewController: UIViewController {
         viewModel?.joinPagePushTrigger?()
     }
     
-    private func setKakaoLogin() {
+    private func setFlatFormLoginButton() {
+        appleLoginButton.addTarget(self, action: #selector(startAppleLogin), for: .touchUpInside)
         kakaoLoginButton.addTarget(self, action: #selector(startKakaoLogin), for: .touchUpInside)
     }
     
@@ -85,11 +87,12 @@ final class OnboadingBottomSheetViewController: UIViewController {
         if (UserApi.isKakaoTalkLoginAvailable()) {
             UserApi.shared.rx.loginWithKakaoTalk()
                 .flatMap { token -> Observable<KakaoLoginRequest> in
-                    viewModel.kakaoOAuthToken.onNext(token.accessToken)
-                    return viewModel.form
+                    let form = KakaoLoginRequest(oauthToken: token.accessToken,
+                                                 deviceToken: viewModel.deviceToken ?? "")
+                    return Observable.just(form)
                 }
-                .flatMapLatest { request -> Observable<Result<SignInResponse, ErrorResponse>> in
-                    let result = viewModel.networkService.fetchKakaoLoginRequest(info: request)
+                .flatMapLatest { form -> Observable<Result<SignInResponse, ErrorResponse>> in
+                    let result = viewModel.networkService.fetchKakaoLoginRequest(info: form)
                     return result.asObservable()
                 }
                 .subscribe(with: self) { owner, result in
@@ -102,6 +105,17 @@ final class OnboadingBottomSheetViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         }
+    }
+    
+    @objc private func startAppleLogin() {
+        let provider = ASAuthorizationAppleIDProvider()
+        let request = provider.createRequest()
+        request.requestedScopes = [.email, .fullName]
+        
+        let controller = ASAuthorizationController(authorizationRequests: [request])
+        controller.delegate = self
+        controller.presentationContextProvider = self
+        controller.performRequests()
     }
     
     
@@ -137,5 +151,128 @@ final class OnboadingBottomSheetViewController: UIViewController {
         
     }
     
+    // MARK: - 두번째 로그인때부터 이메일 정보가 없을 경우
+    private func decode(jwtToken jwt: String) -> [String: Any] {
+        
+        func base64UrlDecode(_ value: String) -> Data? {
+            var base64 = value
+                .replacingOccurrences(of: "-", with: "+")
+                .replacingOccurrences(of: "_", with: "/")
+            
+            let length = Double(base64.lengthOfBytes(using: String.Encoding.utf8))
+            let requiredLength = 4 * ceil(length / 4.0)
+            let paddingLength = requiredLength - length
+            if paddingLength > 0 {
+                let padding = "".padding(toLength: Int(paddingLength), withPad: "=", startingAt: 0)
+                base64 = base64 + padding
+            }
+            return Data(base64Encoded: base64, options: .ignoreUnknownCharacters)
+        }
+        
+        
+        func decodeJWTPart(_ value: String) -> [String: Any]? {
+            guard let bodyData = base64UrlDecode(value),
+                  let json = try? JSONSerialization.jsonObject(with: bodyData, options: []), let payload = json as? [String: Any] else {
+                return nil
+            }
+            
+            return payload
+        }
+        
+        let segments = jwt.components(separatedBy: ".")
+        return decodeJWTPart(segments[1]) ?? [:]
+    }
     
+    
+}
+
+extension OnboadingBottomSheetViewController: ASAuthorizationControllerPresentationContextProviding {
+    
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
+    }
+    
+}
+
+extension OnboadingBottomSheetViewController: ASAuthorizationControllerDelegate {
+    
+    // MARK: - 로그인 실패했을경우
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+            print("로그인 실패함 , \(error.localizedDescription)")
+    }
+    
+    // MARK: - 로그인 성공한경우
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+            
+            switch authorization.credential {
+                
+            case let appleIDCredential as ASAuthorizationAppleIDCredential :
+                
+                print(appleIDCredential)
+                
+                let userIdentifier = appleIDCredential.user
+                let fullName = appleIDCredential.fullName
+                let email = appleIDCredential.email
+
+                // MARK: - userIdentifier 저장
+                UserDefaults.standard.set(userIdentifier, forKey: "AppleUser")
+
+                if let fullName = fullName {
+                    guard let familyName = fullName.familyName,
+                          let givenName = fullName.givenName else { return }
+                    
+                    let name = givenName+familyName
+                    print(name)
+                    UserDefaults.standard.set(name, forKey: "AppleLoginName")
+                }
+                
+                if let email = email {
+                    UserDefaults.standard.set(email, forKey: "AppleLoginEmail")
+                }
+                
+                guard let token = appleIDCredential.identityToken,
+                      let tokenToString = String(data: token, encoding: .utf8) else {
+                    print("Token Error")
+                    return }
+                
+                if email?.isEmpty ?? true {
+                    let result = decode(jwtToken: tokenToString)["email"] as? String ?? ""
+                    print("이메일이 없어서 디코드한", result) // 모 이 데이터를 userDefault 에 업데이트 해줄수 있다
+                }
+                
+                
+                guard let viewModel = viewModel else { return }
+                if let fullName = fullName {
+                    guard let familyName = fullName.familyName,
+                          let givenName = fullName.givenName else { return }
+                    let name = givenName+familyName
+                    let form = AppleLoginRequest(idToken: tokenToString,
+                                                 nickname: name,
+                                                 deviceToken: viewModel.deviceToken ?? "")
+                    print("정상작동 Form ",form)
+                    viewModel.fetchAppleLogin(form: form)
+                } 
+                // MARK: - 여기부터 없어도 될듯
+//                else {
+//                    if let storedFullName = viewModel.appleFullName {
+//                        let form = AppleLoginRequest(idToken: tokenToString,
+//                                                     nickname: storedFullName,
+//                                                     deviceToken: viewModel.deviceToken ?? "")
+//                        print("else문 Form ",form)
+//                        viewModel.fetchAppleLogin(form: form)
+//                    }
+//                }
+                
+    // 이메일, 토큰, 이름 -> UserDefault & API 서버에 POST
+    // 서버에 Request 이후 Response 를 받게되면, 성공시 화면을 전환해조야됨
+                
+            case let passwordCredential as ASPasswordCredential:
+                
+                let username = passwordCredential.user
+                let password = passwordCredential.password
+                
+            default : break
+                
+            }
+        }
 }
