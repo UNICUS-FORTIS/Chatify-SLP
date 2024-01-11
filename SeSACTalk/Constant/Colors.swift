@@ -28,4 +28,9 @@ enum Colors {
         static let secondary = UIColor(red: 0.38, green: 0.38, blue: 0.38, alpha: 1.00)
     }
     
+    enum Border {
+        static let border = UIColor(red: 0.20, green: 0.21, blue: 0.22, alpha: 1.00)
+        static let naviShadow = UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1.00)
+    }
+    
 }

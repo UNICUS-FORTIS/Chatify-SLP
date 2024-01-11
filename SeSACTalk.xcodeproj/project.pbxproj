@@ -56,7 +56,12 @@
 		DE9BCA0B2B4B0C9D005DE0B0 /* EmailLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9BCA0A2B4B0C9D005DE0B0 /* EmailLoginRequest.swift */; };
 		DE9DEBA62B4E9CAC008D67AD /* AppleLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9DEBA52B4E9CAC008D67AD /* AppleLoginManager.swift */; };
 		DE9DEBA82B4EB38A008D67AD /* AppleLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9DEBA72B4EB38A008D67AD /* AppleLoginRequest.swift */; };
+		DE9DEBAB2B4ECDC7008D67AD /* WorkSpaceInitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9DEBAA2B4ECDC7008D67AD /* WorkSpaceInitialViewController.swift */; };
+		DE9DEBAE2B4ED1AC008D67AD /* WorkSpaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9DEBAD2B4ED1AC008D67AD /* WorkSpaceViewModel.swift */; };
 		DEA121B62B4C65C3008E9FC1 /* OnboardingViewmodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA121B52B4C65C3008E9FC1 /* OnboardingViewmodel.swift */; };
+		DEC6FE812B4FA4EA0082A7D6 /* HomeEmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC6FE802B4FA4EA0082A7D6 /* HomeEmptyViewController.swift */; };
+		DEC6FE832B4FA9510082A7D6 /* CustomNavigationLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC6FE822B4FA9510082A7D6 /* CustomNavigationLeftView.swift */; };
+		DEC6FE852B4FEC8D0082A7D6 /* CustomNavigationRightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC6FE842B4FEC8D0082A7D6 /* CustomNavigationRightView.swift */; };
 		DED5F42A2B4D821D00BE1D9B /* UINavigationController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED5F4292B4D821D00BE1D9B /* UINavigationController+Extension.swift */; };
 		DED5F4302B4DB91200BE1D9B /* RxKakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DED5F42F2B4DB91200BE1D9B /* RxKakaoSDKAuth */; };
 		DED5F4322B4DB91200BE1D9B /* RxKakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = DED5F4312B4DB91200BE1D9B /* RxKakaoSDKUser */; };
@@ -128,7 +133,12 @@
 		DE9BCA0A2B4B0C9D005DE0B0 /* EmailLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginRequest.swift; sourceTree = "<group>"; };
 		DE9DEBA52B4E9CAC008D67AD /* AppleLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginManager.swift; sourceTree = "<group>"; };
 		DE9DEBA72B4EB38A008D67AD /* AppleLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginRequest.swift; sourceTree = "<group>"; };
+		DE9DEBAA2B4ECDC7008D67AD /* WorkSpaceInitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkSpaceInitialViewController.swift; sourceTree = "<group>"; };
+		DE9DEBAD2B4ED1AC008D67AD /* WorkSpaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkSpaceViewModel.swift; sourceTree = "<group>"; };
 		DEA121B52B4C65C3008E9FC1 /* OnboardingViewmodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewmodel.swift; sourceTree = "<group>"; };
+		DEC6FE802B4FA4EA0082A7D6 /* HomeEmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEmptyViewController.swift; sourceTree = "<group>"; };
+		DEC6FE822B4FA9510082A7D6 /* CustomNavigationLeftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationLeftView.swift; sourceTree = "<group>"; };
+		DEC6FE842B4FEC8D0082A7D6 /* CustomNavigationRightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationRightView.swift; sourceTree = "<group>"; };
 		DED5F4292B4D821D00BE1D9B /* UINavigationController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extension.swift"; sourceTree = "<group>"; };
 		DED5F4332B4DC80700BE1D9B /* KakaoLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -259,6 +269,7 @@
 		DE5CD4442B4558F5002546CD /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				DE9DEBAC2B4ED19D008D67AD /* WorkSpace */,
 				DEA121B42B4C65B7008E9FC1 /* Onboarding */,
 				DE9BCA042B4AFD60005DE0B0 /* Join */,
 			);
@@ -268,6 +279,7 @@
 		DE5CD4452B4558FF002546CD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DE9DEBA92B4ECD90008D67AD /* WorkSpace */,
 				DE5686062B4C100600E8BA63 /* Onboarding */,
 				DE9BCA012B4AEE42005DE0B0 /* Join */,
 			);
@@ -319,9 +331,11 @@
 			children = (
 				DE5CD4582B4566DE002546CD /* CustomTextField.swift */,
 				DE5CD45A2B45699B002546CD /* CustomLabel.swift */,
+				DE5686092B4C130C00E8BA63 /* CustomTitleLabel.swift */,
 				DE5CD45C2B456BE7002546CD /* CustomInputView.swift */,
 				DE5CD4612B458319002546CD /* CustomButton.swift */,
-				DE5686092B4C130C00E8BA63 /* CustomTitleLabel.swift */,
+				DEC6FE822B4FA9510082A7D6 /* CustomNavigationLeftView.swift */,
+				DEC6FE842B4FEC8D0082A7D6 /* CustomNavigationRightView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -406,6 +420,23 @@
 				DE9DEBA52B4E9CAC008D67AD /* AppleLoginManager.swift */,
 			);
 			path = AppleLogin;
+			sourceTree = "<group>";
+		};
+		DE9DEBA92B4ECD90008D67AD /* WorkSpace */ = {
+			isa = PBXGroup;
+			children = (
+				DE9DEBAA2B4ECDC7008D67AD /* WorkSpaceInitialViewController.swift */,
+			);
+			path = WorkSpace;
+			sourceTree = "<group>";
+		};
+		DE9DEBAC2B4ED19D008D67AD /* WorkSpace */ = {
+			isa = PBXGroup;
+			children = (
+				DE9DEBAD2B4ED1AC008D67AD /* WorkSpaceViewModel.swift */,
+				DEC6FE802B4FA4EA0082A7D6 /* HomeEmptyViewController.swift */,
+			);
+			path = WorkSpace;
 			sourceTree = "<group>";
 		};
 		DEA121B42B4C65B7008E9FC1 /* Onboarding */ = {
@@ -591,16 +622,21 @@
 				DED5F4342B4DC80700BE1D9B /* KakaoLoginRequest.swift in Sources */,
 				DE7171502B466A2900B619D4 /* SecureKeys.swift in Sources */,
 				DE9BCA0B2B4B0C9D005DE0B0 /* EmailLoginRequest.swift in Sources */,
+				DE9DEBAE2B4ED1AC008D67AD /* WorkSpaceViewModel.swift in Sources */,
 				DE56860C2B4C14FA00E8BA63 /* ScreenTitles.swift in Sources */,
 				DE7171542B466E3B00B619D4 /* ErrorResponse.swift in Sources */,
 				DE7171562B466E4900B619D4 /* EmailValidationRequest.swift in Sources */,
 				DE5CD44F2B455B0A002546CD /* Typography.swift in Sources */,
+				DE9DEBAB2B4ECDC7008D67AD /* WorkSpaceInitialViewController.swift in Sources */,
 				DE9BCA062B4AFD72005DE0B0 /* EmailLoginViewModel.swift in Sources */,
 				DE9539F32B482C8D009B196A /* ToastMessages.swift in Sources */,
 				DE5CD45D2B456BE7002546CD /* CustomInputView.swift in Sources */,
+				DEC6FE852B4FEC8D0082A7D6 /* CustomNavigationRightView.swift in Sources */,
 				DE9BCA032B4AEE72005DE0B0 /* EmailLogInViewController.swift in Sources */,
+				DEC6FE812B4FA4EA0082A7D6 /* HomeEmptyViewController.swift in Sources */,
 				DE5CD4592B4566DE002546CD /* CustomTextField.swift in Sources */,
 				DE5686142B4C27E700E8BA63 /* OnboardingFloatingPanelLayout.swift in Sources */,
+				DEC6FE832B4FA9510082A7D6 /* CustomNavigationLeftView.swift in Sources */,
 				DE5CD4692B459129002546CD /* SignInResponse.swift in Sources */,
 				DE5686112B4C212500E8BA63 /* OnboadingBottomSheetViewController.swift in Sources */,
 				DE9DEBA82B4EB38A008D67AD /* AppleLoginRequest.swift in Sources */,

@@ -249,9 +249,16 @@ extension OnboadingBottomSheetViewController: ASAuthorizationControllerDelegate 
                     let form = AppleLoginRequest(idToken: tokenToString,
                                                  nickname: name,
                                                  deviceToken: viewModel.deviceToken ?? "")
-                    print("정상작동 Form ",form)
+                    let group = DispatchGroup()
+                    group.enter()
                     viewModel.fetchAppleLogin(form: form)
-                } 
+                    group.leave()
+                    
+                    group.notify(queue: .main) {
+                        self.dismiss(animated: true)
+                        print("완료")
+                    }
+                }
                 // MARK: - 여기부터 없어도 될듯
 //                else {
 //                    if let storedFullName = viewModel.appleFullName {

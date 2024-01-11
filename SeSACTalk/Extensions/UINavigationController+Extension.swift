@@ -12,9 +12,10 @@ import UIKit
 extension UINavigationController {
     
     
-    func setSignInNavigation(target: UIViewController, action: Selector) {
+    func setSignInNavigation(title: String?, target: UIViewController, action: Selector?) {
         print(#function)
         let appearance = UINavigationBarAppearance()
+        target.title = title
         appearance.shadowColor = .clear
         appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
         appearance.backgroundColor = .white
@@ -28,4 +29,20 @@ extension UINavigationController {
         navigationBar.compactAppearance = appearance
         navigationBar.scrollEdgeAppearance = appearance
     }
+    
+    func setWorkSpaceNavigation() {
+            let appearance = UINavigationBarAppearance()
+            appearance.shadowColor = Colors.Border.naviShadow
+            appearance.backgroundColor = .white
+
+            navigationBar.standardAppearance = appearance
+            navigationBar.compactAppearance = appearance
+            navigationBar.scrollEdgeAppearance = appearance
+
+            let leftItem = UIBarButtonItem(customView: CustomNavigationLeftView())
+            let rightItem = UIBarButtonItem(customView: CustomNavigationRightView())
+
+            topViewController?.navigationItem.leftBarButtonItem = leftItem
+            topViewController?.navigationItem.rightBarButtonItem = rightItem
+        }
 }

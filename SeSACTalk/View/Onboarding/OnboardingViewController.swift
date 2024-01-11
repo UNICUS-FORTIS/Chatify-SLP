@@ -16,7 +16,9 @@ final class OnboardingViewController: UIViewController {
     
     
     private let mainImage = UIImageView(image: .onboarding)
-    private let mainTitle = CustomTitleLabel(ScreenTitles.Onboarding.mainTitle)
+    private let mainTitle = CustomTitleLabel(ScreenTitles.Onboarding.mainTitle,
+                                             font: Typography.title1 ??
+                                             UIFont.systemFont(ofSize: 22))
     private let startButton = CustomButton(title: ScreenTitles.Onboarding.startButton)
     private var fpc: FloatingPanelController!
     private let viewModel = OnboardingViewModel()

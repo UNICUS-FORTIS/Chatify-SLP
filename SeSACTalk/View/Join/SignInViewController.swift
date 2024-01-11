@@ -239,12 +239,12 @@ final class SignInViewController: UIViewController {
     
     private func configure() {
         view.backgroundColor = Colors.Background.primary
-        title = "회원가입"
         view.addSubview(email)
         view.addSubview(emailCheckButton)
         view.addSubview(signInButton)
         components.forEach { view.addSubview($0) }
-        navigationController?.setSignInNavigation(target: self,
+        navigationController?.setSignInNavigation(title: "회원가입",
+                                                  target: self,
                                                   action: #selector(dismissTrigger))
     }
     

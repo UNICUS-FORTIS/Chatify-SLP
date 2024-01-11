@@ -12,9 +12,10 @@ import UIKit
 final class CustomTitleLabel: UILabel {
     
     
-    convenience init(_ text: String) {
+    convenience init(_ text: String, font: UIFont) {
         self.init()
         self.text = text
+        self.font = font
     }
     
     override init(frame: CGRect) {
@@ -29,7 +30,6 @@ final class CustomTitleLabel: UILabel {
     private func configure() {
         
         self.textColor = .black
-        self.font = Typography.title1
         self.textAlignment = .center
         self.numberOfLines = 0
         
