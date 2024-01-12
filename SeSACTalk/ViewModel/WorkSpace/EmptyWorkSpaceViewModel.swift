@@ -10,9 +10,9 @@ import RxSwift
 import RxCocoa
 
 
-final class WorkSpaceViewModel {
+final class EmptyWorkSpaceViewModel {
     
-    
+    private let disposeBag = DisposeBag()
     var storedNickname: String {
         if let nickname = UserDefaults.standard.string(forKey: "AppleLoginName") {
             return nickname
@@ -20,6 +20,12 @@ final class WorkSpaceViewModel {
             return ""
         }
     }
+    
+    let workspace = PublishSubject<String>()
+    let workspaceImage = PublishSubject<Data>()
+    let workspaceImageMounted = BehaviorSubject<Bool>(value: false)
+    let spaceDescription = PublishSubject<String>()
+    
     
     
     

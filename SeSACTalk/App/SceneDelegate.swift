@@ -47,7 +47,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        }
         
         window = UIWindow(windowScene: windowScene)
-        let naviVC = UINavigationController(rootViewController: WorkSpaceEditViewController())
+        let naviVC = UINavigationController(rootViewController: EmptyWorkSpaceEditViewController())
         window?.rootViewController = naviVC
         window?.makeKeyAndVisible()
         

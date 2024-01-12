@@ -48,7 +48,7 @@
 		DE71715A2B467D7200B619D4 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7171592B467D7200B619D4 /* APIError.swift */; };
 		DE71715D2B46B5C000B619D4 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = DE71715C2B46B5C000B619D4 /* Toast */; };
 		DE7171622B46B71000B619D4 /* ToastPresentableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7171612B46B71000B619D4 /* ToastPresentableProtocol.swift */; };
-		DE94854E2B50A85C00BDA8AE /* WorkSpaceEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE94854D2B50A85C00BDA8AE /* WorkSpaceEditViewController.swift */; };
+		DE94854E2B50A85C00BDA8AE /* EmptyWorkSpaceEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE94854D2B50A85C00BDA8AE /* EmptyWorkSpaceEditViewController.swift */; };
 		DE9485502B50AD5B00BDA8AE /* CustomSpaceImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE94854F2B50AD5B00BDA8AE /* CustomSpaceImageView.swift */; };
 		DE9539F32B482C8D009B196A /* ToastMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9539F22B482C8D009B196A /* ToastMessages.swift */; };
 		DE9539F52B486286009B196A /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9539F42B486286009B196A /* String+Extension.swift */; };
@@ -59,7 +59,7 @@
 		DE9DEBA62B4E9CAC008D67AD /* AppleLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9DEBA52B4E9CAC008D67AD /* AppleLoginManager.swift */; };
 		DE9DEBA82B4EB38A008D67AD /* AppleLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9DEBA72B4EB38A008D67AD /* AppleLoginRequest.swift */; };
 		DE9DEBAB2B4ECDC7008D67AD /* WorkSpaceInitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9DEBAA2B4ECDC7008D67AD /* WorkSpaceInitialViewController.swift */; };
-		DE9DEBAE2B4ED1AC008D67AD /* WorkSpaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9DEBAD2B4ED1AC008D67AD /* WorkSpaceViewModel.swift */; };
+		DE9DEBAE2B4ED1AC008D67AD /* EmptyWorkSpaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9DEBAD2B4ED1AC008D67AD /* EmptyWorkSpaceViewModel.swift */; };
 		DEA121B62B4C65C3008E9FC1 /* OnboardingViewmodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA121B52B4C65C3008E9FC1 /* OnboardingViewmodel.swift */; };
 		DEC6FE812B4FA4EA0082A7D6 /* HomeEmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC6FE802B4FA4EA0082A7D6 /* HomeEmptyViewController.swift */; };
 		DEC6FE832B4FA9510082A7D6 /* CustomNavigationLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC6FE822B4FA9510082A7D6 /* CustomNavigationLeftView.swift */; };
@@ -127,7 +127,7 @@
 		DE7171572B46793100B619D4 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		DE7171592B467D7200B619D4 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		DE7171612B46B71000B619D4 /* ToastPresentableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastPresentableProtocol.swift; sourceTree = "<group>"; };
-		DE94854D2B50A85C00BDA8AE /* WorkSpaceEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkSpaceEditViewController.swift; sourceTree = "<group>"; };
+		DE94854D2B50A85C00BDA8AE /* EmptyWorkSpaceEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyWorkSpaceEditViewController.swift; sourceTree = "<group>"; };
 		DE94854F2B50AD5B00BDA8AE /* CustomSpaceImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSpaceImageView.swift; sourceTree = "<group>"; };
 		DE9539F22B482C8D009B196A /* ToastMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastMessages.swift; sourceTree = "<group>"; };
 		DE9539F42B486286009B196A /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
@@ -138,7 +138,7 @@
 		DE9DEBA52B4E9CAC008D67AD /* AppleLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginManager.swift; sourceTree = "<group>"; };
 		DE9DEBA72B4EB38A008D67AD /* AppleLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginRequest.swift; sourceTree = "<group>"; };
 		DE9DEBAA2B4ECDC7008D67AD /* WorkSpaceInitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkSpaceInitialViewController.swift; sourceTree = "<group>"; };
-		DE9DEBAD2B4ED1AC008D67AD /* WorkSpaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkSpaceViewModel.swift; sourceTree = "<group>"; };
+		DE9DEBAD2B4ED1AC008D67AD /* EmptyWorkSpaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyWorkSpaceViewModel.swift; sourceTree = "<group>"; };
 		DEA121B52B4C65C3008E9FC1 /* OnboardingViewmodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewmodel.swift; sourceTree = "<group>"; };
 		DEC6FE802B4FA4EA0082A7D6 /* HomeEmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEmptyViewController.swift; sourceTree = "<group>"; };
 		DEC6FE822B4FA9510082A7D6 /* CustomNavigationLeftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationLeftView.swift; sourceTree = "<group>"; };
@@ -438,9 +438,9 @@
 		DE9DEBAC2B4ED19D008D67AD /* WorkSpace */ = {
 			isa = PBXGroup;
 			children = (
-				DE9DEBAD2B4ED1AC008D67AD /* WorkSpaceViewModel.swift */,
+				DE9DEBAD2B4ED1AC008D67AD /* EmptyWorkSpaceViewModel.swift */,
 				DEC6FE802B4FA4EA0082A7D6 /* HomeEmptyViewController.swift */,
-				DE94854D2B50A85C00BDA8AE /* WorkSpaceEditViewController.swift */,
+				DE94854D2B50A85C00BDA8AE /* EmptyWorkSpaceEditViewController.swift */,
 			);
 			path = WorkSpace;
 			sourceTree = "<group>";
@@ -607,7 +607,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE94854E2B50A85C00BDA8AE /* WorkSpaceEditViewController.swift in Sources */,
+				DE94854E2B50A85C00BDA8AE /* EmptyWorkSpaceEditViewController.swift in Sources */,
 				DE56860A2B4C130C00E8BA63 /* CustomTitleLabel.swift in Sources */,
 				DE5CD4092B4556FA002546CD /* SignInViewController.swift in Sources */,
 				DE7171522B466C1A00B619D4 /* APIService.swift in Sources */,
@@ -630,7 +630,7 @@
 				DED5F4342B4DC80700BE1D9B /* KakaoLoginRequest.swift in Sources */,
 				DE7171502B466A2900B619D4 /* SecureKeys.swift in Sources */,
 				DE9BCA0B2B4B0C9D005DE0B0 /* EmailLoginRequest.swift in Sources */,
-				DE9DEBAE2B4ED1AC008D67AD /* WorkSpaceViewModel.swift in Sources */,
+				DE9DEBAE2B4ED1AC008D67AD /* EmptyWorkSpaceViewModel.swift in Sources */,
 				DE56860C2B4C14FA00E8BA63 /* ScreenTitles.swift in Sources */,
 				DE7171542B466E3B00B619D4 /* ErrorResponse.swift in Sources */,
 				DE7171562B466E4900B619D4 /* EmailValidationRequest.swift in Sources */,

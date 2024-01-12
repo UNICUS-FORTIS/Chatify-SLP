@@ -50,4 +50,12 @@ final class ValidationCenter {
         }
     }
     
+    func checkWorkspaceName(_ workspace: String) -> Bool {
+        if workspace.count > 30 {
+            return false
+        } else {
+            return true
+        }
+    }
+    
 }

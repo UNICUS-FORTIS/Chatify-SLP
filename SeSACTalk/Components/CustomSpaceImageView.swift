@@ -31,6 +31,7 @@ final class CustomSpaceImageView: UIImageView {
     private func configure() {
         self.addSubview(spaceImage)
         self.addSubview(cameraImage)
+        self.isUserInteractionEnabled = true
         spaceImage.backgroundColor = Colors.Brand.green
         spaceImage.image = .chatBubble
         spaceImage.contentMode = .scaleAspectFit
@@ -51,5 +52,9 @@ final class CustomSpaceImageView: UIImageView {
     
     func setImage(image: UIImage) {
         self.spaceImage.image = image
+    }
+    
+    func setContentMode(mode: ContentMode) {
+        self.spaceImage.contentMode = mode
     }
 }

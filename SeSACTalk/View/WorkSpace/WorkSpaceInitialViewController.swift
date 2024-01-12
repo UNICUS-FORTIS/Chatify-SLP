@@ -12,7 +12,7 @@ import SnapKit
 
 final class WorkSpaceInitialViewController: UIViewController {
 
-    private let viewModel = WorkSpaceViewModel()
+    private let viewModel = EmptyWorkSpaceViewModel()
     private let screenTitle = CustomTitleLabel(ScreenTitles.WorkSpaceInitial.mainTitle,
                                                font: Typography.title1 ??
                                                UIFont.systemFont(ofSize: 22))

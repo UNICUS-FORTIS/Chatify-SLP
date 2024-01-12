@@ -36,5 +36,7 @@ enum ScreenTitles {
         관리자에게 초대를 요청하거나, 다른 이메일로 시도하거나
         새로운 워크스페이스를 생성해주세요.
         """
+        static let workSpaceNameRestrict = "워크스페이스 이름은 1~30자로 설정해주세요."
+        static let workSpaceImageRestrict = "워크스페이스 이미지를 등록해주세요. "
     }
 }

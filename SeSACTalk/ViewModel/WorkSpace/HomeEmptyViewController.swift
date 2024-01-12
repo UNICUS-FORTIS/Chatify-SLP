@@ -20,7 +20,6 @@ final class HomeEmptyViewController: UIViewController {
                                                   UIFont.systemFont(ofSize: 13))
     private let mainImage = UIImageView(image: .workspaceEmpty)
     private let createWorkSpaceButton = CustomButton(title: ScreenTitles.WorkSpaceInitial.createWorkSpace)
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
