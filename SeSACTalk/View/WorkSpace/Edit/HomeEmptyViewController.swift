@@ -28,7 +28,16 @@ final class HomeEmptyViewController: UIViewController {
         
         configure()
         setConstraints()
+        guideToInitialViewController()
     }
+    
+    private func guideToInitialViewController() {
+        let vc = WorkSpaceInitialViewController()
+        vc.modalTransitionStyle = .coverVertical
+        vc.modalPresentationStyle = .fullScreen
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     
     private func configure() {
         

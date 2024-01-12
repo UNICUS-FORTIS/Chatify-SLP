@@ -47,10 +47,11 @@ final class WorkSpaceInitialViewController: UIViewController {
         navigationController?.setStartingAppearance(title: "시작하기",
                                                   target: self,
                                                   action: #selector(dismissTrigger))
+        
     }
     
     @objc private func dismissTrigger() {
-        self.dismiss(animated: true)
+        navigationController?.popViewController(animated: true)
     }
     
     private func setConstraints() {

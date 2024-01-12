@@ -56,6 +56,7 @@
 		DE7488F52B518BE700BED0EB /* LayoutSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7488F42B518BE700BED0EB /* LayoutSections.swift */; };
 		DE7488F72B518ED000BED0EB /* ChannelHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7488F62B518ED000BED0EB /* ChannelHeaderCell.swift */; };
 		DE7488F92B519A8F00BED0EB /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7488F82B519A8F00BED0EB /* UIImage+Extension.swift */; };
+		DE7488FD2B51B0AA00BED0EB /* ToWorkSpaceTriggerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7488FC2B51B0AA00BED0EB /* ToWorkSpaceTriggerProtocol.swift */; };
 		DE94854E2B50A85C00BDA8AE /* EmptyWorkSpaceEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE94854D2B50A85C00BDA8AE /* EmptyWorkSpaceEditViewController.swift */; };
 		DE9485502B50AD5B00BDA8AE /* CustomSpaceImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE94854F2B50AD5B00BDA8AE /* CustomSpaceImageView.swift */; };
 		DE9539F32B482C8D009B196A /* ToastMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9539F22B482C8D009B196A /* ToastMessages.swift */; };
@@ -68,7 +69,7 @@
 		DE9DEBA82B4EB38A008D67AD /* AppleLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9DEBA72B4EB38A008D67AD /* AppleLoginRequest.swift */; };
 		DE9DEBAB2B4ECDC7008D67AD /* WorkSpaceInitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9DEBAA2B4ECDC7008D67AD /* WorkSpaceInitialViewController.swift */; };
 		DE9DEBAE2B4ED1AC008D67AD /* EmptyWorkSpaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9DEBAD2B4ED1AC008D67AD /* EmptyWorkSpaceViewModel.swift */; };
-		DEA121B62B4C65C3008E9FC1 /* OnboardingViewmodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA121B52B4C65C3008E9FC1 /* OnboardingViewmodel.swift */; };
+		DEA121B62B4C65C3008E9FC1 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA121B52B4C65C3008E9FC1 /* OnboardingViewModel.swift */; };
 		DEC6FE812B4FA4EA0082A7D6 /* HomeEmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC6FE802B4FA4EA0082A7D6 /* HomeEmptyViewController.swift */; };
 		DEC6FE832B4FA9510082A7D6 /* CustomNavigationLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC6FE822B4FA9510082A7D6 /* CustomNavigationLeftView.swift */; };
 		DEC6FE852B4FEC8D0082A7D6 /* CustomNavigationRightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC6FE842B4FEC8D0082A7D6 /* CustomNavigationRightView.swift */; };
@@ -143,6 +144,7 @@
 		DE7488F42B518BE700BED0EB /* LayoutSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutSections.swift; sourceTree = "<group>"; };
 		DE7488F62B518ED000BED0EB /* ChannelHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelHeaderCell.swift; sourceTree = "<group>"; };
 		DE7488F82B519A8F00BED0EB /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		DE7488FC2B51B0AA00BED0EB /* ToWorkSpaceTriggerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToWorkSpaceTriggerProtocol.swift; sourceTree = "<group>"; };
 		DE94854D2B50A85C00BDA8AE /* EmptyWorkSpaceEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyWorkSpaceEditViewController.swift; sourceTree = "<group>"; };
 		DE94854F2B50AD5B00BDA8AE /* CustomSpaceImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSpaceImageView.swift; sourceTree = "<group>"; };
 		DE9539F22B482C8D009B196A /* ToastMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastMessages.swift; sourceTree = "<group>"; };
@@ -155,7 +157,7 @@
 		DE9DEBA72B4EB38A008D67AD /* AppleLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginRequest.swift; sourceTree = "<group>"; };
 		DE9DEBAA2B4ECDC7008D67AD /* WorkSpaceInitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkSpaceInitialViewController.swift; sourceTree = "<group>"; };
 		DE9DEBAD2B4ED1AC008D67AD /* EmptyWorkSpaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyWorkSpaceViewModel.swift; sourceTree = "<group>"; };
-		DEA121B52B4C65C3008E9FC1 /* OnboardingViewmodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewmodel.swift; sourceTree = "<group>"; };
+		DEA121B52B4C65C3008E9FC1 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		DEC6FE802B4FA4EA0082A7D6 /* HomeEmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEmptyViewController.swift; sourceTree = "<group>"; };
 		DEC6FE822B4FA9510082A7D6 /* CustomNavigationLeftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationLeftView.swift; sourceTree = "<group>"; };
 		DEC6FE842B4FEC8D0082A7D6 /* CustomNavigationRightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationRightView.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				DE5686132B4C27E700E8BA63 /* OnboardingFloatingPanelLayout.swift */,
 				DE7488F02B51886D00BED0EB /* ReusableProtocol.swift */,
 				DE7488F42B518BE700BED0EB /* LayoutSections.swift */,
+				DE7488FC2B51B0AA00BED0EB /* ToWorkSpaceTriggerProtocol.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -512,7 +515,7 @@
 		DEA121B42B4C65B7008E9FC1 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				DEA121B52B4C65C3008E9FC1 /* OnboardingViewmodel.swift */,
+				DEA121B52B4C65C3008E9FC1 /* OnboardingViewModel.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -682,7 +685,7 @@
 				DE5CD4512B455DF4002546CD /* Colors.swift in Sources */,
 				DE9DEBA62B4E9CAC008D67AD /* AppleLoginManager.swift in Sources */,
 				DE9485502B50AD5B00BDA8AE /* CustomSpaceImageView.swift in Sources */,
-				DEA121B62B4C65C3008E9FC1 /* OnboardingViewmodel.swift in Sources */,
+				DEA121B62B4C65C3008E9FC1 /* OnboardingViewModel.swift in Sources */,
 				DE7488EC2B517FCC00BED0EB /* DefaultWorkSpaceViewModel.swift in Sources */,
 				DE7488F52B518BE700BED0EB /* LayoutSections.swift in Sources */,
 				DE5CD4052B4556FA002546CD /* AppDelegate.swift in Sources */,
@@ -713,6 +716,7 @@
 				DE7488F92B519A8F00BED0EB /* UIImage+Extension.swift in Sources */,
 				DE7488F12B51886D00BED0EB /* ReusableProtocol.swift in Sources */,
 				DE5CD4592B4566DE002546CD /* CustomTextField.swift in Sources */,
+				DE7488FD2B51B0AA00BED0EB /* ToWorkSpaceTriggerProtocol.swift in Sources */,
 				DE5686142B4C27E700E8BA63 /* OnboardingFloatingPanelLayout.swift in Sources */,
 				DE7488F72B518ED000BED0EB /* ChannelHeaderCell.swift in Sources */,
 				DEC6FE832B4FA9510082A7D6 /* CustomNavigationLeftView.swift in Sources */,

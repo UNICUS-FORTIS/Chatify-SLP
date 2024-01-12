@@ -12,7 +12,6 @@ import RxCocoa
 
 final class SignInViewModel {
     
-    let networkService = NetworkService.shared
     let emailSubject = PublishSubject<String>()
     let nicknameSubject = PublishSubject<String>()
     let contactSubject = PublishSubject<String>()
@@ -31,6 +30,7 @@ final class SignInViewModel {
         default: return false
         }
     }
+    
     
     var signInRequestForm: Observable<SignInRequest> {
         return Observable.combineLatest(emailSubject,
@@ -107,4 +107,8 @@ final class SignInViewModel {
             }
     }
     
+    func saveTokens(access: String, refresh: String) {
+        UserDefaults.standard.setValue(access, forKey: "accessToken")
+        UserDefaults.standard.setValue(refresh, forKey: "refreshToken")
+    }
 }

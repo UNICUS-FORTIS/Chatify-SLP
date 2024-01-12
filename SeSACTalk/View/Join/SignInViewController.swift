@@ -16,6 +16,9 @@ final class SignInViewController: UIViewController {
     
     private let viewModel = SignInViewModel()
     private lazy var center = ValidationCenter()
+    private let networkService = NetworkService.shared
+    weak var delegate: ToWorkSpaceTriggerProtocol?
+
     
     private let email = CustomInputView(label: "이메일",
                                         placeHolder: "이메일을 입력하세요",
@@ -56,6 +59,7 @@ final class SignInViewController: UIViewController {
     }
     
     private func bind() {
+        
         email.textField.rx.text.orEmpty
             .bind(to: viewModel.emailSubject)
             .disposed(by: disposeBag)
@@ -76,6 +80,7 @@ final class SignInViewController: UIViewController {
             .bind(to: viewModel.passcodeConfirmSubject)
             .disposed(by: disposeBag)
         
+        // MARK: - 회원가입버튼 동작
         signInButton.rx.tap
             .debounce(.seconds(1), scheduler: MainScheduler.instance)
             .flatMapLatest { self.checkEachInputs() }
@@ -83,10 +88,30 @@ final class SignInViewController: UIViewController {
             .withLatestFrom(viewModel.isFormValid)
             .filter { $0 }
             .withLatestFrom(viewModel.signInRequestForm)
-            .subscribe(with: self) { owner, result in
-                print("결과",result)
+            .flatMapLatest { requestForm -> Observable<Result<SignInResponse, ErrorResponse>> in
+                let form = SignInRequest(email: requestForm.email,
+                                         password: requestForm.password,
+                                         nickname: requestForm.nickname,
+                                         phone: requestForm.phone,
+                                         deviceToken: requestForm.deviceToken)
+                return self.networkService.fetchJoinRequest(info: form).asObservable()
+            }
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self) { owner, response in
+                switch response {
+                case .success(let result):
+                    owner.viewModel.saveTokens(access: result.token.accessToken,
+                                         refresh: result.token.refreshToken)
+                    
+                    owner.dismiss(animated: true)
+                    owner.delegate?.pushToWorkSpace()
+                    
+                case .failure(let error):
+                    print(error.errorCode)
+                }
             }
             .disposed(by: disposeBag)
+
         
         email.textField.rx.text.orEmpty
             .subscribe(with: self) { owner, text in
@@ -102,6 +127,7 @@ final class SignInViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        // MARK: - 중복버튼 동작
         emailCheckButton.rx.tap
             .debounce(.seconds(1), scheduler: MainScheduler.instance)
             .distinctUntilChanged({ _ , _ in
@@ -124,7 +150,7 @@ final class SignInViewController: UIViewController {
                                                 aboveView: self.signInButton)
                     return Observable.empty()
                 }
-                let result = self.viewModel.networkService.fetchEmailValidationRequest(info: EmailValidationRequest(email: text))
+                let result = self.networkService.fetchEmailValidationRequest(info: EmailValidationRequest(email: text))
                 return result.asObservable()
             }
             .subscribe(with: self) { owner, result in
@@ -234,8 +260,6 @@ final class SignInViewController: UIViewController {
         }
         return Observable.just(true)
     }
-    
-    
     
     private func configure() {
         view.backgroundColor = Colors.Background.primary

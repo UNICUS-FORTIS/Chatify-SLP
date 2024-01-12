@@ -30,8 +30,7 @@ final class OnboardingViewController: UIViewController {
         setConstraints()
         setFloatingPanel()
     }
-    
-    
+        
     private func configure() {
         view.backgroundColor = Colors.Background.primary
         view.addSubview(mainImage)
@@ -47,6 +46,8 @@ final class OnboardingViewController: UIViewController {
         let appearance = SurfaceAppearance()
         viewModel.joinPagePushTrigger = { [weak self] in
             let vc = SignInViewController()
+            vc.delegate = self
+            
             let NavVC = UINavigationController(rootViewController: vc)
             if let sheet = NavVC.presentationController as? UISheetPresentationController {
                 sheet.detents = [.large()]
@@ -90,4 +91,14 @@ final class OnboardingViewController: UIViewController {
             make.bottom.equalToSuperview().offset(-45)
         }
     }
+}
+
+extension OnboardingViewController: ToWorkSpaceTriggerProtocol {
+    
+    func pushToWorkSpace() {
+        let vc = WorkSpaceInitialViewController()
+        self.navigationController?.setViewControllers([vc], animated: true)
+    }
+    
+    
 }

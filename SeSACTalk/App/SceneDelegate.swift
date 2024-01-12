@@ -18,36 +18,36 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-//        
-//        guard let user = UserDefaults.standard.string(forKey: "AppleUser") else {
-//            print("No User")
-//            window = UIWindow(windowScene: windowScene)
-//            let naviVC = UINavigationController(rootViewController: SignInViewController())
-//            window?.rootViewController = naviVC
-//            window?.makeKeyAndVisible()
-//            return
-//        }
-//        
-//        let appleIDProvider = ASAuthorizationAppleIDProvider()
-//        appleIDProvider.getCredentialState(forUserID: user) { credentialState, error in
-//            switch credentialState {
-//            case .revoked: print("Revokedㅋㅋㅋ")
-//            
-//            case .authorized:
-//                print("hi")
-////                DispatchQueue.main.asyncAndWait {
-////                    let window = UIWindow(windowScene: windowScene)
-////                    window.rootViewController = MainViewController()
-////                    self.window = window
-////                    window.makeKeyAndVisible()
-////                }
-//            
-//            default: print("not Found !@!@!@!@")
-//            }
-//        }
+        
+        guard let user = UserDefaults.standard.string(forKey: "AppleUser") else {
+            print("No User")
+            window = UIWindow(windowScene: windowScene)
+            let naviVC = UINavigationController(rootViewController: HomeEmptyViewController())
+            window?.rootViewController = naviVC
+            window?.makeKeyAndVisible()
+            return
+        }
+        
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        appleIDProvider.getCredentialState(forUserID: user) { credentialState, error in
+            switch credentialState {
+            case .revoked: print("Revokedㅋㅋㅋ")
+            
+            case .authorized:
+                print("hi")
+//                DispatchQueue.main.asyncAndWait {
+//                    let window = UIWindow(windowScene: windowScene)
+//                    window.rootViewController = MainViewController()
+//                    self.window = window
+//                    window.makeKeyAndVisible()
+//                }
+            
+            default: print("not Found !@!@!@!@")
+            }
+        }
         
         window = UIWindow(windowScene: windowScene)
-        let naviVC = UINavigationController(rootViewController: EmptyWorkSpaceEditViewController())
+        let naviVC = UINavigationController(rootViewController: HomeEmptyViewController())
         window?.rootViewController = naviVC
         window?.makeKeyAndVisible()
         
