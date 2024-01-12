@@ -42,7 +42,7 @@ final class WorkSpaceInitialViewController: UIViewController {
 
         mainImage.contentMode = .scaleAspectFit
         createWorkSpaceButton.validationBinder.onNext(true)
-        navigationController?.setSignInNavigation(title: "시작하기",
+        navigationController?.setStartingAppearance(title: "시작하기",
                                                   target: self,
                                                   action: #selector(dismissTrigger))
     }

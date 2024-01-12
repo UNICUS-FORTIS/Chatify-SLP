@@ -12,8 +12,7 @@ import UIKit
 extension UINavigationController {
     
     
-    func setSignInNavigation(title: String?, target: UIViewController, action: Selector?) {
-        print(#function)
+    func setStartingAppearance(title: String?, target: UIViewController, action: Selector?) {
         let appearance = UINavigationBarAppearance()
         target.title = title
         appearance.shadowColor = .clear

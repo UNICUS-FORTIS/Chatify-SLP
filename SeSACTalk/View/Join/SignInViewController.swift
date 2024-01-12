@@ -243,7 +243,7 @@ final class SignInViewController: UIViewController {
         view.addSubview(emailCheckButton)
         view.addSubview(signInButton)
         components.forEach { view.addSubview($0) }
-        navigationController?.setSignInNavigation(title: "회원가입",
+        navigationController?.setStartingAppearance(title: "회원가입",
                                                   target: self,
                                                   action: #selector(dismissTrigger))
     }
@@ -266,8 +266,7 @@ final class SignInViewController: UIViewController {
         components.forEach { inputView in
             inputView.snp.makeConstraints { make in
                 make.top.equalTo(previousView?.snp.bottom ?? view.safeAreaLayoutGuide).offset(24)
-                make.leading.equalToSuperview().offset(24)
-                make.trailing.equalToSuperview().offset(-24)
+                make.horizontalEdges.equalToSuperview().inset(24)
                 make.height.equalTo(76)
             }
             previousView = inputView
