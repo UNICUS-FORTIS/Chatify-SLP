@@ -10,12 +10,15 @@ import UIKit
 
 final class CustomLabel: UILabel {
     
-    private var labelText: NSAttributedString
+    private var attrText: NSAttributedString
+    private let normalText: String
 
     
     override init(frame: CGRect) {
-        self.labelText = NSAttributedString(string: "")
+        self.attrText = NSAttributedString(string: "")
+        self.normalText = ""
         super.init(frame: frame)
+        self.isUserInteractionEnabled = true
     }
     
     convenience init(_ text: NSAttributedString, font: UIFont) {
@@ -23,7 +26,13 @@ final class CustomLabel: UILabel {
         self.attributedText = text
         self.font = font
         self.textAlignment = .center
-        self.isUserInteractionEnabled = true
+    }
+    
+    convenience init(_ text: String, font: UIFont) {
+        self.init(frame: .zero)
+        self.text = text
+        self.font = font
+        self.textAlignment = .left
     }
     
     required init?(coder: NSCoder) {

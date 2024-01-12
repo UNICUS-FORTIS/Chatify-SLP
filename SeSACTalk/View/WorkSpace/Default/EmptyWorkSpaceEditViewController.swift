@@ -52,18 +52,10 @@ final class EmptyWorkSpaceEditViewController: UIViewController, ToastPresentable
     @objc private func imageTapped() {
         print("터치됨")
     }
-    
-    private func setupImagePicker() {
-        var configuration = PHPickerConfiguration()
-        configuration.selectionLimit = 1
-        configuration.filter = .any(of: [.images])
-        let picker = PHPickerViewController(configuration: configuration)
-        picker.delegate = self
-        self.present(picker, animated: true, completion: nil)
-    }
-    
+
     private func bind() {
         spaceImage.addGestureRecognizer(tapGesture)
+        
         tapGesture.rx.event
             .subscribe(with: self) { owner, _ in
                 owner.setupImagePicker()
@@ -113,9 +105,15 @@ final class EmptyWorkSpaceEditViewController: UIViewController, ToastPresentable
                 }
             }
             .disposed(by: disposeBag)
-        
-        
-        
+    }
+    
+    private func setupImagePicker() {
+        var configuration = PHPickerConfiguration()
+        configuration.selectionLimit = 1
+        configuration.filter = .any(of: [.images])
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.delegate = self
+        self.present(picker, animated: true, completion: nil)
     }
     
     private func setConstraints() {
@@ -156,8 +154,7 @@ final class EmptyWorkSpaceEditViewController: UIViewController, ToastPresentable
 
 extension EmptyWorkSpaceEditViewController: PHPickerViewControllerDelegate {
     
-    func picker(_ picker: PHPickerViewController, didFinishPicking results:
-                [PHPickerResult]) {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
         
         let itemProvider = results.first?.itemProvider
@@ -165,9 +162,12 @@ extension EmptyWorkSpaceEditViewController: PHPickerViewControllerDelegate {
             itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
                 if let image = image as? UIImage {
                     DispatchQueue.main.async {
-                        if let imageData = image.jpegData(compressionQuality: 0.5) {
-                            self.spaceImage.setImage(image: image)
-                            self.spaceImage.setContentMode(mode: .scaleAspectFill)
+                        let downSampledImage = image.downSample(size: CGSize(width: 100, height: 100),
+                                                                scale: 1.0)
+                        self.spaceImage.setImage(image: downSampledImage)
+                        self.spaceImage.setContentMode(mode: .scaleAspectFill)
+                        
+                        if let imageData = downSampledImage.pngData() {
                             self.viewModel.workspaceImage.onNext(imageData)
                             self.viewModel.workspaceImageMounted.onNext(true)
                         }
@@ -175,8 +175,9 @@ extension EmptyWorkSpaceEditViewController: PHPickerViewControllerDelegate {
                 }
             }
         } else {
-            print("이미지 못 불러왔음!!!!")
+            print("이미지 지정을 취소했습니다.")
         }
     }
+
 }
 

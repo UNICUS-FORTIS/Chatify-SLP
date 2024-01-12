@@ -16,7 +16,8 @@ final class CustomNavigationLeftView: UIView {
     let leftItem = UIImageView()
     
     
-    let naviTitle = CustomTitleLabel("No Workspace",
+    let naviTitle = CustomTitleLabel("No Workspace", 
+                                     textColor: .black,
                                      font: Typography.title1 ??
                                      UIFont.systemFont(ofSize: 22))
     let rightItem = UIImageView()

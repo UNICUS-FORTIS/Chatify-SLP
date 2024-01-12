@@ -48,6 +48,14 @@
 		DE71715A2B467D7200B619D4 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7171592B467D7200B619D4 /* APIError.swift */; };
 		DE71715D2B46B5C000B619D4 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = DE71715C2B46B5C000B619D4 /* Toast */; };
 		DE7171622B46B71000B619D4 /* ToastPresentableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7171612B46B71000B619D4 /* ToastPresentableProtocol.swift */; };
+		DE7488E82B517D2A00BED0EB /* DefaultWorkSpaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7488E72B517D2A00BED0EB /* DefaultWorkSpaceViewController.swift */; };
+		DE7488EC2B517FCC00BED0EB /* DefaultWorkSpaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7488EB2B517FCC00BED0EB /* DefaultWorkSpaceViewModel.swift */; };
+		DE7488EF2B5184C700BED0EB /* ChannelTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7488EE2B5184C700BED0EB /* ChannelTableCell.swift */; };
+		DE7488F12B51886D00BED0EB /* ReusableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7488F02B51886D00BED0EB /* ReusableProtocol.swift */; };
+		DE7488F32B518A0E00BED0EB /* ChannelFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7488F22B518A0E00BED0EB /* ChannelFooterCell.swift */; };
+		DE7488F52B518BE700BED0EB /* LayoutSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7488F42B518BE700BED0EB /* LayoutSections.swift */; };
+		DE7488F72B518ED000BED0EB /* ChannelHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7488F62B518ED000BED0EB /* ChannelHeaderCell.swift */; };
+		DE7488F92B519A8F00BED0EB /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7488F82B519A8F00BED0EB /* UIImage+Extension.swift */; };
 		DE94854E2B50A85C00BDA8AE /* EmptyWorkSpaceEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE94854D2B50A85C00BDA8AE /* EmptyWorkSpaceEditViewController.swift */; };
 		DE9485502B50AD5B00BDA8AE /* CustomSpaceImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE94854F2B50AD5B00BDA8AE /* CustomSpaceImageView.swift */; };
 		DE9539F32B482C8D009B196A /* ToastMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9539F22B482C8D009B196A /* ToastMessages.swift */; };
@@ -127,6 +135,14 @@
 		DE7171572B46793100B619D4 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		DE7171592B467D7200B619D4 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		DE7171612B46B71000B619D4 /* ToastPresentableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastPresentableProtocol.swift; sourceTree = "<group>"; };
+		DE7488E72B517D2A00BED0EB /* DefaultWorkSpaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultWorkSpaceViewController.swift; sourceTree = "<group>"; };
+		DE7488EB2B517FCC00BED0EB /* DefaultWorkSpaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultWorkSpaceViewModel.swift; sourceTree = "<group>"; };
+		DE7488EE2B5184C700BED0EB /* ChannelTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelTableCell.swift; sourceTree = "<group>"; };
+		DE7488F02B51886D00BED0EB /* ReusableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableProtocol.swift; sourceTree = "<group>"; };
+		DE7488F22B518A0E00BED0EB /* ChannelFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelFooterCell.swift; sourceTree = "<group>"; };
+		DE7488F42B518BE700BED0EB /* LayoutSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutSections.swift; sourceTree = "<group>"; };
+		DE7488F62B518ED000BED0EB /* ChannelHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelHeaderCell.swift; sourceTree = "<group>"; };
+		DE7488F82B519A8F00BED0EB /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		DE94854D2B50A85C00BDA8AE /* EmptyWorkSpaceEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyWorkSpaceEditViewController.swift; sourceTree = "<group>"; };
 		DE94854F2B50AD5B00BDA8AE /* CustomSpaceImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSpaceImageView.swift; sourceTree = "<group>"; };
 		DE9539F22B482C8D009B196A /* ToastMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastMessages.swift; sourceTree = "<group>"; };
@@ -196,6 +212,8 @@
 			isa = PBXGroup;
 			children = (
 				DE5686132B4C27E700E8BA63 /* OnboardingFloatingPanelLayout.swift */,
+				DE7488F02B51886D00BED0EB /* ReusableProtocol.swift */,
+				DE7488F42B518BE700BED0EB /* LayoutSections.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -283,6 +301,7 @@
 		DE5CD4452B4558FF002546CD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DE7488ED2B51848700BED0EB /* TableViewCell */,
 				DE9DEBA92B4ECD90008D67AD /* WorkSpace */,
 				DE5686062B4C100600E8BA63 /* Onboarding */,
 				DE9BCA012B4AEE42005DE0B0 /* Join */,
@@ -306,6 +325,7 @@
 			children = (
 				DE9539F42B486286009B196A /* String+Extension.swift */,
 				DED5F4292B4D821D00BE1D9B /* UINavigationController+Extension.swift */,
+				DE7488F82B519A8F00BED0EB /* UIImage+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -393,6 +413,50 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		DE7488E52B517ACA00BED0EB /* Edit */ = {
+			isa = PBXGroup;
+			children = (
+				DE9DEBAD2B4ED1AC008D67AD /* EmptyWorkSpaceViewModel.swift */,
+			);
+			path = Edit;
+			sourceTree = "<group>";
+		};
+		DE7488E62B517ADB00BED0EB /* Default */ = {
+			isa = PBXGroup;
+			children = (
+				DE7488EB2B517FCC00BED0EB /* DefaultWorkSpaceViewModel.swift */,
+			);
+			path = Default;
+			sourceTree = "<group>";
+		};
+		DE7488E92B517FA400BED0EB /* Edit */ = {
+			isa = PBXGroup;
+			children = (
+				DEC6FE802B4FA4EA0082A7D6 /* HomeEmptyViewController.swift */,
+				DE9DEBAA2B4ECDC7008D67AD /* WorkSpaceInitialViewController.swift */,
+			);
+			path = Edit;
+			sourceTree = "<group>";
+		};
+		DE7488EA2B517FAE00BED0EB /* Default */ = {
+			isa = PBXGroup;
+			children = (
+				DE7488E72B517D2A00BED0EB /* DefaultWorkSpaceViewController.swift */,
+				DE94854D2B50A85C00BDA8AE /* EmptyWorkSpaceEditViewController.swift */,
+			);
+			path = Default;
+			sourceTree = "<group>";
+		};
+		DE7488ED2B51848700BED0EB /* TableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				DE7488EE2B5184C700BED0EB /* ChannelTableCell.swift */,
+				DE7488F22B518A0E00BED0EB /* ChannelFooterCell.swift */,
+				DE7488F62B518ED000BED0EB /* ChannelHeaderCell.swift */,
+			);
+			path = TableViewCell;
+			sourceTree = "<group>";
+		};
 		DE9BCA012B4AEE42005DE0B0 /* Join */ = {
 			isa = PBXGroup;
 			children = (
@@ -430,7 +494,8 @@
 		DE9DEBA92B4ECD90008D67AD /* WorkSpace */ = {
 			isa = PBXGroup;
 			children = (
-				DE9DEBAA2B4ECDC7008D67AD /* WorkSpaceInitialViewController.swift */,
+				DE7488EA2B517FAE00BED0EB /* Default */,
+				DE7488E92B517FA400BED0EB /* Edit */,
 			);
 			path = WorkSpace;
 			sourceTree = "<group>";
@@ -438,9 +503,8 @@
 		DE9DEBAC2B4ED19D008D67AD /* WorkSpace */ = {
 			isa = PBXGroup;
 			children = (
-				DE9DEBAD2B4ED1AC008D67AD /* EmptyWorkSpaceViewModel.swift */,
-				DEC6FE802B4FA4EA0082A7D6 /* HomeEmptyViewController.swift */,
-				DE94854D2B50A85C00BDA8AE /* EmptyWorkSpaceEditViewController.swift */,
+				DE7488E62B517ADB00BED0EB /* Default */,
+				DE7488E52B517ACA00BED0EB /* Edit */,
 			);
 			path = WorkSpace;
 			sourceTree = "<group>";
@@ -619,10 +683,14 @@
 				DE9DEBA62B4E9CAC008D67AD /* AppleLoginManager.swift in Sources */,
 				DE9485502B50AD5B00BDA8AE /* CustomSpaceImageView.swift in Sources */,
 				DEA121B62B4C65C3008E9FC1 /* OnboardingViewmodel.swift in Sources */,
+				DE7488EC2B517FCC00BED0EB /* DefaultWorkSpaceViewModel.swift in Sources */,
+				DE7488F52B518BE700BED0EB /* LayoutSections.swift in Sources */,
 				DE5CD4052B4556FA002546CD /* AppDelegate.swift in Sources */,
 				DE5CD44C2B4559CC002546CD /* EndPoints.swift in Sources */,
+				DE7488EF2B5184C700BED0EB /* ChannelTableCell.swift in Sources */,
 				DE71715A2B467D7200B619D4 /* APIError.swift in Sources */,
 				DE5CD4072B4556FA002546CD /* SceneDelegate.swift in Sources */,
+				DE7488E82B517D2A00BED0EB /* DefaultWorkSpaceViewController.swift in Sources */,
 				DE5686082B4C101800E8BA63 /* OnboardingViewController.swift in Sources */,
 				DE5CD4622B458319002546CD /* CustomButton.swift in Sources */,
 				DE9539F52B486286009B196A /* String+Extension.swift in Sources */,
@@ -642,11 +710,15 @@
 				DEC6FE852B4FEC8D0082A7D6 /* CustomNavigationRightView.swift in Sources */,
 				DE9BCA032B4AEE72005DE0B0 /* EmailLogInViewController.swift in Sources */,
 				DEC6FE812B4FA4EA0082A7D6 /* HomeEmptyViewController.swift in Sources */,
+				DE7488F92B519A8F00BED0EB /* UIImage+Extension.swift in Sources */,
+				DE7488F12B51886D00BED0EB /* ReusableProtocol.swift in Sources */,
 				DE5CD4592B4566DE002546CD /* CustomTextField.swift in Sources */,
 				DE5686142B4C27E700E8BA63 /* OnboardingFloatingPanelLayout.swift in Sources */,
+				DE7488F72B518ED000BED0EB /* ChannelHeaderCell.swift in Sources */,
 				DEC6FE832B4FA9510082A7D6 /* CustomNavigationLeftView.swift in Sources */,
 				DE5CD4692B459129002546CD /* SignInResponse.swift in Sources */,
 				DE5686112B4C212500E8BA63 /* OnboadingBottomSheetViewController.swift in Sources */,
+				DE7488F32B518A0E00BED0EB /* ChannelFooterCell.swift in Sources */,
 				DE9DEBA82B4EB38A008D67AD /* AppleLoginRequest.swift in Sources */,
 				DE9BCA092B4B02EE005DE0B0 /* ValidationCenter.swift in Sources */,
 				DE5CD4652B45909F002546CD /* SignInRequest.swift in Sources */,
