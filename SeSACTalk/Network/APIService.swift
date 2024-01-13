@@ -84,7 +84,9 @@ extension APIService: TargetType {
                                                    name: "name"))
             multipartData.append(MultipartFormData(provider: .data(model.name.data(using: .utf8)!),
                                                    name: "description"))
-            multipartData.append(MultipartFormData(provider: .data(model.image), name: "image"))
+            multipartData.append(MultipartFormData(provider: .data(model.image),
+                                                   name: "image", fileName: "SesacTalk\(Date()).jpg",
+                                                   mimeType: "image/jpeg"))
             
             return .uploadMultipart(multipartData)
             
@@ -95,13 +97,13 @@ extension APIService: TargetType {
     
     var headers: [String : String]? {
         switch self {
-        case .emailValidation, .join, .emailLogin , .kakaoLogin, .appleLogin, .createWorkSpace :
+        case .emailValidation, .join, .emailLogin , .kakaoLogin, .appleLogin :
             return [
                 SecureKeys.Headers.contentsType : SecureKeys.Headers.contentsTypePair,
                 SecureKeys.Headers.Headerkey : SecureKeys.APIKey.secretKey
             ]
             
-        case .loadWorkSpace :
+        case .loadWorkSpace, .createWorkSpace :
             return [
                 SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,
                 SecureKeys.Headers.Headerkey : SecureKeys.APIKey.secretKey
