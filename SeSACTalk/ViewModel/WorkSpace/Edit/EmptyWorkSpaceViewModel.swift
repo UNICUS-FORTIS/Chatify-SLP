@@ -25,6 +25,7 @@ final class EmptyWorkSpaceViewModel {
     let workspaceImage = PublishSubject<Data>()
     let workspaceImageMounted = BehaviorSubject<Bool>(value: false)
     let spaceDescription = PublishSubject<String>()
+    var HomeDefaultTrasferTrigger: (() -> Void)?
     
     var form: Observable<NewWorkSpaceRequest> {
         return Observable.combineLatest(workspace,

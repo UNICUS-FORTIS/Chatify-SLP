@@ -18,6 +18,9 @@ enum APIService {
     case appleLogin(model: AppleLoginRequest)
     case createWorkSpace(model: NewWorkSpaceRequest)
     case loadWorkSpace
+    case loadWorkSpaceChannels(channel: IDRequiredRequest)
+    case loadDms(id: IDRequiredRequest)
+    case loadMyProfile
     
 }
 
@@ -27,21 +30,29 @@ extension APIService: TargetType {
     
     var path: String {
         
+        typealias path = EndPoints.Paths
+        
         switch self {
         case .emailValidation :
-            return EndPoints.Paths.emailValidate
+            return path.emailValidate
         case .join :
-            return EndPoints.Paths.join
+            return path.join
         case .emailLogin :
-            return EndPoints.Paths.emailLogin
+            return path.emailLogin
         case .kakaoLogin :
-            return EndPoints.Paths.kakaoLogin
+            return path.kakaoLogin
         case .appleLogin :
-            return EndPoints.Paths.appleLogin
+            return path.appleLogin
         case .createWorkSpace :
-            return EndPoints.Paths.createWorkSpace
+            return path.workSpace
         case .loadWorkSpace:
-            return EndPoints.Paths.loadWorkSpace
+            return path.workSpace
+        case .loadWorkSpaceChannels(let channel):
+            return path.workSpace+"/\(channel)"
+        case .loadDms(let id):
+            return path.workSpace+"/\(id)"+path.PathDepthOne.dms
+        case .loadMyProfile:
+            return path.profile
         }
         
     }
@@ -54,8 +65,14 @@ extension APIService: TargetType {
                 .emailLogin,
                 .kakaoLogin,
                 .appleLogin,
-                .createWorkSpace: return .post
-        case .loadWorkSpace : return .get
+                .createWorkSpace:
+            return .post
+            
+        case .loadWorkSpace,
+                .loadWorkSpaceChannels,
+                .loadDms,
+                .loadMyProfile:
+            return .get
         }
     }
     
@@ -90,24 +107,44 @@ extension APIService: TargetType {
             
             return .uploadMultipart(multipartData)
             
-        case .loadWorkSpace:
+        case .loadWorkSpaceChannels(let channel):
+            return .requestJSONEncodable(channel)
+            
+        case .loadDms(let id):
+            return .requestJSONEncodable(id)
+            
+        case .loadWorkSpace, .loadMyProfile:
             return .requestPlain
+            
         }
     }
     
     var headers: [String : String]? {
         switch self {
-        case .emailValidation, .join, .emailLogin , .kakaoLogin, .appleLogin :
+            
+        case .emailValidation,
+                .join,
+                .emailLogin,
+                .kakaoLogin,
+                .appleLogin :
+            
             return [
                 SecureKeys.Headers.contentsType : SecureKeys.Headers.contentsTypePair,
                 SecureKeys.Headers.Headerkey : SecureKeys.APIKey.secretKey
             ]
             
-        case .loadWorkSpace, .createWorkSpace :
+        case .loadWorkSpace,
+                .createWorkSpace,
+                .loadWorkSpaceChannels,
+                .loadDms,
+                .loadMyProfile :
+            
             return [
                 SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,
                 SecureKeys.Headers.Headerkey : SecureKeys.APIKey.secretKey
             ]
+            
         }
     }
 }
+

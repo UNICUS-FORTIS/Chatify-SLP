@@ -15,25 +15,30 @@ final class LoginSession {
     
     static let shared = LoginSession()
     
-    private let userID = PublishSubject<Int>()
-    private let nickName = PublishSubject<String>()
-    private let workSpaces = PublishSubject<WorkSpaces>()
+    private let userIDSubject = PublishSubject<Int>()
+    private let nickNameSubject = PublishSubject<String>()
+    private let workSpacesSubject = PublishSubject<WorkSpaces>()
+    private let disposeBag = DisposeBag()
     
-    
+    var userId: Observable<Int> {
+        return userIDSubject.asObservable()
+    }
     
     func handOverLoginInformation(id: Int,
                                   nick: String,
                                   access: String,
                                   refresh: String) {
         print(access, refresh)
-        userID.onNext(id)
-        nickName.onNext(nick)
+        userIDSubject.onNext(id)
+        nickNameSubject.onNext(nick)
         UserDefaults.standard.setValue(access, forKey: "accessToken")
         UserDefaults.standard.setValue(access, forKey: "refreshToken")
     }
     
     func assinWorkSpaces(spaces: WorkSpaces) {
-        workSpaces.onNext(spaces)
+        workSpacesSubject.onNext(spaces)
     }
+    
+
     
 }
