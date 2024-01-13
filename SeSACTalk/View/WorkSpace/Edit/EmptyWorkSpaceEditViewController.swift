@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 import PhotosUI
 
-
+// MARK: - 워크스페이스 생성 바텀시트
 final class EmptyWorkSpaceEditViewController: UIViewController, ToastPresentableProtocol {
     
     
@@ -20,11 +20,24 @@ final class EmptyWorkSpaceEditViewController: UIViewController, ToastPresentable
     private let spaceDescription = CustomInputView(label: "워크스페이스 설명", placeHolder: "", keyboardType: .default)
     private let createButton = CustomButton(title: "완료")
     private var center = ValidationCenter()
-    private let viewModel = EmptyWorkSpaceViewModel()
     private let disposeBag = DisposeBag()
     private let tapGesture = UITapGestureRecognizer()
+    private var viewModel: EmptyWorkSpaceViewModel!
+    private var networkService = NetworkService.shared
     
     
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    init(viewModel: EmptyWorkSpaceViewModel) {
+        self.init()
+        self.viewModel = viewModel
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +54,7 @@ final class EmptyWorkSpaceEditViewController: UIViewController, ToastPresentable
     private func configure() {
         navigationController?.setStartingAppearance(title: "워크스페이스 생성",
                                                     target: self,
-                                                    action: nil)
+                                                    action: #selector(dismissTrigger))
         view.addSubview(spaceImage)
         view.addSubview(spaceName)
         view.addSubview(spaceDescription)
@@ -49,11 +62,16 @@ final class EmptyWorkSpaceEditViewController: UIViewController, ToastPresentable
         view.backgroundColor = Colors.Background.primary
     }
     
+    @objc private func dismissTrigger() {
+        dismiss(animated: true)
+    }
+    
     @objc private func imageTapped() {
         print("터치됨")
     }
 
     private func bind() {
+        
         spaceImage.addGestureRecognizer(tapGesture)
         
         tapGesture.rx.event
@@ -82,9 +100,9 @@ final class EmptyWorkSpaceEditViewController: UIViewController, ToastPresentable
         createButton.rx.tap
             .debounce(.seconds(1), scheduler: MainScheduler.instance)
             .withLatestFrom(viewModel.workspaceImageMounted)
-            .flatMapLatest { validation -> Observable<Bool> in
-                if validation {
-                    return Observable.just(validation)
+            .flatMapLatest { isImageMounted -> Observable<Bool> in
+                if isImageMounted {
+                    return Observable.just(isImageMounted)
                 } else {
                     self.makeToastAboveView(message: ScreenTitles.WorkSpaceInitial.workSpaceImageRestrict,
                                             backgroundColor: Colors.Brand.error,
@@ -94,18 +112,34 @@ final class EmptyWorkSpaceEditViewController: UIViewController, ToastPresentable
             }
             .filter { $0 }
             .withLatestFrom(viewModel.workspace)
-            .subscribe(with: self) { owner, spaceName in
-                let validation = owner.center.checkWorkspaceName(spaceName)
-                if validation {
-                    print("전부 유효함")
+            .flatMapLatest { name -> Observable<Bool> in
+                let nameValidation = self.center.validateNicknameOrWorkspaceName(name)
+                if nameValidation {
+                    return Observable.just(nameValidation)
                 } else {
-                    owner.makeToastAboveView(message: ScreenTitles.WorkSpaceInitial.workSpaceNameRestrict,
+                    self.makeToastAboveView(message: ScreenTitles.WorkSpaceInitial.workSpaceNameRestrict,
                                              backgroundColor: Colors.Brand.error,
-                                             aboveView: owner.createButton)
+                                            aboveView: self.createButton)
+                    return Observable.just(!nameValidation)
+                }
+            }
+            .filter { $0 }
+            .withLatestFrom(viewModel.form)
+            .flatMapLatest { form -> Observable<Result<NewWorkSpaceResponse, ErrorResponse>> in
+                return self.networkService.fetchCreateNewWorkSpace(info: form).asObservable()
+            }
+            .subscribe(with: self) { owner, result in
+                switch result {
+                case .success(let response):
+                    print(response)
+                case .failure(let error):
+                    print(error.errorCode)
                 }
             }
             .disposed(by: disposeBag)
+        
     }
+    
     
     private func setupImagePicker() {
         var configuration = PHPickerConfiguration()

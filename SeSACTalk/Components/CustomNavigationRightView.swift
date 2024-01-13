@@ -30,6 +30,7 @@ final class CustomNavigationRightView: UIView {
         self.addSubview(image)
         image.layer.cornerRadius = 16
         image.clipsToBounds = true
+        image.image = .dummyTypeA
         image.layer.borderColor = Colors.Border.border.cgColor
         image.layer.borderWidth = 2
     }

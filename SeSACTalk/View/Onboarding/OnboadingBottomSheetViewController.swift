@@ -79,6 +79,7 @@ final class OnboadingBottomSheetViewController: UIViewController {
     private func setFlatFormLoginButton() {
         appleLoginButton.addTarget(self, action: #selector(startAppleLogin), for: .touchUpInside)
         kakaoLoginButton.addTarget(self, action: #selector(startKakaoLogin), for: .touchUpInside)
+        emailLoginButton.addTarget(self, action: #selector(startEmailLogin), for: .touchUpInside)
     }
     
     @objc private func startKakaoLogin() {
@@ -116,6 +117,11 @@ final class OnboadingBottomSheetViewController: UIViewController {
         controller.delegate = self
         controller.presentationContextProvider = self
         controller.performRequests()
+    }
+    
+    @objc private func startEmailLogin() {
+        dismiss(animated: true)
+        viewModel?.emailLoginPushTrigger?()
     }
     
     

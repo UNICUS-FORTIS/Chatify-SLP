@@ -26,7 +26,14 @@ final class EmptyWorkSpaceViewModel {
     let workspaceImageMounted = BehaviorSubject<Bool>(value: false)
     let spaceDescription = PublishSubject<String>()
     
-    
-    
+    var form: Observable<NewWorkSpaceRequest> {
+        return Observable.combineLatest(workspace,
+                                        workspaceImage,
+                                        spaceDescription) {
+            name, image, description in
+            return NewWorkSpaceRequest(name: name, description: description, image: image)
+        }
+        
+    }
     
 }

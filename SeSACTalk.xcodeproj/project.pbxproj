@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE31FF052B52870200F90903 /* NewWorkSpaceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE31FF042B52870200F90903 /* NewWorkSpaceRequest.swift */; };
+		DE31FF072B528B9A00F90903 /* NewWorkSpaceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE31FF062B528B9A00F90903 /* NewWorkSpaceResponse.swift */; };
 		DE5686052B4C095E00E8BA63 /* EmailLoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5686042B4C095E00E8BA63 /* EmailLoginResponse.swift */; };
 		DE5686082B4C101800E8BA63 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5686072B4C101800E8BA63 /* OnboardingViewController.swift */; };
 		DE56860A2B4C130C00E8BA63 /* CustomTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5686092B4C130C00E8BA63 /* CustomTitleLabel.swift */; };
@@ -70,6 +72,9 @@
 		DE9DEBAB2B4ECDC7008D67AD /* WorkSpaceInitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9DEBAA2B4ECDC7008D67AD /* WorkSpaceInitialViewController.swift */; };
 		DE9DEBAE2B4ED1AC008D67AD /* EmptyWorkSpaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9DEBAD2B4ED1AC008D67AD /* EmptyWorkSpaceViewModel.swift */; };
 		DEA121B62B4C65C3008E9FC1 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA121B52B4C65C3008E9FC1 /* OnboardingViewModel.swift */; };
+		DEC332CC2B52BE88005B004C /* LoginSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC332CB2B52BE88005B004C /* LoginSession.swift */; };
+		DEC332CE2B52C50E005B004C /* WorkSpaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC332CD2B52C50E005B004C /* WorkSpaces.swift */; };
+		DEC332D02B52D9F1005B004C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DEC332CF2B52D9F1005B004C /* GoogleService-Info.plist */; };
 		DEC6FE812B4FA4EA0082A7D6 /* HomeEmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC6FE802B4FA4EA0082A7D6 /* HomeEmptyViewController.swift */; };
 		DEC6FE832B4FA9510082A7D6 /* CustomNavigationLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC6FE822B4FA9510082A7D6 /* CustomNavigationLeftView.swift */; };
 		DEC6FE852B4FEC8D0082A7D6 /* CustomNavigationRightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC6FE842B4FEC8D0082A7D6 /* CustomNavigationRightView.swift */; };
@@ -98,6 +103,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DE31FF042B52870200F90903 /* NewWorkSpaceRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWorkSpaceRequest.swift; sourceTree = "<group>"; };
+		DE31FF062B528B9A00F90903 /* NewWorkSpaceResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWorkSpaceResponse.swift; sourceTree = "<group>"; };
 		DE3B2B762B481AFB005DD6EF /* SeSACTalk.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SeSACTalk.entitlements; sourceTree = "<group>"; };
 		DE5686042B4C095E00E8BA63 /* EmailLoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginResponse.swift; sourceTree = "<group>"; };
 		DE5686072B4C101800E8BA63 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
@@ -158,6 +165,9 @@
 		DE9DEBAA2B4ECDC7008D67AD /* WorkSpaceInitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkSpaceInitialViewController.swift; sourceTree = "<group>"; };
 		DE9DEBAD2B4ED1AC008D67AD /* EmptyWorkSpaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyWorkSpaceViewModel.swift; sourceTree = "<group>"; };
 		DEA121B52B4C65C3008E9FC1 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		DEC332CB2B52BE88005B004C /* LoginSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSession.swift; sourceTree = "<group>"; };
+		DEC332CD2B52C50E005B004C /* WorkSpaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkSpaces.swift; sourceTree = "<group>"; };
+		DEC332CF2B52D9F1005B004C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DEC6FE802B4FA4EA0082A7D6 /* HomeEmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEmptyViewController.swift; sourceTree = "<group>"; };
 		DEC6FE822B4FA9510082A7D6 /* CustomNavigationLeftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationLeftView.swift; sourceTree = "<group>"; };
 		DEC6FE842B4FEC8D0082A7D6 /* CustomNavigationRightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationRightView.swift; sourceTree = "<group>"; };
@@ -259,6 +269,7 @@
 				DE5CD4432B4558E6002546CD /* App */,
 				DE5CD40D2B4556FB002546CD /* Assets.xcassets */,
 				DE5CD40F2B4556FB002546CD /* LaunchScreen.storyboard */,
+				DEC332CF2B52D9F1005B004C /* GoogleService-Info.plist */,
 				DE5CD4122B4556FB002546CD /* Info.plist */,
 				DE5CD4482B45597D002546CD /* .gitIgnore */,
 			);
@@ -379,6 +390,7 @@
 		DE5CD4632B459086002546CD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				DEC332CA2B52BE7D005B004C /* LoginSession */,
 				DE9BCA072B4B02E4005DE0B0 /* FormValidation */,
 				DE5CD4672B459120002546CD /* Response */,
 				DE5CD4662B45911A002546CD /* Request */,
@@ -394,6 +406,7 @@
 				DE9BCA0A2B4B0C9D005DE0B0 /* EmailLoginRequest.swift */,
 				DED5F4332B4DC80700BE1D9B /* KakaoLoginRequest.swift */,
 				DE9DEBA72B4EB38A008D67AD /* AppleLoginRequest.swift */,
+				DE31FF042B52870200F90903 /* NewWorkSpaceRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -404,6 +417,8 @@
 				DE5CD4682B459129002546CD /* SignInResponse.swift */,
 				DE7171532B466E3B00B619D4 /* ErrorResponse.swift */,
 				DE5686042B4C095E00E8BA63 /* EmailLoginResponse.swift */,
+				DE31FF062B528B9A00F90903 /* NewWorkSpaceResponse.swift */,
+				DEC332CD2B52C50E005B004C /* WorkSpaces.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -435,6 +450,7 @@
 		DE7488E92B517FA400BED0EB /* Edit */ = {
 			isa = PBXGroup;
 			children = (
+				DE94854D2B50A85C00BDA8AE /* EmptyWorkSpaceEditViewController.swift */,
 				DEC6FE802B4FA4EA0082A7D6 /* HomeEmptyViewController.swift */,
 				DE9DEBAA2B4ECDC7008D67AD /* WorkSpaceInitialViewController.swift */,
 			);
@@ -445,7 +461,6 @@
 			isa = PBXGroup;
 			children = (
 				DE7488E72B517D2A00BED0EB /* DefaultWorkSpaceViewController.swift */,
-				DE94854D2B50A85C00BDA8AE /* EmptyWorkSpaceEditViewController.swift */,
 			);
 			path = Default;
 			sourceTree = "<group>";
@@ -518,6 +533,14 @@
 				DEA121B52B4C65C3008E9FC1 /* OnboardingViewModel.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		DEC332CA2B52BE7D005B004C /* LoginSession */ = {
+			isa = PBXGroup;
+			children = (
+				DEC332CB2B52BE88005B004C /* LoginSession.swift */,
+			);
+			path = LoginSession;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -648,6 +671,7 @@
 			files = (
 				DE5CD4112B4556FB002546CD /* LaunchScreen.storyboard in Resources */,
 				DE5CD4602B45785B002546CD /* SF-Pro.ttf in Resources */,
+				DEC332D02B52D9F1005B004C /* GoogleService-Info.plist in Resources */,
 				DE5CD40E2B4556FB002546CD /* Assets.xcassets in Resources */,
 				DE5CD4492B45597D002546CD /* .gitIgnore in Resources */,
 			);
@@ -677,7 +701,9 @@
 				DE94854E2B50A85C00BDA8AE /* EmptyWorkSpaceEditViewController.swift in Sources */,
 				DE56860A2B4C130C00E8BA63 /* CustomTitleLabel.swift in Sources */,
 				DE5CD4092B4556FA002546CD /* SignInViewController.swift in Sources */,
+				DEC332CE2B52C50E005B004C /* WorkSpaces.swift in Sources */,
 				DE7171522B466C1A00B619D4 /* APIService.swift in Sources */,
+				DE31FF052B52870200F90903 /* NewWorkSpaceRequest.swift in Sources */,
 				DE5CD45B2B45699B002546CD /* CustomLabel.swift in Sources */,
 				DE7171622B46B71000B619D4 /* ToastPresentableProtocol.swift in Sources */,
 				DE5CD4532B45657C002546CD /* SignInViewModel.swift in Sources */,
@@ -692,6 +718,7 @@
 				DE5CD44C2B4559CC002546CD /* EndPoints.swift in Sources */,
 				DE7488EF2B5184C700BED0EB /* ChannelTableCell.swift in Sources */,
 				DE71715A2B467D7200B619D4 /* APIError.swift in Sources */,
+				DE31FF072B528B9A00F90903 /* NewWorkSpaceResponse.swift in Sources */,
 				DE5CD4072B4556FA002546CD /* SceneDelegate.swift in Sources */,
 				DE7488E82B517D2A00BED0EB /* DefaultWorkSpaceViewController.swift in Sources */,
 				DE5686082B4C101800E8BA63 /* OnboardingViewController.swift in Sources */,
@@ -714,6 +741,7 @@
 				DE9BCA032B4AEE72005DE0B0 /* EmailLogInViewController.swift in Sources */,
 				DEC6FE812B4FA4EA0082A7D6 /* HomeEmptyViewController.swift in Sources */,
 				DE7488F92B519A8F00BED0EB /* UIImage+Extension.swift in Sources */,
+				DEC332CC2B52BE88005B004C /* LoginSession.swift in Sources */,
 				DE7488F12B51886D00BED0EB /* ReusableProtocol.swift in Sources */,
 				DE5CD4592B4566DE002546CD /* CustomTextField.swift in Sources */,
 				DE7488FD2B51B0AA00BED0EB /* ToWorkSpaceTriggerProtocol.swift in Sources */,

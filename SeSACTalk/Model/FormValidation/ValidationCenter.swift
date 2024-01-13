@@ -17,7 +17,7 @@ final class ValidationCenter {
         return emailTest.evaluate(with: email)
     }
     
-    func validateNickname(_ nickname: String) -> Bool {
+    func validateNicknameOrWorkspaceName(_ nickname: String) -> Bool {
         let nickNameRegex = "^(?=.*[가-힣A-Za-z])[가-힣A-Za-z0-9]{1,30}$"
         let nickNameTest = NSPredicate(format:"SELF MATCHES %@", nickNameRegex)
         return nickNameTest.evaluate(with: nickname)

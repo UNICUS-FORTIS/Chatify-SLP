@@ -15,6 +15,7 @@ final class EmailLogInViewController: UIViewController {
     
     
     private let viewModel = EmailLoginViewModel()
+    private let loginSession = LoginSession.shared
     private lazy var center = ValidationCenter()
     
     private let email = CustomInputView(label: "이메일",
@@ -29,7 +30,22 @@ final class EmailLogInViewController: UIViewController {
     
     private let logInButton = CustomButton(title: "로그인")
     private let disposeBag = DisposeBag()
-
+    private var onBoardingViewModel: OnboardingViewModel!
+    
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    convenience init(viewModel: OnboardingViewModel) {
+        self.init(nibName: nil, bundle: nil)
+        self.onBoardingViewModel = viewModel
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
@@ -102,7 +118,13 @@ final class EmailLogInViewController: UIViewController {
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(let response):
-                    print(response)
+                    owner.loginSession.handOverLoginInformation(id: response.userID,
+                                                          nick: response.nickname,
+                                                          access: response.accessToken,
+                                                          refresh: response.refreshToken)
+                    owner.dismiss(animated: true)
+                    owner.onBoardingViewModel.afterLoginSucceedTrigger?()
+                    
                 case .failure(let error):
                     print(error)
                 }

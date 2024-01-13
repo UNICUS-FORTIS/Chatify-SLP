@@ -30,18 +30,18 @@ extension UINavigationController {
     }
     
     func setWorkSpaceNavigation() {
-            let appearance = UINavigationBarAppearance()
-            appearance.shadowColor = Colors.Border.naviShadow
-            appearance.backgroundColor = .white
+        let appearance = UINavigationBarAppearance()
+        appearance.shadowColor = Colors.Border.naviShadow
+        appearance.backgroundColor = .white
 
-            navigationBar.standardAppearance = appearance
-            navigationBar.compactAppearance = appearance
-            navigationBar.scrollEdgeAppearance = appearance
-
-            let leftItem = UIBarButtonItem(customView: CustomNavigationLeftView())
-            let rightItem = UIBarButtonItem(customView: CustomNavigationRightView())
-
-            topViewController?.navigationItem.leftBarButtonItem = leftItem
-            topViewController?.navigationItem.rightBarButtonItem = rightItem
-        }
+        let leftItem = UIBarButtonItem(customView: CustomNavigationLeftView())
+        let rightItem = UIBarButtonItem(customView: CustomNavigationRightView())
+        
+        topViewController?.navigationItem.leftBarButtonItem = leftItem
+        topViewController?.navigationItem.rightBarButtonItem = rightItem
+        
+        navigationBar.standardAppearance = appearance
+        navigationBar.compactAppearance = appearance
+        navigationBar.scrollEdgeAppearance = appearance
+    }
 }

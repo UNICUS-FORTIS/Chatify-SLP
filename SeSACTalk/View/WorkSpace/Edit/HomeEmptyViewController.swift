@@ -22,20 +22,34 @@ final class HomeEmptyViewController: UIViewController {
                                                   UIFont.systemFont(ofSize: 13))
     private let mainImage = UIImageView(image: .workspaceEmpty)
     private let createWorkSpaceButton = CustomButton(title: ScreenTitles.WorkSpaceInitial.createWorkSpace)
+    private let viewModel = EmptyWorkSpaceViewModel()
+    private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configure()
         setConstraints()
+        bind()
         guideToInitialViewController()
+    }
+    
+    private func bind() {
+        createWorkSpaceButton.rx.tap
+            .subscribe(with: self) { owner, _ in
+                let vc = EmptyWorkSpaceEditViewController(viewModel: owner.viewModel)
+                let navVC = UINavigationController(rootViewController: vc)
+                vc.modalTransitionStyle = .coverVertical
+                owner.present(navVC, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
     
     private func guideToInitialViewController() {
         let vc = WorkSpaceInitialViewController()
-        vc.modalTransitionStyle = .coverVertical
         vc.modalPresentationStyle = .fullScreen
-        navigationController?.pushViewController(vc, animated: true)
+        vc.modalTransitionStyle = .coverVertical
+        navigationController?.present(vc, animated: true)
     }
     
     
@@ -49,7 +63,6 @@ final class HomeEmptyViewController: UIViewController {
         mainImage.contentMode = .scaleAspectFit
         createWorkSpaceButton.validationBinder.onNext(true)
         navigationController?.setWorkSpaceNavigation()
-      
     }
     
     

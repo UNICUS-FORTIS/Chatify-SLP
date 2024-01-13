@@ -38,7 +38,8 @@ final class CustomNavigationLeftView: UIView {
         self.addSubview(naviTitle)
         
         leftItem.layer.cornerRadius = 8
-        leftItem.backgroundColor = .cyan
+        leftItem.clipsToBounds = true
+        leftItem.image = .dummy
         naviTitle.textAlignment = .left
     }
     

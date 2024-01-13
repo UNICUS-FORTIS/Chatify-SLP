@@ -132,4 +132,51 @@ final class NetworkService {
         }
     }
     
+    func fetchCreateNewWorkSpace(info: NewWorkSpaceRequest) -> Single<Result<NewWorkSpaceResponse, ErrorResponse>> {
+        
+        print(#function)
+        return Single.create { single in
+            self.provider.rx.request(.createWorkSpace(model: info))
+                .subscribe(with: self)  { owner, response in
+                    switch response.statusCode {
+                    case 200:
+                        if let decodedResponse = try? JSONDecoder().decode(NewWorkSpaceResponse.self, from: response.data) {
+                            single(.success(.success(decodedResponse)))
+                        }
+                    default:
+                        do {
+                            let decodedError = try JSONDecoder().decode(ErrorResponse.self, from: response.data)
+                            single(.success(.failure(decodedError)))
+                        } catch {
+                            let unknownError = APIError(rawValue: response.statusCode)
+                            print(unknownError)
+                        }
+                    }
+                }
+        }
+    }
+    
+    func fetchLoadWorkSpace() -> Single<Result<WorkSpaces, ErrorResponse>> {
+        print(#function)
+        return Single.create { single in
+            self.provider.rx.request(.loadWorkSpace)
+                .subscribe(with: self)  { owner, response in
+                    switch response.statusCode {
+                    case 200:
+                        if let decodedResponse = try? JSONDecoder().decode(WorkSpaces.self, from: response.data) {
+                            single(.success(.success(decodedResponse)))
+                        }
+                    default:
+                        do {
+                            let decodedError = try JSONDecoder().decode(ErrorResponse.self, from: response.data)
+                            single(.success(.failure(decodedError)))
+                        } catch {
+                            let unknownError = APIError(rawValue: response.statusCode)
+                            print(unknownError)
+                        }
+                    }
+                }
+        }
+    }
+    
 }

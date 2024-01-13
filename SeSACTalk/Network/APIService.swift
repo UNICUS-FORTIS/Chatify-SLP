@@ -16,6 +16,8 @@ enum APIService {
     case emailLogin(model: EmailLoginRequest)
     case kakaoLogin(model: KakaoLoginRequest)
     case appleLogin(model: AppleLoginRequest)
+    case createWorkSpace(model: NewWorkSpaceRequest)
+    case loadWorkSpace
     
 }
 
@@ -36,6 +38,10 @@ extension APIService: TargetType {
             return EndPoints.Paths.kakaoLogin
         case .appleLogin :
             return EndPoints.Paths.appleLogin
+        case .createWorkSpace :
+            return EndPoints.Paths.createWorkSpace
+        case .loadWorkSpace:
+            return EndPoints.Paths.loadWorkSpace
         }
         
     }
@@ -47,7 +53,9 @@ extension APIService: TargetType {
                 .join,
                 .emailLogin,
                 .kakaoLogin,
-                .appleLogin : return .post
+                .appleLogin,
+                .createWorkSpace: return .post
+        case .loadWorkSpace : return .get
         }
     }
     
@@ -56,22 +64,46 @@ extension APIService: TargetType {
         switch self {
         case .emailValidation(let model):
             return .requestJSONEncodable(model)
+            
         case .join(let model):
             return .requestJSONEncodable(model)
+            
         case .emailLogin(model: let model):
             return .requestJSONEncodable(model)
+            
         case .kakaoLogin(model: let model):
             return .requestJSONEncodable(model)
+            
         case .appleLogin(model: let model):
             return .requestJSONEncodable(model)
+            
+        case .createWorkSpace(model: let model):
+            
+            var multipartData = [MultipartFormData]()
+            multipartData.append(MultipartFormData(provider: .data(model.name.data(using: .utf8)!),
+                                                   name: "name"))
+            multipartData.append(MultipartFormData(provider: .data(model.name.data(using: .utf8)!),
+                                                   name: "description"))
+            multipartData.append(MultipartFormData(provider: .data(model.image), name: "image"))
+            
+            return .uploadMultipart(multipartData)
+            
+        case .loadWorkSpace:
+            return .requestPlain
         }
     }
     
     var headers: [String : String]? {
         switch self {
-        case .emailValidation, .join, .emailLogin , .kakaoLogin, .appleLogin :
+        case .emailValidation, .join, .emailLogin , .kakaoLogin, .appleLogin, .createWorkSpace :
             return [
                 SecureKeys.Headers.contentsType : SecureKeys.Headers.contentsTypePair,
+                SecureKeys.Headers.Headerkey : SecureKeys.APIKey.secretKey
+            ]
+            
+        case .loadWorkSpace :
+            return [
+                SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,
                 SecureKeys.Headers.Headerkey : SecureKeys.APIKey.secretKey
             ]
         }
