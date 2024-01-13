@@ -47,7 +47,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         window = UIWindow(windowScene: windowScene)
-        let naviVC = UINavigationController(rootViewController: OnboardingViewController())
+        let naviVC = UINavigationController(rootViewController: HomeEmptyViewController())
         window?.rootViewController = naviVC
         window?.makeKeyAndVisible()
         

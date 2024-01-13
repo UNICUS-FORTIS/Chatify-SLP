@@ -19,7 +19,7 @@ extension UINavigationController {
         appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
         appearance.backgroundColor = .white
         navigationBar.tintColor = .black
-        navigationBar.topItem?.backButtonDisplayMode = .generic
+        navigationBar.topItem?.backButtonTitle = ""
         navigationBar.topItem?.leftBarButtonItem = UIBarButtonItem(image: .close,
                                                                    style: .done,
                                                                    target: target,

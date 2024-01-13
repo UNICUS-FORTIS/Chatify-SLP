@@ -47,9 +47,10 @@ final class HomeEmptyViewController: UIViewController {
     
     private func guideToInitialViewController() {
         let vc = WorkSpaceInitialViewController()
-        vc.modalPresentationStyle = .fullScreen
-        vc.modalTransitionStyle = .coverVertical
-        navigationController?.present(vc, animated: true)
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
+        navVC.modalTransitionStyle = .coverVertical
+        navigationController?.present(navVC, animated: true)
     }
     
     

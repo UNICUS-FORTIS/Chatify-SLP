@@ -51,7 +51,7 @@ final class WorkSpaceInitialViewController: UIViewController {
     }
     
     @objc private func dismissTrigger() {
-        navigationController?.popViewController(animated: true)
+        dismiss(animated: true)
     }
     
     private func setConstraints() {

@@ -66,10 +66,6 @@ final class EmptyWorkSpaceEditViewController: UIViewController, ToastPresentable
         dismiss(animated: true)
     }
     
-    @objc private func imageTapped() {
-        print("터치됨")
-    }
-
     private func bind() {
         
         spaceImage.addGestureRecognizer(tapGesture)
