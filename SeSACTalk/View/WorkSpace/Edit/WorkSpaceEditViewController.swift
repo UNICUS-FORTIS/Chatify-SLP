@@ -110,14 +110,12 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
             .withLatestFrom(viewModel.workspace)
             .flatMapLatest { name -> Observable<Bool> in
                 let nameValidation = self.center.validateNicknameOrWorkspaceName(name)
-                if nameValidation {
-                    return Observable.just(nameValidation)
-                } else {
+                if !nameValidation {
                     self.makeToastAboveView(message: ScreenTitles.WorkSpaceInitial.workSpaceNameRestrict,
                                              backgroundColor: Colors.Brand.error,
                                             aboveView: self.createButton)
-                    return Observable.just(!nameValidation)
                 }
+                return Observable.just(nameValidation)
             }
             .filter { $0 }
             .withLatestFrom(viewModel.form)
@@ -180,6 +178,11 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
         self.spaceDescription.textField.resignFirstResponder()
     }
     
+    
+    deinit {
+        print("워크스페이스 deinit 됨")
+    }
+    
 }
 
 extension WorkSpaceEditViewController: PHPickerViewControllerDelegate {
@@ -197,7 +200,7 @@ extension WorkSpaceEditViewController: PHPickerViewControllerDelegate {
                         self.spaceImage.setImage(image: downSampledImage)
                         self.spaceImage.setContentMode(mode: .scaleAspectFill)
                         
-                        if let imageData = downSampledImage.pngData() {
+                        if let imageData = downSampledImage.jpegData(compressionQuality: 1.0) {
                             self.viewModel.workspaceImage.onNext(imageData)
                             self.viewModel.workspaceImageMounted.onNext(true)
                         }
@@ -208,6 +211,5 @@ extension WorkSpaceEditViewController: PHPickerViewControllerDelegate {
             print("이미지 지정을 취소했습니다.")
         }
     }
-
 }
 

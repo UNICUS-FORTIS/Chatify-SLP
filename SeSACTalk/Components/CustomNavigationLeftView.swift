@@ -12,7 +12,19 @@ import Kingfisher
 
 final class CustomNavigationLeftView: UIView {
     
-    let leftItem = UIImageView(image: .dummy)
+    var data: ChannelInfoResponse? {
+        didSet {
+            guard let safe = data else { return }
+            let url = EndPoints.baseURL + safe.thumbnail
+            guard let urlString = URL(string: url) else { return }
+            print(url)
+            self.leftItem.kf.setImage(with: urlString)
+            print("이미지 설정됨")
+            self.naviTitle.text = safe.name
+        }
+    }
+    
+    private let leftItem = UIImageView(image: .dummy)
     private let naviTitle = CustomTitleLabel("No Workspace",
                                      textColor: .black,
                                      font: Typography.title1 ??
@@ -56,7 +68,7 @@ final class CustomNavigationLeftView: UIView {
     func setView(imageURL: String, title: String) {
         let url = EndPoints.baseURL + imageURL
         guard let urlString = URL(string: url) else { return }
-        print(urlString)
+        print(url)
         self.leftItem.kf.setImage(with: urlString)
         print("이미지 설정됨")
         self.naviTitle.text = title

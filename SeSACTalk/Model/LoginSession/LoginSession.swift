@@ -81,7 +81,8 @@ final class LoginSession {
         channelInfo
             .bind(with: self) { owner, info in
                 print("네비게이션바 채널인포", info.thumbnail)
-                self.leftCustomView.setView(imageURL: info.thumbnail, title: info.name)
+                self.leftCustomView.data = info
+//                self.leftCustomView.setView(imageURL: info.thumbnail, title: info.name)
             }
             .disposed(by: disposeBag)
         

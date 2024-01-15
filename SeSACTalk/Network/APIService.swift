@@ -110,7 +110,7 @@ extension APIService: TargetType {
         case .loadWorkSpaceChannels:
             return .requestPlain
             
-        case .loadDms(let id):
+        case .loadDms:
             return .requestPlain
             
         case .loadWorkSpace, .loadMyProfile:

@@ -43,7 +43,7 @@ extension UINavigationController {
         let leftCustomView = session.leftCustomView
         let rightCustomView = session.rightCustomView
         
-        print(leftCustomView.leftItem.image?.size)
+        print(leftCustomView)
 
 
         let leftItem = UIBarButtonItem(customView: leftCustomView)
