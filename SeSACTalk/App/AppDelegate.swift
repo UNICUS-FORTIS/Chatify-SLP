@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 import KakaoSDKCommon
 import RxKakaoSDKCommon
 
@@ -13,10 +14,17 @@ import RxKakaoSDKCommon
 @main
  class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    
+     var modifier = AnyModifier { request in
+         var newRequest = request
+         newRequest.setValue(SecureKeys.Headers.accessToken,
+                             forHTTPHeaderField: SecureKeys.Headers.auth)
+         newRequest.setValue(SecureKeys.APIKey.secretKey,
+                             forHTTPHeaderField: SecureKeys.Headers.Headerkey)
+         return newRequest
+     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
+                
         UNUserNotificationCenter.current().delegate = self
 
         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
@@ -27,6 +35,7 @@ import RxKakaoSDKCommon
 
         application.registerForRemoteNotifications()
         RxKakaoSDK.initSDK(appKey: SecureKeys.NativeAppKey.KakaoNativeAppKey)
+        KingfisherManager.shared.defaultOptions = [.requestModifier(modifier)]
 
       
         return true

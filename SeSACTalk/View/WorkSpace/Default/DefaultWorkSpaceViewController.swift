@@ -7,18 +7,68 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
+import RxDataSources
 
 
 final class DefaultWorkSpaceViewController: UIViewController {
     
+    private let session = LoginSession.shared
     private let tableView = UITableView()
     
+    private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configure()
         setConstraints()
+        navigationController?.setWorkSpaceNavigation()
+        bind()
+    }
+    
+    private func bind() {
+        
+        let dataSource = RxTableViewSectionedReloadDataSource<SectionModel>(configureCell: { dataSource, tableView, indexPath, item in
+            
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ChannelTableViewCell.identifier) as? ChannelTableViewCell else { return UITableViewCell() }
+            
+            switch item.sectionType {
+            case .channel:
+
+                self.session.channelInfo
+                    .bind(with: self) { owner, response in
+                        let symbol: UIImage = .hashTagThin
+                        let text = response.name
+                        print("텍스트", text , "------------입력됨")
+                        cell.setLabel(text: text,
+                                      textColor: Colors.Text.secondary,
+                                      symbol: symbol,
+                                      font: Typography.body ??
+                                      UIFont.systemFont(ofSize: 13),
+                                      badgeCount: 5)
+                    }
+                    .disposed(by: self.disposeBag)
+                
+                return cell
+                
+            case .directMessage:
+                
+  
+                
+                return cell
+                
+            case .memberManagement:
+                
+                return cell
+            }
+            
+        })
+        
+        session.layoutSections
+            .bind(to: tableView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
     }
     
     
@@ -26,7 +76,6 @@ final class DefaultWorkSpaceViewController: UIViewController {
         view.backgroundColor = Colors.Background.primary
         view.addSubview(tableView)
         tableView.backgroundColor = .clear
-        tableView.dataSource = self
         
         tableView.register(ChannelTableViewCell.self,
                            forCellReuseIdentifier: ChannelTableViewCell.identifier)

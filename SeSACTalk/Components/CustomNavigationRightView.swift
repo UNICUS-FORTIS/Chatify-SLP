@@ -5,11 +5,9 @@
 //  Created by LOUIE MAC on 1/11/24.
 //
 
-import Foundation
 import UIKit
 import SnapKit
-import RxSwift
-import RxCocoa
+import Kingfisher
 
 
 final class CustomNavigationRightView: UIView {
@@ -41,6 +39,15 @@ final class CustomNavigationRightView: UIView {
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview()
         }
+    }
+    
+    func setImage(imageURL: String) {
+        let url = URL(string: EndPoints.baseURL+imageURL)
+        self.image.kf.setImage(with: url)
+    }
+    
+    func setDummyImage(image: UIImage) {
+        self.image.image = image
     }
     
     

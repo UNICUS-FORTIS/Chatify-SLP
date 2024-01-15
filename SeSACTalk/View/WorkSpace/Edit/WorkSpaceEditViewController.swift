@@ -12,7 +12,7 @@ import RxCocoa
 import PhotosUI
 
 // MARK: - 워크스페이스 생성 바텀시트
-final class EmptyWorkSpaceEditViewController: UIViewController, ToastPresentableProtocol {
+final class WorkSpaceEditViewController: UIViewController, ToastPresentableProtocol {
     
     
     private let spaceImage = CustomSpaceImageView()
@@ -182,7 +182,7 @@ final class EmptyWorkSpaceEditViewController: UIViewController, ToastPresentable
     
 }
 
-extension EmptyWorkSpaceEditViewController: PHPickerViewControllerDelegate {
+extension WorkSpaceEditViewController: PHPickerViewControllerDelegate {
     
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)

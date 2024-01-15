@@ -7,21 +7,16 @@
 
 import UIKit
 import SnapKit
-import RxSwift
-import RxCocoa
+import Kingfisher
 
 
 final class CustomNavigationLeftView: UIView {
     
-    let leftItem = UIImageView()
-    
-    
-    let naviTitle = CustomTitleLabel("No Workspace", 
+    let leftItem = UIImageView(image: .dummy)
+    private let naviTitle = CustomTitleLabel("No Workspace",
                                      textColor: .black,
                                      font: Typography.title1 ??
-                                     UIFont.systemFont(ofSize: 22))
-    let rightItem = UIImageView()
-    
+                                     UIFont.systemFont(ofSize: 22))    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,7 +34,7 @@ final class CustomNavigationLeftView: UIView {
         
         leftItem.layer.cornerRadius = 8
         leftItem.clipsToBounds = true
-        leftItem.image = .dummy
+        leftItem.contentMode = .scaleAspectFill
         naviTitle.textAlignment = .left
     }
     
@@ -56,7 +51,15 @@ final class CustomNavigationLeftView: UIView {
             make.centerY.equalToSuperview()
             make.height.equalTo(35)
         }
-        
-        
     }
+    
+    func setView(imageURL: String, title: String) {
+        let url = EndPoints.baseURL + imageURL
+        guard let urlString = URL(string: url) else { return }
+        print(urlString)
+        self.leftItem.kf.setImage(with: urlString)
+        print("이미지 설정됨")
+        self.naviTitle.text = title
+    }
+    
 }

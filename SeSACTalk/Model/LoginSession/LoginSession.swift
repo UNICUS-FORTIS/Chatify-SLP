@@ -10,35 +10,128 @@ import RxSwift
 import RxCocoa
 
 
-
 final class LoginSession {
     
     static let shared = LoginSession()
-    
-    private let userIDSubject = PublishSubject<Int>()
-    private let nickNameSubject = PublishSubject<String>()
+    private let networkService = NetworkService.shared
+    private let userIDSubject = PublishSubject<Int>() // temp
+    private let nickNameSubject = PublishSubject<String>() // temp
     private let workSpacesSubject = PublishSubject<WorkSpaces>()
+    
+    // MARK: - Navigation
+    var leftCustomView = CustomNavigationLeftView()
+    var rightCustomView = CustomNavigationRightView()
+    
+    // MARK: - 응답 Response
+    let myProfile = PublishSubject<MyProfileResponse>()
+    let channelInfo = PublishSubject<ChannelInfoResponse>()
+    let DmsInfo = PublishSubject<DMsResponse>()
+    let errorReceriver = PublishSubject<ErrorResponse>()
+    
+    
+    
     private let disposeBag = DisposeBag()
     
-    var userId: Observable<Int> {
-        return userIDSubject.asObservable()
-    }
+    
+    var layoutSections: Observable<[SectionModel]> = Observable.just([
+        SectionModel(items: [SectionItem(sectionType: .channel)]),
+        SectionModel(items: [SectionItem(sectionType: .directMessage)]),
+        SectionModel(items: [SectionItem(sectionType: .memberManagement)]),
+    ])
     
     func handOverLoginInformation(id: Int,
                                   nick: String,
                                   access: String,
                                   refresh: String) {
-        print(access, refresh)
+        
+        userIDSubject
+            .subscribe(with: self) { owner, id in
+                print("아이디", id)
+            }
+            .disposed(by: disposeBag)
+        
         userIDSubject.onNext(id)
         nickNameSubject.onNext(nick)
         UserDefaults.standard.setValue(access, forKey: "accessToken")
         UserDefaults.standard.setValue(access, forKey: "refreshToken")
+        
+        bind()
     }
     
-    func assinWorkSpaces(spaces: WorkSpaces) {
+    func assginWorkSpaces(spaces: WorkSpaces) {
+        print(#function)
         workSpacesSubject.onNext(spaces)
     }
     
-
-    
+    private func bind() {
+        
+        print(#function)
+        
+        myProfile
+            .bind(with: self) { owner, profile in
+                print("네비게이션바 프로파일", profile)
+                guard let profileImage = profile.profileImage else {
+                    self.rightCustomView.setDummyImage(image: .dummyTypeA)
+                    return
+                }
+                self.rightCustomView.setImage(imageURL: profileImage)
+            }
+            .disposed(by: disposeBag)
+        
+        channelInfo
+            .bind(with: self) { owner, info in
+                print("네비게이션바 채널인포", info.thumbnail)
+                self.leftCustomView.setView(imageURL: info.thumbnail, title: info.name)
+            }
+            .disposed(by: disposeBag)
+        
+        
+        workSpacesSubject
+            .flatMapLatest { workSpaces -> Observable<Result<ChannelInfoResponse, ErrorResponse>> in
+                guard let workSpaceID = workSpaces.first?.workspaceID else { return Observable.empty() }
+                let id = IDRequiredRequest(id: workSpaceID)
+                return self.networkService.fetchChannelInfo(id: id).asObservable()
+            }
+            .subscribe(with: self) { owner, result in
+                switch result {
+                case .success(let response):
+                    owner.channelInfo.onNext(response)
+                    print("워크스페이스 서브젝트에 채널리스폰스 들어감",response)
+                case .failure(let error):
+                    owner.errorReceriver.onNext(error)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        workSpacesSubject
+            .flatMapLatest { workSpaces -> Observable<Result<DMsResponse, ErrorResponse>> in
+                guard let workSpaceID = workSpaces.first?.workspaceID else { return Observable.empty() }
+                let id = IDRequiredRequest(id: workSpaceID)
+                return self.networkService.fetchDms(id: id).asObservable()
+            }
+            .subscribe(with: self) { owner, result in
+                switch result {
+                case .success(let response):
+                    owner.DmsInfo.onNext(response)
+                    print("아이디서브젝트에 DM 들어감",response)
+                    
+                case .failure(let error):
+                    owner.errorReceriver.onNext(error)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        networkService.fetchMyProfile()
+            .subscribe(with: self) { owner, result in
+                switch result {
+                case .success(let response):
+                    owner.myProfile.onNext(response)
+                    print("아이디서브젝트에 프로파일 들어감",response)
+                    
+                case .failure(let error):
+                    owner.errorReceriver.onNext(error)
+                }
+            }
+            .disposed(by: disposeBag)
+    }
 }

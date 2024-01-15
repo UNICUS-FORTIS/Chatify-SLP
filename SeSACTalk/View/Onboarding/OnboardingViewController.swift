@@ -101,12 +101,15 @@ final class OnboardingViewController: UIViewController {
                                 strongSelf.navigationController?.setViewControllers([vc], animated: true)
                             } else if response.count == 1 {
                                 let vc = DefaultWorkSpaceViewController()
-                                owner.loginSession.assinWorkSpaces(spaces: response)
+                                owner.loginSession.assginWorkSpaces(spaces: response)
                                 strongSelf.navigationController?.setViewControllers([vc], animated: true)
                             } else {
                                 let vc = DefaultWorkSpaceViewController()
                                 let sortedReponse  = owner.viewModel.sortResponseByDate(response)
-                                owner.loginSession.assinWorkSpaces(spaces: sortedReponse)
+                                owner.loginSession.assginWorkSpaces(spaces: sortedReponse)
+                                print("--------sortedResponse------")
+                                dump(sortedReponse)
+                                print("--------sortedResponse------")
                                 strongSelf.navigationController?.setViewControllers([vc], animated: true)
                             }
                                 

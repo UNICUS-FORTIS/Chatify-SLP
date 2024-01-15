@@ -37,7 +37,7 @@ final class HomeEmptyViewController: UIViewController {
     private func bind() {
         createWorkSpaceButton.rx.tap
             .subscribe(with: self) { owner, _ in
-                let vc = EmptyWorkSpaceEditViewController(viewModel: owner.viewModel)
+                let vc = WorkSpaceEditViewController(viewModel: owner.viewModel)
                 let navVC = UINavigationController(rootViewController: vc)
                 vc.modalTransitionStyle = .coverVertical
                 owner.present(navVC, animated: true)

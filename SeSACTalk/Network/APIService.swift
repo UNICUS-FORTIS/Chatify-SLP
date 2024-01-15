@@ -48,9 +48,9 @@ extension APIService: TargetType {
         case .loadWorkSpace:
             return path.workSpace
         case .loadWorkSpaceChannels(let channel):
-            return path.workSpace+"/\(channel)"
+            return path.workSpace+"/\(channel.id)"
         case .loadDms(let id):
-            return path.workSpace+"/\(id)"+path.PathDepthOne.dms
+            return path.workSpace+"/\(id.id)"+path.PathDepthOne.dms
         case .loadMyProfile:
             return path.profile
         }
@@ -107,11 +107,11 @@ extension APIService: TargetType {
             
             return .uploadMultipart(multipartData)
             
-        case .loadWorkSpaceChannels(let channel):
-            return .requestJSONEncodable(channel)
+        case .loadWorkSpaceChannels:
+            return .requestPlain
             
         case .loadDms(let id):
-            return .requestJSONEncodable(id)
+            return .requestPlain
             
         case .loadWorkSpace, .loadMyProfile:
             return .requestPlain

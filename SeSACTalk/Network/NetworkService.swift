@@ -178,5 +178,75 @@ final class NetworkService {
                 }
         }
     }
+
+    // MARK: - 채널정보 with 채널ID
+    func fetchChannelInfo(id: IDRequiredRequest) -> Single<Result<ChannelInfoResponse, ErrorResponse>> {
+        print(#function)
+        return Single.create { single in
+            self.provider.rx.request(.loadWorkSpaceChannels(channel: id))
+                .subscribe(with: self)  { owner, response in
+                    switch response.statusCode {
+                    case 200:
+                        if let decodedResponse = try? JSONDecoder().decode(ChannelInfoResponse.self, from: response.data) {
+                            single(.success(.success(decodedResponse)))
+                        }
+                    default:
+                        do {
+                            let decodedError = try JSONDecoder().decode(ErrorResponse.self, from: response.data)
+                            single(.success(.failure(decodedError)))
+                        } catch {
+                            let unknownError = APIError(rawValue: response.statusCode)
+                            print(unknownError)
+                        }
+                    }
+                }
+        }
+    }
+    // MARK: - DMs
+    func fetchDms(id: IDRequiredRequest) -> Single<Result<DMsResponse, ErrorResponse>> {
+        print(#function)
+        return Single.create { single in
+            self.provider.rx.request(.loadDms(id: id))
+                .subscribe(with: self)  { owner, response in
+                    switch response.statusCode {
+                    case 200:
+                        if let decodedResponse = try? JSONDecoder().decode(DMsResponse.self, from: response.data) {
+                            single(.success(.success(decodedResponse)))
+                        }
+                    default:
+                        do {
+                            let decodedError = try JSONDecoder().decode(ErrorResponse.self, from: response.data)
+                            single(.success(.failure(decodedError)))
+                        } catch {
+                            let unknownError = APIError(rawValue: response.statusCode)
+                            print(unknownError)
+                        }
+                    }
+                }
+        }
+    }
     
+    // MARK: - My Profiles
+        func fetchMyProfile() -> Single<Result<MyProfileResponse, ErrorResponse>> {
+        print(#function)
+        return Single.create { single in
+            self.provider.rx.request(.loadMyProfile)
+                .subscribe(with: self)  { owner, response in
+                    switch response.statusCode {
+                    case 200:
+                        if let decodedResponse = try? JSONDecoder().decode(MyProfileResponse.self, from: response.data) {
+                            single(.success(.success(decodedResponse)))
+                        }
+                    default:
+                        do {
+                            let decodedError = try JSONDecoder().decode(ErrorResponse.self, from: response.data)
+                            single(.success(.failure(decodedError)))
+                        } catch {
+                            let unknownError = APIError(rawValue: response.statusCode)
+                            print(unknownError)
+                        }
+                    }
+                }
+        }
+    }
 }

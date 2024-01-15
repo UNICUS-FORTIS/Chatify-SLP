@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let user = UserDefaults.standard.string(forKey: "AppleUser") else {
             print("No User")
             window = UIWindow(windowScene: windowScene)
-            let naviVC = UINavigationController(rootViewController: HomeEmptyViewController())
+            let naviVC = UINavigationController(rootViewController: OnboardingViewController())
             window?.rootViewController = naviVC
             window?.makeKeyAndVisible()
             return

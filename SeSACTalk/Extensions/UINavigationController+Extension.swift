@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+import Kingfisher
 
 
 
@@ -30,12 +33,21 @@ extension UINavigationController {
     }
     
     func setWorkSpaceNavigation() {
+        print(#function)
+        let session = LoginSession.shared
+
         let appearance = UINavigationBarAppearance()
         appearance.shadowColor = Colors.Border.naviShadow
         appearance.backgroundColor = .white
+        
+        let leftCustomView = session.leftCustomView
+        let rightCustomView = session.rightCustomView
+        
+        print(leftCustomView.leftItem.image?.size)
 
-        let leftItem = UIBarButtonItem(customView: CustomNavigationLeftView())
-        let rightItem = UIBarButtonItem(customView: CustomNavigationRightView())
+
+        let leftItem = UIBarButtonItem(customView: leftCustomView)
+        let rightItem = UIBarButtonItem(customView: rightCustomView)
         
         topViewController?.navigationItem.leftBarButtonItem = leftItem
         topViewController?.navigationItem.rightBarButtonItem = rightItem

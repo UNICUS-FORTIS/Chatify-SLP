@@ -122,9 +122,9 @@ final class EmailLogInViewController: UIViewController {
                                                           nick: response.nickname,
                                                           access: response.accessToken,
                                                           refresh: response.refreshToken)
+                    dump(response)
                     owner.dismiss(animated: true)
                     owner.onBoardingViewModel.afterLoginSucceedTrigger?()
-                    
                 case .failure(let error):
                     print(error)
                 }

@@ -14,6 +14,6 @@ enum Typography {
     static let title2 = UIFont(name: "SFPro-Bold", size: 14)
     static let bodyBold = UIFont(name: "SFPro-Bold", size: 13)
     static let body = UIFont(name: "SFPro-Regular", size: 13)
-    static let capption = UIFont(name: "SFPro-Regular", size: 12)
+    static let caption = UIFont(name: "SFPro-Regular", size: 12)
     
 }
