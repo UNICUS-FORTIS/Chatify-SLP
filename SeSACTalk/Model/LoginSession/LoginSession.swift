@@ -24,8 +24,8 @@ final class LoginSession {
     
     // MARK: - 응답 Response
     let myProfile = PublishSubject<MyProfileResponse>()
-    let channelInfo = PublishSubject<ChannelInfoResponse>()
-    let DmsInfo = PublishSubject<DMsResponse>()
+    let channelInfo = BehaviorSubject<ChannelInfoResponse?>(value: nil)
+    let DmsInfo = BehaviorSubject<DMsResponse?>(value: nil)
     let errorReceriver = PublishSubject<ErrorResponse>()
     
     
@@ -80,9 +80,9 @@ final class LoginSession {
         
         channelInfo
             .bind(with: self) { owner, info in
-                print("네비게이션바 채널인포", info.thumbnail)
+                print("네비게이션바 채널인포", info?.thumbnail)
                 self.leftCustomView.data = info
-//                self.leftCustomView.setView(imageURL: info.thumbnail, title: info.name)
+                //                self.leftCustomView.setView(imageURL: info.thumbnail, title: info.name)
             }
             .disposed(by: disposeBag)
         
@@ -134,5 +134,15 @@ final class LoginSession {
                 }
             }
             .disposed(by: disposeBag)
+    }
+    
+    func numberOfChannelInfoCount() -> Int {
+        let info = try? channelInfo.value()?.channels
+        return info?.count ?? 0
+    }
+    
+    func numberOfDmsCount() -> Int {
+        let dms = try? DmsInfo.value()
+        return dms?.count ?? 0
     }
 }

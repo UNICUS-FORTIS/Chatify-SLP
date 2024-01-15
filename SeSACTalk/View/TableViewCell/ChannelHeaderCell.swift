@@ -13,9 +13,9 @@ final class ChannelHeaderCell: UITableViewHeaderFooterView {
     
     
     private let name = CustomTitleLabel("",
-                                        textColor: Colors.Text.primary,
-                                        font: Typography.body ??
-                                        UIFont.systemFont(ofSize: 13))
+                                        textColor: .black,
+                                        font: Typography.title2 ??
+                                        UIFont.systemFont(ofSize: 14))
     
     private let moreButton: UIButton = {
         var configuration = UIButton.Configuration.plain()
@@ -50,11 +50,16 @@ final class ChannelHeaderCell: UITableViewHeaderFooterView {
         moreButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.height.equalTo(24)
+            make.width.equalTo(26.79)
             make.trailing.equalToSuperview().inset(16)
         }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setHeaderTitle(title: String) {
+        self.name.text = title
     }
 }

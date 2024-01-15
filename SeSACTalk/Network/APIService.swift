@@ -21,7 +21,6 @@ enum APIService {
     case loadWorkSpaceChannels(channel: IDRequiredRequest)
     case loadDms(id: IDRequiredRequest)
     case loadMyProfile
-    
 }
 
 extension APIService: TargetType {

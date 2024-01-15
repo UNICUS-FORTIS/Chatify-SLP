@@ -1,8 +1,8 @@
 //
-//  ChannelTableCell.swift
+//  DMTableCell.swift
 //  SeSACTalk
 //
-//  Created by LOUIE MAC on 1/12/24.
+//  Created by LOUIE MAC on 1/16/24.
 //
 
 import UIKit
@@ -11,11 +11,11 @@ import Kingfisher
 
 
 
-final class ChannelTableViewCell: UITableViewCell {
+final class DMTableCell: UITableViewCell {
     
     
-    private let symbolIcon = UIImageView(image: .hashTagThin)
-    private let name = CustomTitleLabel("", 
+    private let symbolIcon = UIImageView(image: .dummyTypeA)
+    private let name = CustomTitleLabel("",
                                         textColor: Colors.Text.primary,
                                         font: Typography.body ??
                                         UIFont.systemFont(ofSize: 13))
@@ -38,9 +38,10 @@ final class ChannelTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        symbolIcon.image = nil
         name.text = nil
-        name.font = Typography.body
         name.textColor = Colors.Text.primary
+        badgeCount.text = ""
     }
     
     private func configure() {
@@ -51,6 +52,8 @@ final class ChannelTableViewCell: UITableViewCell {
         badge.backgroundColor = Colors.Brand.green
         badge.layer.cornerRadius = 8
         badge.clipsToBounds = true
+        symbolIcon.layer.cornerRadius = 4
+        symbolIcon.clipsToBounds = true
     }
     
     private func setConstraints() {
@@ -79,20 +82,14 @@ final class ChannelTableViewCell: UITableViewCell {
         }
     }
     
-    func setLabel(text: String,
-                  textColor: UIColor,
-                  symbol: UIImage,
-                  font: UIFont,
-                  badgeCount: Int?) {
-        self.symbolIcon.image = symbol
-        self.name.text = text
-        self.name.textColor = textColor
-        self.name.font = font
-        guard let count = badgeCount else { return }
-        if count == 0 {
-            self.badge.isHidden = true
-        } else {
-            self.badge.isHidden = false
+    func setDms(username: String, profileImage: String?, count: Int) {
+        if let safeImage = profileImage {
+            let url = EndPoints.baseURL + safeImage
+            let urlString = URL(string: url)
+            symbolIcon.kf.setImage(with: urlString)
         }
+        
+        name.text = username
+        badgeCount.text = "\(count)"
     }
 }

@@ -33,13 +33,12 @@ final class ChannelFooterCell: UITableViewHeaderFooterView {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        symbolIcon.image = nil
         name.text = nil
-        name.font = Typography.body
     }
     
     private func configure() {
         self.addSubview(symbolIcon)
+        self.addSubview(name)
         self.backgroundColor = .clear
     }
     
