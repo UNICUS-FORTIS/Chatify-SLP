@@ -47,6 +47,7 @@ final class ChannelTableViewCell: UITableViewCell {
         self.addSubview(symbolIcon)
         self.addSubview(name)
         self.addSubview(badge)
+        self.selectionStyle = .none
         badge.addSubview(badgeCount)
         badge.backgroundColor = Colors.Brand.green
         badge.layer.cornerRadius = 8
