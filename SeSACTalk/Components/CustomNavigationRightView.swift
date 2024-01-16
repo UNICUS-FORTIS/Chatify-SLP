@@ -12,6 +12,21 @@ import Kingfisher
 
 final class CustomNavigationRightView: UIView {
     
+    var profileImage: String? {
+        didSet {
+            guard let safeImage = profileImage else { return }
+            let url = URL(string: EndPoints.imageBaseURL + safeImage)
+            self.image.kf.setImage(with: url)
+        }
+    }
+    
+    var dummyImage: UIImage? {
+        didSet {
+            guard let safeDummyImage = dummyImage else { return }
+            self.image.image = safeDummyImage
+        }
+    }
+    
     private let image = UIImageView()
     
     override init(frame: CGRect) {
@@ -39,16 +54,5 @@ final class CustomNavigationRightView: UIView {
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview()
         }
-    }
-    
-    func setImage(imageURL: String) {
-        let url = URL(string: EndPoints.baseURL+imageURL)
-        self.image.kf.setImage(with: url)
-    }
-    
-    func setDummyImage(image: UIImage) {
-        self.image.image = image
-    }
-    
-    
+    }    
 }

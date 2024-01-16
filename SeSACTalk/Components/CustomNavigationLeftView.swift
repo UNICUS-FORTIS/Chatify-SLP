@@ -15,11 +15,9 @@ final class CustomNavigationLeftView: UIView {
     var data: ChannelInfoResponse? {
         didSet {
             guard let safe = data else { return }
-            let url = EndPoints.baseURL + safe.thumbnail
+            let url = EndPoints.imageBaseURL + safe.thumbnail
             guard let urlString = URL(string: url) else { return }
-            print(url)
             self.leftItem.kf.setImage(with: urlString)
-            print("이미지 설정됨")
             self.naviTitle.text = safe.name
         }
     }
@@ -64,14 +62,4 @@ final class CustomNavigationLeftView: UIView {
             make.height.equalTo(35)
         }
     }
-    
-    func setView(imageURL: String, title: String) {
-        let url = EndPoints.baseURL + imageURL
-        guard let urlString = URL(string: url) else { return }
-        print(url)
-        self.leftItem.kf.setImage(with: urlString)
-        print("이미지 설정됨")
-        self.naviTitle.text = title
-    }
-    
 }

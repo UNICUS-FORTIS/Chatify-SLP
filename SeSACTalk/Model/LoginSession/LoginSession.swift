@@ -32,13 +32,6 @@ final class LoginSession {
     
     private let disposeBag = DisposeBag()
     
-    
-    var layoutSections: Observable<[SectionModel]> = Observable.just([
-        SectionModel(items: [SectionItem(sectionType: .channel)]),
-        SectionModel(items: [SectionItem(sectionType: .directMessage)]),
-        SectionModel(items: [SectionItem(sectionType: .memberManagement)]),
-    ])
-    
     func handOverLoginInformation(id: Int,
                                   nick: String,
                                   access: String,
@@ -71,18 +64,16 @@ final class LoginSession {
             .bind(with: self) { owner, profile in
                 print("네비게이션바 프로파일", profile)
                 guard let profileImage = profile.profileImage else {
-                    self.rightCustomView.setDummyImage(image: .dummyTypeA)
+                    self.rightCustomView.dummyImage = .dummyTypeA
                     return
                 }
-                self.rightCustomView.setImage(imageURL: profileImage)
+                self.rightCustomView.profileImage = profileImage
             }
             .disposed(by: disposeBag)
         
         channelInfo
             .bind(with: self) { owner, info in
-                print("네비게이션바 채널인포", info?.thumbnail)
                 self.leftCustomView.data = info
-                //                self.leftCustomView.setView(imageURL: info.thumbnail, title: info.name)
             }
             .disposed(by: disposeBag)
         
