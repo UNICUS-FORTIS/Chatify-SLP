@@ -9,14 +9,13 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
-import RxDataSources
 
 
 final class DefaultWorkSpaceViewController: UIViewController {
     
     private let session = LoginSession.shared
     private let tableView = UITableView(frame: .zero, style: .grouped)
-    
+    private let newMessageButton = NewMessageButton(frame: .zero)
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -25,75 +24,13 @@ final class DefaultWorkSpaceViewController: UIViewController {
         configure()
         setConstraints()
         navigationController?.setWorkSpaceNavigation()
-        
-        bind()
     }
-    
-    private func bind() {
-        
-        let dataSource = 
-        RxTableViewSectionedReloadDataSource<SectionModel>(configureCell: { [weak self] dataSource, tableView, indexPath, item in
-            guard let self = self else { return UITableViewCell() }
-            
-            switch item.sectionType {
-            case .channel:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: ChannelTableViewCell.identifier) as? ChannelTableViewCell else { return UITableViewCell() }
-                
-                self.session.channelInfo
-                    .asObservable()
-                    .bind(with: self) { owner, channelInfo in
-                        guard let safe = channelInfo else { return }
-                        let channelPath = safe.channels[indexPath.row]
-                        let text = channelPath.name
-                        cell.setLabel(text: text,
-                                      textColor: Colors.Text.secondary,
-                                      symbol: .hashTagThin,
-                                      font: Typography.body ??
-                                      UIFont.systemFont(ofSize: 13),
-                                      badgeCount: 5)
-                    }
-                    .disposed(by: self.disposeBag)
-                
-                return cell
-                
-            case .directMessage:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DMTableCell.identifier) as? DMTableCell else { return UITableViewCell() }
-                
-                self.session.DmsInfo
-                    .asObserver()
-                    .bind(with: self) { owner, dms in
-                        guard let safe = dms else { return }
-                        if safe.count > 0 {
-                            let safePath = safe[indexPath.row]
-                            let username = safePath.user.nickname
-                            let profileImage = safePath.user.profileImage
-                            cell.setDms(username: username,
-                                        profileImage: profileImage ?? nil,
-                                        count: 5)
-                        }
-                    }
-                    .disposed(by: self.disposeBag)
-                
-                
-                return cell
-                
-            case .memberManagement:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: ChannelTableViewCell.identifier) as? ChannelTableViewCell else { return UITableViewCell() }
-                
-                return cell
-            }
-            
-        })
-        
-        session.layoutSections
-            .bind(to: tableView.rx.items(dataSource: dataSource))
-            .disposed(by: disposeBag)
-    }
-    
     
     private func configure() {
         view.backgroundColor = .white
         view.addSubview(tableView)
+        view.addSubview(newMessageButton)
+        tableView.dataSource = self
         tableView.delegate = self
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
@@ -118,6 +55,12 @@ final class DefaultWorkSpaceViewController: UIViewController {
             make.top.bottom.equalTo(view.safeAreaLayoutGuide)
             make.horizontalEdges.equalToSuperview()
         }
+        
+        newMessageButton.snp.makeConstraints { make in
+            make.size.equalTo(50)
+            make.trailing.equalToSuperview().inset(18)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(18)
+        }
     }
     
 }
@@ -138,10 +81,55 @@ extension DefaultWorkSpaceViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ChannelTableViewCell.identifier,
-                                                       for: indexPath) as? ChannelTableViewCell else { return UITableViewCell() }
+        let sections = ChannelLayoutSection.allCases[indexPath.section]
         
-        return cell
+        switch sections {
+        case .channel :
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ChannelTableViewCell.identifier) as? ChannelTableViewCell else { return UITableViewCell() }
+            
+            self.session.channelInfo
+                .asObservable()
+                .bind(with: self) { owner, channelInfo in
+                    guard let safe = channelInfo else { return }
+                    let channelPath = safe.channels[indexPath.row]
+                    let text = channelPath.name
+                
+                    cell.setLabel(text: text,
+                                  textColor: Colors.Text.secondary,
+                                  symbol: .hashTagThin,
+                                  font: Typography.body ??
+                                  UIFont.systemFont(ofSize: 13),
+                                  badgeCount: 5)
+                }
+                .disposed(by: self.disposeBag)
+            
+            return cell
+        case .directMessage:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DMTableCell.identifier) as? DMTableCell else { return UITableViewCell() }
+            
+            self.session.DmsInfo
+                .asObservable()
+                .bind(with: self) { owner, dms in
+                    guard let safe = dms else {
+                        return }
+                    if safe.count > 0 {
+                        let safePath = safe[indexPath.row]
+                        let username = safePath.user.nickname
+                        let profileImage = safePath.user.profileImage
+                        cell.setDms(username: username,
+                                    profileImage: profileImage ?? nil,
+                                    count: 5)
+                    }
+                }
+                .disposed(by: self.disposeBag)
+            
+            return cell
+            
+        case .addNewMember:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ChannelTableViewCell.identifier) as? ChannelTableViewCell else { return UITableViewCell() }
+            
+            return cell
+        }
     }
 }
 
@@ -179,7 +167,7 @@ extension DefaultWorkSpaceViewController: UITableViewDelegate {
             cell.setLabel(text: "팀원 추가")
         }
         return cell
-
+        
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

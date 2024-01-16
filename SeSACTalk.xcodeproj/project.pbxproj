@@ -10,8 +10,7 @@
 		DE1514212B5428AD00AE5EF3 /* ChannelInfoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1514202B5428AD00AE5EF3 /* ChannelInfoResponse.swift */; };
 		DE1514232B542AB300AE5EF3 /* DMsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1514222B542AB300AE5EF3 /* DMsResponse.swift */; };
 		DE1514252B542B8A00AE5EF3 /* MyProfileResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1514242B542B8A00AE5EF3 /* MyProfileResponse.swift */; };
-		DE1514282B54675F00AE5EF3 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = DE1514272B54675F00AE5EF3 /* RxDataSources */; };
-		DE15142A2B5467A300AE5EF3 /* WorkSpaceSectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1514292B5467A300AE5EF3 /* WorkSpaceSectionType.swift */; };
+		DE1A9D1C2B563F3C008E3386 /* NewMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1A9D1B2B563F3C008E3386 /* NewMessageButton.swift */; };
 		DE31FF052B52870200F90903 /* NewWorkSpaceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE31FF042B52870200F90903 /* NewWorkSpaceRequest.swift */; };
 		DE31FF072B528B9A00F90903 /* NewWorkSpaceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE31FF062B528B9A00F90903 /* NewWorkSpaceResponse.swift */; };
 		DE5686052B4C095E00E8BA63 /* EmailLoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5686042B4C095E00E8BA63 /* EmailLoginResponse.swift */; };
@@ -114,7 +113,7 @@
 		DE1514202B5428AD00AE5EF3 /* ChannelInfoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelInfoResponse.swift; sourceTree = "<group>"; };
 		DE1514222B542AB300AE5EF3 /* DMsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMsResponse.swift; sourceTree = "<group>"; };
 		DE1514242B542B8A00AE5EF3 /* MyProfileResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileResponse.swift; sourceTree = "<group>"; };
-		DE1514292B5467A300AE5EF3 /* WorkSpaceSectionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkSpaceSectionType.swift; sourceTree = "<group>"; };
+		DE1A9D1B2B563F3C008E3386 /* NewMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageButton.swift; sourceTree = "<group>"; };
 		DE31FF042B52870200F90903 /* NewWorkSpaceRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWorkSpaceRequest.swift; sourceTree = "<group>"; };
 		DE31FF062B528B9A00F90903 /* NewWorkSpaceResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWorkSpaceResponse.swift; sourceTree = "<group>"; };
 		DE3B2B762B481AFB005DD6EF /* SeSACTalk.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SeSACTalk.entitlements; sourceTree = "<group>"; };
@@ -195,7 +194,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DEC332D32B530226005B004C /* Kingfisher in Frameworks */,
-				DE1514282B54675F00AE5EF3 /* RxDataSources in Frameworks */,
 				DE56860F2B4C1DA300E8BA63 /* FloatingPanel in Frameworks */,
 				DED5F4322B4DB91200BE1D9B /* RxKakaoSDKUser in Frameworks */,
 				DE71715D2B46B5C000B619D4 /* Toast in Frameworks */,
@@ -243,7 +241,6 @@
 				DE7488F02B51886D00BED0EB /* ReusableProtocol.swift */,
 				DE7488F42B518BE700BED0EB /* LayoutSections.swift */,
 				DE7488FC2B51B0AA00BED0EB /* ToWorkSpaceTriggerProtocol.swift */,
-				DE1514292B5467A300AE5EF3 /* WorkSpaceSectionType.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -392,6 +389,7 @@
 				DEC6FE822B4FA9510082A7D6 /* CustomNavigationLeftView.swift */,
 				DEC6FE842B4FEC8D0082A7D6 /* CustomNavigationRightView.swift */,
 				DE94854F2B50AD5B00BDA8AE /* CustomSpaceImageView.swift */,
+				DE1A9D1B2B563F3C008E3386 /* NewMessageButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -594,7 +592,6 @@
 				DED5F42F2B4DB91200BE1D9B /* RxKakaoSDKAuth */,
 				DED5F4312B4DB91200BE1D9B /* RxKakaoSDKUser */,
 				DEC332D22B530226005B004C /* Kingfisher */,
-				DE1514272B54675F00AE5EF3 /* RxDataSources */,
 			);
 			productName = SeSACTalk;
 			productReference = DE5CD4012B4556FA002546CD /* SeSACTalk.app */;
@@ -677,7 +674,6 @@
 				DE56860D2B4C1DA300E8BA63 /* XCRemoteSwiftPackageReference "FloatingPanel" */,
 				DED5F42E2B4DB91200BE1D9B /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
 				DEC332D12B530226005B004C /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				DE1514262B54675F00AE5EF3 /* XCRemoteSwiftPackageReference "RxDataSources" */,
 			);
 			productRefGroup = DE5CD4022B4556FA002546CD /* Products */;
 			projectDirPath = "";
@@ -752,13 +748,13 @@
 				DE5686082B4C101800E8BA63 /* OnboardingViewController.swift in Sources */,
 				DE5CD4622B458319002546CD /* CustomButton.swift in Sources */,
 				DE9539F52B486286009B196A /* String+Extension.swift in Sources */,
+				DE1A9D1C2B563F3C008E3386 /* NewMessageButton.swift in Sources */,
 				DE5686052B4C095E00E8BA63 /* EmailLoginResponse.swift in Sources */,
 				DED5F4342B4DC80700BE1D9B /* KakaoLoginRequest.swift in Sources */,
 				DE7171502B466A2900B619D4 /* SecureKeys.swift in Sources */,
 				DE9BCA0B2B4B0C9D005DE0B0 /* EmailLoginRequest.swift in Sources */,
 				DE9DEBAE2B4ED1AC008D67AD /* EmptyWorkSpaceViewModel.swift in Sources */,
 				DE56860C2B4C14FA00E8BA63 /* ScreenTitles.swift in Sources */,
-				DE15142A2B5467A300AE5EF3 /* WorkSpaceSectionType.swift in Sources */,
 				DE7171542B466E3B00B619D4 /* ErrorResponse.swift in Sources */,
 				DE1514252B542B8A00AE5EF3 /* MyProfileResponse.swift in Sources */,
 				DE7171562B466E4900B619D4 /* EmailValidationRequest.swift in Sources */,
@@ -964,6 +960,7 @@
 				DEVELOPMENT_TEAM = R5RPU2QP33;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SeSACTalk/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SesacTalk;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -996,6 +993,7 @@
 				DEVELOPMENT_TEAM = R5RPU2QP33;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SeSACTalk/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SesacTalk;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -1135,14 +1133,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		DE1514262B54675F00AE5EF3 /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.2;
-			};
-		};
 		DE56860D2B4C1DA300E8BA63 /* XCRemoteSwiftPackageReference "FloatingPanel" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/scenee/FloatingPanel";
@@ -1210,11 +1200,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		DE1514272B54675F00AE5EF3 /* RxDataSources */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = DE1514262B54675F00AE5EF3 /* XCRemoteSwiftPackageReference "RxDataSources" */;
-			productName = RxDataSources;
-		};
 		DE56860E2B4C1DA300E8BA63 /* FloatingPanel */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DE56860D2B4C1DA300E8BA63 /* XCRemoteSwiftPackageReference "FloatingPanel" */;
