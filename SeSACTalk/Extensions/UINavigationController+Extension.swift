@@ -33,7 +33,7 @@ extension UINavigationController {
     }
     
     func setWorkSpaceNavigation() {
-        print(#function)
+
         let session = LoginSession.shared
 
         let appearance = UINavigationBarAppearance()
@@ -42,9 +42,6 @@ extension UINavigationController {
         
         let leftCustomView = session.leftCustomView
         let rightCustomView = session.rightCustomView
-        
-        print(leftCustomView)
-
 
         let leftItem = UIBarButtonItem(customView: leftCustomView)
         let rightItem = UIBarButtonItem(customView: rightCustomView)
