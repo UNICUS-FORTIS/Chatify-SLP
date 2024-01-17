@@ -39,4 +39,11 @@ enum ScreenTitles {
         static let workSpaceNameRestrict = "워크스페이스 이름은 1~30자로 설정해주세요."
         static let workSpaceImageRestrict = "워크스페이스 이미지를 등록해주세요. "
     }
+    
+    enum WorkspaceList {
+        static let mainTitle = """
+        워크스페이스를
+        찾을 수 없어요.
+        """
+    }
 }
