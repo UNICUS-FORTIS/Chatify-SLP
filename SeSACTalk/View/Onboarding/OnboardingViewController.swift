@@ -32,6 +32,7 @@ final class OnboardingViewController: UIViewController {
         configure()
         setConstraints()
         setFloatingPanel()
+        setTriggers()
         setAfterLoginSucceed()
     }
         
@@ -48,6 +49,20 @@ final class OnboardingViewController: UIViewController {
     private func setFloatingPanel() {
         fpc = FloatingPanelController()
         let appearance = SurfaceAppearance()
+        
+        let contentVC = OnboadingBottomSheetViewController(viewModel: self.viewModel)
+        contentVC.preferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: 300)
+        
+        appearance.cornerRadius = 10
+        fpc.isRemovalInteractionEnabled = true
+        fpc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
+        fpc.layout = OnboardingFloatingPanelLayout()
+        fpc.surfaceView.appearance = appearance
+        fpc.set(contentViewController: contentVC)
+    }
+  
+    
+    private func setTriggers() {
         viewModel.joinPagePushTrigger = { [weak self] in
             let vc = SignInViewController()
             vc.delegate = self
@@ -72,16 +87,6 @@ final class OnboardingViewController: UIViewController {
                 }
             }
         }
-        
-        let contentVC = OnboadingBottomSheetViewController(viewModel: self.viewModel)
-        contentVC.preferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: 300)
-        
-        appearance.cornerRadius = 10
-        fpc.isRemovalInteractionEnabled = true
-        fpc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
-        fpc.layout = OnboardingFloatingPanelLayout()
-        fpc.surfaceView.appearance = appearance
-        fpc.set(contentViewController: contentVC)
     }
     
     @objc private func presentBottomSheet() {
