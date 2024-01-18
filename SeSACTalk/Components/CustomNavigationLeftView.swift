@@ -12,24 +12,19 @@ import Kingfisher
 
 final class CustomNavigationLeftView: UIView {
     
-    var data: ChannelInfoResponse? {
+    var data: String? {
         didSet {
             guard let safe = data else { return }
-            let url = EndPoints.imageBaseURL + safe.thumbnail
+            let url = EndPoints.imageBaseURL + safe
             guard let urlString = URL(string: url) else { return }
             self.leftItem.kf.setImage(with: urlString)
-            self.naviTitle.text = safe.name
         }
     }
     
     private let leftItem = UIImageView(image: .dummy)
-    private let naviTitle = CustomTitleLabel("No Workspace",
-                                     textColor: .black,
-                                     font: Typography.title1 ??
-                                     UIFont.systemFont(ofSize: 22))    
-    
+
     override init(frame: CGRect) {
-        super.init(frame: frame)
+        super.init(frame: .zero)
         configure()
         setConstraints()
     }
@@ -40,12 +35,12 @@ final class CustomNavigationLeftView: UIView {
     
     private func configure() {
         self.addSubview(leftItem)
-        self.addSubview(naviTitle)
-        
+//        self.addSubview(naviTitle)
+        self.isUserInteractionEnabled = true
         leftItem.layer.cornerRadius = 8
         leftItem.clipsToBounds = true
         leftItem.contentMode = .scaleAspectFill
-        naviTitle.textAlignment = .left
+//        naviTitle.textAlignment = .left
     }
     
     private func setConstraints() {
@@ -54,12 +49,6 @@ final class CustomNavigationLeftView: UIView {
             make.leading.equalToSuperview()
             make.size.equalTo(32)
             make.centerY.equalToSuperview()
-        }
-        
-        naviTitle.snp.makeConstraints { make in
-            make.leading.equalTo(leftItem.snp.trailing).offset(8)
-            make.centerY.equalToSuperview()
-            make.height.equalTo(35)
         }
     }
 }

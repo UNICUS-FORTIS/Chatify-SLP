@@ -20,6 +20,7 @@ final class LoginSession {
     
     // MARK: - Navigation
     var leftCustomView = CustomNavigationLeftView()
+    var leftCutomTitleButton = CustomLeftNaviButton()
     var rightCustomView = CustomNavigationRightView()
     
     // MARK: - 응답 Response
@@ -73,7 +74,9 @@ final class LoginSession {
         
         channelInfo
             .bind(with: self) { owner, info in
-                self.leftCustomView.data = info
+                guard let safeInfo = info else { return }
+                self.leftCustomView.data = safeInfo.thumbnail
+                self.leftCutomTitleButton.buttonTitle = safeInfo.name
             }
             .disposed(by: disposeBag)
         
