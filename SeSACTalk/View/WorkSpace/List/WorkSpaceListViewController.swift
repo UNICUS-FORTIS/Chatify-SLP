@@ -38,6 +38,7 @@ final class WorkSpaceListViewController: UIViewController {
     
     private func configure() {
         view.backgroundColor = .white
+        view.layer.cornerRadius = 25
         navigationController?.setWorkSpaceListNavigation()
         view.addSubview(mainTitle)
         view.addSubview(subTitle)
