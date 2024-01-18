@@ -1,8 +1,8 @@
 //
-//  WorkSpaceListViewController.swift
+//  WorkSpaceViewController.swift
 //  SeSACTalk
 //
-//  Created by LOUIE MAC on 1/18/24.
+//  Created by LOUIE MAC on 1/19/24.
 //
 
 import UIKit
@@ -11,68 +11,76 @@ import RxSwift
 import RxCocoa
 
 
-
 final class WorkSpaceListViewController: UIViewController {
-
-    static let shared = WorkSpaceListViewController()
     
-    private let mainTitle = CustomTitleLabel(ScreenTitles.WorkspaceList.mainTitle,
-                                               textColor: .black,
-                                               font: Typography.title1 ??
-                                               UIFont.systemFont(ofSize: 22))
-    private let subTitle = CustomTitleLabel(ScreenTitles.WorkSpaceInitial.requireNewWorkSpace,
-                                                  textColor: .black, 
-                                                  font: Typography.body ??
-                                                  UIFont.systemFont(ofSize: 13))
     
-    private let createWorkSpaceButton = CustomButton(title: ScreenTitles.WorkSpaceInitial.createWorkSpace)
+    private let tableView = UITableView(frame: .zero, style: .plain)
     
     private let addNewWorkSpaceButton = SideMenuButton(title: "워크스페이스 추가", icon: .plus)
     private let helpButton = SideMenuButton(title: "도움말", icon: .help)
-
+    private let session = LoginSession.shared
+    private let disposeBag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         configure()
         setConstraints()
+        bind()
+    }
+    
+    private func bind() {
+        
+        session.workSpacesSubject
+            .map { workSpaces -> WorkSpaces in
+                guard let workSpaces = workSpaces else { return [] }
+                print("ssxdddd", workSpaces)
+                return workSpaces
+            }
+            .bind(to: tableView.rx.items(cellIdentifier: WorkSpaceListingCell.identifier,
+                                         cellType: WorkSpaceListingCell.self)) {
+                row , item, cell in
+                
+                cell.data = item
+                
+            }.disposed(by: disposeBag)
+        
+    }
+    
+    private func guideToInitialViewController() {
+        let vc = WorkSpaceInitialViewController()
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
+        navVC.modalTransitionStyle = .coverVertical
+        navigationController?.present(navVC, animated: true)
     }
     
     private func configure() {
+        
         view.backgroundColor = .white
         view.layer.cornerRadius = 25
-        view.layer.masksToBounds = true
-        navigationController?.setWorkSpaceListNavigation()
-        view.addSubview(mainTitle)
-        view.addSubview(subTitle)
-        view.addSubview(createWorkSpaceButton)
+        view.clipsToBounds = true
+        view.addSubview(tableView)
         view.addSubview(addNewWorkSpaceButton)
         view.addSubview(helpButton)
-
-        createWorkSpaceButton.validationBinder.onNext(true)
-
-    
+        tableView.register(WorkSpaceListingCell.self,
+                           forCellReuseIdentifier: WorkSpaceListingCell.identifier)
+        tableView.rowHeight = 72
+        tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
+        tableView.contentInset = .init(top: 8, left: 0, bottom: 0, right: 0)
+        tableView.contentInsetAdjustmentBehavior = .never
+        navigationController?.setWorkSpaceListNavigation()
     }
     
+    
+    
     private func setConstraints() {
-        mainTitle.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(183)
-            make.horizontalEdges.equalToSuperview().inset(24)
-            make.centerX.equalToSuperview()
-            make.height.equalTo(60)
-        }
         
-        subTitle.snp.makeConstraints { make in
-            make.horizontalEdges.equalTo(mainTitle)
-            make.top.equalTo(mainTitle.snp.bottom).offset(19)
-            make.centerX.equalToSuperview()
-            make.height.equalTo(75)
-        }
-        
-        createWorkSpaceButton.snp.makeConstraints { make in
-            make.top.equalTo(subTitle.snp.bottom)
-            make.horizontalEdges.equalTo(mainTitle)
-            make.centerX.equalToSuperview()
-            make.height.equalTo(44)
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.horizontalEdges.equalToSuperview()
+            make.bottom.equalTo(addNewWorkSpaceButton.snp.top)
         }
         
         helpButton.snp.makeConstraints { make in
@@ -89,5 +97,7 @@ final class WorkSpaceListViewController: UIViewController {
             make.height.equalTo(41)
         }
     }
-
+    
 }
+
+
