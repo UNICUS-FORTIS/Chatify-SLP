@@ -45,6 +45,20 @@ final class WorkSpaceListViewController: UIViewController {
                 
             }.disposed(by: disposeBag)
         
+        tableView.rx.itemSelected
+            .subscribe(with: self) { owner, indexPath in
+                guard let selectedCell = owner.tableView.cellForRow(at: indexPath) as? WorkSpaceListingCell else { return }
+                selectedCell.selection = true
+            }
+            .disposed(by: disposeBag)
+        
+        tableView.rx.itemDeselected
+            .subscribe(with: self) { owner, indexPath in
+                guard let selectedCell = owner.tableView.cellForRow(at: indexPath) as? WorkSpaceListingCell else { return }
+                selectedCell.selection = false
+            }
+            .disposed(by: disposeBag)
+        
     }
     
     private func guideToInitialViewController() {
@@ -70,6 +84,7 @@ final class WorkSpaceListViewController: UIViewController {
         tableView.separatorStyle = .none
         tableView.contentInset = .init(top: 8, left: 0, bottom: 0, right: 0)
         tableView.contentInsetAdjustmentBehavior = .never
+        
         navigationController?.setWorkSpaceListNavigation()
     }
     

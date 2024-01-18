@@ -20,9 +20,17 @@ final class WorkSpaceListingCell: UITableViewCell {
             workspaceImage.kf.setImage(with: urlString)
             
             workspaceName.text = safe.name
-            createdDate.text = safe.createdAt
+            createdDate.text = safe.createdAt.convertDateString()
         }
     }
+    
+    var selection: Bool? {
+        didSet {
+            guard let safe = selection else { return }
+            container.backgroundColor = safe ? Colors.Brand.gray : .clear
+        }
+    }
+
     
     private let container = UIView()
     private let workspaceImage = UIImageView()
@@ -58,6 +66,7 @@ final class WorkSpaceListingCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        container.backgroundColor = .clear
         workspaceImage.image = nil
         workspaceName.text = nil
         createdDate.text = nil
@@ -68,12 +77,13 @@ final class WorkSpaceListingCell: UITableViewCell {
         container.addSubview(workspaceImage)
         container.addSubview(detailStackView)
         container.addSubview(moreIcon)
-        container.backgroundColor = .lightGray
         container.layer.cornerRadius = 8
         container.clipsToBounds = true
         self.backgroundColor = .clear
         workspaceImage.layer.cornerRadius = 8
         workspaceImage.clipsToBounds = true
+        createdDate.textColor = Colors.Text.secondary
+        self.selectionStyle = .none
     }
     
     private func setConstraints() {
