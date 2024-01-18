@@ -33,7 +33,7 @@ extension UINavigationController {
         navigationBar.scrollEdgeAppearance = appearance
     }
     
-    func setWorkSpaceNavigation(target: UIViewController, gesture: Selector) {
+    func setWorkSpaceNavigation(target: UIViewController, action: Selector) {
         
         
         let appearance = UINavigationBarAppearance()
@@ -44,7 +44,7 @@ extension UINavigationController {
         let leftTitleView = session.leftCutomTitleButton
         let rightCustomView = session.rightCustomView
 
-        leftTitleView.addTarget(target, action: gesture, for: .touchUpInside)
+        leftTitleView.addTarget(target, action: action, for: .touchUpInside)
         let leftItem = UIBarButtonItem(customView: leftCustomView)
         let leftTitleItem = UIBarButtonItem(customView: leftTitleView)
         let spacer = UIBarButtonItem()

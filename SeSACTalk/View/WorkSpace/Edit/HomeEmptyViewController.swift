@@ -64,7 +64,7 @@ final class HomeEmptyViewController: UIViewController {
         mainImage.contentMode = .scaleAspectFit
         createWorkSpaceButton.validationBinder.onNext(true)
 
-        navigationController?.setWorkSpaceNavigation(target: self, gesture: #selector(leftCustomViewTapped))
+        navigationController?.setWorkSpaceNavigation(target: self, action: #selector(leftCustomViewTapped))
     }
     
 

@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import FloatingPanel
 
 
 final class DefaultWorkSpaceViewController: UIViewController {
@@ -17,14 +18,13 @@ final class DefaultWorkSpaceViewController: UIViewController {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let newMessageButton = NewMessageButton(frame: .zero)
     private let disposeBag = DisposeBag()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configure()
         setConstraints()
-        navigationController?.setWorkSpaceNavigation()
     }
+    
     
     private func configure() {
         view.backgroundColor = .white
@@ -48,7 +48,14 @@ final class DefaultWorkSpaceViewController: UIViewController {
         tableView.register(ChannelFooterCell.self,
                            forHeaderFooterViewReuseIdentifier: ChannelFooterCell.identifier)
         
+        navigationController?.setWorkSpaceNavigation(target: self, action: #selector(leftCustomViewTapped))
     }
+    
+    @objc func leftCustomViewTapped() {
+        print("클릭됨")
+    }
+    
+   
     
     private func setConstraints() {
         tableView.snp.makeConstraints { make in
@@ -61,6 +68,10 @@ final class DefaultWorkSpaceViewController: UIViewController {
             make.trailing.equalToSuperview().inset(18)
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(18)
         }
+    }
+    
+    private func setSideMenu() {
+        
     }
     
 }
