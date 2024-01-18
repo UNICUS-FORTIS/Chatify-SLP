@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import FloatingPanel
 
 final class HomeEmptyViewController: UIViewController {
     
@@ -16,7 +17,7 @@ final class HomeEmptyViewController: UIViewController {
                                                textColor: .black,
                                                font: Typography.title1 ??
                                                UIFont.systemFont(ofSize: 22))
-    private let screenSubTitle = CustomTitleLabel(ScreenTitles.WorkSpaceInitial.requireNewWorkSpace, 
+    private let screenSubTitle = CustomTitleLabel(ScreenTitles.WorkSpaceInitial.requireNewWorkSpace,
                                                   textColor: .black,
                                                   font: Typography.body ??
                                                   UIFont.systemFont(ofSize: 13))
@@ -31,7 +32,7 @@ final class HomeEmptyViewController: UIViewController {
         configure()
         setConstraints()
         bind()
-        guideToInitialViewController()
+//        guideToInitialViewController()
     }
     
     private func bind() {
@@ -53,7 +54,6 @@ final class HomeEmptyViewController: UIViewController {
         navigationController?.present(navVC, animated: true)
     }
     
-    
     private func configure() {
         
         view.backgroundColor = .white
@@ -63,9 +63,14 @@ final class HomeEmptyViewController: UIViewController {
         view.addSubview(createWorkSpaceButton)
         mainImage.contentMode = .scaleAspectFit
         createWorkSpaceButton.validationBinder.onNext(true)
-        navigationController?.setWorkSpaceNavigation()
+
+        navigationController?.setWorkSpaceNavigation(target: self, gesture: #selector(leftCustomViewTapped))
     }
     
+
+    @objc func leftCustomViewTapped() {
+        print("클릭됨")
+    }
     
     private func setConstraints() {
         screenTitle.snp.makeConstraints { make in
