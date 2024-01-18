@@ -13,10 +13,11 @@ import RxCocoa
 final class LoginSession {
     
     static let shared = LoginSession()
+    private init() {}
     private let networkService = NetworkService.shared
     private let userIDSubject = PublishSubject<Int>() // temp
     private let nickNameSubject = PublishSubject<String>() // temp
-    private let workSpacesSubject = PublishSubject<WorkSpaces>()
+    let workSpacesSubject = BehaviorSubject<WorkSpaces?>(value: nil)
     
     // MARK: - Navigation
     var leftCustomView = CustomNavigationLeftView()
@@ -83,7 +84,7 @@ final class LoginSession {
         
         workSpacesSubject
             .flatMapLatest { workSpaces -> Observable<Result<ChannelInfoResponse, ErrorResponse>> in
-                guard let workSpaceID = workSpaces.first?.workspaceID else { return Observable.empty() }
+                guard let workSpaceID = workSpaces?.first?.workspaceID else { return Observable.empty() }
                 let id = IDRequiredRequest(id: workSpaceID)
                 return self.networkService.fetchChannelInfo(id: id).asObservable()
             }
@@ -100,7 +101,7 @@ final class LoginSession {
         
         workSpacesSubject
             .flatMapLatest { workSpaces -> Observable<Result<DMsResponse, ErrorResponse>> in
-                guard let workSpaceID = workSpaces.first?.workspaceID else { return Observable.empty() }
+                guard let workSpaceID = workSpaces?.first?.workspaceID else { return Observable.empty() }
                 let id = IDRequiredRequest(id: workSpaceID)
                 return self.networkService.fetchDms(id: id).asObservable()
             }
