@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
-import FloatingPanel
+import SideMenu
 
 
 final class DefaultWorkSpaceViewController: UIViewController {
@@ -17,12 +17,15 @@ final class DefaultWorkSpaceViewController: UIViewController {
     private let session = LoginSession.shared
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let newMessageButton = NewMessageButton(frame: .zero)
+    private var sideMenu: SideMenuNavigationController?
+
     private let disposeBag = DisposeBag()
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configure()
         setConstraints()
+        sideMenuSetup()
     }
     
     
@@ -48,15 +51,14 @@ final class DefaultWorkSpaceViewController: UIViewController {
         tableView.register(ChannelFooterCell.self,
                            forHeaderFooterViewReuseIdentifier: ChannelFooterCell.identifier)
         
-        navigationController?.setWorkSpaceNavigation(target: self, action: #selector(leftCustomViewTapped))
+        navigationController?.setWorkSpaceNavigation(target: self, action: #selector(workSpaceTitleTapped))
     }
     
-    @objc func leftCustomViewTapped() {
-        print("클릭됨")
+    @objc func workSpaceTitleTapped() {
+        present(SideMenuManager.default.leftMenuNavigationController!, animated: true, completion: nil)
     }
     
-   
-    
+
     private func setConstraints() {
         tableView.snp.makeConstraints { make in
             make.top.bottom.equalTo(view.safeAreaLayoutGuide)
@@ -70,8 +72,15 @@ final class DefaultWorkSpaceViewController: UIViewController {
         }
     }
     
-    private func setSideMenu() {
-        
+    private func sideMenuSetup() {
+        let menu = WorkSpaceListViewController()
+        sideMenu = SideMenuNavigationController(rootViewController: menu)
+        SideMenuManager.default.leftMenuNavigationController = sideMenu
+        SideMenuManager.default.addPanGestureToPresent(toView: self.view)
+        sideMenu?.leftSide = true
+        sideMenu?.presentationStyle = .menuSlideIn
+        sideMenu?.presentationStyle.presentingEndAlpha = 0.5
+        sideMenu?.menuWidth = view.frame.width * 0.8
     }
     
 }

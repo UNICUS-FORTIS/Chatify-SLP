@@ -66,12 +66,11 @@ final class HomeEmptyViewController: UIViewController {
         view.addSubview(createWorkSpaceButton)
         mainImage.contentMode = .scaleAspectFit
         createWorkSpaceButton.validationBinder.onNext(true)
-
-        navigationController?.setWorkSpaceNavigation(target: self, action: #selector(leftCustomViewTapped))
+        navigationController?.setWorkSpaceNavigation(target: self, action: #selector(workSpaceTitleTapped))
     }
     
 
-    @objc func leftCustomViewTapped() {
+    @objc func workSpaceTitleTapped() {
         present(SideMenuManager.default.leftMenuNavigationController!, animated: true, completion: nil)
     }
     
@@ -100,8 +99,7 @@ final class HomeEmptyViewController: UIViewController {
     }
     
     private func sideMenuSetup() {
-        let menu = WorkSpaceListViewController.shared
-        
+        let menu = WorkSpaceEmptyListViewController()
         sideMenu = SideMenuNavigationController(rootViewController: menu)
         SideMenuManager.default.leftMenuNavigationController = sideMenu
         SideMenuManager.default.addPanGestureToPresent(toView: self.view)
