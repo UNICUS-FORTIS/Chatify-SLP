@@ -11,6 +11,7 @@ import RxCocoa
 import Kingfisher
 
 
+let session = LoginSession.shared
 
 extension UINavigationController {
     
@@ -32,23 +33,28 @@ extension UINavigationController {
         navigationBar.scrollEdgeAppearance = appearance
     }
     
-    func setWorkSpaceNavigation() {
+    func setWorkSpaceNavigation(target: UIViewController, gesture: Selector) {
         
-        let session = LoginSession.shared
         
         let appearance = UINavigationBarAppearance()
         appearance.shadowColor = Colors.Border.naviShadow
         appearance.backgroundColor = .white
         
-        let leftCustomView = session.leftCustomView
+        var leftCustomView = session.leftCustomView
+        let leftTitleView = session.leftCutomTitleButton
         let rightCustomView = session.rightCustomView
-        
+
+        leftTitleView.addTarget(target, action: gesture, for: .touchUpInside)
         let leftItem = UIBarButtonItem(customView: leftCustomView)
+        let leftTitleItem = UIBarButtonItem(customView: leftTitleView)
+        let spacer = UIBarButtonItem()
+        spacer.width = 8
         let rightItem = UIBarButtonItem(customView: rightCustomView)
         
-        topViewController?.navigationItem.leftBarButtonItem = leftItem
+        topViewController?.navigationItem.leftBarButtonItems = [leftItem, spacer, leftTitleItem]
         topViewController?.navigationItem.rightBarButtonItem = rightItem
         
+        navigationBar.isUserInteractionEnabled = true
         navigationBar.standardAppearance = appearance
         navigationBar.compactAppearance = appearance
         navigationBar.scrollEdgeAppearance = appearance
