@@ -14,6 +14,7 @@ import RxCocoa
 
 final class WorkSpaceListViewController: UIViewController {
 
+    static let shared = WorkSpaceListViewController()
     
     private let mainTitle = CustomTitleLabel(ScreenTitles.WorkspaceList.mainTitle,
                                                textColor: .black,
@@ -39,6 +40,7 @@ final class WorkSpaceListViewController: UIViewController {
     private func configure() {
         view.backgroundColor = .white
         view.layer.cornerRadius = 25
+        view.layer.masksToBounds = true
         navigationController?.setWorkSpaceListNavigation()
         view.addSubview(mainTitle)
         view.addSubview(subTitle)
@@ -47,6 +49,8 @@ final class WorkSpaceListViewController: UIViewController {
         view.addSubview(helpButton)
 
         createWorkSpaceButton.validationBinder.onNext(true)
+
+    
     }
     
     private func setConstraints() {

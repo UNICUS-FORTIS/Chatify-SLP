@@ -63,6 +63,8 @@ extension UINavigationController {
     func setWorkSpaceListNavigation() {
         
         let appearance = UINavigationBarAppearance()
+        navigationBar.clipsToBounds = true
+        toolbar.layer.cornerRadius = 25
         appearance.shadowColor = .clear
         appearance.backgroundColor = Colors.Border.naviShadow
         let titleLabel = UILabel()
@@ -75,8 +77,5 @@ extension UINavigationController {
         navigationBar.standardAppearance = appearance
         navigationBar.compactAppearance = appearance
         navigationBar.scrollEdgeAppearance = appearance
-        
-        
-
     }
 }

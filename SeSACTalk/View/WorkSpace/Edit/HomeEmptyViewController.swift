@@ -10,6 +10,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 import FloatingPanel
+import SideMenu
 
 final class HomeEmptyViewController: UIViewController {
     
@@ -24,6 +25,7 @@ final class HomeEmptyViewController: UIViewController {
     private let mainImage = UIImageView(image: .workspaceEmpty)
     private let createWorkSpaceButton = CustomButton(title: ScreenTitles.WorkSpaceInitial.createWorkSpace)
     private let viewModel = EmptyWorkSpaceViewModel()
+    private var sideMenu: SideMenuNavigationController?
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -32,6 +34,7 @@ final class HomeEmptyViewController: UIViewController {
         configure()
         setConstraints()
         bind()
+        sideMenuSetup()
 //        guideToInitialViewController()
     }
     
@@ -69,7 +72,7 @@ final class HomeEmptyViewController: UIViewController {
     
 
     @objc func leftCustomViewTapped() {
-        print("클릭됨")
+        present(SideMenuManager.default.leftMenuNavigationController!, animated: true, completion: nil)
     }
     
     private func setConstraints() {
@@ -96,5 +99,15 @@ final class HomeEmptyViewController: UIViewController {
         }
     }
     
-    
+    private func sideMenuSetup() {
+        let menu = WorkSpaceListViewController.shared
+        
+        sideMenu = SideMenuNavigationController(rootViewController: menu)
+        SideMenuManager.default.leftMenuNavigationController = sideMenu
+        SideMenuManager.default.addPanGestureToPresent(toView: self.view)
+        sideMenu?.leftSide = true
+        sideMenu?.presentationStyle = .menuSlideIn
+        sideMenu?.presentationStyle.presentingEndAlpha = 0.5
+        sideMenu?.menuWidth = view.frame.width * 0.8
+    }
 }
