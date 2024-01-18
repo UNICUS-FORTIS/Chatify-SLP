@@ -65,4 +65,19 @@ extension String {
         
         return NSAttributedString(string: self)
     }
+    
+    func convertDateString() -> String? {
+        let inputFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        let outputFormat = "yy. MM. dd"
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = inputFormat
+        
+        if let date = dateFormatter.date(from: self) {
+            dateFormatter.dateFormat = outputFormat
+            return dateFormatter.string(from: date)
+        } else {
+            return nil
+        }
+    }
 }
