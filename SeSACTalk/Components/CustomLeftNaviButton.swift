@@ -6,12 +6,15 @@
 //
 
 import UIKit
+import RxSwift
 
 
 final class CustomLeftNaviButton: UIButton {
     
-    var buttonTitle = "No WorkSpace"
     
+    var buttonTitle = BehaviorSubject<String>(value: "No WorkSpace")
+    private let disposeBag = DisposeBag()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -23,19 +26,19 @@ final class CustomLeftNaviButton: UIButton {
     
     private func configure() {
         
-        var attString = AttributedString(buttonTitle)
-        attString.font = Typography.title1 ?? UIFont.systemFont(ofSize: 22)
-        attString.foregroundColor = .black
-        
-        var configuration = UIButton.Configuration.filled()
-        configuration.attributedTitle = attString
-        configuration.imagePadding = 8
-        configuration.imagePlacement = .leading
-        configuration.baseBackgroundColor = .clear
-        configuration.baseForegroundColor = .black
+        buttonTitle
+            .subscribe(with: self) { owner, title in
+                var buttonConfiguration = UIButton.Configuration.filled()
+                var attString = AttributedString(title)
+                attString.font = Typography.title1 ?? UIFont.systemFont(ofSize: 22)
+                attString.foregroundColor = .black
+                
+                buttonConfiguration.attributedTitle = attString
+                buttonConfiguration.baseBackgroundColor = .clear
+                buttonConfiguration.baseForegroundColor = .black
 
-        self.configuration = configuration
+                self.configuration = buttonConfiguration
+            }
+            .disposed(by: disposeBag)
     }
-    
-    
 }
