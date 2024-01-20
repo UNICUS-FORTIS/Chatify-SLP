@@ -41,7 +41,7 @@ extension UINavigationController {
         appearance.backgroundColor = .white
         
         var leftCustomView = session.leftCustomView
-        let leftTitleView = session.leftCutomTitleButton
+        let leftTitleView = session.leftCustomTitleButton
         let rightCustomView = session.rightCustomView
 
         leftTitleView.addTarget(target, action: action, for: .touchUpInside)
