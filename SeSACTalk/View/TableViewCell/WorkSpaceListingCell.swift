@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import Kingfisher
+import RxSwift
 
 
 final class WorkSpaceListingCell: UITableViewCell {
@@ -18,7 +19,6 @@ final class WorkSpaceListingCell: UITableViewCell {
             let url = EndPoints.imageBaseURL + safe.thumbnail
             guard let urlString = URL(string: url) else { return }
             workspaceImage.kf.setImage(with: urlString)
-            
             workspaceName.text = safe.name
             createdDate.text = safe.createdAt.convertDateString()
         }
@@ -30,7 +30,6 @@ final class WorkSpaceListingCell: UITableViewCell {
             container.backgroundColor = safe ? Colors.Brand.gray : .clear
         }
     }
-
     
     private let container = UIView()
     private let workspaceImage = UIImageView()
@@ -39,14 +38,19 @@ final class WorkSpaceListingCell: UITableViewCell {
                                                  font: Typography.bodyBold ??
                                                  UIFont.systemFont(ofSize: 13))
     private let createdDate = CustomTitleLabel("",
-                                                 textColor: .black,
-                                                 font: Typography.body ??
-                                                 UIFont.systemFont(ofSize: 13))
+                                               textColor: .black,
+                                               font: Typography.body ??
+                                               UIFont.systemFont(ofSize: 13))
     
-    private let moreIcon: UIImageView = UIImageView(image: .threeDotsBlack)
+    private let moreIcon:UIButton = {
+        let btn = UIButton()
+        btn.setImage(.threeDotsBlack, for: .normal)
+        return btn
+    }()
+    
     
     private lazy var detailStackView = {
-       let sv = UIStackView(arrangedSubviews: [workspaceName, createdDate])
+        let sv = UIStackView(arrangedSubviews: [workspaceName, createdDate])
         sv.axis = .vertical
         sv.distribution = .fill
         sv.alignment = .leading
@@ -54,10 +58,12 @@ final class WorkSpaceListingCell: UITableViewCell {
         return sv
     }()
     
+    private var disposeBag = DisposeBag()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
-        setConstraints()
+        setConstraints()        
     }
     
     required init?(coder: NSCoder) {
@@ -70,10 +76,11 @@ final class WorkSpaceListingCell: UITableViewCell {
         workspaceImage.image = nil
         workspaceName.text = nil
         createdDate.text = nil
+        
     }
     
     private func configure() {
-        self.addSubview(container)
+        contentView.addSubview(container)
         container.addSubview(workspaceImage)
         container.addSubview(detailStackView)
         container.addSubview(moreIcon)
@@ -115,6 +122,8 @@ final class WorkSpaceListingCell: UITableViewCell {
         }
     }
     
-    
+    func addMoreButtomAction(target: UIViewController, action: Selector) {
+        moreIcon.addTarget(target, action: action, for: .touchUpInside)
+    }
     
 }
