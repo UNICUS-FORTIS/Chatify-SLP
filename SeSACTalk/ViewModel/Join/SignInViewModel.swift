@@ -71,7 +71,7 @@ final class SignInViewModel {
                 
                 let emailValid = self.validationCenter.validateEmail(email)
                 let emailValidation = emailValidation
-                let nicknameValid = self.validationCenter.validateNicknameOrWorkspaceName(nickname)
+                let nicknameValid = self.validationCenter.validateNickname(nickname)
                 let contactValid = self.validationCenter.validateContact(contact)
                 let passcodeValid = self.validationCenter.validatePasscode(passcode)
                 let passcodeConfirmValid = self.validationCenter.confirmPasscode(passcode, passcodeConfirm)

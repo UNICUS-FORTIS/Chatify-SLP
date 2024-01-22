@@ -203,7 +203,7 @@ final class SignInViewController: UIViewController {
     private func checkEachInputs() -> Observable<Bool> {
         print(#function)
         center.checkInput(email, validationClosure: center.validateEmail)
-        center.checkInput(nickname, validationClosure: center.validateNicknameOrWorkspaceName)
+        center.checkInput(nickname, validationClosure: center.validateNickname)
         center.checkInput(contact, validationClosure: center.validateContact)
         center.checkInput(passcode, validationClosure: center.validatePasscode)
         
