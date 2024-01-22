@@ -14,6 +14,7 @@ enum APIError:Int, Error {
     case unknownError
     
     enum ErrorCodes: String {
+        case tokenExpired = "E05" // Access Token Expired
         case e11 = "E11"
         case e12 = "E12"
         
@@ -23,6 +24,8 @@ enum APIError:Int, Error {
                 return ToastMessages.Join.invalidEmail.description
             case .e12:
                 return ToastMessages.Join.joinedMember.description
+            default :
+                return ""
             }
         }
     }
