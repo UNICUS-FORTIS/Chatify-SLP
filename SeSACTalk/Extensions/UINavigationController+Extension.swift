@@ -47,6 +47,7 @@ extension UINavigationController {
         leftTitleView.addTarget(target, action: action, for: .touchUpInside)
         let leftItem = UIBarButtonItem(customView: leftCustomView)
         let leftTitleItem = UIBarButtonItem(customView: leftTitleView)
+        leftTitleItem.width = 220
         let spacer = UIBarButtonItem()
         spacer.width = 8
         let rightItem = UIBarButtonItem(customView: rightCustomView)
