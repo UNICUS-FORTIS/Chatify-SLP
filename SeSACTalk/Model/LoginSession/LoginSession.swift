@@ -86,7 +86,7 @@ final class LoginSession {
             .flatMapLatest { workSpaces -> Observable<Result<ChannelInfoResponse, ErrorResponse>> in
                 guard let workSpaceID = workSpaces?.first?.workspaceID else { return Observable.empty() }
                 let id = IDRequiredRequest(id: workSpaceID)
-                return self.networkService.fetchChannelInfo(id: id).asObservable()
+                return self.fetchChannelInfo(id: id).asObservable()
             }
             .subscribe(with: self) { owner, result in
                 switch result {
@@ -103,7 +103,7 @@ final class LoginSession {
             .flatMapLatest { workSpaces -> Observable<Result<DMsResponse, ErrorResponse>> in
                 guard let workSpaceID = workSpaces?.first?.workspaceID else { return Observable.empty() }
                 let id = IDRequiredRequest(id: workSpaceID)
-                return self.networkService.fetchDms(id: id).asObservable()
+                return self.fetchDms(id: id).asObservable()
             }
             .subscribe(with: self) { owner, result in
                 switch result {
@@ -117,7 +117,7 @@ final class LoginSession {
             }
             .disposed(by: disposeBag)
         
-        networkService.fetchMyProfile()
+        fetchMyProfile()
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(let response):
@@ -139,5 +139,20 @@ final class LoginSession {
     func numberOfDmsCount() -> Int {
         let dms = try? DmsInfo.value()
         return dms?.count ?? 0
+    }
+    
+    func fetchChannelInfo(id: IDRequiredRequest) -> Single<Result<ChannelInfoResponse, ErrorResponse>> {
+        return networkService.fetchRequest(endpoint: .loadWorkSpaceChannels(channel: id),
+                                           decodeModel: ChannelInfoResponse.self)
+    }
+    
+    func fetchDms(id: IDRequiredRequest) -> Single<Result<DMsResponse, ErrorResponse>> {
+        return networkService.fetchRequest(endpoint: .loadDms(id: id),
+                                           decodeModel: DMsResponse.self)
+    }
+    
+    func fetchMyProfile() -> Single<Result<MyProfileResponse, ErrorResponse>> {
+        return networkService.fetchRequest(endpoint: .loadMyProfile,
+                                           decodeModel: MyProfileResponse.self)
     }
 }

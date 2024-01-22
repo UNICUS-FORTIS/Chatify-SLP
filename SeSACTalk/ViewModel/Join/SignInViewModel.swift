@@ -12,6 +12,7 @@ import RxCocoa
 
 final class SignInViewModel {
     
+    private let networkService = NetworkService.shared
     let emailSubject = PublishSubject<String>()
     let nicknameSubject = PublishSubject<String>()
     let contactSubject = PublishSubject<String>()
@@ -110,5 +111,14 @@ final class SignInViewModel {
     func saveTokens(access: String, refresh: String) {
         UserDefaults.standard.setValue(access, forKey: "accessToken")
         UserDefaults.standard.setValue(refresh, forKey: "refreshToken")
+    }
+    
+    func fetchEmailValidationRequest(info: EmailValidationRequest) -> Single<Result<Int, ErrorResponse>> {
+        return networkService.fetchStatusCodeRequest(endpoint: .emailValidation(model: info))
+    }
+    
+    func fetchJoinRequest(info: SignInRequest) -> Single<Result<SignInResponse, ErrorResponse>> {
+        return networkService.fetchRequest(endpoint: .join(model: info),
+                                           decodeModel: SignInResponse.self)
     }
 }

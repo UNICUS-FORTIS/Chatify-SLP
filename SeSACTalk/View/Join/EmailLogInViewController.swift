@@ -112,7 +112,7 @@ final class EmailLogInViewController: UIViewController {
                 let logInForm = EmailLoginRequest(email: form.email,
                                                   password: form.password,
                                                   deviceToken: form.deviceToken)
-                let result = self.viewModel.networkService.fetchEmailLoginRequest(info: logInForm)
+                let result = self.viewModel.fetchEmailLoginRequest(info: logInForm)
                 return result.asObservable()
             }
             .subscribe(with: self) { owner, result in

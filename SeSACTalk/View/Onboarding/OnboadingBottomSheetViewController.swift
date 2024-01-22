@@ -93,7 +93,7 @@ final class OnboadingBottomSheetViewController: UIViewController {
                     return Observable.just(form)
                 }
                 .flatMapLatest { form -> Observable<Result<SignInResponse, ErrorResponse>> in
-                    let result = viewModel.networkService.fetchKakaoLoginRequest(info: form)
+                    let result = viewModel.fetchKakaoLoginRequest(info: form)
                     return result.asObservable()
                 }
                 .subscribe(with: self) { owner, result in
@@ -246,7 +246,7 @@ extension OnboadingBottomSheetViewController: ASAuthorizationControllerDelegate 
                     print("이메일이 없어서 디코드한", result) // 모 이 데이터를 userDefault 에 업데이트 해줄수 있다
                 }
                 
-                
+                // MARK: - 애플로그인 후처리 필요
                 guard let viewModel = viewModel else { return }
                 if let fullName = fullName {
                     guard let familyName = fullName.familyName,
@@ -257,7 +257,7 @@ extension OnboadingBottomSheetViewController: ASAuthorizationControllerDelegate 
                                                  deviceToken: viewModel.deviceToken ?? "")
                     let group = DispatchGroup()
                     group.enter()
-                    viewModel.fetchAppleLogin(form: form)
+                    viewModel.fetchAppleLoginRequest(info: form)
                     group.leave()
                     
                     group.notify(queue: .main) {

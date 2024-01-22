@@ -42,7 +42,8 @@ final class WorkSpaceListViewController: UIViewController {
                 row , item, cell in
                 
                 cell.data = item
-                
+                cell.addMoreButtomAction(target: self, action: #selector(self.callSheet))
+
             }.disposed(by: disposeBag)
         
         tableView.rx.itemSelected
@@ -58,7 +59,10 @@ final class WorkSpaceListViewController: UIViewController {
                 selectedCell.selection = false
             }
             .disposed(by: disposeBag)
-        
+    }
+    
+    @objc private func callSheet() {
+        showWorkspaceSheet()
     }
     
     private func guideToInitialViewController() {

@@ -63,5 +63,11 @@ final class EmailLoginViewModel {
         let passcodeTest = NSPredicate(format: "SELF MATCHES %@", passcodeRegex)
         return passcodeTest.evaluate(with: passcode)
     }
+    
+    
+    func fetchEmailLoginRequest(info: EmailLoginRequest) -> Single<Result<EmailLoginResponse, ErrorResponse>> {
+        return networkService.fetchRequest(endpoint: .emailLogin(model: info),
+                                    decodeModel: EmailLoginResponse.self)
+    }
 
 }

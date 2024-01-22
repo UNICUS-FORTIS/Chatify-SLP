@@ -22,7 +22,6 @@ final class OnboardingViewController: UIViewController {
     private let startButton = CustomButton(title: ScreenTitles.Onboarding.startButton)
     private var fpc: FloatingPanelController!
     private let viewModel = OnboardingViewModel()
-    private let networkService = NetworkService.shared
     private let loginSession = LoginSession.shared
     private let disposeBag = DisposeBag()
 
@@ -97,7 +96,7 @@ final class OnboardingViewController: UIViewController {
     private func setAfterLoginSucceed() {
         viewModel.afterLoginSucceedTrigger = { [weak self] in
             if let strongSelf = self {
-                strongSelf.networkService.fetchLoadWorkSpace()
+                strongSelf.viewModel.fetchLoadWorkSpace()
                     .subscribe(with: strongSelf) { owner, result in
                         switch result {
                         case .success(let response):

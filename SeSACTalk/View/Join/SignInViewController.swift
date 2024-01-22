@@ -16,7 +16,6 @@ final class SignInViewController: UIViewController {
     
     private let viewModel = SignInViewModel()
     private lazy var center = ValidationCenter()
-    private let networkService = NetworkService.shared
     weak var delegate: ToWorkSpaceTriggerProtocol?
 
     
@@ -94,7 +93,7 @@ final class SignInViewController: UIViewController {
                                          nickname: requestForm.nickname,
                                          phone: requestForm.phone,
                                          deviceToken: requestForm.deviceToken)
-                return self.networkService.fetchJoinRequest(info: form).asObservable()
+                return self.viewModel.fetchJoinRequest(info: form).asObservable()
             }
             .observe(on: MainScheduler.instance)
             .subscribe(with: self) { owner, response in
@@ -150,7 +149,8 @@ final class SignInViewController: UIViewController {
                                                 aboveView: self.signInButton)
                     return Observable.empty()
                 }
-                let result = self.networkService.fetchEmailValidationRequest(info: EmailValidationRequest(email: text))
+                let validationRequest = EmailValidationRequest(email: text)
+                let result = self.viewModel.fetchEmailValidationRequest(info: validationRequest)
                 return result.asObservable()
             }
             .subscribe(with: self) { owner, result in

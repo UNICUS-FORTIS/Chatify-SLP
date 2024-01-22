@@ -120,7 +120,7 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
             .filter { $0 }
             .withLatestFrom(viewModel.form)
             .flatMapLatest { form -> Observable<Result<NewWorkSpaceResponse, ErrorResponse>> in
-                return self.networkService.fetchCreateNewWorkSpace(info: form).asObservable()
+                return self.viewModel.fetchCreateWorkSpace(info: form).asObservable()
             }
             .subscribe(with: self) { owner, result in
                 switch result {

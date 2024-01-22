@@ -21,6 +21,7 @@ enum APIService {
     case loadWorkSpaceChannels(channel: IDRequiredRequest)
     case loadDms(id: IDRequiredRequest)
     case loadMyProfile
+    case refreshToken(token: AccessTokenRequest)
 }
 
 extension APIService: TargetType {
@@ -52,6 +53,8 @@ extension APIService: TargetType {
             return path.workSpace+"/\(id.id)"+path.PathDepthOne.dms
         case .loadMyProfile:
             return path.profile
+        case .refreshToken:
+            return path.tokenRefresh
         }
         
     }
@@ -70,7 +73,8 @@ extension APIService: TargetType {
         case .loadWorkSpace,
                 .loadWorkSpaceChannels,
                 .loadDms,
-                .loadMyProfile:
+                .loadMyProfile,
+                .refreshToken :
             return .get
         }
     }
@@ -105,14 +109,12 @@ extension APIService: TargetType {
                                                    mimeType: "image/jpeg"))
             
             return .uploadMultipart(multipartData)
-            
-        case .loadWorkSpaceChannels:
-            return .requestPlain
-            
-        case .loadDms:
-            return .requestPlain
-            
-        case .loadWorkSpace, .loadMyProfile:
+
+        case .loadWorkSpaceChannels,
+                .loadDms,
+                .loadWorkSpace,
+                .loadMyProfile,
+                .refreshToken:
             return .requestPlain
             
         }
@@ -136,7 +138,8 @@ extension APIService: TargetType {
                 .createWorkSpace,
                 .loadWorkSpaceChannels,
                 .loadDms,
-                .loadMyProfile :
+                .loadMyProfile,
+                .refreshToken :
             
             return [
                 SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,

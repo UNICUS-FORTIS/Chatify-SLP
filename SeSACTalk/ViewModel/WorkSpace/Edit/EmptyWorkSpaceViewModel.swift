@@ -12,6 +12,7 @@ import RxCocoa
 
 final class EmptyWorkSpaceViewModel {
     
+    private let networkService = NetworkService.shared
     private let disposeBag = DisposeBag()
     var storedNickname: String {
         if let nickname = UserDefaults.standard.string(forKey: "AppleLoginName") {
@@ -35,6 +36,11 @@ final class EmptyWorkSpaceViewModel {
             return NewWorkSpaceRequest(name: name, description: description, image: image)
         }
         
+    }
+    
+    func fetchCreateWorkSpace(info: NewWorkSpaceRequest) -> Single<Result<NewWorkSpaceResponse, ErrorResponse>> {
+        return networkService.fetchRequest(endpoint: .createWorkSpace(model: info),
+                                           decodeModel: NewWorkSpaceResponse.self)
     }
     
 }

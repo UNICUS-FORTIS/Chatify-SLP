@@ -30,19 +30,6 @@ final class OnboardingViewModel {
     
     private let disposeBag = DisposeBag()
     
-    func fetchAppleLogin(form: AppleLoginRequest) {
-        networkService.fetchAppleLoginRequest(info: form)
-            .subscribe(with: self) { owner, result in
-                switch result {
-                case .success(let response) :
-                    print(response)
-                case .failure(let error) :
-                    print(error.errorCode)
-                }
-            }
-            .disposed(by: disposeBag)
-    }
-    
     func sortResponseByDate(_ response: [WorkSpace]) -> [WorkSpace] {
         let sortedResponse = response.sorted { (workspace1, workspace2) in
             if let date1 = dateFormatter.date(from: workspace1.createdAt),
@@ -52,5 +39,20 @@ final class OnboardingViewModel {
             return false
         }
         return sortedResponse
+    }
+    
+    func fetchKakaoLoginRequest(info: KakaoLoginRequest) -> Single<Result<SignInResponse, ErrorResponse>> {
+        return networkService.fetchRequest(endpoint: .kakaoLogin(model: info),
+                                           decodeModel: SignInResponse.self)
+    }
+    
+    func fetchAppleLoginRequest(info: AppleLoginRequest) -> Single<Result<SignInResponse, ErrorResponse>> {
+        return networkService.fetchRequest(endpoint: .appleLogin(model: info),
+                                           decodeModel: SignInResponse.self)
+    }
+    
+    func fetchLoadWorkSpace() -> Single<Result<WorkSpaces, ErrorResponse>> {
+        return networkService.fetchRequest(endpoint: .loadWorkSpace,
+                                           decodeModel: WorkSpaces.self)
     }
 }
