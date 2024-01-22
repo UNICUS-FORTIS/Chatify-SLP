@@ -19,11 +19,11 @@ extension UIViewController {
             print("워크스페이스 편집")
         }
         
-        let exit = UIAlertAction(title: "워크스페이스 나가기", style: .destructive) { action in
+        let exit = UIAlertAction(title: "워크스페이스 나가기", style: .default) { action in
             print("나가기")
         }
         
-        let changeOwner = UIAlertAction(title: "워크스페이스 관리자 변경", style: .destructive) { action in
+        let changeOwner = UIAlertAction(title: "워크스페이스 관리자 변경", style: .default) { action in
             print("변경")
         }
         
