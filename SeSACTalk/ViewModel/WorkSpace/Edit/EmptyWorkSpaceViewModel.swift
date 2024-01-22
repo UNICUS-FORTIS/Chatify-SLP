@@ -25,7 +25,7 @@ final class EmptyWorkSpaceViewModel {
     let workspace = PublishSubject<String>()
     let workspaceImage = PublishSubject<Data>()
     let workspaceImageMounted = BehaviorSubject<Bool>(value: false)
-    let spaceDescription = PublishSubject<String>()
+    let spaceDescription = BehaviorSubject<String>(value: "")
     var HomeDefaultTrasferTrigger: (() -> Void)?
     
     var form: Observable<NewWorkSpaceRequest> {
