@@ -155,4 +155,18 @@ final class LoginSession {
         return networkService.fetchRequest(endpoint: .loadMyProfile,
                                            decodeModel: MyProfileResponse.self)
     }
+    
+    func fetchLoadWorkSpace(){
+        networkService.fetchRequest(endpoint: .loadWorkSpace,
+                                    decodeModel: WorkSpaces.self)
+        .subscribe(with: self) { owner, result in
+            switch result {
+            case .success(let response) :
+                owner.workSpacesSubject.onNext(response)
+            case .failure(let error) :
+                print(error.errorCode)
+            }
+        }
+        .disposed(by: disposeBag)
+    }
 }

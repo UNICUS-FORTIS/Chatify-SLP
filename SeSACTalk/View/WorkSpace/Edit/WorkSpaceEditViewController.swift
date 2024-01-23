@@ -19,11 +19,12 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
     private let spaceName = CustomInputView(label: "워크스페이스 이름", placeHolder: "", keyboardType: .default)
     private let spaceDescription = CustomInputView(label: "워크스페이스 설명", placeHolder: "", keyboardType: .default)
     private let createButton = CustomButton(title: "완료")
-    private var center = ValidationCenter()
+    private let center = ValidationCenter()
     private let disposeBag = DisposeBag()
     private let tapGesture = UITapGestureRecognizer()
     private var viewModel: EmptyWorkSpaceViewModel!
-    private var networkService = NetworkService.shared
+    private let networkService = NetworkService.shared
+    private let session = LoginSession.shared
     
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -96,23 +97,22 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
         createButton.rx.tap
             .debounce(.seconds(1), scheduler: MainScheduler.instance)
             .withLatestFrom(viewModel.workspaceImageMounted)
-            .flatMapLatest { isImageMounted -> Observable<Bool> in
-                if isImageMounted {
-                    return Observable.just(isImageMounted)
-                } else {
+            .flatMap { isImageMounted -> Observable<Bool> in
+                if !isImageMounted {
                     self.makeToastAboveView(message: ScreenTitles.WorkSpaceInitial.workSpaceImageRestrict,
                                             backgroundColor: Colors.Brand.error,
                                             aboveView: self.createButton)
-                    return Observable.just(false)
                 }
+                return Observable.just(isImageMounted)
             }
             .filter { $0 }
             .withLatestFrom(viewModel.workspace)
-            .flatMapLatest { name -> Observable<Bool> in
-                let nameValidation = self.center.validateNicknameOrWorkspaceName(name)
+            .flatMap { name -> Observable<Bool> in
+                let nameValidation = self.center.validateWorkspaceName(name)
+                print(nameValidation)
                 if !nameValidation {
                     self.makeToastAboveView(message: ScreenTitles.WorkSpaceInitial.workSpaceNameRestrict,
-                                             backgroundColor: Colors.Brand.error,
+                                            backgroundColor: Colors.Brand.error,
                                             aboveView: self.createButton)
                 }
                 return Observable.just(nameValidation)
@@ -124,14 +124,14 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
             }
             .subscribe(with: self) { owner, result in
                 switch result {
-                case .success(let response):
-                    print(response)
+                case .success(_):
+                    owner.session.fetchLoadWorkSpace()
+                    owner.dismiss(animated: true)
                 case .failure(let error):
                     print(error.errorCode)
                 }
             }
             .disposed(by: disposeBag)
-        
     }
     
     
