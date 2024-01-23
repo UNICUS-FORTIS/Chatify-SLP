@@ -13,23 +13,9 @@ import RxSwift
 
 final class WorkSpaceListingCell: UITableViewCell {
     
-    var data: WorkSpace? {
-        didSet {
-            guard let safe = data else { return }
-            let url = EndPoints.imageBaseURL + safe.thumbnail
-            guard let urlString = URL(string: url) else { return }
-            workspaceImage.kf.setImage(with: urlString)
-            workspaceName.text = safe.name
-            createdDate.text = safe.createdAt.convertDateString()
-        }
-    }
+    var data = PublishSubject<WorkSpace>()
     
-    var selection: Bool? {
-        didSet {
-            guard let safe = selection else { return }
-            container.backgroundColor = safe ? Colors.Brand.gray : .clear
-        }
-    }
+    var selection = PublishSubject<Bool>()
     
     private let container = UIView()
     private let workspaceImage = UIImageView()
@@ -48,7 +34,6 @@ final class WorkSpaceListingCell: UITableViewCell {
         return btn
     }()
     
-    
     private lazy var detailStackView = {
         let sv = UIStackView(arrangedSubviews: [workspaceName, createdDate])
         sv.axis = .vertical
@@ -63,7 +48,8 @@ final class WorkSpaceListingCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
-        setConstraints()        
+        setConstraints()
+        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -72,11 +58,7 @@ final class WorkSpaceListingCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        container.backgroundColor = .clear
-        workspaceImage.image = nil
-        workspaceName.text = nil
-        createdDate.text = nil
-        
+        disposeBag = DisposeBag()
     }
     
     private func configure() {
@@ -122,8 +104,23 @@ final class WorkSpaceListingCell: UITableViewCell {
         }
     }
     
+    private func bind() {
+        data.subscribe(with: self) { owner, data in
+                let url = EndPoints.imageBaseURL + data.thumbnail
+                guard let urlString = URL(string: url) else { return }
+                owner.workspaceImage.kf.setImage(with: urlString)
+                owner.workspaceName.text = data.name
+                owner.createdDate.text = data.createdAt.convertDateString()
+            }
+            .disposed(by: disposeBag)
+        
+        selection.subscribe(with: self) { owner, selection in
+            owner.container.backgroundColor = selection ? Colors.Brand.gray : .clear
+        }
+        .disposed(by: disposeBag)
+    }
+    
     func addMoreButtomAction(target: UIViewController, action: Selector) {
         moreIcon.addTarget(target, action: action, for: .touchUpInside)
     }
-    
 }

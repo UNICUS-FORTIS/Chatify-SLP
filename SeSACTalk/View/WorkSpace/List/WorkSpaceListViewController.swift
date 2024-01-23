@@ -41,7 +41,7 @@ final class WorkSpaceListViewController: UIViewController {
                                          cellType: WorkSpaceListingCell.self)) {
                 row , item, cell in
                 
-                cell.data = item
+                cell.data.onNext(item)
                 cell.addMoreButtomAction(target: self, action: #selector(self.callSheet))
 
             }.disposed(by: disposeBag)
@@ -49,14 +49,23 @@ final class WorkSpaceListViewController: UIViewController {
         tableView.rx.itemSelected
             .subscribe(with: self) { owner, indexPath in
                 guard let selectedCell = owner.tableView.cellForRow(at: indexPath) as? WorkSpaceListingCell else { return }
-                selectedCell.selection = true
+                selectedCell.selection.onNext(true)
             }
             .disposed(by: disposeBag)
         
         tableView.rx.itemDeselected
             .subscribe(with: self) { owner, indexPath in
                 guard let selectedCell = owner.tableView.cellForRow(at: indexPath) as? WorkSpaceListingCell else { return }
-                selectedCell.selection = false
+                selectedCell.selection.onNext(false)
+            }
+            .disposed(by: disposeBag)
+        
+        addNewWorkSpaceButton.rx.tap
+            .subscribe(with: self) { owner, _ in
+                let vc = WorkSpaceEditViewController(viewModel: EmptyWorkSpaceViewModel())
+                let navVC = UINavigationController(rootViewController: vc)
+                vc.modalTransitionStyle = .coverVertical
+                owner.present(navVC, animated: true)
             }
             .disposed(by: disposeBag)
     }
