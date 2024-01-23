@@ -17,6 +17,8 @@ final class WorkSpaceListingCell: UITableViewCell {
     
     var selection = PublishSubject<Bool>()
     
+    var showWorkspaceSheet: ( () -> Void )?
+    
     private let container = UIView()
     private let workspaceImage = UIImageView()
     private let workspaceName = CustomTitleLabel("",
@@ -59,20 +61,22 @@ final class WorkSpaceListingCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         disposeBag = DisposeBag()
+        showWorkspaceSheet = nil
     }
     
     private func configure() {
         contentView.addSubview(container)
+        contentView.backgroundColor = .clear
+        self.selectionStyle = .none
         container.addSubview(workspaceImage)
         container.addSubview(detailStackView)
         container.addSubview(moreIcon)
         container.layer.cornerRadius = 8
         container.clipsToBounds = true
-        self.backgroundColor = .clear
         workspaceImage.layer.cornerRadius = 8
         workspaceImage.clipsToBounds = true
+        workspaceImage.contentMode = .scaleAspectFill
         createdDate.textColor = Colors.Text.secondary
-        self.selectionStyle = .none
     }
     
     private func setConstraints() {
@@ -106,13 +110,16 @@ final class WorkSpaceListingCell: UITableViewCell {
     
     private func bind() {
         data.subscribe(with: self) { owner, data in
-                let url = EndPoints.imageBaseURL + data.thumbnail
-                guard let urlString = URL(string: url) else { return }
-                owner.workspaceImage.kf.setImage(with: urlString)
-                owner.workspaceName.text = data.name
-                owner.createdDate.text = data.createdAt.convertDateString()
-            }
-            .disposed(by: disposeBag)
+            let url = EndPoints.imageBaseURL + data.thumbnail
+            guard let urlString = URL(string: url) else { return }
+            owner.workspaceImage.kf.setImage(with: urlString)
+            owner.workspaceName.text = data.name
+            owner.createdDate.text = data.createdAt.convertDateString()
+            owner.moreIcon.addTarget(self,
+                                     action: #selector(owner.moreIconTapped),
+                                     for: .touchUpInside)
+        }
+        .disposed(by: disposeBag)
         
         selection.subscribe(with: self) { owner, selection in
             owner.container.backgroundColor = selection ? Colors.Brand.gray : .clear
@@ -120,7 +127,8 @@ final class WorkSpaceListingCell: UITableViewCell {
         .disposed(by: disposeBag)
     }
     
-    func addMoreButtomAction(target: UIViewController, action: Selector) {
-        moreIcon.addTarget(target, action: action, for: .touchUpInside)
+    @objc private func moreIconTapped() {
+        guard let safe = showWorkspaceSheet else { return }
+        safe()
     }
 }

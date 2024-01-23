@@ -34,16 +34,15 @@ final class WorkSpaceListViewController: UIViewController {
         session.workSpacesSubject
             .map { workSpaces -> WorkSpaces in
                 guard let workSpaces = workSpaces else { return [] }
-                print("ssxdddd", workSpaces)
                 return workSpaces
             }
             .bind(to: tableView.rx.items(cellIdentifier: WorkSpaceListingCell.identifier,
                                          cellType: WorkSpaceListingCell.self)) {
-                row , item, cell in
-                
+                _ , item, cell in
                 cell.data.onNext(item)
-                cell.addMoreButtomAction(target: self, action: #selector(self.callSheet))
-
+                cell.showWorkspaceSheet = {
+                    self.showWorkspaceSheet(workspace: item)
+                }
             }.disposed(by: disposeBag)
         
         tableView.rx.itemSelected
@@ -62,16 +61,13 @@ final class WorkSpaceListViewController: UIViewController {
         
         addNewWorkSpaceButton.rx.tap
             .subscribe(with: self) { owner, _ in
-                let vc = WorkSpaceEditViewController(viewModel: EmptyWorkSpaceViewModel())
+                let vc = WorkSpaceEditViewController(viewModel: EmptyWorkSpaceViewModel(editMode: .create,
+                                                                                        workspaceInfo: nil))
                 let navVC = UINavigationController(rootViewController: vc)
                 vc.modalTransitionStyle = .coverVertical
                 owner.present(navVC, animated: true)
             }
             .disposed(by: disposeBag)
-    }
-    
-    @objc private func callSheet() {
-        showWorkspaceSheet()
     }
     
     private func guideToInitialViewController() {
