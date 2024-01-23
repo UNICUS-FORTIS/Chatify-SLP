@@ -39,16 +39,10 @@ final class LoginSession {
                                   access: String,
                                   refresh: String) {
         
-        userIDSubject
-            .subscribe(with: self) { owner, id in
-                print("아이디", id)
-            }
-            .disposed(by: disposeBag)
-        
         userIDSubject.onNext(id)
         nickNameSubject.onNext(nick)
         UserDefaults.standard.setValue(access, forKey: "accessToken")
-        UserDefaults.standard.setValue(access, forKey: "refreshToken")
+        UserDefaults.standard.setValue(refresh, forKey: "refreshToken")
         
         bind()
     }
@@ -59,9 +53,7 @@ final class LoginSession {
     }
     
     private func bind() {
-        
-        print(#function)
-        
+                
         myProfile
             .bind(with: self) { owner, profile in
                 print("네비게이션바 프로파일", profile)
