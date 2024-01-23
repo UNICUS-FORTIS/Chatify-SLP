@@ -22,9 +22,10 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
     private let center = ValidationCenter()
     private let disposeBag = DisposeBag()
     private let tapGesture = UITapGestureRecognizer()
-    private var viewModel: EmptyWorkSpaceViewModel!
+    var viewModel: EmptyWorkSpaceViewModel!
     private let networkService = NetworkService.shared
     private let session = LoginSession.shared
+    private var viewTitle: String?
     
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -46,6 +47,7 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
         configure()
         setConstraints()
         bind()
+        viewModel.bind()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -53,7 +55,14 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
     }
     
     private func configure() {
-        navigationController?.setStartingAppearance(title: "워크스페이스 생성",
+        
+        switch viewModel.workspaceEditMode {
+        case .create:
+            viewTitle = "워크스페이스 생성"
+        case .edit:
+            viewTitle = "워크스페이스 편집"
+        }
+        navigationController?.setStartingAppearance(title: viewTitle,
                                                     target: self,
                                                     action: #selector(dismissTrigger))
         view.addSubview(spaceImage)
@@ -68,7 +77,7 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
     }
     
     private func bind() {
-        
+        print("에딧뷰컨트롤러 bind 실행됨")
         spaceImage.addGestureRecognizer(tapGesture)
         
         tapGesture.rx.event
@@ -77,8 +86,21 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
             }
             .disposed(by: disposeBag)
         
+        viewModel.workspaceInfoForEdit
+            .bind(with: self) { owner, workspace in
+                guard let safe = workspace else { return }
+                owner.spaceName.textField.text = safe.name
+                owner.spaceDescription.textField.text = safe.description
+                owner.spaceImage.setImageWithThumbnail(thumbnail: safe.thumbnail) { imageView in
+                    if let safeImage = imageView.image?.jpegData(compressionQuality: 1.0) {
+                        self.viewModel.workspaceImage.onNext(safeImage)
+                    }
+                }
+            }
+            .disposed(by: disposeBag)
+        
         spaceName.textField.rx.text.orEmpty
-            .bind(to: viewModel.workspace)
+            .bind(to: viewModel.workspaceName)
             .disposed(by: disposeBag)
         
         spaceDescription.textField.rx.text.orEmpty
@@ -106,7 +128,7 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
                 return Observable.just(isImageMounted)
             }
             .filter { $0 }
-            .withLatestFrom(viewModel.workspace)
+            .withLatestFrom(viewModel.workspaceName)
             .flatMap { name -> Observable<Bool> in
                 let nameValidation = self.center.validateWorkspaceName(name)
                 print(nameValidation)
@@ -120,7 +142,12 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
             .filter { $0 }
             .withLatestFrom(viewModel.form)
             .flatMapLatest { form -> Observable<Result<NewWorkSpaceResponse, ErrorResponse>> in
-                return self.viewModel.fetchCreateWorkSpace(info: form).asObservable()
+                switch self.viewModel.workspaceEditMode {
+                case .create:
+                    return self.viewModel.fetchCreateWorkSpace(info: form).asObservable()
+                case .edit:
+                    return self.viewModel.fetchEditWorkSpace(form: form).asObservable()
+                }
             }
             .subscribe(with: self) { owner, result in
                 switch result {

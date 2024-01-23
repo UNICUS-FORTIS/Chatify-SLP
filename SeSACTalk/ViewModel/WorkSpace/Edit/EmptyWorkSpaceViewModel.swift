@@ -22,17 +22,30 @@ final class EmptyWorkSpaceViewModel {
         }
     }
     
-    let workspace = PublishSubject<String>()
+    let workspaceEditMode: WorkSpaceEditMode
+    let workspaceInfoForEdit = BehaviorSubject<WorkSpace?>(value: nil)
+    let workspaceThumbnail = PublishSubject<String>()
+    private var workspaceID: Int?
+
+    let workspaceName = PublishSubject<String>()
     let workspaceImage = PublishSubject<Data>()
     let workspaceImageMounted = BehaviorSubject<Bool>(value: false)
     let spaceDescription = BehaviorSubject<String>(value: "")
     var HomeDefaultTrasferTrigger: (() -> Void)?
     
+    init(editMode: WorkSpaceEditMode, workspaceInfo: WorkSpace?) {
+        self.workspaceEditMode = editMode
+        guard let safeInfo = workspaceInfo else { return }
+        print(safeInfo)
+        self.workspaceInfoForEdit.onNext(safeInfo)
+    }
+    
     var form: Observable<NewWorkSpaceRequest> {
-        return Observable.combineLatest(workspace,
+        return Observable.combineLatest(workspaceName,
                                         workspaceImage,
                                         spaceDescription) {
             name, image, description in
+            print("새로 생성된 form", NewWorkSpaceRequest(name: name, description: description, image: image))
             return NewWorkSpaceRequest(name: name, description: description, image: image)
         }
         
@@ -43,4 +56,22 @@ final class EmptyWorkSpaceViewModel {
                                            decodeModel: NewWorkSpaceResponse.self)
     }
     
+    func fetchEditWorkSpace(form: NewWorkSpaceRequest) -> Single<Result<NewWorkSpaceResponse, ErrorResponse>> {
+        let id = IDRequiredRequest(id: self.workspaceID ?? 000)
+        return networkService.fetchRequest(endpoint: .editWorkSpace(id: id,
+                                                                    model: form),
+                                           decodeModel: NewWorkSpaceResponse.self)
+    }
+    
+    func bind() {
+        workspaceInfoForEdit
+            .subscribe(with: self) { owner, workspace in
+                guard let safe = workspace else { return }
+                owner.workspaceName.onNext(safe.name)
+                owner.workspaceThumbnail.onNext(safe.thumbnail)
+                owner.spaceDescription.onNext(safe.description)
+                owner.workspaceID = safe.workspaceID
+            }
+            .disposed(by: disposeBag)
+    }
 }

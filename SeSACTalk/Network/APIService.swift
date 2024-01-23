@@ -22,6 +22,7 @@ enum APIService {
     case loadDms(id: IDRequiredRequest)
     case loadMyProfile
     case refreshToken(token: AccessTokenRequest)
+    case editWorkSpace(id: IDRequiredRequest, model:NewWorkSpaceRequest)
 }
 
 extension APIService: TargetType {
@@ -55,6 +56,8 @@ extension APIService: TargetType {
             return path.profile
         case .refreshToken:
             return path.tokenRefresh
+        case .editWorkSpace(let id, _):
+            return path.workSpace+"/\(id.id)"
         }
         
     }
@@ -76,6 +79,9 @@ extension APIService: TargetType {
                 .loadMyProfile,
                 .refreshToken :
             return .get
+            
+        case .editWorkSpace:
+            return .put
         }
     }
     
@@ -88,16 +94,17 @@ extension APIService: TargetType {
         case .join(let model):
             return .requestJSONEncodable(model)
             
-        case .emailLogin(model: let model):
+        case .emailLogin(let model):
             return .requestJSONEncodable(model)
             
-        case .kakaoLogin(model: let model):
+        case .kakaoLogin(let model):
             return .requestJSONEncodable(model)
             
-        case .appleLogin(model: let model):
+        case .appleLogin(let model):
             return .requestJSONEncodable(model)
             
-        case .createWorkSpace(model: let model):
+        case .createWorkSpace(let model),
+                .editWorkSpace(_, let model):
             
             var multipartData = [MultipartFormData]()
             multipartData.append(MultipartFormData(provider: .data(model.name.data(using: .utf8)!),
@@ -109,14 +116,13 @@ extension APIService: TargetType {
                                                    mimeType: "image/jpeg"))
             
             return .uploadMultipart(multipartData)
-
+            
         case .loadWorkSpaceChannels,
                 .loadDms,
                 .loadWorkSpace,
                 .loadMyProfile,
                 .refreshToken:
             return .requestPlain
-            
         }
     }
     
@@ -139,7 +145,8 @@ extension APIService: TargetType {
                 .loadWorkSpaceChannels,
                 .loadDms,
                 .loadMyProfile,
-                .refreshToken :
+                .refreshToken,
+                .editWorkSpace :
             
             return [
                 SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,
