@@ -24,7 +24,8 @@ final class HomeEmptyViewController: UIViewController {
                                                   UIFont.systemFont(ofSize: 13))
     private let mainImage = UIImageView(image: .workspaceEmpty)
     private let createWorkSpaceButton = CustomButton(title: ScreenTitles.WorkSpaceInitial.createWorkSpace)
-    private let viewModel = EmptyWorkSpaceViewModel()
+    private let viewModel = EmptyWorkSpaceViewModel(editMode: .create,
+                                                    workspaceInfo: nil)
     private var sideMenu: SideMenuNavigationController?
     private let disposeBag = DisposeBag()
     
