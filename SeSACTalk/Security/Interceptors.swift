@@ -31,7 +31,7 @@ final class RefreshTokenInterceptor: RequestInterceptor {
         if let response = request as? DataRequest {
             guard let errorData = response.data,
                   let decoded = try? JSONDecoder().decode(ErrorResponse.self, from: errorData)
-            else { return }
+            else { return completion(.doNotRetry) }
             let errorCode = APIError.ErrorCodes(rawValue: decoded.errorCode)
             
             switch errorCode {

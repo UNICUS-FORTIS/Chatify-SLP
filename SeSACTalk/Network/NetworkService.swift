@@ -15,7 +15,7 @@ final class NetworkService {
     static let shared = NetworkService()
     private init() {}
     
-    private let provider = MoyaProvider<APIService>()
+    private lazy var provider = MoyaProvider<APIService>(session: Moya.Session(interceptor: RefreshTokenInterceptor()))
     private let disposeBag = DisposeBag()
     
     func fetchStatusCodeRequest(endpoint: APIService) -> Single<Result<Int, ErrorResponse>> {
