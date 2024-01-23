@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 
 final class CustomSpaceImageView: UIImageView {
@@ -52,6 +53,14 @@ final class CustomSpaceImageView: UIImageView {
     
     func setImage(image: UIImage) {
         self.spaceImage.image = image
+    }
+    
+    func setImageWithThumbnail(thumbnail: String, completion: @escaping (UIImageView)->Void ) {
+        let url = EndPoints.imageBaseURL + thumbnail
+        guard let urlString = URL(string: url) else { return }
+        self.spaceImage.contentMode = .scaleAspectFill
+        self.spaceImage.kf.setImage(with: urlString)
+        completion(spaceImage)
     }
     
     func setContentMode(mode: ContentMode) {
