@@ -148,7 +148,7 @@ final class LoginSession {
                                            decodeModel: MyProfileResponse.self)
     }
     
-    func fetchLoadWorkSpace(){
+    func fetchLoadWorkSpace() {
         networkService.fetchRequest(endpoint: .loadWorkSpace,
                                     decodeModel: WorkSpaces.self)
         .subscribe(with: self) { owner, result in
@@ -160,5 +160,14 @@ final class LoginSession {
             }
         }
         .disposed(by: disposeBag)
+    }
+    
+    func removeWorkSpace(id: Int) {
+        let idRequest = IDRequiredRequest(id: id)
+        networkService.fetchStatusCodeRequest(endpoint: .removeWorkSpace(id: idRequest))
+            .subscribe(with: self) { owner, result in
+                owner.fetchLoadWorkSpace()
+            }
+            .disposed(by: disposeBag)
     }
 }
