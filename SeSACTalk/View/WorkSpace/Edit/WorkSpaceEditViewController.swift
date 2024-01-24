@@ -61,6 +61,7 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
             viewTitle = "워크스페이스 생성"
         case .edit:
             viewTitle = "워크스페이스 편집"
+            viewModel.workspaceImageMounted.onNext(true)
         }
         navigationController?.setStartingAppearance(title: viewTitle,
                                                     target: self,
@@ -91,9 +92,11 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
                 guard let safe = workspace else { return }
                 owner.spaceName.textField.text = safe.name
                 owner.spaceDescription.textField.text = safe.description
-                owner.spaceImage.setImageWithThumbnail(thumbnail: safe.thumbnail) { imageView in
-                    if let safeImage = imageView.image?.jpegData(compressionQuality: 1.0) {
-                        self.viewModel.workspaceImage.onNext(safeImage)
+                owner.spaceImage.setImageWithThumbnail(thumbnail: safe.thumbnail) { [weak self] image in
+                    if let safeImage = image.jpegData(compressionQuality: 1.0) {
+                        DispatchQueue.main.async {
+                            self?.viewModel.workspaceImage.onNext(safeImage)
+                        }
                     }
                 }
             }
