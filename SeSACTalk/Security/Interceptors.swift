@@ -20,7 +20,7 @@ final class RefreshTokenInterceptor: RequestInterceptor {
         
         var urlRequest = urlRequest
         
-        urlRequest.headers.update(name: SecureKeys.Headers.auth, value: SecureKeys.Headers.accessToken)
+//        urlRequest.headers.update(name: SecureKeys.Headers.auth, value: SecureKeys.Headers.accessToken)
         
         completion(.success(urlRequest))
     }
