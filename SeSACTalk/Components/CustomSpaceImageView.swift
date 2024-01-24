@@ -55,12 +55,14 @@ final class CustomSpaceImageView: UIImageView {
         self.spaceImage.image = image
     }
     
-    func setImageWithThumbnail(thumbnail: String, completion: @escaping (UIImageView)->Void ) {
+    func setImageWithThumbnail(thumbnail: String, completion: @escaping (UIImage)->Void ) {
         let url = EndPoints.imageBaseURL + thumbnail
         guard let urlString = URL(string: url) else { return }
         self.spaceImage.contentMode = .scaleAspectFill
         self.spaceImage.kf.setImage(with: urlString)
-        completion(spaceImage)
+        if let image = spaceImage.image {
+            completion(image)
+        }
     }
     
     func setContentMode(mode: ContentMode) {
