@@ -12,7 +12,7 @@ import RxCocoa
 
 
 
-final class WorkSpaceEmptyListViewController: UIViewController {
+final class SideMenuEmptyViewController: UIViewController {
     
     private let mainTitle = CustomTitleLabel(ScreenTitles.WorkspaceList.mainTitle,
                                                textColor: .black,

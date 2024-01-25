@@ -18,7 +18,7 @@ final class DefaultWorkSpaceViewController: UIViewController {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let newMessageButton = NewMessageButton(frame: .zero)
     private var sideMenu: SideMenuNavigationController?
-
+    
     private let disposeBag = DisposeBag()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,8 +26,26 @@ final class DefaultWorkSpaceViewController: UIViewController {
         configure()
         setConstraints()
         sideMenuSetup()
+        bind()
     }
     
+    private func bind() {
+        Observable
+            .combineLatest(session.channelInfo.asObservable(), session.DmsInfo.asObservable())
+            .map { channel, dms -> Bool in
+                guard let dmsValue = dms else { return false }
+                return channel != nil && (!dmsValue.isEmpty || dmsValue.isEmpty)
+            }
+            .asDriver(onErrorJustReturn: false)
+            .filter { $0 }
+            .drive(with: self) { owner, modified in
+                if modified {
+                    owner.tableView.reloadData()
+                    print("테이블뷰 리로드됨")
+                }
+            }
+            .disposed(by: disposeBag)
+    }
     
     private func configure() {
         view.backgroundColor = .white
@@ -58,7 +76,7 @@ final class DefaultWorkSpaceViewController: UIViewController {
         present(SideMenuManager.default.leftMenuNavigationController!, animated: true, completion: nil)
     }
     
-
+    
     private func setConstraints() {
         tableView.snp.makeConstraints { make in
             make.top.bottom.equalTo(view.safeAreaLayoutGuide)
@@ -73,7 +91,7 @@ final class DefaultWorkSpaceViewController: UIViewController {
     }
     
     private func sideMenuSetup() {
-        let menu = WorkSpaceListViewController()
+        let menu = SideMenuListingViewController()
         sideMenu = SideMenuNavigationController(rootViewController: menu)
         SideMenuManager.default.leftMenuNavigationController = sideMenu
         SideMenuManager.default.addPanGestureToPresent(toView: self.view)
@@ -113,7 +131,7 @@ extension DefaultWorkSpaceViewController: UITableViewDataSource {
                     guard let safe = channelInfo else { return }
                     let channelPath = safe.channels[indexPath.row]
                     let text = channelPath.name
-                
+                    
                     cell.setLabel(text: text,
                                   textColor: Colors.Text.secondary,
                                   symbol: .hashTagThin,

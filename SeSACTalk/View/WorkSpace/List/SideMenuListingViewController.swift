@@ -11,14 +11,14 @@ import RxSwift
 import RxCocoa
 
 
-final class WorkSpaceListViewController: UIViewController {
+final class SideMenuListingViewController: UIViewController {
     
     
     private let tableView = UITableView(frame: .zero, style: .plain)
     
     private let addNewWorkSpaceButton = SideMenuButton(title: "워크스페이스 추가", icon: .plus)
     private let helpButton = SideMenuButton(title: "도움말", icon: .help)
-    private let session = LoginSession.shared
+    private weak var session = LoginSession.shared
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -30,18 +30,19 @@ final class WorkSpaceListViewController: UIViewController {
     }
     
     private func bind() {
-        
+        guard let session = session else { return }
         session.workSpacesSubject
             .map { workSpaces -> WorkSpaces in
                 guard let workSpaces = workSpaces else { return [] }
+//                let sorted = workSpaces.sorted { $0.createdAt > $1.createdAt }
                 return workSpaces
             }
             .bind(to: tableView.rx.items(cellIdentifier: WorkSpaceListingCell.identifier,
-                                         cellType: WorkSpaceListingCell.self)) {
-                _ , item, cell in
+                                         cellType: WorkSpaceListingCell.self)) { [weak self]
+                row , item, cell in
                 cell.data.onNext(item)
-                cell.showWorkspaceSheet = {
-                    self.showWorkspaceSheet(workspace: item)
+                cell.showWorkspaceSheet = { [weak self] in
+                    self?.showWorkspaceSheet(workspace: item)
                 }
             }.disposed(by: disposeBag)
         
@@ -121,7 +122,9 @@ final class WorkSpaceListViewController: UIViewController {
             make.height.equalTo(41)
         }
     }
-    
+    deinit {
+        print("Deinit WorkspaceList VC")
+    }
 }
 
 

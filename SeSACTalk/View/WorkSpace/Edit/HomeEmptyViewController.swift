@@ -100,7 +100,7 @@ final class HomeEmptyViewController: UIViewController {
     }
     
     private func sideMenuSetup() {
-        let menu = WorkSpaceEmptyListViewController()
+        let menu = SideMenuEmptyViewController()
         sideMenu = SideMenuNavigationController(rootViewController: menu)
         SideMenuManager.default.leftMenuNavigationController = sideMenu
         SideMenuManager.default.addPanGestureToPresent(toView: self.view)
