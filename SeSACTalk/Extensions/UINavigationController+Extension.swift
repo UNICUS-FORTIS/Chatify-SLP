@@ -40,19 +40,19 @@ extension UINavigationController {
         appearance.shadowColor = Colors.Border.naviShadow
         appearance.backgroundColor = .white
         
-        var leftCustomView = session.leftCustomView
-        let leftTitleView = session.leftCustomTitleButton
-        let rightCustomView = session.rightCustomView
+        let leftCustomView = session.leftCustomView
+        let leftCustomLabel = session.leftCustomLabel
+        leftCustomLabel.button.addTarget(target, action: action, for: .touchUpInside)
 
-        leftTitleView.addTarget(target, action: action, for: .touchUpInside)
-        let leftItem = UIBarButtonItem(customView: leftCustomView)
-        let leftTitleItem = UIBarButtonItem(customView: leftTitleView)
-        leftTitleItem.width = 220
-        let spacer = UIBarButtonItem()
-        spacer.width = 8
-        let rightItem = UIBarButtonItem(customView: rightCustomView)
+        let rightCustomView = session.rightCustomView
         
-        topViewController?.navigationItem.leftBarButtonItems = [leftItem, spacer, leftTitleItem]
+        let leftItem = UIBarButtonItem(customView: leftCustomView)
+        let leftTitleItem = UIBarButtonItem(customView: leftCustomLabel)
+        
+        let rightItem = UIBarButtonItem(customView: rightCustomView)
+        leftItem.width = 32
+        
+        topViewController?.navigationItem.leftBarButtonItems = [leftItem, leftTitleItem]
         topViewController?.navigationItem.rightBarButtonItem = rightItem
         
         navigationBar.isUserInteractionEnabled = true
