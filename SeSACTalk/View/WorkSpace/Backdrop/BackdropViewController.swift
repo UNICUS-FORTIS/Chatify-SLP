@@ -14,14 +14,12 @@ import RxCocoa
 final class BackdropViewController: UIViewController {
     
     
-    private let session = LoginSession.shared
-    private var backdropMode: BackdropMode?
-    private var boxType: InteractionTypeCancellable?
+    private weak var session = LoginSession.shared
+    private var boxType: InteractionType?
     private var workspaceID: Int?
     
-    convenience init(mode: BackdropMode, boxType: InteractionTypeCancellable, id: Int) {
+    convenience init(boxType: InteractionType, id: Int) {
         self.init(nibName: nil, bundle: nil)
-        self.backdropMode = mode
         self.boxType = boxType
         self.workspaceID = id
     }
@@ -34,31 +32,33 @@ final class BackdropViewController: UIViewController {
     
     private func configure() {
         view.backgroundColor = .black.withAlphaComponent(0.5)
-        switch backdropMode {
-        case .requireOnlyConfirm:
-            break
+
+        switch boxType {
             
-        case .requireWithCancel:
-            guard let safe = boxType else { return }
-            let box = CancellableBox(type: safe)
+        case .confirm(let acceptable):
+            let box = OnlyConfirmBox(type: acceptable)
+            box.setConfirmButtonAction(target: self, action: #selector(dismissTrigger))
+            view.addSubview(box)
+            setConstraints(box: box)
+    
+            
+        case .cancellable(let cancellable):
+            let box = CancellableBox(type: cancellable)
             box.setCancelButtonAction(target: self, action: #selector(dismissTrigger))
             view.addSubview(box)
             setConstraints(box: box)
             
-            switch boxType {
-            case .workspaceExit:
-                break
+            switch cancellable {
+                
+            case .exitFromWorkspace:
+                box.setConfirmButtonAction(target: self, action: #selector(exitFromWorkspaceTrigger))
                 
             case .removeWorkspace:
-                box.setConfirmButtonAction(target: self, action: #selector(confirmButtonTrigger))
-                
-            case nil:
-                break
+                box.setConfirmButtonAction(target: self, action: #selector(confirmRemoveWorkspaceTrigger))
             }
             
-        case nil:
-            break
-        } 
+        default: break
+        }
     }
     
     
@@ -70,11 +70,20 @@ final class BackdropViewController: UIViewController {
     }
     
     @objc func dismissTrigger() {
+        self.dismiss(animated: false)
     }
     
-    @objc func confirmButtonTrigger() {
-        guard let id = workspaceID else { return }
+    @objc func confirmRemoveWorkspaceTrigger() {
+        guard let id = workspaceID,
+              let session = session else { return }
         session.removeWorkSpace(id: id)
+        self.dismiss(animated: false)
+    }
+    
+    @objc func exitFromWorkspaceTrigger() {
+        guard let id = workspaceID,
+              let session = session else { return }
+        session.leaveFromWorkspace(id: id)
         self.dismiss(animated: false)
     }
 }
