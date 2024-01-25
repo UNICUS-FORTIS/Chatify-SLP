@@ -24,6 +24,7 @@ enum APIService {
     case refreshToken(token: AccessTokenRequest)
     case editWorkSpace(id: IDRequiredRequest, model:NewWorkSpaceRequest)
     case removeWorkSpace(id: IDRequiredRequest)
+    case leaveWorkspace(id: IDRequiredRequest)
 }
 
 extension APIService: TargetType {
@@ -60,6 +61,8 @@ extension APIService: TargetType {
         case .editWorkSpace(let id, _),
                 .removeWorkSpace(let id):
             return path.workSpace+"/\(id.id)"
+        case .leaveWorkspace(let id):
+            return path.workSpace+"/\(id.id)"+path.PathDepthOne.leaveWorkspace
         }
         
     }
@@ -79,7 +82,8 @@ extension APIService: TargetType {
                 .loadWorkSpaceChannels,
                 .loadDms,
                 .loadMyProfile,
-                .refreshToken :
+                .refreshToken,
+                .leaveWorkspace:
             return .get
             
         case .editWorkSpace:
@@ -127,7 +131,8 @@ extension APIService: TargetType {
                 .loadWorkSpace,
                 .loadMyProfile,
                 .refreshToken,
-                .removeWorkSpace :
+                .removeWorkSpace,
+                .leaveWorkspace :
             return .requestPlain
         }
     }
@@ -153,7 +158,8 @@ extension APIService: TargetType {
                 .loadMyProfile,
                 .refreshToken,
                 .editWorkSpace,
-                .removeWorkSpace :
+                .removeWorkSpace,
+                .leaveWorkspace:
             
             return [
                 SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,
