@@ -17,20 +17,20 @@ final class LoginSession {
     private let networkService = NetworkService.shared
     private let userIDSubject = PublishSubject<Int>() // temp
     private let nickNameSubject = PublishSubject<String>() // temp
+    private var userID: Int?
     let workSpacesSubject = BehaviorSubject<WorkSpaces?>(value: nil)
+    
     
     // MARK: - Navigation
     var leftCustomView = CustomNavigationLeftView()
-    var leftCustomTitleButton = CustomLeftNaviButton()
+    var leftCustomLabel = CustomLeftNaviLabel()
     var rightCustomView = CustomNavigationRightView()
     
     // MARK: - 응답 Response
     let myProfile = PublishSubject<MyProfileResponse>()
     let channelInfo = BehaviorSubject<ChannelInfoResponse?>(value: nil)
-    let DmsInfo = BehaviorSubject<DMsResponse?>(value: nil)
+    let DmsInfo = BehaviorSubject<DMsResponse?>(value: [])
     let errorReceriver = PublishSubject<ErrorResponse>()
-    
-    
     
     private let disposeBag = DisposeBag()
     
@@ -38,6 +38,13 @@ final class LoginSession {
                                   nick: String,
                                   access: String,
                                   refresh: String) {
+        userIDSubject
+            .asDriver(onErrorJustReturn: 000)
+            .drive(with: self) { owner, id in
+                owner.userID = id
+                print("ID 할당됨", id)
+            }
+            .disposed(by: disposeBag)
         
         userIDSubject.onNext(id)
         nickNameSubject.onNext(nick)
@@ -56,7 +63,8 @@ final class LoginSession {
                 
         myProfile
             .bind(with: self) { owner, profile in
-                print("네비게이션바 프로파일", profile)
+                print("네비게이션바 Profile")
+                dump(profile)
                 guard let profileImage = profile.profileImage else {
                     self.rightCustomView.dummyImage = .dummyTypeA
                     return
@@ -69,7 +77,7 @@ final class LoginSession {
             .bind(with: self) { owner, info in
                 guard let safeInfo = info else { return }
                 owner.leftCustomView.data = safeInfo.thumbnail
-                owner.leftCustomTitleButton.buttonTitle.onNext(safeInfo.name)
+                owner.leftCustomLabel.buttonTitle.onNext(safeInfo.name)
             }
             .disposed(by: disposeBag)
         
@@ -84,7 +92,8 @@ final class LoginSession {
                 switch result {
                 case .success(let response):
                     owner.channelInfo.onNext(response)
-                    print("워크스페이스 서브젝트에 채널리스폰스 들어감",response)
+                    print("채널인포 리스폰스")
+                    dump(response)
                 case .failure(let error):
                     owner.errorReceriver.onNext(error)
                 }
@@ -101,7 +110,8 @@ final class LoginSession {
                 switch result {
                 case .success(let response):
                     owner.DmsInfo.onNext(response)
-                    print("아이디서브젝트에 DM 들어감",response)
+                    print("DM정보 할당됨")
+                    dump(response)
                     
                 case .failure(let error):
                     owner.errorReceriver.onNext(error)
@@ -114,7 +124,8 @@ final class LoginSession {
                 switch result {
                 case .success(let response):
                     owner.myProfile.onNext(response)
-                    print("아이디서브젝트에 프로파일 들어감",response)
+                    print("myProfile 할당됨")
+                    dump(response)
                     
                 case .failure(let error):
                     owner.errorReceriver.onNext(error)
@@ -169,5 +180,19 @@ final class LoginSession {
                 owner.fetchLoadWorkSpace()
             }
             .disposed(by: disposeBag)
+    }
+    
+    func leaveFromWorkspace(id:Int) {
+        let idRequest = IDRequiredRequest(id: id)
+        networkService.fetchStatusCodeRequest(endpoint: .leaveWorkspace(id: idRequest))
+            .subscribe(with: self) { owner, result in
+                owner.fetchLoadWorkSpace()
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    func makeUserID() -> Int {
+        guard let id = userID else { return 000 }
+        return id
     }
 }

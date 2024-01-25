@@ -11,7 +11,7 @@ import UIKit
 extension UIViewController {
     
     func showWorkspaceSheet(workspace: WorkSpace) {
-                
+        
         let sheet = UIAlertController(title: "", message: "",
                                       preferredStyle: .actionSheet)
         
@@ -24,8 +24,21 @@ extension UIViewController {
             self?.present(navVC, animated: true)
         }
         
-        let exit = UIAlertAction(title: "워크스페이스 나가기", style: .default) { action in
-            print("나가기")
+        let exit = UIAlertAction(title: "워크스페이스 나가기", style: .default) { [weak self] action in
+            let id = session.makeUserID()
+            if id == workspace.ownerID {
+                let vc = BackdropViewController(boxType: .confirm(.exitFromWorkspace),
+                                                id: id)
+                vc.modalTransitionStyle = .coverVertical
+                vc.modalPresentationStyle = .overFullScreen
+                self?.present(vc, animated: false)
+            } else {
+                let vc = BackdropViewController(boxType: .cancellable(.exitFromWorkspace),
+                                                id: id)
+                vc.modalTransitionStyle = .coverVertical
+                vc.modalPresentationStyle = .overFullScreen
+                self?.present(vc, animated: false)
+            }
         }
         
         let changeOwner = UIAlertAction(title: "워크스페이스 관리자 변경", style: .default) { action in
@@ -33,9 +46,7 @@ extension UIViewController {
         }
         
         let delete = UIAlertAction(title: "워크스페이스 삭제", style: .destructive) { [weak self] action in
-            print("삭제")
-            let vc = BackdropViewController(mode: .requireWithCancel,
-                                            boxType: .removeWorkspace,
+            let vc = BackdropViewController(boxType: .cancellable(.removeWorkspace),
                                             id: workspace.workspaceID)
             
             vc.modalTransitionStyle = .coverVertical
