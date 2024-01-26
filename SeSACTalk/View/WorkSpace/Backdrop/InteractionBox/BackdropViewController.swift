@@ -29,7 +29,6 @@ final class BackdropViewController: UIViewController {
         configure()
     }
     
-    
     private func configure() {
         view.backgroundColor = .black.withAlphaComponent(0.5)
 
