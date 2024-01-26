@@ -8,13 +8,13 @@
 import Foundation
 
 
-struct ChannelInfoResponse: Decodable {
+struct WorkspaceInfoResponse: Decodable {
     let workspaceID: Int
     let description: String?
     let name, thumbnail: String
     let ownerID: Int
     let createdAt: String
-    let channels: [Channel]
+    let channels: [Channels]
     let workspaceMembers: [WorkspaceMember]
 
     enum CodingKeys: String, CodingKey {
@@ -25,7 +25,7 @@ struct ChannelInfoResponse: Decodable {
     }
 }
 
-struct Channel: Decodable {
+struct Channels: Decodable {
     let workspaceID, channelID: Int
     let description: String?
     let name: String
@@ -53,4 +53,4 @@ struct WorkspaceMember: Decodable {
     }
 }
 
-typealias WorkspaceResponse = [WorkspaceMember]
+typealias WorkspaceMemberResponse = [WorkspaceMember]

@@ -106,6 +106,7 @@ final class OnboardingViewController: UIViewController {
                             } else if response.count == 1 {
                                 let vc = DefaultWorkSpaceViewController()
                                 owner.loginSession.assginWorkSpaces(spaces: response)
+                                UserDefaults.createRecentWorkspace(workspaces: response)
                                 strongSelf.navigationController?.setViewControllers([vc], animated: true)
                             } else {
                                 let vc = DefaultWorkSpaceViewController()

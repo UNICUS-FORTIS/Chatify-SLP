@@ -11,7 +11,7 @@ import Kingfisher
 import RxSwift
 
 
-final class WorkSpaceListingCell: UITableViewCell {
+final class WorkspaceListingCell: UITableViewCell {
     
     var data = PublishSubject<WorkSpace>()
     
@@ -49,9 +49,9 @@ final class WorkSpaceListingCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        bind()
         configure()
         setConstraints()
-        bind()
     }
     
     required init?(coder: NSCoder) {

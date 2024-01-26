@@ -19,7 +19,7 @@ final class MemberListFeatureClass: ListingViewControllerProtocol {
     func bind(target: UIViewController) {
         guard let session = session else { return }
         session.workspaceMember
-            .map { member -> WorkspaceResponse in
+            .map { member -> WorkspaceMemberResponse in
                 guard let member = member else { return [] }
                 return member
             }

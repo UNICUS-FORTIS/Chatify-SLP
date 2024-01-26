@@ -55,4 +55,8 @@ final class OnboardingViewModel {
         return networkService.fetchRequest(endpoint: .loadWorkSpace,
                                            decodeModel: WorkSpaces.self)
     }
+    
+    func saveRecentWorkspace(workspaces: WorkSpaces) {
+        UserDefaults.createRecentWorkspace(workspaces: workspaces)
+    }
 }

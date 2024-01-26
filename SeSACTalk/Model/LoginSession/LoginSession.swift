@@ -18,7 +18,9 @@ final class LoginSession {
     private let userIDSubject = PublishSubject<Int>()
     private let nickNameSubject = PublishSubject<String>() // temp
     private var userID: Int?
+    private var recentVisitedWorkspace = UserDefaults.loadRecentWorkspace()
     let workSpacesSubject = BehaviorSubject<WorkSpaces?>(value: nil)
+    let currentWorkspaceSubject = BehaviorSubject<WorkSpace?>(value: nil)
     
     
     // MARK: - Navigation
@@ -28,9 +30,9 @@ final class LoginSession {
     
     // MARK: - 응답 Response
     let myProfile = PublishSubject<MyProfileResponse>()
-    let channelInfo = BehaviorSubject<ChannelInfoResponse?>(value: nil)
+    let workspaceChannelInfo = BehaviorSubject<WorkspaceInfoResponse?>(value: nil)
     let DmsInfo = BehaviorSubject<DMsResponse?>(value: [])
-    let workspaceMember = BehaviorSubject<WorkspaceResponse?>(value: [])
+    let workspaceMember = BehaviorSubject<WorkspaceMemberResponse?>(value: [])
     let errorReceriver = PublishSubject<ErrorResponse>()
     
     private let disposeBag = DisposeBag()
@@ -58,6 +60,12 @@ final class LoginSession {
     func assginWorkSpaces(spaces: WorkSpaces) {
         print(#function)
         workSpacesSubject.onNext(spaces)
+        let filtered = spaces.first { $0.workspaceID == recentVisitedWorkspace }
+        guard let safeFiltered = filtered else {
+            UserDefaults.createRecentWorkspace(workspaces: spaces)
+            currentWorkspaceSubject.onNext(spaces.first)
+            return }
+        currentWorkspaceSubject.onNext(safeFiltered)
     }
     
     private func bind() {
@@ -74,7 +82,7 @@ final class LoginSession {
             }
             .disposed(by: disposeBag)
         
-        channelInfo
+        currentWorkspaceSubject
             .bind(with: self) { owner, info in
                 guard let safeInfo = info else { return }
                 owner.leftCustomView.data = safeInfo.thumbnail
@@ -82,17 +90,17 @@ final class LoginSession {
             }
             .disposed(by: disposeBag)
         
-        
-        workSpacesSubject
-            .flatMapLatest { workSpaces -> Observable<Result<ChannelInfoResponse, ErrorResponse>> in
-                guard let workSpaceID = workSpaces?.first?.workspaceID else { return Observable.empty() }
+        // MARK: - 워크스페이스 채널인포로드
+        currentWorkspaceSubject
+            .flatMapLatest { workSpaces -> Observable<Result<WorkspaceInfoResponse, ErrorResponse>> in
+                guard let workSpaceID = workSpaces?.workspaceID else { return Observable.empty() }
                 let id = IDRequiredRequest(id: workSpaceID)
-                return self.fetchChannelInfo(id: id).asObservable()
+                return self.fetchWorkspaceChannelInfo(id: id).asObservable()
             }
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(let response):
-                    owner.channelInfo.onNext(response)
+                    owner.workspaceChannelInfo.onNext(response)
                     print("채널인포 리스폰스")
                     dump(response)
                 case .failure(let error):
@@ -101,9 +109,10 @@ final class LoginSession {
             }
             .disposed(by: disposeBag)
         
-        workSpacesSubject
+        // MARK: - 워크스페이스 DMs 로드
+        currentWorkspaceSubject
             .flatMapLatest { workSpaces -> Observable<Result<DMsResponse, ErrorResponse>> in
-                guard let workSpaceID = workSpaces?.first?.workspaceID else { return Observable.empty() }
+                guard let workSpaceID = workSpaces?.workspaceID else { return Observable.empty() }
                 let id = IDRequiredRequest(id: workSpaceID)
                 return self.fetchDms(id: id).asObservable()
             }
@@ -120,6 +129,7 @@ final class LoginSession {
             }
             .disposed(by: disposeBag)
         
+        // MARK: - 유저 프로파일 로드
         fetchMyProfile()
             .subscribe(with: self) { owner, result in
                 switch result {
@@ -136,7 +146,7 @@ final class LoginSession {
     }
     
     func numberOfChannelInfoCount() -> Int {
-        let info = try? channelInfo.value()?.channels
+        let info = try? workspaceChannelInfo.value()?.channels
         return info?.count ?? 0
     }
     
@@ -145,9 +155,9 @@ final class LoginSession {
         return dms?.count ?? 0
     }
     
-    func fetchChannelInfo(id: IDRequiredRequest) -> Single<Result<ChannelInfoResponse, ErrorResponse>> {
+    func fetchWorkspaceChannelInfo(id: IDRequiredRequest) -> Single<Result<WorkspaceInfoResponse, ErrorResponse>> {
         return networkService.fetchRequest(endpoint: .loadWorkSpaceChannels(channel: id),
-                                           decodeModel: ChannelInfoResponse.self)
+                                           decodeModel: WorkspaceInfoResponse.self)
     }
     
     func fetchDms(id: IDRequiredRequest) -> Single<Result<DMsResponse, ErrorResponse>> {
@@ -200,7 +210,7 @@ final class LoginSession {
     func loadWorkspaceMember(id: Int) {
         let idRequest = IDRequiredRequest(id: id)
         networkService.fetchRequest(endpoint: .loadWorkspaceMember(id: idRequest),
-                                    decodeModel: WorkspaceResponse.self)
+                                    decodeModel: WorkspaceMemberResponse.self)
         .subscribe(with: self) { owner, result in
             switch result {
             case .success(let workspace):

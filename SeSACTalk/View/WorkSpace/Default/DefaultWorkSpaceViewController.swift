@@ -31,7 +31,7 @@ final class DefaultWorkSpaceViewController: UIViewController {
     
     private func bind() {
         Observable
-            .combineLatest(session.channelInfo.asObservable(), session.DmsInfo.asObservable())
+            .combineLatest(session.workspaceChannelInfo.asObservable(), session.DmsInfo.asObservable())
             .map { channel, dms -> Bool in
                 guard let dmsValue = dms else { return false }
                 return channel != nil && (!dmsValue.isEmpty || dmsValue.isEmpty)
@@ -127,7 +127,7 @@ extension DefaultWorkSpaceViewController: UITableViewDataSource {
         case .channel :
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ChannelTableViewCell.identifier) as? ChannelTableViewCell else { return UITableViewCell() }
             
-            self.session.channelInfo
+            self.session.workspaceChannelInfo
                 .asObservable()
                 .bind(with: self) { owner, channelInfo in
                     guard let safe = channelInfo else { return }
