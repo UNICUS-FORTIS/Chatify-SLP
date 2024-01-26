@@ -15,7 +15,7 @@ final class LoginSession {
     static let shared = LoginSession()
     private init() {}
     private let networkService = NetworkService.shared
-    private let userIDSubject = PublishSubject<Int>() // temp
+    private let userIDSubject = PublishSubject<Int>()
     private let nickNameSubject = PublishSubject<String>() // temp
     private var userID: Int?
     let workSpacesSubject = BehaviorSubject<WorkSpaces?>(value: nil)
@@ -30,6 +30,7 @@ final class LoginSession {
     let myProfile = PublishSubject<MyProfileResponse>()
     let channelInfo = BehaviorSubject<ChannelInfoResponse?>(value: nil)
     let DmsInfo = BehaviorSubject<DMsResponse?>(value: [])
+    let workspaceMember = BehaviorSubject<WorkspaceResponse?>(value: [])
     let errorReceriver = PublishSubject<ErrorResponse>()
     
     private let disposeBag = DisposeBag()
@@ -189,6 +190,27 @@ final class LoginSession {
                 owner.fetchLoadWorkSpace()
             }
             .disposed(by: disposeBag)
+    }
+    
+    func handoverWorkspaceManager(id: Int, receiverID: Int) {
+        let request = IDwithIDRequest(id: id, receiverID: receiverID)
+        networkService.fetchStatusCodeRequest(endpoint: .handoverWorkspaceManager(model: request))
+    }
+    
+    func loadWorkspaceMember(id: Int) {
+        let idRequest = IDRequiredRequest(id: id)
+        networkService.fetchRequest(endpoint: .loadWorkspaceMember(id: idRequest),
+                                    decodeModel: WorkspaceResponse.self)
+        .subscribe(with: self) { owner, result in
+            switch result {
+            case .success(let workspace):
+                owner.workspaceMember.onNext(workspace)
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
+        .disposed(by: disposeBag)
     }
     
     func makeUserID() -> Int {

@@ -25,6 +25,8 @@ enum APIService {
     case editWorkSpace(id: IDRequiredRequest, model:NewWorkSpaceRequest)
     case removeWorkSpace(id: IDRequiredRequest)
     case leaveWorkspace(id: IDRequiredRequest)
+    case handoverWorkspaceManager(model: IDwithIDRequest)
+    case loadWorkspaceMember(id: IDRequiredRequest)
 }
 
 extension APIService: TargetType {
@@ -63,6 +65,10 @@ extension APIService: TargetType {
             return path.workSpace+"/\(id.id)"
         case .leaveWorkspace(let id):
             return path.workSpace+"/\(id.id)"+path.PathDepthOne.leaveWorkspace
+        case .handoverWorkspaceManager(let model):
+            return path.workSpace+"\(model.id)"+path.PathDepthOne.handoverWorkspace+"\(model.receiverID)"
+        case .loadWorkspaceMember(let id):
+            return path.workSpace+"/\(id.id)"+path.PathDepthOne.loadWorkspaceMember
         }
         
     }
@@ -83,13 +89,15 @@ extension APIService: TargetType {
                 .loadDms,
                 .loadMyProfile,
                 .refreshToken,
-                .leaveWorkspace:
+                .leaveWorkspace,
+                .loadWorkspaceMember :
             return .get
             
         case .editWorkSpace:
             return .put
             
-        case .removeWorkSpace :
+        case .removeWorkSpace,
+                .handoverWorkspaceManager:
             return .delete
         }
     }
@@ -132,7 +140,9 @@ extension APIService: TargetType {
                 .loadMyProfile,
                 .refreshToken,
                 .removeWorkSpace,
-                .leaveWorkspace :
+                .leaveWorkspace,
+                .handoverWorkspaceManager,
+                .loadWorkspaceMember:
             return .requestPlain
         }
     }
@@ -159,7 +169,9 @@ extension APIService: TargetType {
                 .refreshToken,
                 .editWorkSpace,
                 .removeWorkSpace,
-                .leaveWorkspace:
+                .leaveWorkspace,
+                .handoverWorkspaceManager,
+                .loadWorkspaceMember :
             
             return [
                 SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,

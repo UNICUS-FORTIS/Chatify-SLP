@@ -52,3 +52,5 @@ struct WorkspaceMember: Decodable {
         case email, nickname, profileImage
     }
 }
+
+typealias WorkspaceResponse = [WorkspaceMember]
