@@ -91,8 +91,10 @@ final class DefaultWorkSpaceViewController: UIViewController {
     }
     
     private func sideMenuSetup() {
-        let menu = SideMenuListingViewController()
+        let feature = WorkspaceListFeatureClass()
+        let menu = ListingViewController(feature: feature)
         sideMenu = SideMenuNavigationController(rootViewController: menu)
+        sideMenu?.setWorkSpaceListNavigation()
         SideMenuManager.default.leftMenuNavigationController = sideMenu
         SideMenuManager.default.addPanGestureToPresent(toView: self.view)
         sideMenu?.leftSide = true
