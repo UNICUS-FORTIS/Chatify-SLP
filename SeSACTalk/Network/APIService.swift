@@ -18,7 +18,7 @@ enum APIService {
     case appleLogin(model: AppleLoginRequest)
     case createWorkSpace(model: NewWorkSpaceRequest)
     case loadWorkSpace
-    case loadWorkSpaceChannels(channel: IDRequiredRequest)
+    case loadWorkspaceDetails(workspaceID: IDRequiredRequest)
     case loadDms(id: IDRequiredRequest)
     case loadMyProfile
     case refreshToken(token: AccessTokenRequest)
@@ -53,8 +53,8 @@ extension APIService: TargetType {
             return path.workSpace
         case .loadWorkSpace:
             return path.workSpace
-        case .loadWorkSpaceChannels(let channel):
-            return path.workSpace+"/\(channel.id)"
+        case .loadWorkspaceDetails(let workspaceID):
+            return path.workSpace+"/\(workspaceID.id)"
         case .loadDms(let id):
             return path.workSpace+"/\(id.id)"+path.PathDepthOne.dms
         case .loadMyProfile:
@@ -89,7 +89,7 @@ extension APIService: TargetType {
             return .post
             
         case .loadWorkSpace,
-                .loadWorkSpaceChannels,
+                .loadWorkspaceDetails,
                 .loadDms,
                 .loadMyProfile,
                 .refreshToken,
@@ -138,7 +138,7 @@ extension APIService: TargetType {
             
             return .uploadMultipart(multipartData)
             
-        case .loadWorkSpaceChannels,
+        case .loadWorkspaceDetails,
                 .loadDms,
                 .loadWorkSpace,
                 .loadMyProfile,
@@ -170,7 +170,7 @@ extension APIService: TargetType {
             
         case .loadWorkSpace,
                 .createWorkSpace,
-                .loadWorkSpaceChannels,
+                .loadWorkspaceDetails,
                 .loadDms,
                 .loadMyProfile,
                 .refreshToken,

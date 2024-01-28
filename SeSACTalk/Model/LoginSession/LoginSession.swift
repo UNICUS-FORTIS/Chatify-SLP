@@ -30,7 +30,7 @@ final class LoginSession {
     
     // MARK: - 응답 Response
     let myProfile = PublishSubject<MyProfileResponse>()
-    let workspaceChannelInfo = BehaviorSubject<WorkspaceInfoResponse?>(value: nil)
+    let workspaceDetails = BehaviorSubject<WorkspaceInfoResponse?>(value: nil)
     let DmsInfo = BehaviorSubject<DMsResponse?>(value: [])
     let workspaceMember = BehaviorSubject<WorkspaceMemberResponse?>(value: [])
     let errorReceriver = PublishSubject<ErrorResponse>()
@@ -82,8 +82,6 @@ final class LoginSession {
                 
         myProfile
             .bind(with: self) { owner, profile in
-                print("네비게이션바 Profile")
-                dump(profile)
                 guard let profileImage = profile.profileImage else {
                     self.rightCustomView.dummyImage = .dummyTypeA
                     return
@@ -106,13 +104,13 @@ final class LoginSession {
             .flatMapLatest { workSpaces -> Observable<Result<WorkspaceInfoResponse, ErrorResponse>> in
                 guard let workSpaceID = workSpaces?.workspaceID else { return Observable.empty() }
                 let id = IDRequiredRequest(id: workSpaceID)
-                return self.fetchWorkspaceChannelInfo(id: id).asObservable()
+                return self.fetchWorkspaceDetails(id: id).asObservable()
             }
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(let response):
-                    owner.workspaceChannelInfo.onNext(response)
-                    print("채널인포 리스폰스")
+                    owner.workspaceDetails.onNext(response)
+                    print("워크스페이스 디테일")
                     dump(response)
                 case .failure(let error):
                     owner.errorReceriver.onNext(error)
@@ -146,8 +144,6 @@ final class LoginSession {
                 switch result {
                 case .success(let response):
                     owner.myProfile.onNext(response)
-                    print("myProfile 할당됨")
-                    dump(response)
                     
                 case .failure(let error):
                     owner.errorReceriver.onNext(error)
@@ -157,7 +153,7 @@ final class LoginSession {
     }
     
     func numberOfChannelInfoCount() -> Int {
-        let info = try? workspaceChannelInfo.value()?.channels
+        let info = try? workspaceDetails.value()?.channels
         return info?.count ?? 0
     }
     
@@ -166,8 +162,8 @@ final class LoginSession {
         return dms?.count ?? 0
     }
     
-    func fetchWorkspaceChannelInfo(id: IDRequiredRequest) -> Single<Result<WorkspaceInfoResponse, ErrorResponse>> {
-        return networkService.fetchRequest(endpoint: .loadWorkSpaceChannels(channel: id),
+    func fetchWorkspaceDetails(id: IDRequiredRequest) -> Single<Result<WorkspaceInfoResponse, ErrorResponse>> {
+        return networkService.fetchRequest(endpoint: .loadWorkspaceDetails(workspaceID: id),
                                            decodeModel: WorkspaceInfoResponse.self)
     }
     
@@ -224,7 +220,7 @@ final class LoginSession {
             
     }
     
-    func loadWorkspaceMember(id: Int) {
+    func loadWorkspaceMember(id: Int, completion: @escaping () -> Void ) {
         let idRequest = IDRequiredRequest(id: id)
         networkService.fetchRequest(endpoint: .loadWorkspaceMember(id: idRequest),
                                     decodeModel: WorkspaceMemberResponse.self)
@@ -233,6 +229,7 @@ final class LoginSession {
             case .success(let workspace):
                 owner.workspaceMember.onNext(workspace)
                 print("워크스페이스멤버 할당됨")
+                completion()
             case .failure(let error):
                 print(error)
             }
