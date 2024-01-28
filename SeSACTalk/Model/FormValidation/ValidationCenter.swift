@@ -64,4 +64,8 @@ final class ValidationCenter {
         }
     }
     
+    func checkLength(target: String) -> Bool {
+        return target.count > 0 ? true : false
+    }
+    
 }
