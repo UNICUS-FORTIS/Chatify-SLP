@@ -16,7 +16,6 @@ final class ListingViewController: UIViewController {
     init(feature: ListingViewControllerProtocol) {
         self.featureType = feature
         super.init(nibName: nil, bundle: nil)
-        configure()
     }
     
     required init?(coder: NSCoder) {
@@ -25,7 +24,7 @@ final class ListingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(navigationController)
+        configure()
     }
     
     private func configure() {
