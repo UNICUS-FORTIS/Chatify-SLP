@@ -42,13 +42,16 @@ extension UIViewController {
         }
         
         let changeOwner = UIAlertAction(title: "워크스페이스 관리자 변경", style: .default) { action in
-            session.loadWorkspaceMember(id: workspace.workspaceID)
-            let feature = MemberListFeatureClass()
-            let vc = ListingViewController(feature: feature)
-            let navVC = UINavigationController(rootViewController: vc)
-            navVC.modalTransitionStyle = .coverVertical
-            vc.modalPresentationStyle = .currentContext
-            self.present(navVC, animated: true)
+            DispatchQueue.main.async {
+                session.loadWorkspaceMember(id: workspace.workspaceID) {
+                    let feature = MemberListFeatureClass()
+                    let vc = ListingViewController(feature: feature)
+                    let navVC = UINavigationController(rootViewController: vc)
+                    navVC.modalTransitionStyle = .coverVertical
+                    vc.modalPresentationStyle = .currentContext
+                    self.present(navVC, animated: true)
+                }
+            }
         }
         
         let delete = UIAlertAction(title: "워크스페이스 삭제", style: .destructive) { [weak self] action in
