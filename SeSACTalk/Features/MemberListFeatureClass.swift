@@ -21,13 +21,22 @@ final class MemberListFeatureClass: ListingViewControllerProtocol {
         session.workspaceMember
             .map { member -> WorkspaceMemberResponse in
                 guard let member = member else { return [] }
+                if member.count == 1 {
+                    let vc = BackdropViewController(boxType: .confirm(.modifyWorkspaceMember),
+                                                    id: nil)
+                    vc.modalTransitionStyle = .coverVertical
+                    vc.modalPresentationStyle = .overFullScreen
+                    target.present(vc, animated: false)
+                    return []
+                }
                 return member
             }
             .bind(to: tableView.rx.items(cellIdentifier: MemberListCell.identifier,
                                          cellType: MemberListCell.self)) {
                 row , item, cell in
-                cell.data.onNext(item)
-
+                if session.makeUserID() != item.userID {
+                    cell.data.onNext(item)
+                }
             }.disposed(by: disposeBag)
     }
     
