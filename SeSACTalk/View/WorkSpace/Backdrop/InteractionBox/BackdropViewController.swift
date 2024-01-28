@@ -36,7 +36,7 @@ final class BackdropViewController: UIViewController {
             
         case .confirm(let acceptable):
             let box = OnlyConfirmBox(type: acceptable)
-            box.setConfirmButtonAction(target: self, action: #selector(self.dismissTrigger))
+            box.setConfirmButtonAction(target: self, action: #selector(self.dismissTriggerNonAnimated))
             view.addSubview(box)
             setConstraints(box: box)
     
@@ -78,6 +78,7 @@ final class BackdropViewController: UIViewController {
     @objc func exitFromWorkspaceTrigger() {
         guard let id = workspaceID,
               let session = session else { return }
+        print(id, "현재 워크스페이스 아이디")
         session.leaveFromWorkspace(id: id)
         self.dismiss(animated: false)
     }

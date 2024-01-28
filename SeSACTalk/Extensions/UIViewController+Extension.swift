@@ -28,13 +28,13 @@ extension UIViewController {
             let id = session.makeUserID()
             if id == workspace.ownerID {
                 let vc = BackdropViewController(boxType: .confirm(.exitFromWorkspace),
-                                                id: id)
+                                                id: workspace.workspaceID)
                 vc.modalTransitionStyle = .coverVertical
                 vc.modalPresentationStyle = .overFullScreen
                 self?.present(vc, animated: false)
             } else {
                 let vc = BackdropViewController(boxType: .cancellable(.exitFromWorkspace),
-                                                id: id)
+                                                id: workspace.workspaceID)
                 vc.modalTransitionStyle = .coverVertical
                 vc.modalPresentationStyle = .overFullScreen
                 self?.present(vc, animated: false)
@@ -74,5 +74,9 @@ extension UIViewController {
     
     @objc func dismissTrigger() {
         self.dismiss(animated: true)
+    }
+    
+    @objc func dismissTriggerNonAnimated() {
+        self.dismiss(animated: false)
     }
 }
