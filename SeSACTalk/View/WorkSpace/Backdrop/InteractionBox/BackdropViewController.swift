@@ -18,7 +18,7 @@ final class BackdropViewController: UIViewController {
     private var boxType: InteractionType?
     private var workspaceID: Int?
     
-    convenience init(boxType: InteractionType, id: Int) {
+    convenience init(boxType: InteractionType, id: Int?) {
         self.init(nibName: nil, bundle: nil)
         self.boxType = boxType
         self.workspaceID = id
