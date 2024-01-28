@@ -16,7 +16,7 @@ let session = LoginSession.shared
 extension UINavigationController {
     
     
-    func setStartingAppearance(title: String?, target: UIViewController, action: Selector?) {
+    func setCloseableNavigation(title: String?, target: UIViewController, action: Selector?) {
         let appearance = UINavigationBarAppearance()
         target.title = title
         appearance.shadowColor = .clear

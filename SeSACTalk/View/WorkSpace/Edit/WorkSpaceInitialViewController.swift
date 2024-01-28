@@ -45,14 +45,10 @@ final class WorkSpaceInitialViewController: UIViewController {
 
         mainImage.contentMode = .scaleAspectFit
         createWorkSpaceButton.validationBinder.onNext(true)
-        navigationController?.setStartingAppearance(title: "시작하기",
+        navigationController?.setCloseableNavigation(title: "시작하기",
                                                   target: self,
-                                                  action: #selector(dismissTrigger))
+                                                     action: #selector(self.dismissTrigger))
         
-    }
-    
-    @objc private func dismissTrigger() {
-        dismiss(animated: true)
     }
     
     private func setConstraints() {

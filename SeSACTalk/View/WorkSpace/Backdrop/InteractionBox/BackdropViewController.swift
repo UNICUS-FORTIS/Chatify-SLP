@@ -36,7 +36,7 @@ final class BackdropViewController: UIViewController {
             
         case .confirm(let acceptable):
             let box = OnlyConfirmBox(type: acceptable)
-            box.setConfirmButtonAction(target: self, action: #selector(dismissTrigger))
+            box.setConfirmButtonAction(target: self, action: #selector(self.dismissTrigger))
             view.addSubview(box)
             setConstraints(box: box)
     
@@ -66,10 +66,6 @@ final class BackdropViewController: UIViewController {
             make.center.equalToSuperview()
             make.horizontalEdges.equalToSuperview().inset(25)
         }
-    }
-    
-    @objc func dismissTrigger() {
-        self.dismiss(animated: false)
     }
     
     @objc func confirmRemoveWorkspaceTrigger() {

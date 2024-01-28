@@ -63,18 +63,14 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
             viewTitle = "워크스페이스 편집"
             viewModel.workspaceImageMounted.onNext(true)
         }
-        navigationController?.setStartingAppearance(title: viewTitle,
+        navigationController?.setCloseableNavigation(title: viewTitle,
                                                     target: self,
-                                                    action: #selector(dismissTrigger))
+                                                     action: #selector(self.dismissTrigger))
         view.addSubview(spaceImage)
         view.addSubview(spaceName)
         view.addSubview(spaceDescription)
         view.addSubview(createButton)
         view.backgroundColor = Colors.Background.primary
-    }
-    
-    @objc private func dismissTrigger() {
-        dismiss(animated: true)
     }
     
     private func bind() {
