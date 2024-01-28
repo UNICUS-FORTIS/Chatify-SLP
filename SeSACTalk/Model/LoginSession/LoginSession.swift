@@ -20,8 +20,7 @@ final class LoginSession {
     private var userID: Int?
     private var recentVisitedWorkspace = UserDefaults.loadRecentWorkspace()
     let workSpacesSubject = BehaviorSubject<WorkSpaces?>(value: nil)
-    let currentWorkspaceSubject = BehaviorSubject<WorkSpace?>(value: nil)
-    
+    let currentWorkspaceSubject = BehaviorSubject<WorkSpace?>(value: nil)    
     
     // MARK: - Navigation
     var leftCustomView = CustomNavigationLeftView()
@@ -45,7 +44,6 @@ final class LoginSession {
             .asDriver(onErrorJustReturn: 000)
             .drive(with: self) { owner, id in
                 owner.userID = id
-                print("ID 할당됨", id)
             }
             .disposed(by: disposeBag)
         
@@ -55,6 +53,16 @@ final class LoginSession {
         UserDefaults.standard.setValue(refresh, forKey: "refreshToken")
         
         bind()
+    }
+    
+    func modifyCurrentWorkspace(path: IndexPath) {
+        workSpacesSubject
+            .subscribe(with: self) { owner, workspace in
+                guard let safe = workspace else { return }
+                owner.currentWorkspaceSubject.onNext(safe[path.row])
+                print(safe[path.row])
+            }
+            .disposed(by: disposeBag)
     }
     
     func assginWorkSpaces(spaces: WorkSpaces) {
@@ -215,7 +223,7 @@ final class LoginSession {
             switch result {
             case .success(let workspace):
                 owner.workspaceMember.onNext(workspace)
-                
+                print("워크스페이스멤버 할당됨")
             case .failure(let error):
                 print(error)
             }

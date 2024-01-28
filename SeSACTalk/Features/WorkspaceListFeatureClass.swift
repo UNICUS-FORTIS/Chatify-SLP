@@ -37,6 +37,8 @@ final class WorkspaceListFeatureClass: ListingViewControllerProtocol {
             .subscribe(with: self) { owner, indexPath in
                 guard let selectedCell = owner.tableView.cellForRow(at: indexPath) as? WorkspaceListingCell else { return }
                 selectedCell.selection.onNext(true)
+                session.modifyCurrentWorkspace(path: indexPath)
+                target.dismissTrigger()
             }
             .disposed(by: disposeBag)
         
