@@ -16,15 +16,15 @@ final class MemberListCell: UITableViewCell {
     var data = PublishSubject<WorkspaceMember>()
     
     private let container = UIView()
-    private let profileImage = UIImageView()
+    private let profileImage = UIImageView(image: .dummyTypeA)
     private let nameLabel = CustomTitleLabel("",
-                                                 textColor: .black,
-                                                 font: Typography.bodyBold ??
-                                                 UIFont.systemFont(ofSize: 13))
+                                             textColor: .black,
+                                             font: Typography.bodyBold ??
+                                             UIFont.systemFont(ofSize: 13))
     private let emailLabel = CustomTitleLabel("",
-                                               textColor: .black,
-                                               font: Typography.body ??
-                                               UIFont.systemFont(ofSize: 13))
+                                              textColor: .black,
+                                              font: Typography.body ??
+                                              UIFont.systemFont(ofSize: 13))
     
     private lazy var detailStackView = {
         let sv = UIStackView(arrangedSubviews: [nameLabel, emailLabel])
@@ -56,6 +56,7 @@ final class MemberListCell: UITableViewCell {
     private func configure() {
         contentView.addSubview(container)
         contentView.backgroundColor = .clear
+        container.backgroundColor = .clear
         self.selectionStyle = .none
         container.addSubview(profileImage)
         container.addSubview(detailStackView)
@@ -92,14 +93,16 @@ final class MemberListCell: UITableViewCell {
     
     private func bind() {
         data.subscribe(with: self) { owner, data in
-            guard let profileImage = data.profileImage else { return }
-            let url = EndPoints.imageBaseURL + profileImage
-            guard let urlString = URL(string: url) else { return }
-            owner.profileImage.kf.setImage(with: urlString)
+            if let profileImage = data.profileImage {
+                let url = EndPoints.imageBaseURL + profileImage
+                let urlString = URL(string: url)
+                owner.profileImage.kf.setImage(with: urlString)
+            }
             owner.nameLabel.text = data.nickname
             owner.emailLabel.text = data.email
+            print(data.nickname, data.email)
         }
         .disposed(by: disposeBag)
     }
-
+    
 }
