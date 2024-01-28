@@ -27,6 +27,7 @@ enum APIService {
     case leaveWorkspace(id: IDRequiredRequest)
     case handoverWorkspaceManager(model: IDwithIDRequest)
     case loadWorkspaceMember(id: IDRequiredRequest)
+    case inviteWorkspaceMember(id: IDRequiredRequest, model: EmailValidationRequest)
 }
 
 extension APIService: TargetType {
@@ -69,6 +70,8 @@ extension APIService: TargetType {
             return path.workSpace+"\(model.id)"+path.PathDepthOne.handoverWorkspace+"\(model.receiverID)"
         case .loadWorkspaceMember(let id):
             return path.workSpace+"/\(id.id)"+path.PathDepthOne.loadWorkspaceMember
+        case .inviteWorkspaceMember(let id, _):
+            return path.workSpace+"/\(id.id)"+path.PathDepthOne.loadWorkspaceMember
         }
         
     }
@@ -81,7 +84,8 @@ extension APIService: TargetType {
                 .emailLogin,
                 .kakaoLogin,
                 .appleLogin,
-                .createWorkSpace:
+                .createWorkSpace,
+                .inviteWorkspaceMember:
             return .post
             
         case .loadWorkSpace,
@@ -144,6 +148,9 @@ extension APIService: TargetType {
                 .handoverWorkspaceManager,
                 .loadWorkspaceMember:
             return .requestPlain
+            
+        case .inviteWorkspaceMember(_, let model):
+            return .requestJSONEncodable(model)
         }
     }
     
@@ -171,7 +178,8 @@ extension APIService: TargetType {
                 .removeWorkSpace,
                 .leaveWorkspace,
                 .handoverWorkspaceManager,
-                .loadWorkspaceMember :
+                .loadWorkspaceMember,
+                .inviteWorkspaceMember:
             
             return [
                 SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,
