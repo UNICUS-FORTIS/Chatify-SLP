@@ -199,12 +199,18 @@ extension DefaultWorkSpaceViewController: UITableViewDelegate {
         switch sections {
         case .channel:
             cell.setLabel(text: "채널 추가")
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(channelFooterTapped))
+            cell.addGestureRecognizer(tapGesture)
             
         case .directMessage:
             cell.setLabel(text: "새 메시지 시작")
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(newMessageFooterTapped))
+            cell.addGestureRecognizer(tapGesture)
             
         case .addNewMember:
             cell.setLabel(text: "팀원 추가")
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(newMemberFooterTapped))
+            cell.addGestureRecognizer(tapGesture)
         }
         return cell
         
@@ -223,5 +229,21 @@ extension DefaultWorkSpaceViewController: UITableViewDelegate {
         switch sections {
         default: return 41
         }
+    }
+    
+    @objc private func channelFooterTapped() {
+        print("채널추가")
+    }
+    
+    @objc private func newMessageFooterTapped() {
+        print("새로운 메세지 시작")
+    }
+    
+    @objc private func newMemberFooterTapped() {
+        print("새로운 팀원 추가")
+        let vc = InviteMemberViewController()
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalTransitionStyle = .coverVertical
+        present(navVC, animated: true)
     }
 }

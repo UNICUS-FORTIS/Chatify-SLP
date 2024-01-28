@@ -20,7 +20,8 @@ final class LoginSession {
     private var userID: Int?
     private var recentVisitedWorkspace = UserDefaults.loadRecentWorkspace()
     let workSpacesSubject = BehaviorSubject<WorkSpaces?>(value: nil)
-    let currentWorkspaceSubject = BehaviorSubject<WorkSpace?>(value: nil)    
+    let currentWorkspaceSubject = BehaviorSubject<WorkSpace?>(value: nil)
+    private var currentWorkspaceID: Int?
     
     // MARK: - Navigation
     var leftCustomView = CustomNavigationLeftView()
@@ -59,8 +60,9 @@ final class LoginSession {
         workSpacesSubject
             .subscribe(with: self) { owner, workspace in
                 guard let safe = workspace else { return }
-                owner.currentWorkspaceSubject.onNext(safe[path.row])
-                print(safe[path.row])
+                if owner.currentWorkspaceID != safe[path.row].workspaceID {
+                    owner.currentWorkspaceSubject.onNext(safe[path.row])
+                }
             }
             .disposed(by: disposeBag)
     }
@@ -92,9 +94,10 @@ final class LoginSession {
         
         currentWorkspaceSubject
             .bind(with: self) { owner, info in
-                guard let safeInfo = info else { return }
-                owner.leftCustomView.data = safeInfo.thumbnail
-                owner.leftCustomLabel.buttonTitle.onNext(safeInfo.name)
+                guard let safe = info else { return }
+                owner.leftCustomView.data = safe.thumbnail
+                owner.leftCustomLabel.buttonTitle.onNext(safe.name)
+                owner.currentWorkspaceID = safe.workspaceID
             }
             .disposed(by: disposeBag)
         
@@ -205,7 +208,12 @@ final class LoginSession {
         let idRequest = IDRequiredRequest(id: id)
         networkService.fetchStatusCodeRequest(endpoint: .leaveWorkspace(id: idRequest))
             .subscribe(with: self) { owner, result in
-                owner.fetchLoadWorkSpace()
+                switch result {
+                case .success(_):
+                    owner.fetchLoadWorkSpace()
+                case .failure(let error):
+                    print(error.errorCode)
+                }
             }
             .disposed(by: disposeBag)
     }
@@ -213,6 +221,7 @@ final class LoginSession {
     func handoverWorkspaceManager(id: Int, receiverID: Int) {
         let request = IDwithIDRequest(id: id, receiverID: receiverID)
         networkService.fetchStatusCodeRequest(endpoint: .handoverWorkspaceManager(model: request))
+            
     }
     
     func loadWorkspaceMember(id: Int) {
@@ -234,5 +243,10 @@ final class LoginSession {
     func makeUserID() -> Int {
         guard let id = userID else { return 000 }
         return id
+    }
+    
+    func makeWorkspaceID() -> Int {
+        guard let safe = currentWorkspaceID else { return 000 }
+        return safe
     }
 }
