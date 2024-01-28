@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 
 final class MemberListFeatureClass: ListingViewControllerProtocol {
@@ -14,29 +15,30 @@ final class MemberListFeatureClass: ListingViewControllerProtocol {
     weak var session = LoginSession.shared
     let tableView = UITableView(frame: .zero, style: .plain)
     let disposeBag = DisposeBag()
-
+    
     
     func bind(target: UIViewController) {
         guard let session = session else { return }
         session.workspaceMember
             .map { member -> WorkspaceMemberResponse in
                 guard let member = member else { return [] }
-                if member.count == 1 {
+                if member.count <= 1 {
                     let vc = BackdropViewController(boxType: .confirm(.modifyWorkspaceMember),
                                                     id: nil)
                     vc.modalTransitionStyle = .coverVertical
                     vc.modalPresentationStyle = .overFullScreen
                     target.present(vc, animated: false)
                     return []
+                } else {
+                    return member.filter { session.makeUserID() != $0.userID }
                 }
-                return member
             }
             .bind(to: tableView.rx.items(cellIdentifier: MemberListCell.identifier,
                                          cellType: MemberListCell.self)) {
-                row , item, cell in
-                if session.makeUserID() != item.userID {
-                    cell.data.onNext(item)
-                }
+                _ , item, cell in
+                
+                cell.data.onNext(item)
+                
             }.disposed(by: disposeBag)
     }
     
