@@ -37,9 +37,9 @@ final class ChannelFooterCell: UITableViewHeaderFooterView {
     }
     
     private func configure() {
-        self.addSubview(symbolIcon)
-        self.addSubview(name)
-        self.backgroundColor = .clear
+        contentView.addSubview(symbolIcon)
+        contentView.addSubview(name)
+        contentView.backgroundColor = .clear
     }
     
     private func setConstraints() {
