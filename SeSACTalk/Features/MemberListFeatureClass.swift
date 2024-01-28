@@ -32,24 +32,26 @@ final class MemberListFeatureClass: ListingViewControllerProtocol {
     }
     
     func configure(target: UIViewController) {
-        target.view.backgroundColor = .white
+        target.view.backgroundColor = Colors.Background.primary
         target.view.layer.cornerRadius = 25
         target.view.clipsToBounds = true
         target.view.addSubview(tableView)
-        tableView.register(WorkspaceListingCell.self,
-                           forCellReuseIdentifier: WorkspaceListingCell.identifier)
-        tableView.rowHeight = 72
+        target.navigationController?.setCloseableNavigation(title: "워크스페이스 관리자",
+                                                            target: target,
+                                                            action: #selector(target.dismissTrigger))
+        tableView.register(MemberListCell.self,
+                           forCellReuseIdentifier: MemberListCell.identifier)
+        tableView.rowHeight = 60
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.contentInset = .init(top: 8, left: 0, bottom: 0, right: 0)
         tableView.contentInsetAdjustmentBehavior = .never
-        
-        target.navigationController?.setWorkSpaceListNavigation()
     }
     
     func setConstraints(target: UIViewController) {
         tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(target.view.safeAreaLayoutGuide)
+            make.horizontalEdges.bottom.equalToSuperview()
         }
     }
     
