@@ -11,7 +11,7 @@ import RxSwift
 
 final class RefreshTokenInterceptor: RequestInterceptor {
     
-    private let networkmanager = NetworkService.shared
+    private let networkService = NetworkService.shared
     private let disposeBag = DisposeBag()
     private var retryCount = 0
     private let maxRetryCount = 1
@@ -44,7 +44,7 @@ final class RefreshTokenInterceptor: RequestInterceptor {
                     
                     dispatchGroup.enter()
                     let token = AccessTokenRequest(accessToken: SecureKeys.createAccessToken())
-                    networkmanager.fetchRequest(endpoint: .refreshToken(token: token),
+                    networkService.fetchRequest(endpoint: .refreshToken(token: token),
                                                 decodeModel: AccessTokenRequest.self)
                     .subscribe(with: self) { owner, result in
                         switch result {

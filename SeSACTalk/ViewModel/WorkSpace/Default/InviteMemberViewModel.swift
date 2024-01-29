@@ -13,7 +13,7 @@ import RxCocoa
 final class InviteMemberViewModel {
     
     
-    private let networkManager = NetworkService.shared
+    private let networkService = NetworkService.shared
     private let session = LoginSession.shared
     private let disposeBag = DisposeBag()
     private let center = ValidationCenter()
@@ -41,7 +41,7 @@ final class InviteMemberViewModel {
     
     func fetchInviteNewMember(){
         let idRequest = IDRequiredRequest(id: session.makeWorkspaceID())
-        networkManager.fetchStatusCodeRequest(endpoint: .inviteWorkspaceMember(id: idRequest, model: EmailValidationRequest(email: emailSubject.value)))
+        networkService.fetchStatusCodeRequest(endpoint: .inviteWorkspaceMember(id: idRequest, model: EmailValidationRequest(email: emailSubject.value)))
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success( _ ):
