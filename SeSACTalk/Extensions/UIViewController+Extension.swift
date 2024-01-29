@@ -75,6 +75,34 @@ extension UIViewController {
         present(sheet, animated: true)
     }
     
+    func showActionSheetForChannelFooter(workspace: WorkSpace) {
+        
+        let sheet = UIAlertController(title: "", message: "",
+                                      preferredStyle: .actionSheet)
+        
+        let create = UIAlertAction(title: "채널 생성", style: .default) { [weak self] action in
+            
+            let vc = WorkSpaceEditViewController(viewModel: EmptyWorkSpaceViewModel(editMode: .edit,
+                                                                                    workspaceInfo: workspace))
+            let navVC = UINavigationController(rootViewController: vc)
+            vc.modalTransitionStyle = .coverVertical
+            self?.present(navVC, animated: true)
+        }
+        
+        let search = UIAlertAction(title: "채널 탐색", style: .default) { [weak self] action in
+            
+            let vc = WorkSpaceEditViewController(viewModel: EmptyWorkSpaceViewModel(editMode: .edit,
+                                                                                    workspaceInfo: workspace))
+            let navVC = UINavigationController(rootViewController: vc)
+            vc.modalTransitionStyle = .coverVertical
+            self?.present(navVC, animated: true)
+        }
+        
+        sheet.addAction(create)
+        sheet.addAction(search)
+        present(sheet, animated: true)
+    }
+    
     @objc func dismissTrigger() {
         self.dismiss(animated: true)
     }
