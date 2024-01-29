@@ -28,6 +28,7 @@ enum APIService {
     case handoverWorkspaceManager(model: IDwithIDRequest)
     case loadWorkspaceMember(id: IDRequiredRequest)
     case inviteWorkspaceMember(id: IDRequiredRequest, model: EmailValidationRequest)
+    case createChannel(id: IDRequiredRequest, model: ChannelAddRequest)
 }
 
 extension APIService: TargetType {
@@ -41,37 +42,55 @@ extension APIService: TargetType {
         switch self {
         case .emailValidation :
             return path.emailValidate
+            
         case .join :
             return path.join
+            
         case .emailLogin :
             return path.emailLogin
+            
         case .kakaoLogin :
             return path.kakaoLogin
+            
         case .appleLogin :
             return path.appleLogin
+            
         case .createWorkSpace :
             return path.workSpace
+            
         case .loadWorkSpace:
             return path.workSpace
+            
         case .loadWorkspaceDetails(let workspaceID):
             return path.workSpace+"/\(workspaceID.id)"
+            
         case .loadDms(let id):
             return path.workSpace+"/\(id.id)"+path.PathDepthOne.dms
+            
         case .loadMyProfile:
             return path.profile
+            
         case .refreshToken:
             return path.tokenRefresh
+            
         case .editWorkSpace(let id, _),
                 .removeWorkSpace(let id):
             return path.workSpace+"/\(id.id)"
+            
         case .leaveWorkspace(let id):
             return path.workSpace+"/\(id.id)"+path.PathDepthOne.leaveWorkspace
+            
         case .handoverWorkspaceManager(let model):
             return path.workSpace+"\(model.id)"+path.PathDepthOne.handoverWorkspace+"\(model.receiverID)"
+            
         case .loadWorkspaceMember(let id):
             return path.workSpace+"/\(id.id)"+path.PathDepthOne.loadWorkspaceMember
+            
         case .inviteWorkspaceMember(let id, _):
             return path.workSpace+"/\(id.id)"+path.PathDepthOne.loadWorkspaceMember
+            
+        case .createChannel(let id, _) :
+            return path.workSpace+"/\(id.id)"+path.PathDepthOne.channel
         }
         
     }
@@ -85,7 +104,8 @@ extension APIService: TargetType {
                 .kakaoLogin,
                 .appleLogin,
                 .createWorkSpace,
-                .inviteWorkspaceMember:
+                .inviteWorkspaceMember,
+                .createChannel:
             return .post
             
         case .loadWorkSpace,
@@ -151,6 +171,9 @@ extension APIService: TargetType {
             
         case .inviteWorkspaceMember(_, let model):
             return .requestJSONEncodable(model)
+            
+        case .createChannel(_, let model):
+            return .requestJSONEncodable(model)
         }
     }
     
@@ -179,7 +202,8 @@ extension APIService: TargetType {
                 .leaveWorkspace,
                 .handoverWorkspaceManager,
                 .loadWorkspaceMember,
-                .inviteWorkspaceMember:
+                .inviteWorkspaceMember,
+                .createChannel:
             
             return [
                 SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,
