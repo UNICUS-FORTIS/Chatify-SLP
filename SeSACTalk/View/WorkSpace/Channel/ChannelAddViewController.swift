@@ -50,6 +50,14 @@ final class ChannelAddViewController: UIViewController, ToastPresentableProtocol
             .bind(to: viewModel.channelDescriptionSubject)
             .disposed(by: disposeBag)
         
+        viewModel.channelNameSubject
+            .asDriver(onErrorJustReturn: "")
+            .drive(with: self) { owner, name in
+                let validation = owner.center.checkLength(target: name)
+                owner.createButton.validationBinder.onNext(validation)
+            }
+            .disposed(by: disposeBag)
+        
         viewModel.errorReceiver
             .bind(with: self) { owner, notify in
                 switch notify {
