@@ -46,12 +46,12 @@ final class InviteMemberViewModel {
                 switch result {
                 case .success( _ ):
                     owner.completionSubject.accept(.InviteMember(.success))
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                        owner.dismissTrigger?()
+                    }
                 case .failure(let error):
                     if let errorcase = InviteMemberErrors(rawValue: error.errorCode) {
                         owner.errorSubject.accept(.InviteMember(errorcase))
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
-                            owner.dismissTrigger?()
-                        }
                     }
                     print("멤버초대에러코드", error.errorCode)
                 }
