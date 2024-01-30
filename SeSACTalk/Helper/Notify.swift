@@ -11,6 +11,7 @@ import Foundation
 enum Notify {
     
     case InviteMember(InviteMemberErrors)
+    case createChannels(CreateChannelErrors)
     
 }
 
@@ -36,6 +37,20 @@ enum InviteMemberErrors: String {
             return "알 수 없는 오류가 발생했습니다."
         case .success:
             return "멤버를 성공적으로 초대했습니다. "
+        }
+    }
+}
+
+enum CreateChannelErrors: String {
+    case duplicatedName
+    case success
+    
+    var toastMessage: String {
+        switch self {
+        case .duplicatedName:
+            return "워크스페이스에 이미 있는 채널 이름입니다. 다른 이름을 입력해주세요."
+        case .success:
+            return "채널이 생성되었습니다."
         }
     }
 }
