@@ -61,7 +61,6 @@ final class WorkspaceListFeatureClass: ListingViewControllerProtocol {
     }
     
     func configure(target: UIViewController) {
-        print("실행됨 컨피규어")
         target.view.backgroundColor = .white
         target.view.layer.cornerRadius = 25
         target.view.clipsToBounds = true
