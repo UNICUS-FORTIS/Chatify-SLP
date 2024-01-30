@@ -21,7 +21,6 @@ final class MemberListFeatureClass: ListingViewControllerProtocol {
         guard let session = session else { return }
         session.workspaceMember
             .map { member -> WorkspaceMemberResponse in
-                guard let member = member else { return [] }
                 if member.count <= 1 {
                     let vc = BackdropViewController(boxType: .confirm(.modifyWorkspaceMember),
                                                     id: nil)
