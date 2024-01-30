@@ -7,9 +7,10 @@
 
 import UIKit
 import SnapKit
+import SideMenu
 import RxSwift
 import RxCocoa
-import SideMenu
+import RxDataSources
 
 
 final class DefaultWorkSpaceViewController: UIViewController {
@@ -30,28 +31,51 @@ final class DefaultWorkSpaceViewController: UIViewController {
     }
     
     private func bind() {
-        Observable
-            .combineLatest(session.workspaceDetails, session.DmsInfo)
-            .map { channel, dms -> Bool in
-                guard let dmsValue = dms else { return false }
-                return channel != nil && (!dmsValue.isEmpty || dmsValue.isEmpty)
+        let dataSource =
+        RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: {
+            dataSource,
+            tableView,
+            indexPath,
+            item in
+            
+            switch item {
+            case let .channel(channels) :
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: ChannelTableViewCell.identifier, for: indexPath) as? ChannelTableViewCell else { return UITableViewCell() }
+                
+                cell.setLabel(text: channels.name,
+                              textColor: Colors.Text.secondary,
+                              symbol: .hashTagThin,
+                              font: Typography.body ??
+                              UIFont.systemFont(ofSize: 13),
+                              badgeCount: 5)
+                return cell
+                        
+            case let .dms(dms):
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: DMTableCell.identifier) as? DMTableCell else { return UITableViewCell() }
+                
+
+                    let username = dms.user.nickname
+                    let profileImage = dms.user.profileImage
+                    cell.setDms(username: username,
+                                profileImage: profileImage ?? nil,
+                                count: 5)
+                return cell
+                
+            case .member: break
             }
-            .asDriver(onErrorJustReturn: false)
-            .filter { $0 }
-            .drive(with: self) { owner, modified in
-                if modified {
-                    owner.tableView.reloadData()
-                    print("테이블뷰 리로드됨")
-                }
-            }
+            return UITableViewCell()
+        })
+        
+        session.layout
+            .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
     }
     
     private func configure() {
+
         view.backgroundColor = .white
         view.addSubview(tableView)
         view.addSubview(newMessageButton)
-        tableView.dataSource = self
         tableView.delegate = self
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
@@ -103,71 +127,6 @@ final class DefaultWorkSpaceViewController: UIViewController {
         sideMenu?.menuWidth = view.frame.width * 0.8
     }
     
-}
-
-extension DefaultWorkSpaceViewController: UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return ChannelLayoutSection.allCases.count
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let sections = ChannelLayoutSection.allCases[section]
-        switch sections {
-        case .channel : return session.numberOfChannelInfoCount()
-        case .directMessage: return session.numberOfDmsCount()
-        case .addNewMember: return 0
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let sections = ChannelLayoutSection.allCases[indexPath.section]
-        
-        switch sections {
-        case .channel :
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ChannelTableViewCell.identifier) as? ChannelTableViewCell else { return UITableViewCell() }
-            
-            self.session.workspaceDetails
-                .asObservable()
-                .bind(with: self) { owner, channelInfo in
-                    guard let safe = channelInfo else { return }
-                    let channelPath = safe.channels[indexPath.row]
-                    let text = channelPath.name
-                    
-                    cell.setLabel(text: text,
-                                  textColor: Colors.Text.secondary,
-                                  symbol: .hashTagThin,
-                                  font: Typography.body ??
-                                  UIFont.systemFont(ofSize: 13),
-                                  badgeCount: 5)
-                }
-                .disposed(by: self.disposeBag)
-            
-            return cell
-        case .directMessage:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: DMTableCell.identifier) as? DMTableCell else { return UITableViewCell() }
-            
-            self.session.DmsInfo
-                .asObservable()
-                .bind(with: self) { owner, dms in
-                    guard let safe = dms else {
-                        return }
-                    if safe.count > 0 {
-                        let safePath = safe[indexPath.row]
-                        let username = safePath.user.nickname
-                        let profileImage = safePath.user.profileImage
-                        cell.setDms(username: username,
-                                    profileImage: profileImage ?? nil,
-                                    count: 5)
-                    }
-                }
-                .disposed(by: self.disposeBag)
-            
-            return cell
-            
-        case .addNewMember: return UITableViewCell()
-        }
-    }
 }
 
 extension DefaultWorkSpaceViewController: UITableViewDelegate {
@@ -229,7 +188,10 @@ extension DefaultWorkSpaceViewController: UITableViewDelegate {
     }
     
     @objc private func channelFooterTapped() {
-        print("채널추가")
+        let vc = ChannelAddViewController()
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalTransitionStyle = .coverVertical
+        present(navVC, animated: true)
     }
     
     @objc private func newMessageFooterTapped() {
