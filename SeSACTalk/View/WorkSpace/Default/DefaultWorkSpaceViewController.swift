@@ -52,7 +52,6 @@ final class DefaultWorkSpaceViewController: UIViewController {
                         
             case let .dms(dms):
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DMTableCell.identifier) as? DMTableCell else { return UITableViewCell() }
-                
 
                     let username = dms.user.nickname
                     let profileImage = dms.user.profileImage
@@ -188,10 +187,7 @@ extension DefaultWorkSpaceViewController: UITableViewDelegate {
     }
     
     @objc private func channelFooterTapped() {
-        let vc = ChannelAddViewController()
-        let navVC = UINavigationController(rootViewController: vc)
-        navVC.modalTransitionStyle = .coverVertical
-        present(navVC, animated: true)
+        self.showActionSheetForChannelFooter()
     }
     
     @objc private func newMessageFooterTapped() {
