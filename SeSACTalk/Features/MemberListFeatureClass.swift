@@ -12,9 +12,9 @@ import RxCocoa
 
 final class MemberListFeatureClass: ListingViewControllerProtocol {
     
-    weak var session = LoginSession.shared
-    let tableView = UITableView(frame: .zero, style: .plain)
-    let disposeBag = DisposeBag()
+    private weak var session = LoginSession.shared
+    private let tableView = UITableView(frame: .zero, style: .plain)
+    private let disposeBag = DisposeBag()
     
     
     func bind(target: UIViewController) {
