@@ -250,6 +250,12 @@ final class LoginSession {
         .disposed(by: disposeBag)
     }
     
+    func fetchChannelList() -> Single<Result<[Channels], ErrorResponse>> {
+        let idRequest = IDRequiredRequest(id: currentWorkspaceID ?? 000)
+        return networkService.fetchRequest(endpoint: .loadAllChannels(id: idRequest)
+                                    , decodeModel: [Channels].self)
+    }
+    
     func fetchMyChannelInfo() {
         let idRequest = IDRequiredRequest(id: self.makeWorkspaceID())
         networkService.fetchRequest(endpoint: .loadMyChannelInfo(id: idRequest),
