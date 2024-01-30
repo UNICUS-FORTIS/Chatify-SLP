@@ -13,10 +13,11 @@ import RxCocoa
 final class LoginSession {
     
     static let shared = LoginSession()
-    private init() {}
+    private init() { bind() }
+    
     private let networkService = NetworkService.shared
     private let userIDSubject = PublishSubject<Int>()
-    private let nickNameSubject = PublishSubject<String>() // temp
+    private let nickNameSubject = PublishSubject<String>()
     private var userID: Int?
     private var recentVisitedWorkspace = UserDefaults.loadRecentWorkspace()
     let workSpacesSubject = BehaviorSubject<WorkSpaces?>(value: nil)
@@ -31,11 +32,34 @@ final class LoginSession {
     // MARK: - 응답 Response
     let myProfile = PublishSubject<MyProfileResponse>()
     let workspaceDetails = BehaviorSubject<WorkspaceInfoResponse?>(value: nil)
-    let DmsInfo = BehaviorSubject<DMsResponse?>(value: [])
-    let workspaceMember = BehaviorSubject<WorkspaceMemberResponse?>(value: [])
+    let channelsInfo = BehaviorSubject<[Channels]>(value: [])
+    let DmsInfo = BehaviorSubject<DMsResponse>(value: [])
+    let workspaceMember = BehaviorSubject<WorkspaceMemberResponse>(value: [])
     let errorReceriver = PublishSubject<ErrorResponse>()
-    
+        
     private let disposeBag = DisposeBag()
+    
+
+    var layout: Observable<[MultipleSectionModel]> {
+        return Observable.combineLatest(channelsInfo, DmsInfo)
+            .map { channels, dms in
+                var sections: [MultipleSectionModel] = []
+                
+                let channelItems = channels.map { SectionItem.channel(channel: $0) }
+                let channelSection = MultipleSectionModel.channel(items: channelItems)
+                sections.append(channelSection)
+                
+                let dmsItems = dms.map { SectionItem.dms(dms: $0) }
+                let dmsSection = MultipleSectionModel.dms(items: dmsItems)
+                sections.append(dmsSection)
+                
+                let memberSection = MultipleSectionModel.member
+                sections.append(memberSection)
+                
+                return sections
+            }
+    }
+
     
     func handOverLoginInformation(id: Int,
                                   nick: String,
@@ -52,8 +76,6 @@ final class LoginSession {
         nickNameSubject.onNext(nick)
         UserDefaults.standard.setValue(access, forKey: "accessToken")
         UserDefaults.standard.setValue(refresh, forKey: "refreshToken")
-        
-        bind()
     }
     
     func modifyCurrentWorkspace(path: IndexPath) {
@@ -110,6 +132,7 @@ final class LoginSession {
                 switch result {
                 case .success(let response):
                     owner.workspaceDetails.onNext(response)
+                    owner.channelsInfo.onNext(response.channels)
                     print("워크스페이스 디테일")
                     dump(response)
                 case .failure(let error):
@@ -150,16 +173,6 @@ final class LoginSession {
                 }
             }
             .disposed(by: disposeBag)
-    }
-    
-    func numberOfChannelInfoCount() -> Int {
-        let info = try? workspaceDetails.value()?.channels
-        return info?.count ?? 0
-    }
-    
-    func numberOfDmsCount() -> Int {
-        let dms = try? DmsInfo.value()
-        return dms?.count ?? 0
     }
     
     func fetchWorkspaceDetails(id: IDRequiredRequest) -> Single<Result<WorkspaceInfoResponse, ErrorResponse>> {
@@ -232,6 +245,21 @@ final class LoginSession {
                 completion()
             case .failure(let error):
                 print(error)
+            }
+        }
+        .disposed(by: disposeBag)
+    }
+    
+    func fetchMyChannelInfo() {
+        let idRequest = IDRequiredRequest(id: self.makeWorkspaceID())
+        networkService.fetchRequest(endpoint: .loadMyChannelInfo(id: idRequest),
+                                    decodeModel: [Channels].self)
+        .subscribe(with: self) { owner, result in
+            switch result {
+            case .success(let channels):
+                owner.channelsInfo.onNext(channels)
+            case .failure(let error):
+                print(error.errorCode)
             }
         }
         .disposed(by: disposeBag)
