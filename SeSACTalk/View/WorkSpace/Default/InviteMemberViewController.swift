@@ -50,8 +50,7 @@ final class InviteMemberViewController: UIViewController, ToastPresentableProtoc
         
         viewModel.emailSubject
             .withLatestFrom(viewModel.emailLengthValidation)
-            .asDriver(onErrorJustReturn: false)
-            .drive(with: self) { owner, validation in
+            .bind(with: self) { owner, validation in
                 owner.confirmButton.buttonEnabler.onNext(validation)
                 owner.confirmButton.validationBinder.onNext(validation)
             }
@@ -60,17 +59,15 @@ final class InviteMemberViewController: UIViewController, ToastPresentableProtoc
         confirmButton.rx.tap
             .withLatestFrom(viewModel.emailValidation)
             .filter { $0 }
-            .asDriver(onErrorJustReturn: false)
-            .drive(with: self) { owner, _ in
+            .bind(with: self) { owner, _ in
                 owner.viewModel.fetchInviteNewMember()
             }
             .disposed(by: disposeBag)
         
         confirmButton.rx.tap
             .withLatestFrom(viewModel.emailValidation)
-            .asDriver(onErrorJustReturn: false)
             .filter { !$0 }
-            .drive(with: self) { owner, validation in
+            .bind(with: self) { owner, validation in
                 if !validation {
                     let message = Notify.InviteMember(.invalidEmail)
                     owner.viewModel.errorSubject.accept(message)
@@ -79,26 +76,27 @@ final class InviteMemberViewController: UIViewController, ToastPresentableProtoc
             .disposed(by: disposeBag)
         
         viewModel.errorSubject
-            .asDriver(onErrorJustReturn: .InviteMember(.notFound))
-            .drive(with: self) { owner, notify in
+            .bind(with: self) { owner, notify in
                 switch notify {
                 case .InviteMember(let notify):
                     let message = notify.toastMessage
                     owner.makeToastAboveView(message: message,
                                              backgroundColor: Colors.Brand.error,
                                              aboveView: owner.confirmButton)
+                default: break
                 }
             }
             .disposed(by: disposeBag)
         
         viewModel.completionSubject
-            .subscribe(with: self) { owner, notify in
+            .bind(with: self) { owner, notify in
                 switch notify {
                 case .InviteMember(let notify):
                     let message = notify.toastMessage
                     owner.makeToastAboveView(message: message,
                                              backgroundColor: Colors.Brand.green,
                                              aboveView: owner.confirmButton)
+                default: break
                 }
             }
             .disposed(by: disposeBag)
