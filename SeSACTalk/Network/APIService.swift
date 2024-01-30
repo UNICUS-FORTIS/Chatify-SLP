@@ -30,6 +30,7 @@ enum APIService {
     case inviteWorkspaceMember(id: IDRequiredRequest, model: EmailValidationRequest)
     case createChannel(id: IDRequiredRequest, model: ChannelAddRequest)
     case loadMyChannelInfo(id: IDRequiredRequest)
+    case loadAllChannels(id: IDRequiredRequest)
 }
 
 extension APIService: TargetType {
@@ -95,6 +96,9 @@ extension APIService: TargetType {
             
         case .loadMyChannelInfo(let id):
             return path.workSpace+"/\(id.id)"+path.PathDepthOne.channel+path.PathDepthTwo.my
+            
+        case .loadAllChannels(let id):
+            return path.workSpace+"/\(id.id)"+path.PathDepthOne.channel
         }
         
     }
@@ -119,7 +123,8 @@ extension APIService: TargetType {
                 .refreshToken,
                 .leaveWorkspace,
                 .loadWorkspaceMember,
-                .loadMyChannelInfo:
+                .loadMyChannelInfo,
+                .loadAllChannels:
             return .get
             
         case .editWorkSpace:
@@ -172,7 +177,8 @@ extension APIService: TargetType {
                 .leaveWorkspace,
                 .handoverWorkspaceManager,
                 .loadWorkspaceMember,
-                .loadMyChannelInfo:
+                .loadMyChannelInfo,
+                .loadAllChannels:
             return .requestPlain
             
         case .inviteWorkspaceMember(_, let model):
@@ -210,7 +216,8 @@ extension APIService: TargetType {
                 .loadWorkspaceMember,
                 .inviteWorkspaceMember,
                 .createChannel,
-                .loadMyChannelInfo:
+                .loadMyChannelInfo,
+                .loadAllChannels:
             
             return [
                 SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,
