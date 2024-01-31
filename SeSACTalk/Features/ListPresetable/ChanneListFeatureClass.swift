@@ -17,6 +17,7 @@ final class ChannelListFeatureClass: ListingViewControllerProtocol {
     private let disposeBag = DisposeBag()
     private let channelList = PublishRelay<[Channels]>()
     private let errorReceiver = PublishRelay<Notify>()
+    private var channelListArray:[Channels] = []
     
     init() {
         guard let session = session else { return }
@@ -25,6 +26,7 @@ final class ChannelListFeatureClass: ListingViewControllerProtocol {
                 switch result {
                 case .success(let response):
                     owner.channelList.accept(response)
+                    owner.channelListArray.append(contentsOf: response)
                 case .failure(let error):
                     print(error.errorCode)
                 }
@@ -46,6 +48,17 @@ final class ChannelListFeatureClass: ListingViewControllerProtocol {
                               badgeCount: nil)
                 
             }.disposed(by: disposeBag)
+        
+        tableView.rx.itemSelected
+            .bind(with: self) { owner, indexPath in
+                guard let safe = owner.session else { return }
+                let targetChannel = owner.channelListArray[indexPath.row]
+                owner.checkCheckJoinedChannel(target: target,
+                                              channel: targetChannel.channelID,
+                                              name: targetChannel.name)
+            }
+            .disposed(by: disposeBag)
+                
     }
     
     func configure(target: UIViewController) {
@@ -74,11 +87,20 @@ final class ChannelListFeatureClass: ListingViewControllerProtocol {
     
     func showActionSheet(target: UIViewController, workspace: WorkSpace) { }
     
-    
-    
-    
-    
-    
+    func checkCheckJoinedChannel(target: UIViewController,channel: Int, name: String) {
+        guard let session = session else { return }
+        session.channelsInfo.map { $0.contains(where: {$0.channelID == channel }) }
+            .subscribe(with: self) { owner, isJoined in
+                if isJoined {
+                    print("가입되어있음")
+                } else {
+                    let vc = BackdropViewController(boxType: .cancellable(.loadChannels(name: name)),
+                                                    id: nil)
+                    vc.modalPresentationStyle = .overFullScreen
+                    target.present(vc, animated: false)
+                }
+            }
+            .disposed(by: disposeBag)
+    }
 }
-
 

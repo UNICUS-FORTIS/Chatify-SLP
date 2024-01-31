@@ -11,10 +11,10 @@ import RxSwift
 
 final class WorkspaceListFeatureClass: ListingViewControllerProtocol {
 
-    weak var session = LoginSession.shared
-    let tableView = UITableView(frame: .zero, style: .plain)
-    let addNewWorkSpaceButton = SideMenuButton(title: "워크스페이스 추가", icon: .plus)
-    let helpButton = SideMenuButton(title: "도움말", icon: .help)
+    private weak var session = LoginSession.shared
+    private let tableView = UITableView(frame: .zero, style: .plain)
+    private let addNewWorkSpaceButton = SideMenuButton(title: "워크스페이스 추가", icon: .plus)
+    private let helpButton = SideMenuButton(title: "도움말", icon: .help)
     private let disposeBag = DisposeBag()
     
     func bind(target: UIViewController) {
