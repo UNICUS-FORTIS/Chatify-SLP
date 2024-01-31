@@ -12,10 +12,11 @@ enum InteractionType {
     case cancellable(InteractionTypeCancellable)
 }
 
-enum InteractionTypeCancellable: CaseIterable {
+enum InteractionTypeCancellable {
     
     case exitFromWorkspace
     case removeWorkspace
+    case loadChannels(name: String)
     
     var title: String {
         switch self {
@@ -23,6 +24,8 @@ enum InteractionTypeCancellable: CaseIterable {
             return "워크스페이스 나가기"
         case .removeWorkspace:
             return "워크스페이스 삭제"
+        case .loadChannels:
+            return "채널 참여"
         }
     }
     
@@ -35,6 +38,8 @@ enum InteractionTypeCancellable: CaseIterable {
             정말 이 워크스페이스를 삭제하시겠습니까?
             삭제 시 채널/멤버/채팅 등 워크스페이스 내의 모든 정보가 삭제되며 복구할 수 없습니다.
             """
+        case .loadChannels(let name):
+            return "[\(name)] 채널에 참여하시겠습니까?"
         }
     }
     
@@ -48,6 +53,8 @@ enum InteractionTypeCancellable: CaseIterable {
             return "나가기"
         case .removeWorkspace:
             return "삭제"
+        case .loadChannels:
+            return "확인"
         }
     }
 }
@@ -85,3 +92,4 @@ enum InteractionConfirmAcceptable: CaseIterable {
         return "확인"
     }
 }
+
