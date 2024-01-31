@@ -132,7 +132,7 @@ final class LoginSession {
                 switch result {
                 case .success(let response):
                     owner.workspaceDetails.onNext(response)
-                    owner.channelsInfo.onNext(response.channels)
+                    owner.fetchMyChannelInfo()
                     print("워크스페이스 디테일")
                     dump(response)
                 case .failure(let error):
@@ -269,6 +269,14 @@ final class LoginSession {
             }
         }
         .disposed(by: disposeBag)
+    }
+    
+    func checkCheckJoinedChannel(channel: Int) {
+        channelsInfo.map { $0.contains(where: {$0.channelID == channel }) }
+            .subscribe(with: self) { owner, bool in
+                print(bool)
+            }
+            .disposed(by: disposeBag)
     }
     
     func makeUserID() -> Int {
