@@ -94,6 +94,7 @@ extension UIViewController {
             let vc = ListingViewController(feature: feature)
             let navVC = UINavigationController(rootViewController: vc)
             navVC.modalTransitionStyle = .coverVertical
+            navVC.modalPresentationStyle = .fullScreen
             self?.present(navVC, animated: true)
         }
         
