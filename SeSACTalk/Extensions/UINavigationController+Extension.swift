@@ -43,7 +43,7 @@ extension UINavigationController {
         let leftCustomView = session.leftCustomView
         let leftCustomLabel = session.leftCustomLabel
         leftCustomLabel.button.addTarget(target, action: action, for: .touchUpInside)
-
+        
         let rightCustomView = session.rightCustomView
         
         let leftItem = UIBarButtonItem(customView: leftCustomView)
@@ -74,6 +74,29 @@ extension UINavigationController {
         
         let leftItem = UIBarButtonItem(customView: titleLabel)
         topViewController?.navigationItem.leftBarButtonItem = leftItem
+        
+        navigationBar.standardAppearance = appearance
+        navigationBar.compactAppearance = appearance
+        navigationBar.scrollEdgeAppearance = appearance
+    }
+    
+    func setChannelChatNavigation(target: UIViewController,
+                                  leftAction: Selector,
+                                  rightAction: Selector) {
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.shadowColor = Colors.Border.naviShadow
+        appearance.backgroundColor = .white
+        let leftItem = UIBarButtonItem(image: .chevronLeft,
+                                       style: .plain,
+                                       target: target,
+                                       action: leftAction)
+        let rightItem = UIBarButtonItem(image: .list,
+                                        style: .plain,
+                                        target: target,
+                                        action: rightAction)
+        topViewController?.navigationItem.leftBarButtonItem = leftItem
+        topViewController?.navigationItem.rightBarButtonItem = rightItem
         
         navigationBar.standardAppearance = appearance
         navigationBar.compactAppearance = appearance
