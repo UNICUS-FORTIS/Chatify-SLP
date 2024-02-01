@@ -12,7 +12,7 @@ typealias DMsResponse = [DMs]
 struct DMs: Decodable {
     let workspaceID, roomID: Int
     let createdAt: String
-    let user: User
+    let user: UserModel
 
     enum CodingKeys: String, CodingKey {
         case workspaceID = "workspace_id"
@@ -21,14 +21,5 @@ struct DMs: Decodable {
     }
 }
 
-struct User: Decodable {
-    let userID: Int
-    let email, nickname: String
-    let profileImage: String?
 
-    enum CodingKeys: String, CodingKey {
-        case userID = "user_id"
-        case email, nickname, profileImage
-    }
-}
 
