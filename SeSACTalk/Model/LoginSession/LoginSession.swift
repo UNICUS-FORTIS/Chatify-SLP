@@ -74,8 +74,8 @@ final class LoginSession {
         
         userIDSubject.onNext(id)
         nickNameSubject.onNext(nick)
-        UserDefaults.standard.setValue(access, forKey: "accessToken")
-        UserDefaults.standard.setValue(refresh, forKey: "refreshToken")
+        SecureKeys.saveNewAccessToken(token: access)
+        SecureKeys.saveNewRefreshToken(token: refresh)
     }
     
     func modifyCurrentWorkspace(path: IndexPath) {
@@ -271,12 +271,8 @@ final class LoginSession {
         .disposed(by: disposeBag)
     }
     
-    func checkCheckJoinedChannel(channel: Int) {
-        channelsInfo.map { $0.contains(where: {$0.channelID == channel }) }
-            .subscribe(with: self) { owner, bool in
-                print(bool)
-            }
-            .disposed(by: disposeBag)
+    func joinToChannel() {
+        print("참여됨")
     }
     
     func makeUserID() -> Int {
