@@ -51,7 +51,6 @@ final class ChannelListFeatureClass: ListingViewControllerProtocol {
         
         tableView.rx.itemSelected
             .bind(with: self) { owner, indexPath in
-                guard let safe = owner.session else { return }
                 let targetChannel = owner.channelListArray[indexPath.row]
                 owner.checkCheckJoinedChannel(target: target,
                                               channel: targetChannel.channelID,
@@ -92,7 +91,10 @@ final class ChannelListFeatureClass: ListingViewControllerProtocol {
         session.channelsInfo.map { $0.contains(where: {$0.channelID == channel }) }
             .subscribe(with: self) { owner, isJoined in
                 if isJoined {
-                    print("가입되어있음")
+//                    let feature = ChannelChatTypeFeature()
+                    let vc = ChatViewController()
+                    target.navigationController?.pushViewController(vc,
+                                                                    animated: true)
                 } else {
                     let vc = BackdropViewController(boxType: .cancellable(.loadChannels(name: name)),
                                                     id: nil)
