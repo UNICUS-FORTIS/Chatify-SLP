@@ -81,23 +81,18 @@ extension UINavigationController {
     }
     
     func setChannelChatNavigation(target: UIViewController,
-                                  leftAction: Selector,
                                   rightAction: Selector) {
-        
+        print(#function)
         let appearance = UINavigationBarAppearance()
         appearance.shadowColor = Colors.Border.naviShadow
         appearance.backgroundColor = .white
-        let leftItem = UIBarButtonItem(image: .chevronLeft,
-                                       style: .plain,
-                                       target: target,
-                                       action: leftAction)
+
         let rightItem = UIBarButtonItem(image: .list,
                                         style: .plain,
                                         target: target,
                                         action: rightAction)
-        topViewController?.navigationItem.leftBarButtonItem = leftItem
-        topViewController?.navigationItem.rightBarButtonItem = rightItem
         
+        target.navigationItem.rightBarButtonItem = rightItem
         navigationBar.standardAppearance = appearance
         navigationBar.compactAppearance = appearance
         navigationBar.scrollEdgeAppearance = appearance
