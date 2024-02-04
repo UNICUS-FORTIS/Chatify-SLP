@@ -21,6 +21,13 @@ final class ChatViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private let accView = CustomInputAccView()
     
+    private var lastIndexPath: IndexPath? {
+        guard let lastRow = tableView.numberOfRows(inSection: 0) > 1 ?
+                tableView.numberOfRows(inSection: 0) :
+                    nil else { return nil }
+        return IndexPath(row: lastRow, section: 0)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
@@ -28,6 +35,7 @@ final class ChatViewController: UIViewController {
         bind()
         setUp()
         manager.mockUP()
+        keyboardSetting()
     }
     
     private func configure() {
@@ -52,7 +60,7 @@ final class ChatViewController: UIViewController {
     private func setConstraints() {
         tableView.snp.makeConstraints { make in
             make.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(16)
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(accView.snp.top)
         }
         
         accView.snp.makeConstraints { make in
@@ -87,6 +95,27 @@ final class ChatViewController: UIViewController {
                     owner.accView.snp.updateConstraints { make in
                         make.height.equalTo(height + 8)
                     }
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    private func keyboardSetting() {
+        
+        RxKeyboard.instance.frame
+            .drive(onNext: { frame in
+                print(frame)
+            })
+            .disposed(by: disposeBag)
+        
+        RxKeyboard.instance.visibleHeight
+            .drive(with: self) { owner, height  in
+                owner.accView.snp.updateConstraints { make in
+                    let bottomInset = max(0, height - self.view.safeAreaInsets.bottom)
+                    make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(bottomInset)
+                }
+                UIView.animate(withDuration: 0.25) {
+                    self.view.layoutIfNeeded()
                 }
             }
             .disposed(by: disposeBag)
