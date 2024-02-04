@@ -17,7 +17,6 @@ final class MessageSenderTableCell: UITableViewCell {
     
     var datas = PublishRelay<ChatModel?>()
     
-    
     private let sentTime = CustomTitleLabel("",
                                             textColor: Colors.Text.secondary,
                                             font: Typography.caption2 ??
@@ -27,9 +26,6 @@ final class MessageSenderTableCell: UITableViewCell {
     
     private let pictureContainer = UIView(frame: .zero)
     
-
-    // MARK: - 프로파일 컨테이너 생성안함.
-    // MARK: - 채팅 / 사진 컨테이너
     private lazy var bodyContainer: UIStackView = {
         let sv = UIStackView(arrangedSubviews: [communications, pictureContainer])
         sv.axis = .vertical
@@ -39,17 +35,24 @@ final class MessageSenderTableCell: UITableViewCell {
         return sv
     }()
     
-    // MARK: - 시간 컨테이너
     private lazy var sentTimeContainer: UIView = {
         let view = UIView()
         view.addSubview(sentTime)
         return view
     }()
     
-//    // MARK: - 닉네임 + 채팅/사진 컨테이너
-    private lazy var contentsContainer: UIStackView = {
+    private lazy var bottomContainer: UIStackView = {
         let sv = UIStackView(arrangedSubviews: [sentTimeContainer, bodyContainer])
         sv.axis = .horizontal
+        sv.spacing = 8
+        sv.alignment = .trailing
+        sv.distribution = .fill
+        return sv
+    }()
+    
+    private lazy var contentsContainer: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [bottomContainer])
+        sv.axis = .vertical
         sv.spacing = 5
         sv.alignment = .trailing
         sv.distribution = .fill
@@ -87,6 +90,7 @@ final class MessageSenderTableCell: UITableViewCell {
     private func configure() {
         contentView.addSubview(mainStackView)
         self.selectionStyle = .none
+
         sentTime.numberOfLines = 1
     }
     
@@ -94,7 +98,7 @@ final class MessageSenderTableCell: UITableViewCell {
     private func setConstraints() {
        
         sentTime.snp.makeConstraints { make in
-            make.bottom.equalTo(bodyContainer.snp.bottom).inset(6)
+            make.bottom.equalTo(contentsContainer.snp.bottom).inset(6)
             make.width.equalToSuperview()
         }
         
@@ -103,16 +107,9 @@ final class MessageSenderTableCell: UITableViewCell {
             make.width.greaterThanOrEqualTo(sentTime.intrinsicContentSize.width).priority(999)
         }
         
-        bodyContainer.snp.makeConstraints { make in
-            DispatchQueue.main.async {
-                make.width.lessThanOrEqualTo(self.bodyContainer.intrinsicContentSize.width).priority(999)
-                make.height.equalTo(self.bodyContainer.intrinsicContentSize.height)
-            }
-        }
-        
         mainStackView.snp.makeConstraints { make in
-            make.trailing.equalTo(self)
-            make.leading.equalTo(self).inset(30)
+            make.leading.equalTo(self)
+            make.trailing.equalTo(self).inset(30)
             make.top.bottom.equalToSuperview().inset(8)
         }
     }
@@ -123,6 +120,7 @@ final class MessageSenderTableCell: UITableViewCell {
             .asDriver(onErrorJustReturn: nil)
             .drive(with: self) { owner, data in
                 guard let data = data else { return }
+                print(data)
                 owner.communications.text = data.content
                 owner.sentTime.text = "08:16 오전"
                 owner.setConstraints()
