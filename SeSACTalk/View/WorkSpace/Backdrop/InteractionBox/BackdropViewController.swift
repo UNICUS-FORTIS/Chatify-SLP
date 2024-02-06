@@ -43,7 +43,7 @@ final class BackdropViewController: UIViewController {
             
         case .cancellable(let cancellable):
             let box = CancellableBox(type: cancellable)
-            box.setCancelButtonAction(target: self, action: #selector(dismissTrigger))
+            box.setCancelButtonAction(target: self, action: #selector(dismissTriggerNonAnimated))
             view.addSubview(box)
             setConstraints(box: box)
             
@@ -54,6 +54,9 @@ final class BackdropViewController: UIViewController {
                 
             case .removeWorkspace:
                 box.setConfirmButtonAction(target: self, action: #selector(confirmRemoveWorkspaceTrigger))
+                
+            case .loadChannels:
+                box.setConfirmButtonAction(target: self, action: #selector(confirmJoinToChannel))
             }
             
         default: break
@@ -81,5 +84,10 @@ final class BackdropViewController: UIViewController {
         print(id, "현재 워크스페이스 아이디")
         session.leaveFromWorkspace(id: id)
         self.dismiss(animated: false)
+    }
+    
+    @objc func confirmJoinToChannel() {
+        guard let session = session else { return }
+        
     }
 }
