@@ -32,7 +32,7 @@ final class OnboardingViewController: UIViewController {
         setConstraints()
         setFloatingPanel()
         setTriggers()
-        setAfterLoginSucceed()
+//        setAfterLoginSucceed()
     }
         
     private func configure() {
@@ -76,8 +76,8 @@ final class OnboardingViewController: UIViewController {
         
         viewModel.emailLoginPushTrigger = { [weak self] in
             if let strongSelf = self {
+                strongSelf.setAfterLoginSucceed()
                 let vc = EmailLogInViewController(viewModel: strongSelf.viewModel)
-                
                 let NavVC = UINavigationController(rootViewController: vc)
                 if let sheet = NavVC.presentationController as? UISheetPresentationController {
                     sheet.detents = [.large()]
@@ -94,6 +94,7 @@ final class OnboardingViewController: UIViewController {
     }
     
     private func setAfterLoginSucceed() {
+        print("이거 실행되냐?")
         viewModel.afterLoginSucceedTrigger = { [weak self] in
             if let strongSelf = self {
                 strongSelf.viewModel.fetchLoadWorkSpace()
