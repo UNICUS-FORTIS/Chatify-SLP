@@ -8,6 +8,6 @@
 import Foundation
 
 
-struct IDRequiredRequest {
+struct IDRequiredRequest: Encodable {
     let id: Int
 }
