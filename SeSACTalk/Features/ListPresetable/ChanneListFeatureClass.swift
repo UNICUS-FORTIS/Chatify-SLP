@@ -39,7 +39,7 @@ final class ChannelListFeatureClass: ListingViewControllerProtocol {
             .bind(to: tableView.rx.items(cellIdentifier: ChannelTableViewCell.identifier,
                                          cellType: ChannelTableViewCell.self)) {
                 _, item, cell in
-                 
+                
                 cell.setLabel(text: item.name,
                               textColor: .black,
                               symbol: .hashTag,
@@ -52,12 +52,11 @@ final class ChannelListFeatureClass: ListingViewControllerProtocol {
         tableView.rx.itemSelected
             .bind(with: self) { owner, indexPath in
                 let targetChannel = owner.channelListArray[indexPath.row]
-                owner.checkCheckJoinedChannel(target: target,
-                                              channel: targetChannel.channelID,
-                                              name: targetChannel.name)
+                owner.checkJoinedChannel(target: target,
+                                         channel: targetChannel)
             }
             .disposed(by: disposeBag)
-                
+        
     }
     
     func configure(target: UIViewController) {
@@ -86,17 +85,17 @@ final class ChannelListFeatureClass: ListingViewControllerProtocol {
     
     func showActionSheet(target: UIViewController, workspace: WorkSpace) { }
     
-    func checkCheckJoinedChannel(target: UIViewController,channel: Int, name: String) {
+    func checkJoinedChannel(target: UIViewController, channel: Channels) {
         guard let session = session else { return }
-        session.channelsInfo.map { $0.contains(where: {$0.channelID == channel }) }
+        session.channelsInfo.map { $0.contains(where: {$0.channelID == channel.channelID }) }
             .subscribe(with: self) { owner, isJoined in
                 if isJoined {
-//                    let feature = ChannelChatTypeFeature()
-                    let vc = ChatViewController()
+                    let manager = ChatManager(iD: channel.workspaceID, channelName: channel.name)
+                    let vc = ChatViewController(manager: manager)
                     target.navigationController?.pushViewController(vc,
                                                                     animated: true)
                 } else {
-                    let vc = BackdropViewController(boxType: .cancellable(.loadChannels(name: name)),
+                    let vc = BackdropViewController(boxType: .cancellable(.loadChannels(name: channel.name)),
                                                     id: nil)
                     vc.modalPresentationStyle = .overFullScreen
                     target.present(vc, animated: false)
