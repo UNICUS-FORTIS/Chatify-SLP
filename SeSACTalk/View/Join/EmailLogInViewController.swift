@@ -118,13 +118,19 @@ final class EmailLogInViewController: UIViewController {
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(let response):
+                    let group = DispatchGroup()
+                    group.enter()
                     owner.loginSession.handOverLoginInformation(id: response.userID,
                                                           nick: response.nickname,
                                                           access: response.accessToken,
                                                           refresh: response.refreshToken)
+                    print("핸드오버 엑세스토큰", response.accessToken)
+                    group.leave()
                     dump(response)
                     owner.dismiss(animated: true)
-                    owner.onBoardingViewModel.afterLoginSucceedTrigger?()
+                    group.notify(queue: .main) {
+                        owner.onBoardingViewModel.afterLoginSucceedTrigger?()
+                    }
                 case .failure(let error):
                     print(error)
                 }
