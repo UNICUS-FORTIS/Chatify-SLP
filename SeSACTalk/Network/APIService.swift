@@ -31,6 +31,9 @@ enum APIService {
     case createChannel(id: IDRequiredRequest, model: ChannelAddRequest)
     case loadMyChannelInfo(id: IDRequiredRequest)
     case loadAllChannels(id: IDRequiredRequest)
+//    case joinToChannelChat(id: IDRequiredRequest, name: NameRequest, cursor: ChatCursorDateRequest)
+    case joinToChannelChat(id: IDRequiredRequest, name: NameRequest)
+    case sendChannelChat(id: IDRequiredRequest, name: NameRequest, contents: ChatBodyRequest)
 }
 
 extension APIService: TargetType {
@@ -80,27 +83,42 @@ extension APIService: TargetType {
             return path.workSpace+"/\(id.id)"
             
         case .leaveWorkspace(let id):
-            return path.workSpace+"/\(id.id)"+path.PathDepthOne.leaveWorkspace
+            return path.workSpace+"/\(id.id)" +
+            path.PathDepthOne.leaveWorkspace
             
         case .handoverWorkspaceManager(let model):
-            return path.workSpace+"\(model.id)"+path.PathDepthOne.handoverWorkspace+"\(model.receiverID)"
+            return path.workSpace +
+            "\(model.id)" +
+            path.PathDepthOne.handoverWorkspace +
+            "\(model.receiverID)"
             
         case .loadWorkspaceMember(let id):
-            return path.workSpace+"/\(id.id)"+path.PathDepthOne.loadWorkspaceMember
+            return path.workSpace +
+            "/\(id.id)" +
+            path.PathDepthOne.loadWorkspaceMember
             
         case .inviteWorkspaceMember(let id, _):
-            return path.workSpace+"/\(id.id)"+path.PathDepthOne.loadWorkspaceMember
+            return path.workSpace+"/\(id.id)" +
+            path.PathDepthOne.loadWorkspaceMember
             
         case .createChannel(let id, _) :
-            return path.workSpace+"/\(id.id)"+path.PathDepthOne.channel
+            return path.workSpace+"/\(id.id)" +
+            path.PathDepthOne.channel
             
         case .loadMyChannelInfo(let id):
-            return path.workSpace+"/\(id.id)"+path.PathDepthOne.channel+path.PathDepthTwo.my
+            return path.workSpace+"/\(id.id)" +
+            path.PathDepthOne.channel+path.PathDepthTwo.my
             
         case .loadAllChannels(let id):
-            return path.workSpace+"/\(id.id)"+path.PathDepthOne.channel
+            return path.workSpace+"/\(id.id)" +
+            path.PathDepthOne.channel
+            
+        case .joinToChannelChat(let id, let name),
+                .sendChannelChat(let id, let name, _):
+            return path.workSpace+"/\(id.id)" +
+            path.PathDepthOne.channel+"/\(name.name)" +
+            path.PathDepthTwo.chat
         }
-        
     }
     
     var method: Moya.Method {
@@ -113,7 +131,8 @@ extension APIService: TargetType {
                 .appleLogin,
                 .createWorkSpace,
                 .inviteWorkspaceMember,
-                .createChannel:
+                .createChannel,
+                .sendChannelChat :
             return .post
             
         case .loadWorkSpace,
@@ -124,7 +143,8 @@ extension APIService: TargetType {
                 .leaveWorkspace,
                 .loadWorkspaceMember,
                 .loadMyChannelInfo,
-                .loadAllChannels:
+                .loadAllChannels,
+                .joinToChannelChat:
             return .get
             
         case .editWorkSpace:
@@ -178,7 +198,8 @@ extension APIService: TargetType {
                 .handoverWorkspaceManager,
                 .loadWorkspaceMember,
                 .loadMyChannelInfo,
-                .loadAllChannels:
+                .loadAllChannels,
+                .joinToChannelChat:
             return .requestPlain
             
         case .inviteWorkspaceMember(_, let model):
@@ -186,6 +207,25 @@ extension APIService: TargetType {
             
         case .createChannel(_, let model):
             return .requestJSONEncodable(model)
+            
+//        case .joinToChannelChat(_, _, let cursor):
+//            return .requestParameters(parameters: ["cursor_date" : cursor],
+//                                      encoding: URLEncoding.queryString)
+            
+        case .sendChannelChat(_ , _, let body):
+            
+            var multipartData = [MultipartFormData]()
+            multipartData.append(MultipartFormData(provider: .data(body.content.data(using: .utf8)!),
+                                                   name: "name"))
+            
+            for (index, fileData) in body.files.enumerated() {
+                multipartData.append(MultipartFormData(provider: .data(fileData),
+                                                       name: "file\(index + 1)",
+                                                       fileName: "SesacTalk\(Date()).jpg",
+                                                       mimeType: "image/jpeg"))
+                
+            }
+            return .uploadMultipart(multipartData)
         }
     }
     
@@ -217,7 +257,9 @@ extension APIService: TargetType {
                 .inviteWorkspaceMember,
                 .createChannel,
                 .loadMyChannelInfo,
-                .loadAllChannels:
+                .loadAllChannels,
+                .joinToChannelChat,
+                .sendChannelChat :
             
             return [
                 SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,
