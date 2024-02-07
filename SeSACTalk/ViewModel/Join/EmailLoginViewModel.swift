@@ -43,9 +43,7 @@ final class EmailLoginViewModel {
                                         passcodeSubject,
                                         deviceToken) {
             email, passcode, deviceToken in
-            print(EmailLoginRequest(email: email,
-                                password: passcode,
-                                deviceToken: deviceToken ?? ""))
+
             return EmailLoginRequest(email: email,
                                  password: passcode,
                                  deviceToken: deviceToken ?? "")
