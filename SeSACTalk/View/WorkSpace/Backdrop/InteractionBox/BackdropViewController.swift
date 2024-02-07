@@ -16,12 +16,20 @@ final class BackdropViewController: UIViewController {
     
     private weak var session = LoginSession.shared
     private var boxType: InteractionType?
+    private var channel: Channels?
     private var workspaceID: Int?
     
-    convenience init(boxType: InteractionType, id: Int?) {
+    convenience init(boxType: InteractionType, workspaceID: Int?) {
         self.init(nibName: nil, bundle: nil)
         self.boxType = boxType
-        self.workspaceID = id
+        self.workspaceID = workspaceID
+    }
+    
+    convenience init(boxType: InteractionType, workspaceID: Int, channel: Channels) {
+        self.init(nibName: nil, bundle: nil)
+        self.boxType = boxType
+        self.workspaceID = workspaceID
+        self.channel = channel
     }
     
     override func viewDidLoad() {
@@ -31,7 +39,7 @@ final class BackdropViewController: UIViewController {
     
     private func configure() {
         view.backgroundColor = .black.withAlphaComponent(0.5)
-
+        
         switch boxType {
             
         case .confirm(let acceptable):
@@ -39,7 +47,7 @@ final class BackdropViewController: UIViewController {
             box.setConfirmButtonAction(target: self, action: #selector(self.dismissTriggerNonAnimated))
             view.addSubview(box)
             setConstraints(box: box)
-    
+            
             
         case .cancellable(let cancellable):
             let box = CancellableBox(type: cancellable)
@@ -87,7 +95,28 @@ final class BackdropViewController: UIViewController {
     }
     
     @objc func confirmJoinToChannel() {
-        guard let session = session else { return }
+        print(#function)
+        guard let channel = channel,
+              let workspace = workspaceID else { return }
         
+        session?.pushChatPageTrigger = {
+            let manager = ChatManager(iD: workspace,
+                                      channelName: channel.name,
+                                      channelID: channel.channelID)
+            
+            let vc = ChatViewController(manager: manager)
+            let navVC = UINavigationController(rootViewController: vc)
+            let rootVC = DefaultWorkSpaceViewController.shared
+            rootVC.navigationController?.pushViewController(navVC, animated: true)
+        }
+        
+        self.presentingViewController?
+            .presentingViewController?.dismiss(animated: true) { [weak self] in
+                self?.session?.pushChatPageTrigger?()
+            }
+    }
+    deinit {
+        print("백드롭 뷰컨트롤러 Deinit됨")
     }
 }
+
