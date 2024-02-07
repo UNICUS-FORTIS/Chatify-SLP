@@ -31,7 +31,7 @@ enum APIService {
     case createChannel(id: IDRequiredRequest, model: ChannelAddRequest)
     case loadMyChannelInfo(id: IDRequiredRequest)
     case loadAllChannels(id: IDRequiredRequest)
-//    case joinToChannelChat(id: IDRequiredRequest, name: NameRequest, cursor: ChatCursorDateRequest)
+    //    case joinToChannelChat(id: IDRequiredRequest, name: NameRequest, cursor: ChatCursorDateRequest)
     case joinToChannelChat(id: IDRequiredRequest, name: NameRequest)
     case sendChannelChat(id: IDRequiredRequest, name: NameRequest, contents: ChatBodyRequest)
 }
@@ -208,23 +208,27 @@ extension APIService: TargetType {
         case .createChannel(_, let model):
             return .requestJSONEncodable(model)
             
-//        case .joinToChannelChat(_, _, let cursor):
-//            return .requestParameters(parameters: ["cursor_date" : cursor],
-//                                      encoding: URLEncoding.queryString)
+            //        case .joinToChannelChat(_, _, let cursor):
+            //            return .requestParameters(parameters: ["cursor_date" : cursor],
+            //                                      encoding: URLEncoding.queryString)
             
         case .sendChannelChat(_ , _, let body):
             
             var multipartData = [MultipartFormData]()
-            multipartData.append(MultipartFormData(provider: .data(body.content.data(using: .utf8)!),
-                                                   name: "name"))
             
-            for (index, fileData) in body.files.enumerated() {
-                multipartData.append(MultipartFormData(provider: .data(fileData),
-                                                       name: "file\(index + 1)",
-                                                       fileName: "SesacTalk\(Date()).jpg",
-                                                       mimeType: "image/jpeg"))
-                
+            if let content = body.content {
+                multipartData.append(MultipartFormData(provider: .data(content.data(using: .utf8)!), name: "content"))
             }
+            
+            if let files = body.files {
+                for (index, fileData) in files.enumerated() {
+                    multipartData.append(MultipartFormData(provider: .data(fileData),
+                                                           name: "files",
+                                                           fileName: "SesacTalk\(Date())\(index+1).jpg",
+                                                           mimeType: "image/jpeg"))
+                }
+            }
+            
             return .uploadMultipart(multipartData)
         }
     }
@@ -258,11 +262,17 @@ extension APIService: TargetType {
                 .createChannel,
                 .loadMyChannelInfo,
                 .loadAllChannels,
-                .joinToChannelChat,
-                .sendChannelChat :
+                .joinToChannelChat :
             
             return [
                 SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,
+                SecureKeys.Headers.Headerkey : SecureKeys.APIKey.secretKey
+            ]
+            
+        case .sendChannelChat :
+            return [
+                SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,
+                SecureKeys.Headers.contentsType : SecureKeys.Headers.multipartTypePair,
                 SecureKeys.Headers.Headerkey : SecureKeys.APIKey.secretKey
             ]
         }
