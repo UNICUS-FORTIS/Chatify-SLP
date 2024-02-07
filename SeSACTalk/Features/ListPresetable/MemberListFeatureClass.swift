@@ -23,7 +23,7 @@ final class MemberListFeatureClass: ListingViewControllerProtocol {
             .map { member -> WorkspaceMemberResponse in
                 if member.count <= 1 {
                     let vc = BackdropViewController(boxType: .confirm(.modifyWorkspaceMember),
-                                                    id: nil)
+                                                    workspaceID: nil)
                     vc.modalTransitionStyle = .coverVertical
                     vc.modalPresentationStyle = .overFullScreen
                     target.present(vc, animated: false)

@@ -28,13 +28,13 @@ extension UIViewController {
             let id = session.makeUserID()
             if id == workspace.ownerID {
                 let vc = BackdropViewController(boxType: .confirm(.exitFromWorkspace),
-                                                id: workspace.workspaceID)
+                                                workspaceID: workspace.workspaceID)
                 vc.modalTransitionStyle = .coverVertical
                 vc.modalPresentationStyle = .overFullScreen
                 self?.present(vc, animated: false)
             } else {
                 let vc = BackdropViewController(boxType: .cancellable(.exitFromWorkspace),
-                                                id: workspace.workspaceID)
+                                                workspaceID: workspace.workspaceID)
                 vc.modalTransitionStyle = .coverVertical
                 vc.modalPresentationStyle = .overFullScreen
                 self?.present(vc, animated: false)
@@ -56,7 +56,7 @@ extension UIViewController {
         
         let delete = UIAlertAction(title: "워크스페이스 삭제", style: .destructive) { [weak self] action in
             let vc = BackdropViewController(boxType: .cancellable(.removeWorkspace),
-                                            id: workspace.workspaceID)
+                                            workspaceID: workspace.workspaceID)
             
             vc.modalTransitionStyle = .coverVertical
             vc.modalPresentationStyle = .overFullScreen

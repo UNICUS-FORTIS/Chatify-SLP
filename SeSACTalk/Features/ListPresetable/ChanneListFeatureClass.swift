@@ -53,6 +53,7 @@ final class ChannelListFeatureClass: ListingViewControllerProtocol {
             .bind(with: self) { owner, indexPath in
                 let targetChannel = owner.channelListArray[indexPath.row]
                 owner.checkJoinedChannel(target: target,
+                                         workspaceID: targetChannel.workspaceID,
                                          channel: targetChannel)
             }
             .disposed(by: disposeBag)
@@ -85,18 +86,23 @@ final class ChannelListFeatureClass: ListingViewControllerProtocol {
     
     func showActionSheet(target: UIViewController, workspace: WorkSpace) { }
     
-    func checkJoinedChannel(target: UIViewController, channel: Channels) {
+    func checkJoinedChannel(target: UIViewController, workspaceID: Int, channel: Channels) {
         guard let session = session else { return }
         session.channelsInfo.map { $0.contains(where: {$0.channelID == channel.channelID }) }
             .subscribe(with: self) { owner, isJoined in
                 if isJoined {
-                    let manager = ChatManager(iD: channel.workspaceID, channelName: channel.name)
+                    let manager = ChatManager(iD: channel.workspaceID,
+                                              channelName: channel.name,
+                                              channelID: channel.channelID)
                     let vc = ChatViewController(manager: manager)
                     target.navigationController?.pushViewController(vc,
                                                                     animated: true)
                 } else {
-                    let vc = BackdropViewController(boxType: .cancellable(.loadChannels(name: channel.name)),
-                                                    id: nil)
+                    let vc =
+                    BackdropViewController(boxType: .cancellable(.loadChannels(name: channel.name)),
+                                           workspaceID: workspaceID,
+                                           channel: channel)
+                    
                     vc.modalPresentationStyle = .overFullScreen
                     target.present(vc, animated: false)
                 }
