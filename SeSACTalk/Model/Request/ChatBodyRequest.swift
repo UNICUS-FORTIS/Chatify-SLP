@@ -10,7 +10,7 @@ import Foundation
 
 struct ChatBodyRequest: Encodable {
     
-    let content: String
-    let files: [Data]
+    let content: String?
+    let files: [Data]?
     
 }
