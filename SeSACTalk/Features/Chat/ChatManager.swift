@@ -13,18 +13,21 @@ import RxCocoa
 final class ChatManager {
     
     private let networkService = NetworkService.shared
+    let socketManager = SocketIOManager.shared
     private var workSpaceID: Int
     private var channelName: String
+    private var channelID: Int
     private var cursor: String?
     private let chatMessage = BehaviorSubject(value: "")
     var chatDatasRelay = BehaviorRelay<[ChatModel]>(value: [])
     var recentChatDatas = [ChatModel]()
     private let disposeBag = DisposeBag()
     
-    init(iD: Int, channelName: String) {
+    init(iD: Int, channelName: String, channelID: Int) {
         
         self.workSpaceID = iD
         self.channelName = channelName
+        self.channelID = channelID
         self.cursor = nil
         
     }
@@ -35,15 +38,36 @@ final class ChatManager {
                                                             rightAction: right)
     }
     
-    func startSocketConnect() {
-        
+    func messageSender(request: ChatBodyRequest) {
+        let workspaceID = IDRequiredRequest(id: self.workSpaceID)
+        let channelName = NameRequest(name: self.channelName)
+        networkService.fetchRequest(endpoint: .sendChannelChat(id: workspaceID,
+                                                               name: channelName,
+                                                               contents: request), decodeModel: ChatModel.self)
+        .subscribe(with: self) { owner, result in
+            switch result {
+            case .success(let response) :
+                var messages = owner.chatDatasRelay.value
+                messages.append(response)
+                owner.chatDatasRelay.accept(messages)
+                print(response)
+                
+            case .failure(let error) :
+                print(error.errorCode)
+            }
+        }
+        .disposed(by: disposeBag)
+    }
+    
+    func judgeSender(sender: Int, userID: Int) -> Bool {
+        return sender == userID ? true : false
     }
     
     func loadChatLog() {
         let id = IDRequiredRequest(id: self.workSpaceID)
         let name = NameRequest(name: self.channelName)
-//        guard let safeCursor = self.cursor else { return }
-//        let curserDate = ChatCursorDateRequest(cursor: safeCursor)
+        //        guard let safeCursor = self.cursor else { return }
+        //        let curserDate = ChatCursorDateRequest(cursor: safeCursor)
         networkService
             .fetchRequest(endpoint: .joinToChannelChat(id: id,
                                                        name: name),
@@ -68,45 +92,11 @@ final class ChatManager {
         
     }
     
-//    func mockUP() {
-//        print("챗매니저 이니셜라이즈드")
-//        let model1 = ChatModel(channelID: 1,
-//                  channelName: "으아아",
-//                  chatID: 1,
-//                  content: "안뇽",
-//                  createdAt: "2023-12-21T22:47:30.236Z",
-//                  files: [],
-//                  user: UserModel(userID: 1,
-//                                  email: "ddd@sss.com",
-//                                  nickname: "Louie Dummy",
-//                                  profileImage: nil))
-//        
-//        let model2 = ChatModel(channelID: 1,
-//                  channelName: "으아아",
-//                  chatID: 1,
-//                  content: "안뇽ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
-//                  createdAt: "2023-12-21T22:47:30.236Z",
-//                  files: [],
-//                  user: UserModel(userID: 1,
-//                                  email: "ddd@sss.com",
-//                                  nickname: "Louie Dummy",
-//                                  profileImage: nil))
-//        
-//        let model3 = ChatModel(channelID: 1,
-//                  channelName: "으아아",
-//                  chatID: 1,
-//                  content: "안뇽에브브베으베으ㅔ븡레브ㅔㅡ베으ㅔ브ㅔ에브브베으베으ㅔ븡레브ㅔㅡ베으ㅔ브ㅔ에브브베으베으ㅔ븡레브ㅔㅡ베으ㅔ브ㅔ에브브베으베으ㅔ븡레브ㅔㅡ베으ㅔ브ㅔ에브브베으베으ㅔ븡레브ㅔㅡ베으ㅔ브ㅔ에브브베으베으ㅔ븡레브ㅔㅡ베으ㅔ브ㅔ에브브베으베으ㅔ븡레브ㅔㅡ베으ㅔ브ㅔ에브브베으베으ㅔ븡레브ㅔㅡ베으ㅔ브ㅔ에브브베으베으ㅔ븡레브ㅔㅡ베으ㅔ브ㅔ에브브베으베으ㅔ븡레브ㅔㅡ베으ㅔ브ㅔㅇ",
-//                  createdAt: "2023-12-21T22:47:30.236Z",
-//                  files: [],
-//                  user: UserModel(userID: 1,
-//                                  email: "ddd@sss.com",
-//                                  nickname: "Louie Dummy",
-//                                  profileImage: nil))
-//        
-//        recentChatDatas.append(model1)
-//        recentChatDatas.append(model2)
-//        recentChatDatas.append(model3)
-//
-//        chatDatasRelay.accept(recentChatDatas)
-//    }
+    func createChannelID() -> Int {
+        return self.channelID
+    }
+    
+    deinit {
+        print("ChatManager Deinit됨")
+    }
 }
