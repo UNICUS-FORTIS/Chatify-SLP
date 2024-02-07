@@ -23,6 +23,7 @@ final class LoginSession {
     let workSpacesSubject = BehaviorSubject<WorkSpaces?>(value: nil)
     let currentWorkspaceSubject = BehaviorSubject<WorkSpace?>(value: nil)
     private var currentWorkspaceID: Int?
+    var pushChatPageTrigger: (() -> Void)?
     
     // MARK: - Navigation
     var leftCustomView = CustomNavigationLeftView()
