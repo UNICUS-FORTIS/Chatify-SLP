@@ -15,6 +15,10 @@ import RxDataSources
 
 final class DefaultWorkSpaceViewController: UIViewController {
     
+    static let shared = DefaultWorkSpaceViewController()
+    private init() {
+        super.init(nibName: nil, bundle: nil)
+    }
     private let session = LoginSession.shared
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let newMessageButton = NewMessageButton(frame: .zero)
@@ -28,6 +32,10 @@ final class DefaultWorkSpaceViewController: UIViewController {
         setConstraints()
         sideMenuSetup()
         bind()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func bind() {
@@ -67,6 +75,26 @@ final class DefaultWorkSpaceViewController: UIViewController {
         
         session.layout
             .bind(to: tableView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+        
+        tableView.rx.modelSelected(SectionItem.self)
+            .subscribe(with: self) { owner, section in
+                switch section {
+                case .channel(let item):
+                    let manager = ChatManager(iD: item.workspaceID,
+                                              channelName: item.name,
+                                              channelID: item.channelID)
+                    
+                    let vc = ChatViewController(manager: manager)
+                    owner.navigationController?.pushViewController(vc, animated: true)
+                    
+                case .dms(let dm):
+                    let dm = dm.createdAt
+                    print(dm)
+                    
+                default: break
+                }
+            }
             .disposed(by: disposeBag)
     }
     
