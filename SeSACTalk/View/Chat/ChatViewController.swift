@@ -146,10 +146,14 @@ final class ChatViewController: UIViewController {
         
         RxKeyboard.instance.visibleHeight
             .drive(with: self) { owner, height  in
+                
                 owner.accView.snp.updateConstraints { make in
-                    let bottomInset = max(0, height - self.view.safeAreaInsets.bottom)
-                    make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(bottomInset)
+                    let bottomInset = max(0, height - owner.view.safeAreaInsets.bottom)
+                    make.bottom.equalTo(owner.view.safeAreaLayoutGuide.snp.bottom).inset(bottomInset+12)
                 }
+                
+                owner.tableView.contentOffset.y += height
+                
                 UIView.animate(withDuration: 0.25) {
                     self.view.layoutIfNeeded()
                 }
