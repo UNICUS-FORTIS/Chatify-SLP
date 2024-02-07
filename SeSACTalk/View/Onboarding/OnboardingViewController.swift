@@ -32,7 +32,6 @@ final class OnboardingViewController: UIViewController {
         setConstraints()
         setFloatingPanel()
         setTriggers()
-//        setAfterLoginSucceed()
     }
         
     private func configure() {
@@ -94,7 +93,6 @@ final class OnboardingViewController: UIViewController {
     }
     
     private func setAfterLoginSucceed() {
-        print("이거 실행되냐?")
         viewModel.afterLoginSucceedTrigger = { [weak self] in
             if let strongSelf = self {
                 strongSelf.viewModel.fetchLoadWorkSpace()
@@ -105,12 +103,12 @@ final class OnboardingViewController: UIViewController {
                                 let vc = HomeEmptyViewController()
                                 strongSelf.navigationController?.setViewControllers([vc], animated: true)
                             } else if response.count == 1 {
-                                let vc = DefaultWorkSpaceViewController()
+                                let vc = DefaultWorkSpaceViewController.shared
                                 owner.loginSession.assginWorkSpaces(spaces: response)
                                 UserDefaults.createRecentWorkspace(workspaces: response)
                                 strongSelf.navigationController?.setViewControllers([vc], animated: true)
                             } else {
-                                let vc = DefaultWorkSpaceViewController()
+                                let vc = DefaultWorkSpaceViewController.shared
                                 let sortedReponse  = owner.viewModel.sortResponseByDate(response)
                                 owner.loginSession.assginWorkSpaces(spaces: sortedReponse)
                                 print("--------sortedResponse------")
