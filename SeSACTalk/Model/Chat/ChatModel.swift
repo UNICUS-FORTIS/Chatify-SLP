@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import SocketIO
 
-struct ChatModel: Decodable {
+struct ChatModel: Codable, SocketData {
     let channelID: Int
     let channelName: String
     let chatID: Int
-    let content, createdAt: String
+    let content: String?
+    let createdAt: String
     let files: [String]?
     let user: UserModel
 
