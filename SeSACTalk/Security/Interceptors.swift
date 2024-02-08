@@ -18,11 +18,11 @@ final class RefreshTokenInterceptor: RequestInterceptor {
     
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         
-        var urlRequest = urlRequest
+        var urlRQ = urlRequest
         
-//        urlRequest.headers.update(name: SecureKeys.Headers.auth, value: SecureKeys.Headers.accessToken)
+        urlRQ.headers.update(name: SecureKeys.Headers.auth, value: SecureKeys.createAccessToken())
         
-        completion(.success(urlRequest))
+        completion(.success(urlRQ))
     }
     
     
