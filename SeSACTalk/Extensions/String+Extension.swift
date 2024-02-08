@@ -80,4 +80,30 @@ extension String {
             return nil
         }
     }
+    
+    func chatDateString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        
+        guard let date = dateFormatter.date(from: self) else { return "" }
+        
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let dateComponents = calendar.dateComponents([.day], from: today, to: date)
+        
+        if let daysDiff = dateComponents.day {
+            if daysDiff == 0 {
+                dateFormatter.dateFormat = "a hh:mm"
+            } else {
+                dateFormatter.dateFormat = "M/dd a hh:mm"
+            }
+        } else {
+            dateFormatter.dateFormat = "M/dd a hh:mm"
+        }
+        
+        return dateFormatter.string(from: date)
+    }
 }
+
