@@ -75,7 +75,8 @@ final class MessageSenderTableCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         configure()
-        bind()
+        setConstraints()
+
     }
     
     required init?(coder: NSCoder) {
@@ -84,7 +85,8 @@ final class MessageSenderTableCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        disposeBag = DisposeBag()
+        communications.text = nil
+        sentTime.text = nil
     }
     
     private func configure() {
@@ -114,19 +116,9 @@ final class MessageSenderTableCell: UITableViewCell {
         }
     }
     
-    private func bind() {
-        print("셀 바인드")
-        datas
-            .asDriver(onErrorJustReturn: nil)
-            .drive(with: self) { owner, data in
-                guard let data = data else { return }
-                print(data)
-                owner.communications.text = data.content
-                owner.sentTime.text = "08:16 오전"
-                owner.setConstraints()
-                owner.self.sizeToFit()
-            }
-            .disposed(by: disposeBag)
+    func bind(data: ChatModel) {
+        communications.text = data.content
+        sentTime.text = data.createdAt.chatDateString()
     }
 }
 
