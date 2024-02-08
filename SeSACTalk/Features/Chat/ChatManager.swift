@@ -63,7 +63,7 @@ final class ChatManager {
         return sender == userID ? true : false
     }
     
-    func loadChatLog() {
+    func loadChatLog(completion: @escaping () -> Void ) {
         let id = IDRequiredRequest(id: self.workSpaceID)
         let name = NameRequest(name: self.channelName)
         //        guard let safeCursor = self.cursor else { return }
@@ -76,7 +76,8 @@ final class ChatManager {
                 switch result {
                 case .success(let chat):
                     owner.chatDatasRelay.accept(chat)
-                    print(chat)
+                    completion()
+                    
                 case.failure(let error):
                     print(error.errorCode)
                 }
