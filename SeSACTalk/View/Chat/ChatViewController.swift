@@ -71,7 +71,6 @@ final class ChatViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         tableView.contentInsetAdjustmentBehavior = .never
-        tableView.keyboardDismissMode = .onDrag
         accView.textView.delegate = self
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -92,42 +91,38 @@ final class ChatViewController: UIViewController {
     }
     
     private func setUp() {
-        manager.loadChatLog()
+        manager.loadChatLog { [weak self] in
+            self?.scrollToEnd()
+        }
+        
         manager.fetchUnreadDatas()
     }
     
     private func bind() {
-//        manager.chatDatasRelay
-//            .observe(on: MainScheduler.instance)
-//            .bind(to: tableView.rx.items(cellIdentifier: MessageSenderTableCell.identifier,
-//                                         cellType: MessageSenderTableCell.self)) {
-//                _, item, cell in
-//                
-//                cell.datas.accept(item)
-//                
-//            }.disposed(by: disposeBag)
         
         manager.chatDatasRelay
-            .observe(on: MainScheduler.instance)
+            .map  { chats in
+                chats.sorted { $0.createdAt < $1.createdAt }
+            }
             .bind(to: tableView.rx.items) { [weak self] (tableView, row, item) -> UITableViewCell in
                 guard let strongSelf = self else { return UITableViewCell() }
-                
                 if strongSelf.manager.judgeSender(sender: strongSelf.sender, userID: item.user.userID) {
                     
                     guard let senderCell = tableView.dequeueReusableCell(withIdentifier: MessageSenderTableCell.identifier) as? MessageSenderTableCell else { return UITableViewCell() }
-                    senderCell.datas.accept(item)
-                    
+                    senderCell.bind(data: item)
+                    print(item.createdAt.chatDateString())
                     return senderCell
                     
                 } else {
                     
                     guard let otherUserCell = tableView.dequeueReusableCell(withIdentifier: MessageTableCell.identifier) as? MessageTableCell else { return UITableViewCell() }
                     
-                    otherUserCell.datas.accept(item)
+                    otherUserCell.bind(data: item)
                     return otherUserCell
                 }
             }
             .disposed(by: disposeBag)
+        
         
         accView.textView.rx.observe(CGSize.self, "contentSize")
             .observe(on: MainScheduler.instance)
@@ -169,7 +164,7 @@ final class ChatViewController: UIViewController {
         view.endEditing(true)
     }
     
-    func setUpSendButton() {
+    private func setUpSendButton() {
         accView.rightButton.rx.tap
             .bind(with: self) { owner, _ in
                 let message = owner.accView.textView.text
@@ -178,6 +173,21 @@ final class ChatViewController: UIViewController {
                 owner.manager.messageSender(request: request)
             }
             .disposed(by: disposeBag)
+    }
+    
+    private func scrollToEnd() {
+        let count = manager.chatDatasRelay.value.count
+        if count > 1 {
+            let last = count - 1
+            DispatchQueue.main.async {
+                let indexPath = IndexPath(row: last, section: 0)
+                self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+            }
+        }
+    }
+    
+    private func initialIconColor() {
+        accView.rightButton = ChatButton(.chatIcon)
     }
     
     deinit {
@@ -196,6 +206,7 @@ extension ChatViewController: UITextViewDelegate {
         if textView.text.isEmpty {
             textView.text = "메세지를 입력하세요"
             textView.textColor = UIColor.lightGray
+            initialIconColor()
         }
     }
 }
