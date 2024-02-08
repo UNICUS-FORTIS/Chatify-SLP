@@ -90,7 +90,9 @@ final class MessageTableCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         configure()
-        bind()
+//        bind()
+        setConstraints()
+
     }
     
     required init?(coder: NSCoder) {
@@ -99,7 +101,9 @@ final class MessageTableCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        disposeBag = DisposeBag()
+        nickname.text = nil
+        communications.text = nil
+        sentTime.text = nil   
     }
     
     private func configure() {
@@ -111,7 +115,6 @@ final class MessageTableCell: UITableViewCell {
         sentTime.numberOfLines = 1
 
     }
-    
     
     private func setConstraints() {
         
@@ -148,24 +151,9 @@ final class MessageTableCell: UITableViewCell {
         }
     }
     
-    private func bind() {
-        print("셀 바인드")
-        datas
-            .asDriver(onErrorJustReturn: nil)
-            .drive(with: self) { owner, data in
-                guard let data = data else { return }
-                print(data)
-                if let profile = data.user.profileImage,
-                let url = URL(string: EndPoints.imageBaseURL + profile) {
-                    self.profileImage.kf.setImage(with: url)
-                }
-                
-                owner.nickname.text = data.user.nickname
-                owner.communications.text = data.content
-                owner.sentTime.text = "08:16 오전"
-                owner.setConstraints()
-                owner.self.sizeToFit()
-            }
-            .disposed(by: disposeBag)
+    func bind(data: ChatModel) {
+        nickname.text = data.user.nickname
+        communications.text = data.content
+        sentTime.text = data.createdAt.chatDateString()
     }
 }
