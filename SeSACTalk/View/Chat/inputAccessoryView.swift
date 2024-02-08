@@ -29,7 +29,7 @@ final class CustomInputAccView: UIView {
     }()
     
     private let leftButton = ChatButton(.plus)
-    let rightButton = ChatButton(.chatIcon)
+    var rightButton = ChatButton(.chatIcon)
     private let disposeBag = DisposeBag()
     
     private lazy var textObservable = textView.rx.text.orEmpty.map { !$0.isEmpty }
