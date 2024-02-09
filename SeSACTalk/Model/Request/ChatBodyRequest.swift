@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import SocketIO
 
 
-struct ChatBodyRequest: Encodable {
+struct ChatBodyRequest: Encodable, SocketData {
     
     let content: String?
     let files: [Data]?
