@@ -97,4 +97,15 @@ extension UINavigationController {
         navigationBar.compactAppearance = appearance
         navigationBar.scrollEdgeAppearance = appearance
     }
+    
+    func setDefaultNavigation() {
+        let appearance = UINavigationBarAppearance()
+        appearance.shadowColor = Colors.Border.naviShadow
+        appearance.backgroundColor = .white
+        self.navigationItem.backButtonTitle = ""
+        navigationBar.standardAppearance = appearance
+        navigationBar.compactAppearance = appearance
+        navigationBar.scrollEdgeAppearance = appearance
+        
+    }
 }
