@@ -27,6 +27,8 @@ final class CustomNavigationRightView: UIView {
         }
     }
     
+    var button = UIButton()
+    
     private let image = UIImageView()
     
     override init(frame: CGRect) {
@@ -41,6 +43,8 @@ final class CustomNavigationRightView: UIView {
     
     private func configure() {
         self.addSubview(image)
+        self.addSubview(button)
+        self.isUserInteractionEnabled = true
         image.layer.cornerRadius = 16
         image.clipsToBounds = true
         image.image = .dummyTypeA
@@ -54,5 +58,9 @@ final class CustomNavigationRightView: UIView {
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview()
         }
-    }    
+        
+        button.snp.makeConstraints { make in
+            make.size.equalToSuperview()
+        }
+    }
 }
