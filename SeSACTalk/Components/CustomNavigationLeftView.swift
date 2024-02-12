@@ -35,12 +35,10 @@ final class CustomNavigationLeftView: UIView {
     
     private func configure() {
         self.addSubview(leftItem)
-//        self.addSubview(naviTitle)
         self.isUserInteractionEnabled = true
         leftItem.layer.cornerRadius = 8
         leftItem.clipsToBounds = true
         leftItem.contentMode = .scaleAspectFill
-//        naviTitle.textAlignment = .left
     }
     
     private func setConstraints() {
