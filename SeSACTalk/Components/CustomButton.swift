@@ -40,6 +40,12 @@ final class CustomButton: UIButton {
     convenience init(_ image: UIImage) {
         self.init(title: "")
         self.setImage(image, for: .normal)
+        var configuration = UIButton.Configuration.plain()
+        var background = UIBackgroundConfiguration.listPlainCell()
+        background.backgroundColor = .clear
+        configuration.background = background
+        configuration.image = image
+        self.configuration = configuration
     }
     
     convenience init(title: String, _ image: UIImage) {
