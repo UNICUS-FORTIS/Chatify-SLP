@@ -33,7 +33,9 @@ extension UINavigationController {
         navigationBar.scrollEdgeAppearance = appearance
     }
     
-    func setWorkSpaceNavigation(target: UIViewController, action: Selector) {
+    func setWorkSpaceNavigation(target: UIViewController,
+                                leftAction: Selector,
+                                rightActoin: Selector) {
         
         
         let appearance = UINavigationBarAppearance()
@@ -42,9 +44,10 @@ extension UINavigationController {
         
         let leftCustomView = session.leftCustomView
         let leftCustomLabel = session.leftCustomLabel
-        leftCustomLabel.button.addTarget(target, action: action, for: .touchUpInside)
+        leftCustomLabel.button.addTarget(target, action: leftAction, for: .touchUpInside)
         
         let rightCustomView = session.rightCustomView
+        rightCustomView.button.addTarget(target, action: rightActoin, for: .touchUpInside)
         
         let leftItem = UIBarButtonItem(customView: leftCustomView)
         let leftTitleItem = UIBarButtonItem(customView: leftCustomLabel)
@@ -98,11 +101,12 @@ extension UINavigationController {
         navigationBar.scrollEdgeAppearance = appearance
     }
     
-    func setDefaultNavigation() {
+    func setDefaultNavigation(title: String) {
         let appearance = UINavigationBarAppearance()
         appearance.shadowColor = Colors.Border.naviShadow
         appearance.backgroundColor = .white
         self.navigationItem.backButtonTitle = ""
+        self.title = title
         navigationBar.standardAppearance = appearance
         navigationBar.compactAppearance = appearance
         navigationBar.scrollEdgeAppearance = appearance
