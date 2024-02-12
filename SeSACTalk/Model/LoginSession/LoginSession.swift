@@ -37,6 +37,8 @@ final class LoginSession {
     let DmsInfo = BehaviorSubject<DMsResponse>(value: [])
     let workspaceMember = BehaviorSubject<WorkspaceMemberResponse>(value: [])
     let errorReceriver = PublishSubject<ErrorResponse>()
+    
+    var currentProfile: MyProfileResponse?
         
     private let disposeBag = DisposeBag()
     
@@ -107,6 +109,7 @@ final class LoginSession {
             .bind(with: self) { owner, profile in
                 guard let profileImage = profile.profileImage else {
                     self.rightCustomView.dummyImage = .dummyTypeA
+                    self.currentProfile = profile
                     return
                 }
                 self.rightCustomView.profileImage = profileImage
