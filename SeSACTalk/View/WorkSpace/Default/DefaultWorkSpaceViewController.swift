@@ -120,11 +120,18 @@ final class DefaultWorkSpaceViewController: UIViewController {
         tableView.register(ChannelFooterCell.self,
                            forHeaderFooterViewReuseIdentifier: ChannelFooterCell.identifier)
         
-        navigationController?.setWorkSpaceNavigation(target: self, action: #selector(workSpaceTitleTapped))
+        navigationController?.setWorkSpaceNavigation(target: self,
+                                                     leftAction: #selector(workSpaceTitleTapped),
+                                                     rightActoin: #selector(profileImageTapped))
     }
     
     @objc func workSpaceTitleTapped() {
         present(SideMenuManager.default.leftMenuNavigationController!, animated: true, completion: nil)
+    }
+    
+    @objc func profileImageTapped() {
+        let vc = ProfileViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     
