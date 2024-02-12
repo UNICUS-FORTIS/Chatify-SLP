@@ -8,14 +8,14 @@
 import Foundation
 
 
-enum ProfileMenuSelector {
+enum ProfileMenuSelector: CaseIterable {
     
-    case accountInfo(AccountInformation)
-    case systemMenu(SystemMenu)
+    case accountInfo
+    case systemMenu
     
 }
 
-enum AccountInformation {
+enum AccountInformation: CaseIterable {
     case myCoin
     case nickname
     case contact
@@ -32,10 +32,10 @@ enum AccountInformation {
     }
 }
 
-enum SystemMenu {
+enum SystemMenu: CaseIterable {
     case email
     case connectedAccounts
-    case Logout
+    case logout
     
     var title: String {
         switch self {
@@ -43,7 +43,7 @@ enum SystemMenu {
             return "이메일"
         case .connectedAccounts:
             return "연결된 소셜 계정"
-        case .Logout:
+        case .logout:
             return "로그아웃"
         }
     }
