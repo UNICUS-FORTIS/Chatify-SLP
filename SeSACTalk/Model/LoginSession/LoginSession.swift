@@ -39,10 +39,9 @@ final class LoginSession {
     let errorReceriver = PublishSubject<ErrorResponse>()
     
     var currentProfile: MyProfileResponse?
-        
+    
     private let disposeBag = DisposeBag()
     
-
     var layout: Observable<[MultipleSectionModel]> {
         return Observable.combineLatest(channelsInfo, DmsInfo)
             .map { channels, dms in
@@ -62,7 +61,7 @@ final class LoginSession {
                 return sections
             }
     }
-
+    
     
     func handOverLoginInformation(id: Int,
                                   nick: String,
@@ -79,6 +78,19 @@ final class LoginSession {
         nickNameSubject.onNext(nick)
         SecureKeys.saveNewAccessToken(token: access)
         SecureKeys.saveNewRefreshToken(token: refresh)
+        
+        // MARK: - 유저 프로파일 로드
+        fetchMyProfile()
+            .subscribe(with: self) { owner, result in
+                switch result {
+                case .success(let response):
+                    owner.myProfile.onNext(response)
+                    
+                case .failure(let error):
+                    owner.errorReceriver.onNext(error)
+                }
+            }
+            .disposed(by: disposeBag)
     }
     
     func modifyCurrentWorkspace(path: IndexPath) {
@@ -104,7 +116,7 @@ final class LoginSession {
     }
     
     private func bind() {
-                
+        
         myProfile
             .bind(with: self) { owner, profile in
                 guard let profileImage = profile.profileImage else {
@@ -113,6 +125,8 @@ final class LoginSession {
                     return
                 }
                 self.rightCustomView.profileImage = profileImage
+                self.currentProfile = profile
+                print("네비게이션 영역 이미지 변경됨", profileImage)
             }
             .disposed(by: disposeBag)
         
@@ -158,19 +172,6 @@ final class LoginSession {
                     owner.DmsInfo.onNext(response)
                     print("DM정보 할당됨")
                     dump(response)
-                    
-                case .failure(let error):
-                    owner.errorReceriver.onNext(error)
-                }
-            }
-            .disposed(by: disposeBag)
-        
-        // MARK: - 유저 프로파일 로드
-        fetchMyProfile()
-            .subscribe(with: self) { owner, result in
-                switch result {
-                case .success(let response):
-                    owner.myProfile.onNext(response)
                     
                 case .failure(let error):
                     owner.errorReceriver.onNext(error)
@@ -234,7 +235,7 @@ final class LoginSession {
     func handoverWorkspaceManager(id: Int, receiverID: Int) {
         let request = IDwithIDRequest(id: id, receiverID: receiverID)
         networkService.fetchStatusCodeRequest(endpoint: .handoverWorkspaceManager(model: request))
-            
+        
     }
     
     func loadWorkspaceMember(id: Int, completion: @escaping () -> Void ) {
@@ -257,7 +258,7 @@ final class LoginSession {
     func fetchChannelList() -> Single<Result<[Channels], ErrorResponse>> {
         let idRequest = IDRequiredRequest(id: currentWorkspaceID ?? 000)
         return networkService.fetchRequest(endpoint: .loadAllChannels(id: idRequest)
-                                    , decodeModel: [Channels].self)
+                                           , decodeModel: [Channels].self)
     }
     
     func fetchMyChannelInfo() {
