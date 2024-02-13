@@ -12,7 +12,7 @@ struct MyProfileResponse: Codable {
     let userID: Int
     let email, nickname: String
     let profileImage, phone, vendor: String?
-    let sesacCoin: Int
+    let sesacCoin: Int?
     let createdAt: String
 
     enum CodingKeys: String, CodingKey {
