@@ -34,6 +34,7 @@ enum APIService {
     //    case joinToChannelChat(id: IDRequiredRequest, name: NameRequest, cursor: ChatCursorDateRequest)
     case joinToChannelChat(id: IDRequiredRequest, name: NameRequest)
     case sendChannelChat(id: IDRequiredRequest, name: NameRequest, contents: ChatBodyRequest)
+    case updateProfileImage(image: ImageUpdateRequest)
 }
 
 extension APIService: TargetType {
@@ -118,6 +119,9 @@ extension APIService: TargetType {
             return path.workSpace+"/\(id.id)" +
             path.PathDepthOne.channel+"/\(name.name)" +
             path.PathDepthTwo.chat
+            
+        case .updateProfileImage:
+            return path.profile+path.PathDepthTwo.updateImage
         }
     }
     
@@ -147,7 +151,8 @@ extension APIService: TargetType {
                 .joinToChannelChat:
             return .get
             
-        case .editWorkSpace:
+        case .editWorkSpace,
+                .updateProfileImage:
             return .put
             
         case .removeWorkSpace,
@@ -230,6 +235,13 @@ extension APIService: TargetType {
             }
             
             return .uploadMultipart(multipartData)
+            
+        case .updateProfileImage(let imageData):
+            var multipartFormData = MultipartFormData(provider: .data(imageData.image),
+                                                      name: "image", fileName: "profile\(Date()).jpg",
+                                                      mimeType: "image/jpeg")
+            
+            return .uploadMultipart([multipartFormData])
         }
     }
     
@@ -262,7 +274,8 @@ extension APIService: TargetType {
                 .createChannel,
                 .loadMyChannelInfo,
                 .loadAllChannels,
-                .joinToChannelChat :
+                .joinToChannelChat,
+                .updateProfileImage:
             
             return [
                 SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,
