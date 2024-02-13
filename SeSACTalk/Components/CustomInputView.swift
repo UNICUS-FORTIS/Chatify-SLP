@@ -49,6 +49,9 @@ final class CustomInputView: UIView {
         self.addSubview(textField)
         label.textColor = .black
         label.font = Typography.title2
+        if label.text == "" {
+            self.label.isHidden = true
+        }
     }
     
     private func setConstraints() {
