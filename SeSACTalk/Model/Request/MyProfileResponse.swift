@@ -11,7 +11,8 @@ import Foundation
 struct MyProfileResponse: Codable {
     let userID: Int
     let email, nickname: String
-    let profileImage, phone, vendor: String?
+    let profileImage, phone: String?
+    let vendor: [String]?
     let sesacCoin: Int?
     let createdAt: String
 
