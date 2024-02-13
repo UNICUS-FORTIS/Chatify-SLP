@@ -39,6 +39,7 @@ final class ProfileViewController: UIViewController {
         view.addSubview(tableView)
         navigationController?.setDefaultNavigation(target: self, title: "내 정보 수정")
         tableView.dataSource = self
+        tableView.delegate = self
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.rowHeight = 44
@@ -87,6 +88,10 @@ final class ProfileViewController: UIViewController {
         }
         profileImage.setProfileImage(thumbnail: profileImgURL)
     }
+    
+    deinit {
+        print("프로파일 뷰컨 deinit 됨")
+    }
 }
 
 extension ProfileViewController: UITableViewDataSource {
@@ -116,33 +121,69 @@ extension ProfileViewController: UITableViewDataSource {
         case .accountInfo:
             
             let index = AccountInformation.allCases[indexPath.row]
-            let data = viewModel.makeProfileData()[indexPath.row]
-
-            switch index {
-            case .myCoin :
-                
-                cell.setTitle(value: data.title)
-                cell.setCoinValue(coin: data.value)
-                cell.setCellValue(value: "충전하기")
-
-                return cell
             
-            default:
-                
-                cell.setTitle(value: data.title)
-                cell.setCellValue(value: data.value)
-                
-                return cell
-            }
+            viewModel.profileDataRelay
+                .subscribe(with: self) { owner, datas in
+                    let data = datas[indexPath.row]
+                    switch index {
+                    case .myCoin :
+                        
+                        cell.setTitle(value: data.title)
+                        cell.setCoinValue(coin: data.value)
+                        cell.setCellValue(value: "충전하기")
+                    
+                    default:
+                        
+                        cell.setTitle(value: data.title)
+                        cell.setCellValue(value: data.value)
+                        
+                    }
+                }
+                .disposed(by: disposeBag)
+            
+            return cell
 
         case .systemMenu:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableCell.identifier) as? ProfileTableCell else { return UITableViewCell() }
             
             let index = SystemMenu.allCases[indexPath.row]
             cell.setTitle(value: index.title)
-            cell.setCellValue(value: "테스트다")
-            
+
+            switch index {
+            case .email :
+                
+                cell.setCellValue(value: viewModel.makeEmailInfo())
+                
+            default :
+                break
+            }
             return cell
+        }
+    }
+}
+
+extension ProfileViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let section = ProfileMenuSelector.allCases[indexPath.section]
+        switch section {
+        case .accountInfo:
+            let index = AccountInformation.allCases[indexPath.row]
+            switch index {
+            case .myCoin: break
+                
+            case .nickname:
+                
+                let vc = ProfileEditViewController(editMode: .nickname)
+                navigationController?.pushViewController(vc, animated: true)
+                
+            case .contact:
+                
+                let vc = ProfileEditViewController(editMode: .contact)
+                navigationController?.pushViewController(vc, animated: true)
+            }
+            
+        default: break
         }
     }
 }

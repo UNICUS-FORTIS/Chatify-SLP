@@ -31,14 +31,12 @@ final class LoginSession {
     var rightCustomView = CustomNavigationRightView()
     
     // MARK: - 응답 Response
-    let myProfile = PublishSubject<MyProfileResponse>()
+    let myProfile = BehaviorSubject<MyProfileResponse?>(value: nil)
     let workspaceDetails = BehaviorSubject<WorkspaceInfoResponse?>(value: nil)
     let channelsInfo = BehaviorSubject<[Channels]>(value: [])
     let DmsInfo = BehaviorSubject<DMsResponse>(value: [])
     let workspaceMember = BehaviorSubject<WorkspaceMemberResponse>(value: [])
     let errorReceriver = PublishSubject<ErrorResponse>()
-    
-    var currentProfile: MyProfileResponse?
     
     private let disposeBag = DisposeBag()
     
@@ -119,14 +117,11 @@ final class LoginSession {
         
         myProfile
             .bind(with: self) { owner, profile in
-                guard let profileImage = profile.profileImage else {
+                guard let safe = profile else {
                     self.rightCustomView.dummyImage = .dummyTypeA
-                    self.currentProfile = profile
                     return
                 }
-                self.rightCustomView.profileImage = profileImage
-                self.currentProfile = profile
-                print("네비게이션 영역 이미지 변경됨", profileImage)
+                self.rightCustomView.profileImage = safe.profileImage
             }
             .disposed(by: disposeBag)
         
