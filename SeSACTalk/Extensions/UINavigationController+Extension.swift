@@ -101,12 +101,13 @@ extension UINavigationController {
         navigationBar.scrollEdgeAppearance = appearance
     }
     
-    func setDefaultNavigation(title: String) {
+    func setDefaultNavigation(target: UIViewController, title: String) {
         let appearance = UINavigationBarAppearance()
+        target.title = title
         appearance.shadowColor = Colors.Border.naviShadow
         appearance.backgroundColor = .white
-        self.navigationItem.backButtonTitle = ""
-        self.title = title
+        navigationBar.tintColor = .black
+        navigationBar.topItem?.backButtonTitle = ""
         navigationBar.standardAppearance = appearance
         navigationBar.compactAppearance = appearance
         navigationBar.scrollEdgeAppearance = appearance
