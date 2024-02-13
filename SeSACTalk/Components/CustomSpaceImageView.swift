@@ -68,4 +68,11 @@ final class CustomSpaceImageView: UIImageView {
     func setContentMode(mode: ContentMode) {
         self.spaceImage.contentMode = mode
     }
+    
+    func setProfileImage(thumbnail: String) {
+        let url = EndPoints.imageBaseURL + thumbnail
+        guard let urlString = URL(string: url) else { return }
+        self.spaceImage.contentMode = .scaleAspectFill
+        self.spaceImage.kf.setImage(with: urlString)
+    }
 }
