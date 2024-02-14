@@ -144,7 +144,8 @@ extension ProfileViewController: UITableViewDataSource {
             return cell
 
         case .systemMenu:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableCell.identifier) as? ProfileTableCell else { return UITableViewCell() }
+            
+            cell.moreButtonDisabler()
             
             let index = SystemMenu.allCases[indexPath.row]
             cell.setTitle(value: index.title)

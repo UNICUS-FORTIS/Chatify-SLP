@@ -82,4 +82,12 @@ final class ProfileTableCell: UITableViewCell {
             make.height.equalTo(cellTitle)
         }
     }
+    
+    func moreButtonDisabler() {
+        moreButton.removeFromSuperview()
+        cellValue.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(12)
+            make.centerY.equalToSuperview()
+        }
+    }
 }
