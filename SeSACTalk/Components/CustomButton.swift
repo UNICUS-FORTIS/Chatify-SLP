@@ -24,6 +24,25 @@ final class CustomButton: UIButton {
         super.init(frame: frame)
     }
     
+    convenience init(channelEditTitle: String, color: UIColor) {
+        self.init(frame: .zero)
+        var configuration = UIButton.Configuration.plain()
+
+        var attrTitle = AttributedString(channelEditTitle)
+        attrTitle.font = Typography.title2
+        attrTitle.foregroundColor = color
+        configuration.attributedTitle = attrTitle
+        
+        var background = UIBackgroundConfiguration.listPlainCell()
+        background.backgroundColor = .white
+        configuration.background = background
+        self.configuration = configuration
+        self.layer.borderColor = color.cgColor
+        self.layer.cornerRadius = 8
+        self.layer.borderWidth = 1
+        self.clipsToBounds = true
+    }
+    
     convenience init(title: String) {
         self.init(frame: .zero)
         self.title.onNext(title)
