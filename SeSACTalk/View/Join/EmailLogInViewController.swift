@@ -51,6 +51,11 @@ final class EmailLogInViewController: UIViewController {
         configure()
         setConstraints()
         bind()
+        keyboardSetting(target: self,
+                        view: logInButton,
+                        tableView: nil,
+                        scrollView: nil,
+                        disposeBag: disposeBag)
     }
     
     private func configure() {
@@ -80,8 +85,7 @@ final class EmailLogInViewController: UIViewController {
         logInButton.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(24)
             make.height.equalTo(44)
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-45)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
