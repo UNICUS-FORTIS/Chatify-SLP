@@ -224,9 +224,7 @@ extension APIService: TargetType {
             
             var multipartData = [MultipartFormData]()
             
-            if let content = body.content {
-                multipartData.append(MultipartFormData(provider: .data(content.data(using: .utf8)!), name: "content"))
-            }
+            multipartData.append(MultipartFormData(provider: .data(body.content.data(using: .utf8)!), name: "content"))
             
             if let files = body.files {
                 for (index, fileData) in files.enumerated() {
