@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import SnapKit
+import RxSwift
+import RxKeyboard
 
 
 extension UIViewController {
@@ -113,4 +116,29 @@ extension UIViewController {
     @objc func dismissTriggerNonAnimated() {
         self.dismiss(animated: false)
     }
+    
+    func keyboardSetting<T: UIView>(target: UIViewController,
+                                    view: T,
+                                    tableView: UITableView?,
+                                    scrollView: UIScrollView?,
+                                    disposeBag: DisposeBag) {
+        
+        RxKeyboard.instance.visibleHeight
+            .drive(with: target) { owner, height in
+                view.snp.updateConstraints { make in
+                    let bottomInset = max(0, height - target.view.safeAreaInsets.bottom)
+                    make.bottom.equalTo(target.view.safeAreaLayoutGuide).inset(bottomInset + 12)
+                }
+                
+                if let tableView = tableView {
+                    tableView.contentOffset.y += height
+                }
+                                
+                UIView.animate(withDuration: 0.25) {
+                    target.view.layoutIfNeeded()
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+
 }
