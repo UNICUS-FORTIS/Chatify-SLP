@@ -11,7 +11,7 @@ import SocketIO
 
 struct ChatBodyRequest: Encodable, SocketData {
     
-    let content: String?
+    let content: String
     let files: [Data]?
     
 }
