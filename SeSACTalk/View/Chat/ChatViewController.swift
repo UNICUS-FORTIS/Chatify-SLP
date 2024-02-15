@@ -9,12 +9,12 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
-import RxKeyboard
 
 
 final class ChatViewController: UIViewController {
     
     private var manager: ChatManager
+    private var socketManager: SocketIOManager
     private let session = LoginSession.shared
     private lazy var sender = session.makeUserID()
     private let tableView = UITableView(frame: .zero,
@@ -30,8 +30,9 @@ final class ChatViewController: UIViewController {
         return IndexPath(row: lastRow, section: 0)
     }
     
-    init(manager: ChatManager) {
+    init(manager: ChatManager, socketManager: SocketIOManager) {
         self.manager = manager
+        self.socketManager = socketManager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -45,14 +46,22 @@ final class ChatViewController: UIViewController {
         setConstraints()
         bind()
         setUp()
-        keyboardSetting()
         setUpSendButton()
-        manager.socketManager.startConnect(channelID: manager.createChannelID())
+        keyboardSetting(target: self,
+                        view: accView,
+                        tableView: tableView,
+                        scrollView: nil, 
+                        disposeBag: disposeBag)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        socketManager.connectSocket()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        manager.socketManager.closeWebSocket()
+        socketManager.disconnectSocket()
     }
     
     private func configure() {
@@ -110,7 +119,6 @@ final class ChatViewController: UIViewController {
                     
                     guard let senderCell = tableView.dequeueReusableCell(withIdentifier: MessageSenderTableCell.identifier) as? MessageSenderTableCell else { return UITableViewCell() }
                     senderCell.bind(data: item)
-                    print(item.createdAt.chatDateString())
                     return senderCell
                     
                 } else {
@@ -123,7 +131,6 @@ final class ChatViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        
         accView.textView.rx.observe(CGSize.self, "contentSize")
             .observe(on: MainScheduler.instance)
             .subscribe(with: self) { owner, size in
@@ -132,25 +139,6 @@ final class ChatViewController: UIViewController {
                     owner.accView.snp.updateConstraints { make in
                         make.height.equalTo(height + 8)
                     }
-                }
-            }
-            .disposed(by: disposeBag)
-    }
-    
-    private func keyboardSetting() {
-        
-        RxKeyboard.instance.visibleHeight
-            .drive(with: self) { owner, height  in
-                
-                owner.accView.snp.updateConstraints { make in
-                    let bottomInset = max(0, height - owner.view.safeAreaInsets.bottom)
-                    make.bottom.equalTo(owner.view.safeAreaLayoutGuide.snp.bottom).inset(bottomInset+12)
-                }
-                
-                owner.tableView.contentOffset.y += height
-                
-                UIView.animate(withDuration: 0.25) {
-                    self.view.layoutIfNeeded()
                 }
             }
             .disposed(by: disposeBag)
@@ -167,10 +155,11 @@ final class ChatViewController: UIViewController {
     private func setUpSendButton() {
         accView.rightButton.rx.tap
             .bind(with: self) { owner, _ in
-                let message = owner.accView.textView.text
+                let message = owner.accView.textView.text ?? ""
                 let files: [Data] = []
                 let request = ChatBodyRequest(content: message, files: files)
                 owner.manager.messageSender(request: request)
+                owner.accView.textView.text = ""
             }
             .disposed(by: disposeBag)
     }
