@@ -94,7 +94,11 @@ final class ChannelListFeatureClass: ListingViewControllerProtocol {
                     let manager = ChatManager(iD: channel.workspaceID,
                                               channelName: channel.name,
                                               channelID: channel.channelID)
-                    let vc = ChatViewController(manager: manager)
+                    
+                    let socketManager = SocketIOManager(workspaceID: channel.workspaceID,
+                                                        channelID: channel.channelID)
+                    
+                    let vc = ChatViewController(manager: manager, socketManager: socketManager)
                     target.navigationController?.pushViewController(vc,
                                                                     animated: true)
                 } else {
