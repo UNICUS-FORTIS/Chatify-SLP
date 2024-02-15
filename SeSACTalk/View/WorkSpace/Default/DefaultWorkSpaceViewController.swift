@@ -57,15 +57,15 @@ final class DefaultWorkSpaceViewController: UIViewController {
                               UIFont.systemFont(ofSize: 13),
                               badgeCount: 5)
                 return cell
-                        
+                
             case let .dms(dms):
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DMTableCell.identifier) as? DMTableCell else { return UITableViewCell() }
-
-                    let username = dms.user.nickname
-                    let profileImage = dms.user.profileImage
-                    cell.setDms(username: username,
-                                profileImage: profileImage ?? nil,
-                                count: 5)
+                
+                let username = dms.user.nickname
+                let profileImage = dms.user.profileImage
+                cell.setDms(username: username,
+                            profileImage: profileImage ?? nil,
+                            count: 5)
                 return cell
                 
             case .member: break
@@ -85,7 +85,10 @@ final class DefaultWorkSpaceViewController: UIViewController {
                                               channelName: item.name,
                                               channelID: item.channelID)
                     
-                    let vc = ChatViewController(manager: manager)
+                    let socketManager = SocketIOManager(workspaceID: item.workspaceID,
+                                                        channelID: item.channelID)
+                    
+                    let vc = ChatViewController(manager: manager, socketManager: socketManager)
                     owner.navigationController?.pushViewController(vc, animated: true)
                     
                 case .dms(let dm):
@@ -99,7 +102,7 @@ final class DefaultWorkSpaceViewController: UIViewController {
     }
     
     private func configure() {
-
+        
         view.backgroundColor = .white
         view.addSubview(tableView)
         view.addSubview(newMessageButton)
