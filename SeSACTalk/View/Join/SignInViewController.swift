@@ -46,6 +46,7 @@ final class SignInViewController: UIViewController {
     
     private let emailCheckButton = CustomButton(title: "중복 확인")
     private let signInButton = CustomButton(title: "가입하기")
+    private let scrollView = UIScrollView()
     private let disposeBag = DisposeBag()
     
     private lazy var components:[CustomInputView] = [nickname, contact, passcode, passcodeConfirm]
@@ -55,6 +56,11 @@ final class SignInViewController: UIViewController {
         configure()
         setConstraints()
         bind()
+        keyboardSetting(target: self,
+                        view: signInButton,
+                        tableView: nil,
+                        scrollView: scrollView,
+                        disposeBag: disposeBag)
     }
     
     private func bind() {
@@ -217,7 +223,7 @@ final class SignInViewController: UIViewController {
         
         if let firstInvalidInput = center.invalidComponents.first {
             firstInvalidInput.textField.becomeFirstResponder()
-            
+
             if firstInvalidInput == email {
                 self.makeToastAboveView(message: ToastMessages.Join.invalidEmail.description,
                                         backgroundColor: Colors.Brand.error, aboveView: signInButton)
@@ -263,10 +269,13 @@ final class SignInViewController: UIViewController {
     
     private func configure() {
         view.backgroundColor = Colors.Background.primary
-        view.addSubview(email)
-        view.addSubview(emailCheckButton)
+        view.addSubview(scrollView)
+        scrollView.addSubview(email)
+        scrollView.addSubview(emailCheckButton)
+        components.forEach {
+            scrollView.addSubview($0)
+        }
         view.addSubview(signInButton)
-        components.forEach { view.addSubview($0) }
         navigationController?.setCloseableNavigation(title: "회원가입",
                                                   target: self,
                                                      action: #selector(self.dismissTrigger))
@@ -274,8 +283,14 @@ final class SignInViewController: UIViewController {
     
     private func setConstraints() {
         
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.horizontalEdges.equalToSuperview()
+            make.bottom.equalTo(signInButton.snp.top)
+        }
+        
         email.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(24)
+            make.top.equalTo(scrollView.snp.top).offset(24)
             make.leading.equalToSuperview().offset(24)
             make.width.equalTo(233)
             make.height.equalTo(76)
@@ -303,7 +318,7 @@ final class SignInViewController: UIViewController {
             make.horizontalEdges.equalToSuperview().inset(24)
             make.height.equalTo(44)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-45)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
@@ -321,4 +336,3 @@ extension SignInViewController: ToastPresentableProtocol {
     }
     
 }
-
