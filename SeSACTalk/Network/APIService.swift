@@ -36,6 +36,7 @@ enum APIService {
     case sendChannelChat(id: IDRequiredRequest, name: NameRequest, contents: ChatBodyRequest)
     case updateProfileImage(image: ImageUpdateRequest)
     case updateProfileInformations(profile: ProfileUpdateRequest)
+    case loadChannelMemebers(path: IDwithWorkspaceIDRequest)
 }
 
 extension APIService: TargetType {
@@ -110,7 +111,8 @@ extension APIService: TargetType {
             
         case .loadMyChannelInfo(let id):
             return path.workSpace+"/\(id.id)" +
-            path.PathDepthOne.channel+path.PathDepthTwo.my
+            path.PathDepthOne.channel +
+            path.PathDepthTwo.my
             
         case .loadAllChannels(let id):
             return path.workSpace+"/\(id.id)" +
@@ -123,7 +125,15 @@ extension APIService: TargetType {
             path.PathDepthTwo.chat
             
         case .updateProfileImage:
-            return path.profile+path.PathDepthTwo.updateImage
+            return path.profile +
+            path.PathDepthTwo.updateImage
+            
+        case .loadChannelMemebers(let paths):
+            return path.workSpace +
+            "\(paths.id)" +
+            path.PathDepthOne.channel +
+            "\(paths.name)" +
+            path.PathDepthTwo.members
         }
     }
     
@@ -150,7 +160,8 @@ extension APIService: TargetType {
                 .loadWorkspaceMember,
                 .loadMyChannelInfo,
                 .loadAllChannels,
-                .joinToChannelChat:
+                .joinToChannelChat,
+                .loadChannelMemebers:
             return .get
             
         case .editWorkSpace,
@@ -207,7 +218,8 @@ extension APIService: TargetType {
                 .loadWorkspaceMember,
                 .loadMyChannelInfo,
                 .loadAllChannels,
-                .joinToChannelChat:
+                .joinToChannelChat,
+                .loadChannelMemebers:
             return .requestPlain
             
         case .inviteWorkspaceMember(_, let model):
@@ -238,7 +250,8 @@ extension APIService: TargetType {
             return .uploadMultipart(multipartData)
             
         case .updateProfileImage(let imageData):
-            var multipartFormData = MultipartFormData(provider: .data(imageData.image),
+            
+            let multipartFormData = MultipartFormData(provider: .data(imageData.image),
                                                       name: "image", fileName: "profile\(Date()).jpg",
                                                       mimeType: "image/jpeg")
             
@@ -246,7 +259,6 @@ extension APIService: TargetType {
             
         case .updateProfileInformations(let profile):
             return .requestJSONEncodable(profile)
-            
         }
     }
     
@@ -281,7 +293,8 @@ extension APIService: TargetType {
                 .loadAllChannels,
                 .joinToChannelChat,
                 .updateProfileImage,
-                .updateProfileInformations :
+                .updateProfileInformations,
+                .loadChannelMemebers :
             
             return [
                 SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,
