@@ -8,34 +8,37 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RealmSwift
 
 
-final class ChatManager {
+final class ChatViewModel {
     
     private let networkService = NetworkService.shared
-    let socketManager = SocketIOManager.shared
+    private let repository = RealmRepository.shared
+    
     private var workSpaceID: Int
     private var channelName: String
     private var channelID: Int
-    private var cursor: String?
+    private var task: Results<Channel>?
+    
     private let chatMessage = BehaviorSubject(value: "")
+    private let disposeBag = DisposeBag()
     var chatDatasRelay = BehaviorRelay<[ChatModel]>(value: [])
     var recentChatDatas = [ChatModel]()
-    private let disposeBag = DisposeBag()
     
     init(iD: Int, channelName: String, channelID: Int) {
         
         self.workSpaceID = iD
         self.channelName = channelName
         self.channelID = channelID
-        self.cursor = nil
+    
         
     }
     
-    func setNavigationAppearance(with: UIViewController, right: Selector?) {
-        guard let right = right else { return }
-        with.navigationController?.setChannelChatNavigation(target: with,
-                                                            rightAction: right)
+    func fetchRealmData() {
+        self.task = repository.fetchStoredChatData(workspaceID: workSpaceID,
+                                                   channelID: channelID)
+        repository.checkRealmDirectory()
     }
     
     func messageSender(request: ChatBodyRequest) {
@@ -51,7 +54,7 @@ final class ChatManager {
                 messages.append(response)
                 owner.chatDatasRelay.accept(messages)
                 print(response)
-                
+
             case .failure(let error) :
                 print(error.errorCode)
             }
