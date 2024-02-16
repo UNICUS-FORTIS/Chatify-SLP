@@ -151,8 +151,8 @@ final class MessageTableCell: UITableViewCell {
         }
     }
     
-    func bind(data: ChatModel) {
-        nickname.text = data.user.nickname
+    func bind(data: ChannelDataSource) {
+        nickname.text = data.user?.nickname
         communications.text = data.content
         sentTime.text = data.createdAt.chatDateString()
     }
