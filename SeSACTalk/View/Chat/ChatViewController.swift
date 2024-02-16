@@ -13,10 +13,9 @@ import RxCocoa
 
 final class ChatViewController: UIViewController {
     
-    private var manager: ChatManager
+    private var viewModel: ChatViewModel
     private var socketManager: SocketIOManager
     private let session = LoginSession.shared
-    private lazy var sender = session.makeUserID()
     private let tableView = UITableView(frame: .zero,
                                         style: .plain)
     private let disposeBag = DisposeBag()
@@ -30,8 +29,8 @@ final class ChatViewController: UIViewController {
         return IndexPath(row: lastRow, section: 0)
     }
     
-    init(manager: ChatManager, socketManager: SocketIOManager) {
-        self.manager = manager
+    init(viewModel: ChatViewModel, socketManager: SocketIOManager) {
+        self.viewModel = viewModel
         self.socketManager = socketManager
         super.init(nibName: nil, bundle: nil)
     }
@@ -45,13 +44,15 @@ final class ChatViewController: UIViewController {
         configure()
         setConstraints()
         bind()
-        setUp()
         setUpSendButton()
         keyboardSetting(target: self,
                         view: accView,
                         tableView: tableView,
                         scrollView: nil, 
                         disposeBag: disposeBag)
+        if !viewModel.currentChattingRelay.value.isEmpty {
+            scrollToNewestChat()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -99,25 +100,24 @@ final class ChatViewController: UIViewController {
         }
     }
     
-    private func setUp() {
-        manager.loadChatLog { [weak self] in
+    private func scrollToNewestChat() {
+        viewModel.loadChatLog { [weak self] in
             self?.scrollToEnd()
         }
-        
-        manager.fetchUnreadDatas()
     }
     
     private func bind() {
         
-        manager.chatDatasRelay
+        viewModel.currentChattingRelay
             .map  { chats in
                 chats.sorted { $0.createdAt < $1.createdAt }
             }
             .bind(to: tableView.rx.items) { [weak self] (tableView, row, item) -> UITableViewCell in
-                guard let strongSelf = self else { return UITableViewCell() }
-                if strongSelf.manager.judgeSender(sender: strongSelf.sender, userID: item.user.userID) {
+                if self?.viewModel.judgeSender(sender: self?.session.makeUserID() ?? 00,
+                                               userID: item.user?.userID ?? 00) ?? true {
                     
                     guard let senderCell = tableView.dequeueReusableCell(withIdentifier: MessageSenderTableCell.identifier) as? MessageSenderTableCell else { return UITableViewCell() }
+                    
                     senderCell.bind(data: item)
                     return senderCell
                     
@@ -158,14 +158,14 @@ final class ChatViewController: UIViewController {
                 let message = owner.accView.textView.text ?? ""
                 let files: [Data] = []
                 let request = ChatBodyRequest(content: message, files: files)
-                owner.manager.messageSender(request: request)
+                owner.viewModel.messageSender(request: request)
                 owner.accView.textView.text = ""
             }
             .disposed(by: disposeBag)
     }
     
     private func scrollToEnd() {
-        let count = manager.chatDatasRelay.value.count
+        let count = viewModel.currentChattingRelay.value.count
         if count > 1 {
             let last = count - 1
             DispatchQueue.main.async {
