@@ -100,14 +100,14 @@ final class BackdropViewController: UIViewController {
               let workspace = workspaceID else { return }
         
         session?.pushChatPageTrigger = {
-            let manager = ChatManager(iD: workspace,
+            let manager = ChatViewModel(iD: workspace,
                                       channelName: channel.name,
                                       channelID: channel.channelID)
             
             let socketManager = SocketIOManager(workspaceID: workspace,
                                                 channelID: channel.channelID)
             
-            let vc = ChatViewController(manager: manager, socketManager: socketManager)
+            let vc = ChatViewController(viewModel: manager, socketManager: socketManager)
             let navVC = UINavigationController(rootViewController: vc)
             let rootVC = DefaultWorkSpaceViewController.shared
             rootVC.navigationController?.pushViewController(navVC, animated: true)
