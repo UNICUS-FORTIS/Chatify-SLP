@@ -116,7 +116,7 @@ final class MessageSenderTableCell: UITableViewCell {
         }
     }
     
-    func bind(data: ChatModel) {
+    func bind(data: ChannelDataSource) {
         communications.text = data.content
         sentTime.text = data.createdAt.chatDateString()
     }
