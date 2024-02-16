@@ -126,8 +126,8 @@ extension UIViewController {
         RxKeyboard.instance.visibleHeight
             .drive(with: target) { owner, height in
                 view.snp.updateConstraints { make in
-                    let bottomInset = max(0, height - target.view.safeAreaInsets.bottom)
-                    make.bottom.equalTo(target.view.safeAreaLayoutGuide).inset(bottomInset + 12)
+                    let bottomInset = max(0, height - owner.view.safeAreaInsets.bottom)
+                    make.bottom.equalTo(owner.view.safeAreaLayoutGuide).inset(bottomInset + 12)
                 }
                 
                 if let tableView = tableView {
@@ -135,7 +135,7 @@ extension UIViewController {
                 }
                                 
                 UIView.animate(withDuration: 0.25) {
-                    target.view.layoutIfNeeded()
+                    owner.view.layoutIfNeeded()
                 }
             }
             .disposed(by: disposeBag)
