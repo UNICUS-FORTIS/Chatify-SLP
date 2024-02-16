@@ -14,12 +14,10 @@ final class SocketIOManager: NSObject {
         
     private var manager: SocketManager!
     private var socket: SocketIOClient!
-    private var networkService = NetworkService.shared
+    private let networkService = NetworkService.shared
     private var workspaceID: Int
     private var channelID: Int
-    private var timer: Timer?
     private var isOpen = false
-    var chatSubject = PublishSubject<ChatModel>()
     
     init(workspaceID: Int, channelID: Int) {
         
@@ -31,8 +29,7 @@ final class SocketIOManager: NSObject {
                             "\(channelID)") else { return }
                 
         manager = SocketManager(socketURL: url,
-                                config: [.log(true),
-                                         .compress,
+                                config: [.compress,
                                          .forceWebsockets(true)])
         
         socket = manager.socket(forNamespace: "/ws-channel-" + "\(channelID)")
