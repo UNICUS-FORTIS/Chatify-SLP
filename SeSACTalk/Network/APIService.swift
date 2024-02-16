@@ -31,8 +31,8 @@ enum APIService {
     case createChannel(id: IDRequiredRequest, model: ChannelAddRequest)
     case loadMyChannelInfo(id: IDRequiredRequest)
     case loadAllChannels(id: IDRequiredRequest)
-    //    case joinToChannelChat(id: IDRequiredRequest, name: NameRequest, cursor: ChatCursorDateRequest)
-    case joinToChannelChat(id: IDRequiredRequest, name: NameRequest)
+    case joinToChannelChat(id: IDRequiredRequest, name: NameRequest, cursor: ChatCursorDateRequest)
+//    case joinToChannelChat(id: IDRequiredRequest, name: NameRequest)
     case sendChannelChat(id: IDRequiredRequest, name: NameRequest, contents: ChatBodyRequest)
     case updateProfileImage(image: ImageUpdateRequest)
     case updateProfileInformations(profile: ProfileUpdateRequest)
@@ -118,7 +118,7 @@ extension APIService: TargetType {
             return path.workSpace+"/\(id.id)" +
             path.PathDepthOne.channel
             
-        case .joinToChannelChat(let id, let name),
+        case .joinToChannelChat(let id, let name, _),
                 .sendChannelChat(let id, let name, _):
             return path.workSpace+"/\(id.id)" +
             path.PathDepthOne.channel+"/\(name.name)" +
@@ -218,7 +218,6 @@ extension APIService: TargetType {
                 .loadWorkspaceMember,
                 .loadMyChannelInfo,
                 .loadAllChannels,
-                .joinToChannelChat,
                 .loadChannelMemebers:
             return .requestPlain
             
@@ -228,9 +227,9 @@ extension APIService: TargetType {
         case .createChannel(_, let model):
             return .requestJSONEncodable(model)
             
-            //        case .joinToChannelChat(_, _, let cursor):
-            //            return .requestParameters(parameters: ["cursor_date" : cursor],
-            //                                      encoding: URLEncoding.queryString)
+        case .joinToChannelChat(_, _, let cursor):
+            return .requestParameters(parameters: ["cursor_date" : cursor],
+                                      encoding: URLEncoding.queryString)
             
         case .sendChannelChat(_ , _, let body):
             
