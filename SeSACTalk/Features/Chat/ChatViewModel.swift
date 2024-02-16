@@ -23,22 +23,37 @@ final class ChatViewModel {
     
     private let chatMessage = BehaviorSubject(value: "")
     private let disposeBag = DisposeBag()
-    var chatDatasRelay = BehaviorRelay<[ChatModel]>(value: [])
-    var recentChatDatas = [ChatModel]()
+    var currentChattingRelay = BehaviorRelay<[ChannelDataSource]>(value: [])
     
     init(iD: Int, channelName: String, channelID: Int) {
         
         self.workSpaceID = iD
         self.channelName = channelName
         self.channelID = channelID
-    
-        
+        fetchRealmData()
+        loadRecentChats()
     }
     
-    func fetchRealmData() {
+    private func fetchRealmData() {
         self.task = repository.fetchStoredChatData(workspaceID: workSpaceID,
                                                    channelID: channelID)
         repository.checkRealmDirectory()
+    }
+    
+    private func loadRecentChats() {
+        guard let safeTask = task,
+                let target = safeTask.first?.chatDataArray else { return }
+        if target.count > 50 {
+            let arrayConverted = Array(target.suffix(50))
+            currentChattingRelay.accept(arrayConverted)
+        } else {
+            currentChattingRelay.accept(target)
+        }
+        print(target.count, "target의 count")
+    }
+    
+    private func getCursorDate() -> String {
+        return task?.first?.chatDataArray.last?.createdAt ?? getCurrentTimeForCursor()
     }
     
     func messageSender(request: ChatBodyRequest) {
@@ -50,11 +65,21 @@ final class ChatViewModel {
         .subscribe(with: self) { owner, result in
             switch result {
             case .success(let response) :
-                var messages = owner.chatDatasRelay.value
-                messages.append(response)
-                owner.chatDatasRelay.accept(messages)
-                print(response)
-
+                var messages = owner.currentChattingRelay.value
+                let data = ChannelDataSource(chatData: response)
+                messages.append(data)
+                owner.currentChattingRelay.accept(messages)
+                
+                guard let _ = owner.task else {
+                    owner.repository.createNewChannelChat(workspaceID: self.workSpaceID,
+                                                          chatData: response)
+                    owner.fetchRealmData()
+                    return
+                }
+                let channelDatasource = ChannelDataSource(chatData: response)
+                owner.repository.updateChannelChatDatabse(workspaceID: self.workSpaceID,
+                                                    channelID: self.channelID,
+                                                    newDatas: [channelDatasource])
             case .failure(let error) :
                 print(error.errorCode)
             }
@@ -62,38 +87,52 @@ final class ChatViewModel {
         .disposed(by: disposeBag)
     }
     
+    func getCurrentTimeForCursor() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+        let now = Date()
+        print(formatter.string(from: now))
+        return formatter.string(from: now)
+    }
+    
     func judgeSender(sender: Int, userID: Int) -> Bool {
         return sender == userID ? true : false
     }
     
+    // MARK: - 최근 채팅 로드 + 기존 채팅내역에 업데이트 // Cursor Date 사용
     func loadChatLog(completion: @escaping () -> Void ) {
         let id = IDRequiredRequest(id: self.workSpaceID)
         let name = NameRequest(name: self.channelName)
-        //        guard let safeCursor = self.cursor else { return }
-        //        let curserDate = ChatCursorDateRequest(cursor: safeCursor)
+        let cursurDate = ChatCursorDateRequest(cursor: self.getCursorDate())
+
         networkService
             .fetchRequest(endpoint: .joinToChannelChat(id: id,
-                                                       name: name),
+                                                       name: name,
+                                                       cursor: cursurDate),
                           decodeModel: [ChatModel].self)
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(let chat):
-                    owner.chatDatasRelay.accept(chat)
-                    completion()
+                    if !chat.isEmpty {
+                        var current = owner.currentChattingRelay.value
+                        for i in chat {
+                            let data = ChannelDataSource(chatData: i)
+                            current.append(data)
+                        }
+                        owner.currentChattingRelay.accept(current)
+                        completion()
+                        guard let _ = owner.task else { return }
+                        owner.repository.updateChannelChatDatabse(workspaceID: owner.workSpaceID,
+                                                            channelID: owner.channelID,
+                                                            newDatas: current)
+                    }
                     
                 case.failure(let error):
                     print(error.errorCode)
                 }
             }
             .disposed(by: disposeBag)
-    }
-    
-    func fetchUnreadDatas() {
-        
-    }
-    
-    func appendNewChat() {
-        
     }
     
     func createChannelID() -> Int {
