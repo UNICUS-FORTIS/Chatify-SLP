@@ -32,7 +32,6 @@ enum APIService {
     case loadMyChannelInfo(id: IDRequiredRequest)
     case loadAllChannels(id: IDRequiredRequest)
     case joinToChannelChat(id: IDRequiredRequest, name: NameRequest, cursor: ChatCursorDateRequest)
-//    case joinToChannelChat(id: IDRequiredRequest, name: NameRequest)
     case sendChannelChat(id: IDRequiredRequest, name: NameRequest, contents: ChatBodyRequest)
     case updateProfileImage(image: ImageUpdateRequest)
     case updateProfileInformations(profile: ProfileUpdateRequest)
@@ -228,7 +227,7 @@ extension APIService: TargetType {
             return .requestJSONEncodable(model)
             
         case .joinToChannelChat(_, _, let cursor):
-            return .requestParameters(parameters: ["cursor_date" : cursor],
+            return .requestParameters(parameters: ["cursor_date" : cursor.cursor],
                                       encoding: URLEncoding.queryString)
             
         case .sendChannelChat(_ , _, let body):
@@ -290,12 +289,19 @@ extension APIService: TargetType {
                 .createChannel,
                 .loadMyChannelInfo,
                 .loadAllChannels,
-                .joinToChannelChat,
                 .updateProfileImage,
                 .updateProfileInformations,
                 .loadChannelMemebers :
             
             return [
+                SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,
+                SecureKeys.Headers.Headerkey : SecureKeys.APIKey.secretKey
+            ]
+            
+        case .joinToChannelChat:
+            
+            return [
+                SecureKeys.Headers.contentsType : SecureKeys.Headers.contentsTypePair,
                 SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,
                 SecureKeys.Headers.Headerkey : SecureKeys.APIKey.secretKey
             ]
