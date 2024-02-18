@@ -13,14 +13,12 @@ import RxCocoa
 
 final class ChatViewController: UIViewController {
     
-    private var viewModel: ChatViewModel
-    private var socketManager: SocketIOManager
+    private var socketManager: ChatProtocol?
     private let session = LoginSession.shared
     private let tableView = UITableView(frame: .zero,
                                         style: .plain)
     private let disposeBag = DisposeBag()
     private let accView = CustomInputAccView()
-    
     
     private var lastIndexPath: IndexPath? {
         guard let lastRow = tableView.numberOfRows(inSection: 0) > 1 ?
@@ -29,9 +27,8 @@ final class ChatViewController: UIViewController {
         return IndexPath(row: lastRow, section: 0)
     }
     
-    init(viewModel: ChatViewModel, socketManager: SocketIOManager) {
-        self.viewModel = viewModel
-        self.socketManager = socketManager
+    init(manager: ChatProtocol) {
+        self.socketManager = manager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -50,19 +47,17 @@ final class ChatViewController: UIViewController {
                         tableView: tableView,
                         scrollView: nil, 
                         disposeBag: disposeBag)
-        if !viewModel.currentChattingRelay.value.isEmpty {
-            scrollToNewestChat()
-        }
+        scrollToNewestChat()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        socketManager.connectSocket()
+        socketManager?.connectSocket()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        socketManager.disconnectSocket()
+        socketManager?.disconnectSocket()
     }
     
     private func configure() {
@@ -81,6 +76,7 @@ final class ChatViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         tableView.contentInsetAdjustmentBehavior = .never
+        tableView.showsVerticalScrollIndicator = false
         accView.textView.delegate = self
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -101,19 +97,22 @@ final class ChatViewController: UIViewController {
     }
     
     private func scrollToNewestChat() {
-        viewModel.loadChatLog { [weak self] in
-            self?.scrollToEnd()
+        socketManager?.loadChatLog { [weak self] in
+            guard let safeManager = self?.socketManager else { return }
+            if safeManager.checkRelayIsEmpty() == false {
+                self?.scrollToEnd()
+            }
         }
     }
     
     private func bind() {
-        
-        viewModel.currentChattingRelay
+
+        socketManager?.channelChatRelay
             .map  { chats in
                 chats.sorted { $0.createdAt < $1.createdAt }
             }
             .bind(to: tableView.rx.items) { [weak self] (tableView, row, item) -> UITableViewCell in
-                if self?.viewModel.judgeSender(sender: self?.session.makeUserID() ?? 00,
+                if self?.socketManager?.judgeSender(sender: self?.session.makeUserID() ?? 00,
                                                userID: item.user?.userID ?? 00) ?? true {
                     
                     guard let senderCell = tableView.dequeueReusableCell(withIdentifier: MessageSenderTableCell.identifier) as? MessageSenderTableCell else { return UITableViewCell() }
@@ -142,6 +141,12 @@ final class ChatViewController: UIViewController {
                 }
             }
             .disposed(by: disposeBag)
+        
+        socketManager?.channelChatRelay
+            .bind(with: self) { owner, _ in
+                owner.scrollToEnd()
+            }
+            .disposed(by: disposeBag)
     }
     
     @objc private func setNavigationRightAction() {
@@ -158,14 +163,15 @@ final class ChatViewController: UIViewController {
                 let message = owner.accView.textView.text ?? ""
                 let files: [Data] = []
                 let request = ChatBodyRequest(content: message, files: files)
-                owner.viewModel.messageSender(request: request)
+                owner.socketManager?.messageSender(request: request)
                 owner.accView.textView.text = ""
             }
             .disposed(by: disposeBag)
     }
     
     private func scrollToEnd() {
-        let count = viewModel.currentChattingRelay.value.count
+        print(#function)
+        guard let count = socketManager?.channelChatRelay.value.count else { return }
         if count > 1 {
             let last = count - 1
             DispatchQueue.main.async {
