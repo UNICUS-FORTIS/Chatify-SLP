@@ -84,7 +84,7 @@ final class DefaultWorkSpaceViewController: UIViewController {
                     let socketManager = SocketIOManager(workspaceID: item.workspaceID,
                                                         channelID: item.channelID,
                                                         channelName: item.name)
-                    let vc = ChatViewController(manager: socketManager)
+                    let vc = ChannelChatViewController(manager: socketManager)
                     owner.navigationController?.pushViewController(vc, animated: true)
                     
                 case .dms(let dm):
