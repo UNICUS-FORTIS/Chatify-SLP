@@ -102,7 +102,7 @@ final class BackdropViewController: UIViewController {
             let socketManager = SocketIOManager(workspaceID: workspaceID,
                                                 channelID: channel.channelID,
                                                 channelName: channel.name)
-            let vc = ChatViewController(manager: socketManager)
+            let vc = ChannelChatViewController(manager: socketManager)
             let navVC = UINavigationController(rootViewController: vc)
             let rootVC = DefaultWorkSpaceViewController.shared
             rootVC.navigationController?.pushViewController(navVC, animated: true)
