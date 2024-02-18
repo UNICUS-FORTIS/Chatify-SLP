@@ -71,7 +71,6 @@ final class BackdropViewController: UIViewController {
         }
     }
     
-    
     private func setConstraints(box: UIView) {
         box.snp.makeConstraints { make in
             make.center.equalToSuperview()
@@ -97,17 +96,13 @@ final class BackdropViewController: UIViewController {
     @objc func confirmJoinToChannel() {
         print(#function)
         guard let channel = channel,
-              let workspace = workspaceID else { return }
+              let workspaceID = workspaceID else { return }
         
         session?.pushChatPageTrigger = {
-            let manager = ChatViewModel(iD: workspace,
-                                      channelName: channel.name,
-                                      channelID: channel.channelID)
-            
-            let socketManager = SocketIOManager(workspaceID: workspace,
-                                                channelID: channel.channelID)
-            
-            let vc = ChatViewController(viewModel: manager, socketManager: socketManager)
+            let socketManager = SocketIOManager(workspaceID: workspaceID,
+                                                channelID: channel.channelID,
+                                                channelName: channel.name)
+            let vc = ChatViewController(manager: socketManager)
             let navVC = UINavigationController(rootViewController: vc)
             let rootVC = DefaultWorkSpaceViewController.shared
             rootVC.navigationController?.pushViewController(navVC, animated: true)
