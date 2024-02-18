@@ -14,10 +14,7 @@ import Kingfisher
 
 
 final class MessageTableCell: UITableViewCell {
-    
-    var datas = PublishRelay<ChatModel?>()
-    
-    
+        
     private let profileImage = UIImageView(image: .dummyTypeA)
     
     private let nickname = CustomTitleLabel("",
@@ -34,7 +31,6 @@ final class MessageTableCell: UITableViewCell {
     
     private let pictureContainer = UIView(frame: .zero)
     
-
     // MARK: - 프로파일 컨테이너 생성안함.
     // MARK: - 채팅 / 사진 컨테이너
     private lazy var bodyContainer: UIStackView = {
@@ -73,7 +69,6 @@ final class MessageTableCell: UITableViewCell {
         return sv
     }()
     
-
     private lazy var mainStackView: UIStackView = {
         let sv = UIStackView(arrangedSubviews: [profileImage,
                                                 contentsContainer])
@@ -88,11 +83,8 @@ final class MessageTableCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         configure()
-//        bind()
         setConstraints()
-
     }
     
     required init?(coder: NSCoder) {
@@ -155,5 +147,11 @@ final class MessageTableCell: UITableViewCell {
         nickname.text = data.user?.nickname
         communications.text = data.content
         sentTime.text = data.createdAt.chatDateString()
+        
+        guard let profileImgURL = data.user?.profileImage else { return }
+        let urlString = EndPoints.imageBaseURL + profileImgURL
+        let url = URL(string: urlString)
+        profileImage.kf.setImage(with: url)
+        profileImage.contentMode = .scaleAspectFill
     }
 }
