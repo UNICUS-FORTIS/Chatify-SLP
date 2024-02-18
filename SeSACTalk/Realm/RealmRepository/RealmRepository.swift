@@ -7,9 +7,6 @@
 
 import Foundation
 import RealmSwift
-import RxSwift
-import RxCocoa
-
 
 final class RealmRepository {
     
@@ -25,8 +22,6 @@ final class RealmRepository {
         let target = workspace.channelID.filter("id == %@", channelID)
         
         guard !target.isEmpty else { return nil }
-
-        print("저장된 채팅 데이터", target)
         return target
     }
     
