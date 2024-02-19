@@ -17,7 +17,6 @@ final class UserProfileCVCell: UICollectionViewCell {
     private let profileImage = CustomSpaceImageView(frame: .zero)
     private let usernameLabel = CustomLabel("", font: Typography.createBody())
     
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -28,12 +27,20 @@ final class UserProfileCVCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.usernameLabel.text = nil
+        self.profileImage.setImage(image: .dummyTypeA)
+    }
+    
     private func configure() {
         self.backgroundColor = .clear
         contentView.addSubview(profileImage)
         contentView.addSubview(usernameLabel)
+        usernameLabel.textAlignment = .center
+        profileImage.setImage(image: .dummyTypeA)
+        profileImage.inactiveCameraIcon()
     }
-    
     
     private func setConstraints() {
         
@@ -48,5 +55,13 @@ final class UserProfileCVCell: UICollectionViewCell {
             make.horizontalEdges.equalToSuperview()
             make.centerX.equalToSuperview()
         }
+    }
+    
+    func bind(model: UserModel) {
+        usernameLabel.text = model.nickname
+        
+        guard let profileImgURL = model.profileImage else { return }
+        profileImage.setProfileImage(thumbnail: profileImgURL)
+        profileImage.contentMode = .scaleAspectFill
     }
 }
