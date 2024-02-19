@@ -27,7 +27,6 @@ final class Channel: Object {
     @Persisted(primaryKey: true) var id: Int
     @Persisted var chatData = List<ChannelDataSource>()
 
-    var parentCategory = LinkingObjects(fromType: ChannelChatData.self, property: "channelID")
     var chatDataArray: [ChannelDataSource] {
         return chatData.map { $0 }
     }
@@ -38,7 +37,6 @@ final class Channel: Object {
         self.id = chat.channelID
         self.chatData.append(chat)
     }
-    
 }
 
 final class ChannelDataSource: Object {
@@ -54,9 +52,7 @@ final class ChannelDataSource: Object {
     var filesArray:[String] {
         return files.map { $0 }
     }
-    
-    var parentCategory = LinkingObjects(fromType: Channel.self, property: "chatData")
-    
+        
     convenience init(chatData: ChatModel) {
         self.init()
         self.chatID = chatData.chatID
@@ -80,8 +76,6 @@ final class ChatUserModel: Object {
     @Persisted var nickname: String
     @Persisted var profileImage: String?
     
-    var parentCategory = LinkingObjects(fromType: ChannelDataSource.self, property: "user")
-
     convenience init(userID: Int,
          email: String,
          nickname: String,
