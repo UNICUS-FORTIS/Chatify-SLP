@@ -42,7 +42,7 @@ final class CustomSpaceImageView: UIImageView {
     
     private func setConstraints() {
         spaceImage.snp.makeConstraints { make in
-            make.size.equalTo(70)
+            make.size.equalToSuperview()
             make.center.equalToSuperview()
         }
         cameraImage.snp.makeConstraints { make in
@@ -74,5 +74,9 @@ final class CustomSpaceImageView: UIImageView {
         guard let urlString = URL(string: url) else { return }
         self.spaceImage.contentMode = .scaleAspectFill
         self.spaceImage.kf.setImage(with: urlString)
+    }
+    
+    func inactiveCameraIcon() {
+        cameraImage.removeFromSuperview()
     }
 }
