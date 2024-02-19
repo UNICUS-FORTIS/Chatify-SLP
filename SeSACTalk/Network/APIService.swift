@@ -129,9 +129,9 @@ extension APIService: TargetType {
             
         case .loadChannelMemebers(let paths):
             return path.workSpace +
-            "\(paths.id)" +
+            "/\(paths.id)" +
             path.PathDepthOne.channel +
-            "\(paths.name)" +
+            "/\(paths.name)" +
             path.PathDepthTwo.members
         }
     }
