@@ -14,7 +14,11 @@ import RxCocoa
 final class ChannelSettingHeaderCell: UICollectionReusableView {
     
     private let memberLabel = CustomLabel("", font: Typography.createTitle2())
-    private let morebutton = CustomButton(.chevronDown)
+    var morebutton = CustomButton(.chevronDown)
+    private var expenderToggler = true
+    var expendor: ( () -> Void )?
+    
+
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,9 +34,9 @@ final class ChannelSettingHeaderCell: UICollectionReusableView {
     private func configure() {
         self.addSubview(memberLabel)
         self.addSubview(morebutton)
-
+        self.backgroundColor = Colors.Background.primary
+        morebutton.addTarget(self, action: #selector(doExpender), for: .touchUpInside)
     }
-    
     
     private func setConstraints() {
         
@@ -42,8 +46,18 @@ final class ChannelSettingHeaderCell: UICollectionReusableView {
         }
         
         morebutton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(16)
+            make.trailing.equalToSuperview()
             make.centerY.equalToSuperview()
+            make.width.equalTo(24)
         }
     }
+    
+    func bindData(memberCount: Int) {
+        memberLabel.text = "멤버 (\(memberCount))"
+    }
+    
+    @objc func doExpender() {
+        expendor?()
+    }
+    
 }
