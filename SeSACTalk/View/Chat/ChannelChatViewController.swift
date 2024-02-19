@@ -67,12 +67,17 @@ final class ChannelChatViewController: UIViewController {
     }
     
     @objc private func setNavigationRightAction() {
-        print("메롱")
+        guard let id = socketManager.workspaceID,
+              let name = socketManager.channelName else { return }
+        let vc = ChannelSettingViewController(workspaceID: id,
+                                              channelName: name)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
+    
     deinit {
         print("채널 챗 뷰컨트롤러 deinit 됨")
     }
