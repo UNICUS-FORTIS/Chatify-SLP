@@ -27,7 +27,7 @@ final class ChannelChatViewController: UIViewController {
     init(manager: ChatProtocol) {
         self.socketManager = manager
         self.session = LoginSession.shared
-        self.tableView = UITableView(frame: .zero, style: .grouped)
+        self.tableView = UITableView()
         self.accView = CustomInputAccView()
         self.disposeBag = DisposeBag()
         super.init(nibName: nil, bundle: nil)
