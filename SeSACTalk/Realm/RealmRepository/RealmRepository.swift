@@ -65,8 +65,8 @@ final class RealmRepository {
         
         do {
             try realm.write {
-                guard let safe = newDatas.first else { return }
-                channel.chatData.append(safe)
+                print("새로운 채팅", newDatas)
+                channel.chatData.append(objectsIn: newDatas)
                 print("새로운 채팅 append 완료")
             }
         } catch {
@@ -81,6 +81,7 @@ final class RealmRepository {
         
         do {
             try realm.write {
+//                channel.chatData.forEach { realm.delete( $0.user ) }
                 realm.delete(channel.chatData)
                 realm.delete(channel)
                 print("채널 정보 지우기 성공")
