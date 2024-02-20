@@ -251,7 +251,7 @@ final class LoginSession {
     }
     
     func fetchChannelList() -> Single<Result<[Channels], ErrorResponse>> {
-        let idRequest = IDRequiredRequest(id: currentWorkspaceID ?? 000)
+        let idRequest = IDRequiredRequest(id: self.makeWorkspaceID())
         return networkService.fetchRequest(endpoint: .loadAllChannels(id: idRequest)
                                            , decodeModel: [Channels].self)
     }
@@ -264,6 +264,46 @@ final class LoginSession {
             switch result {
             case .success(let channels):
                 owner.channelsInfo.onNext(channels)
+            case .failure(let error):
+                print(error.errorCode)
+            }
+        }
+        .disposed(by: disposeBag)
+    }
+    
+    func fetchEditChannelInfo(channelInfo: Channels) {
+        let id = IDRequiredRequest(id: self.makeWorkspaceID())
+        let name = NameRequest(name: channelInfo.name)
+        let body = ChannelAddRequest(name: channelInfo.name,
+                                     description: channelInfo.description)
+        
+        networkService.fetchRequest(endpoint: .editChannelInfo(id: id,
+                                                            name: name,
+                                                            body: body),
+                                                            decodeModel: Channels.self)
+        .subscribe(with: self) { owner, result in
+            switch result {
+            case .success(let channel):
+                print(channel)
+                
+            case .failure(let error):
+                print(error.errorCode)
+            }
+        }
+        .disposed(by: disposeBag)
+    }
+    
+    func fetchLeaveFromChannel(channelInfo: Channels) {
+        let id = IDRequiredRequest(id: self.makeWorkspaceID())
+        let name = NameRequest(name: channelInfo.name)
+        networkService.fetchStatusCodeRequest(endpoint: .leaveFromChannel(id: id,
+                                                                          name: name))
+        .subscribe(with: self) { owner, result in
+            switch result {
+            case .success(_) :
+                print("채널 나가기 완료")
+                owner.fetchMyChannelInfo()
+                
             case .failure(let error):
                 print(error.errorCode)
             }
