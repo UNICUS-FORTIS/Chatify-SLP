@@ -70,6 +70,7 @@ enum InteractionConfirmAcceptable: CaseIterable {
     
     case exitFromWorkspace
     case modifyWorkspaceMember
+    case modifyChannelManager
     
     var title: String {
         switch self {
@@ -77,6 +78,8 @@ enum InteractionConfirmAcceptable: CaseIterable {
             return "워크스페이스 나가기"
         case .modifyWorkspaceMember:
             return "워크스페이스 관리자 변경 불가"
+        case .modifyChannelManager:
+            return "채널 관리자 변경 불가"
         }
     }
     
@@ -92,6 +95,8 @@ enum InteractionConfirmAcceptable: CaseIterable {
             워크스페이스 멤버가 없어 관리자 변경을 할 수 없습니다.
             새로운 멤버를 워크스페이스에 초대해보세요.
             """
+        case .modifyChannelManager:
+            return "채널 멤버가 없어 관리자 변경을 할 수 없습니다. "
         }
     }
     
