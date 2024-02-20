@@ -12,6 +12,7 @@ import RxCocoa
 
 final class ChannelSettingViewController: UIViewController {
     
+    private var viewModel: ChannelSettingViewModel
     private let descriptionTitle = CustomLabel("", font: Typography.createBodyBold())
     private let descriptionLabel = CustomLabel("", font: Typography.createBody())
     private let collectionView = UICollectionView(frame: .zero,
@@ -37,12 +38,10 @@ final class ChannelSettingViewController: UIViewController {
                                     modifyChannelManagerButton,
                                     removeChannelButton]
     
-    private var viewModel: ChannelSettingViewModel
     private let disposeBag = DisposeBag()
     
-    init(workspaceID: Int, channelName: String) {
-        self.viewModel = ChannelSettingViewModel(workspaceID: workspaceID,
-                                                 channelName: channelName)
+    init(channelInfo: Channels) {
+        self.viewModel = ChannelSettingViewModel(channelInfo: channelInfo)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -55,6 +54,8 @@ final class ChannelSettingViewController: UIViewController {
         configure()
         setConstraints()
         bind()
+        setupButtonVisibility()
+        setupButtonActions()
     }
     
     private func createCollectionViewLayout() -> UICollectionViewLayout {
@@ -151,12 +152,56 @@ final class ChannelSettingViewController: UIViewController {
         }
     }
     
-    func bind() {
+    private func setupButtonVisibility() {
+        if viewModel.checkChannelOwner() == false {
+            editChannelButton.isHidden = true
+            editChannelButton.isEnabled = false
+            modifyChannelManagerButton.isHidden = true
+            modifyChannelManagerButton.isEnabled = false
+            removeChannelButton.isHidden = true
+            removeChannelButton.isEnabled = false
+        }
+    }
+    
+    private func bind() {
         viewModel.userModelsRelay
             .bind(with: self) { owner, _ in
                 owner.collectionView.reloadData()
             }
             .disposed(by: disposeBag)
+    }
+    
+    private func setupButtonActions() {
+        editChannelButton.addTarget(self, action: #selector(editChannelAction), for: .touchUpInside)
+        exitChannelButton.addTarget(self, action: #selector(exitChannelAction), for: .touchUpInside)
+        modifyChannelManagerButton.addTarget(self, action: #selector(modifyChannelAction), for: .touchUpInside)
+        removeChannelButton.addTarget(self, action: #selector(removeChannelAction), for: .touchUpInside)
+    }
+    
+    @objc func editChannelAction() {
+        let vc = ChannelAddViewController(viewTitle: "채널 편집")
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func exitChannelAction() {
+        let vc = BackdropViewController(boxType: .cancellable(.exitFromChannel),
+                                        workspaceID: viewModel.makeWorkspaceID(),
+                                        channel: viewModel.makeChannelInfo())
+        vc.modalTransitionStyle = .coverVertical
+        vc.modalPresentationStyle = .overFullScreen
+        present(vc, animated: false)
+    }
+    
+    @objc func modifyChannelAction() {
+        
+    }
+    
+    @objc func removeChannelAction() {
+        
+    }
+    
+    deinit{
+        print("채널 세팅 뷰컨 Deinit")
     }
 }
 

@@ -11,24 +11,23 @@ import RxCocoa
 
 final class ChannelSettingViewModel {
     
+    private let session = LoginSession.shared
     private let networkService = NetworkService.shared
-    private var workspaceID: Int
-    private var channelName: String
+    private var channelInfo: Channels
     private let disposeBag = DisposeBag()
     var sectionExpender = true
     
     let userModelsRelay = BehaviorRelay<[UserModel]>(value: [])
     
-    init(workspaceID: Int, channelName: String) {
-        self.workspaceID = workspaceID
-        self.channelName = channelName
+    init(channelInfo: Channels) {
+        self.channelInfo = channelInfo
         fetchChannelMemebers()
     }
     
     func fetchChannelMemebers() {
         
-        let path = IDwithWorkspaceIDRequest(name: self.channelName,
-                                            id: self.workspaceID)
+        let path = IDwithWorkspaceIDRequest(name: channelInfo.name,
+                                            id: channelInfo.workspaceID)
         networkService.fetchRequest(endpoint: .loadChannelMemebers(path: path),
                                     decodeModel: [UserModel].self)
         .subscribe(with: self) { owner, result in
@@ -55,6 +54,20 @@ final class ChannelSettingViewModel {
         sectionExpender.toggle()
     }
     
+    func makeWorkspaceID() -> Int {
+        return channelInfo.workspaceID
+    }
+
+    func makeChannelInfo() -> Channels {
+        return channelInfo
+    }
     
+    func checkChannelOwner() -> Bool {
+        return session.makeUserID() == channelInfo.ownerID
+    }
+    
+    deinit{
+        print("채널 세팅 뷰모델 Deinit")
+    }
 }
 
