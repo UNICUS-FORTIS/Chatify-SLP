@@ -36,6 +36,7 @@ enum APIService {
     case updateProfileImage(image: ImageUpdateRequest)
     case updateProfileInformations(profile: ProfileUpdateRequest)
     case loadChannelMemebers(path: IDwithWorkspaceIDRequest)
+    case leaveChannel(id: IDRequiredRequest, name: NameRequest, body: ChannelAddRequest)
 }
 
 extension APIService: TargetType {
@@ -133,6 +134,12 @@ extension APIService: TargetType {
             path.PathDepthOne.channel +
             "/\(paths.name)" +
             path.PathDepthTwo.members
+            
+        case .leaveChannel(let id, let name, _):
+            return path.workSpace +
+            "/\(id.id)" +
+            path.PathDepthOne.channel +
+            "/\(name.name)"
         }
     }
     
@@ -165,7 +172,8 @@ extension APIService: TargetType {
             
         case .editWorkSpace,
                 .updateProfileImage,
-                .updateProfileInformations:
+                .updateProfileInformations,
+                .leaveChannel :
             return .put
             
         case .removeWorkSpace,
@@ -257,6 +265,9 @@ extension APIService: TargetType {
             
         case .updateProfileInformations(let profile):
             return .requestJSONEncodable(profile)
+            
+        case .leaveChannel(_, _, let body):
+            return .requestJSONEncodable(body)
         }
     }
     
@@ -298,7 +309,8 @@ extension APIService: TargetType {
                 SecureKeys.Headers.Headerkey : SecureKeys.APIKey.secretKey
             ]
             
-        case .joinToChannelChat:
+        case .joinToChannelChat,
+                .leaveChannel:
             
             return [
                 SecureKeys.Headers.contentsType : SecureKeys.Headers.contentsTypePair,
