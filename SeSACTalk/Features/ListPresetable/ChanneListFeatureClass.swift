@@ -91,9 +91,7 @@ final class ChannelListFeatureClass: ListingViewControllerProtocol {
         session.channelsInfo.map { $0.contains(where: {$0.channelID == channel.channelID }) }
             .subscribe(with: self) { owner, isJoined in
                 if isJoined {
-                    let socketManager = SocketIOManager(workspaceID: channel.workspaceID,
-                                                        channelID: channel.channelID,
-                                                        channelName: channel.name)
+                    let socketManager = SocketIOManager(channelInfo: channel)
                     let vc = ChannelChatViewController(manager: socketManager)
                     target.navigationController?.pushViewController(vc,
                                                                     animated: true)

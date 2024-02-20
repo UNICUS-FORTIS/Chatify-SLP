@@ -85,7 +85,7 @@ extension UIViewController {
         
         let create = UIAlertAction(title: "채널 생성", style: .default) { [weak self] action in
             
-            let vc = ChannelAddViewController()
+            let vc = ChannelAddViewController(viewTitle: "채널 생성")
             let navVC = UINavigationController(rootViewController: vc)
             navVC.modalTransitionStyle = .coverVertical
             self?.present(navVC, animated: true)

@@ -67,10 +67,8 @@ final class ChannelChatViewController: UIViewController {
     }
     
     @objc private func setNavigationRightAction() {
-        guard let id = socketManager.workspaceID,
-              let name = socketManager.channelName else { return }
-        let vc = ChannelSettingViewController(workspaceID: id,
-                                              channelName: name)
+        guard let channelInfo = socketManager.channelInfo else { return }
+        let vc = ChannelSettingViewController(channelInfo: channelInfo)
         navigationController?.pushViewController(vc, animated: true)
     }
     

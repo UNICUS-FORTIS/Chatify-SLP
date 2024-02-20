@@ -81,9 +81,7 @@ final class DefaultWorkSpaceViewController: UIViewController {
             .subscribe(with: self) { owner, section in
                 switch section {
                 case .channel(let item):
-                    let socketManager = SocketIOManager(workspaceID: item.workspaceID,
-                                                        channelID: item.channelID,
-                                                        channelName: item.name)
+                    let socketManager = SocketIOManager(channelInfo: item)
                     let vc = ChannelChatViewController(manager: socketManager)
                     owner.navigationController?.pushViewController(vc, animated: true)
                     
