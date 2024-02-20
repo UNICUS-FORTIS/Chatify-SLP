@@ -14,6 +14,7 @@ import RxSwift
 final class MemberListCell: UITableViewCell {
     
     var data = PublishSubject<WorkspaceMember>()
+    var channelUserData = PublishSubject<UserModel>()
     
     private let container = UIView()
     private let profileImage = UIImageView(image: .dummyTypeA)
@@ -103,6 +104,16 @@ final class MemberListCell: UITableViewCell {
             print(data.nickname, data.email)
         }
         .disposed(by: disposeBag)
+        
+        channelUserData.subscribe(with: self) { owner, user in
+            if let profileImage = user.profileImage {
+                let url = EndPoints.imageBaseURL + profileImage
+                let urlString = URL(string: url)
+                owner.profileImage.kf.setImage(with: urlString)
+            }
+            owner.nameLabel.text = user.nickname
+            owner.emailLabel.text = user.email
+        }
+        .disposed(by: disposeBag)
     }
-    
 }
