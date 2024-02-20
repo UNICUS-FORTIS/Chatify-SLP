@@ -74,6 +74,22 @@ final class RealmRepository {
         }
     }
     
+    func removeChannelChatting(workspaceID: Int, channelID: Int) {
+        guard let exist = realm.objects(ChannelChatData.self).first(where: {$0.workspaceID == workspaceID}) else { return }
+        
+        guard let channel = exist.channelID.first(where: { $0.id == channelID }) else { return }
+        
+        do {
+            try realm.write {
+                realm.delete(channel.chatData)
+                realm.delete(channel)
+                print("채널 정보 지우기 성공")
+            }
+        } catch {
+            print("채널 정보 지우기 실패")
+        }
+    }
+    
     func checkRealmDirectory() {
         print(#function)
         print(realm.configuration.fileURL!)
