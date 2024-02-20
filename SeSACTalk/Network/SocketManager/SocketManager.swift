@@ -138,15 +138,18 @@ extension SocketIOManager: ChatProtocol {
                 case .success(let chat):
                     if !chat.isEmpty {
                         var current = owner.channelChatRelay.value
+                        var newDatas:[ChannelDataSource] = []
                         for i in chat {
                             let data = ChannelDataSource(chatData: i)
                             current.append(data)
+                            newDatas.append(data)
                         }
+                        dump(newDatas)
                         owner.channelChatRelay.accept(current)
                         guard let _ = owner.task else { return }
                         owner.repository.updateChannelChatDatabse(workspaceID: safeChannel.workspaceID,
                                                                   channelID: safeChannel.channelID,
-                                                                  newDatas: current)
+                                                                  newDatas: newDatas)
                     }
                     completion()
                     
