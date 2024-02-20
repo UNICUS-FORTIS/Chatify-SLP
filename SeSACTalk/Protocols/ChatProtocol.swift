@@ -13,9 +13,7 @@ protocol ChatProtocol: AnyObject {
     
     var channelChatRelay: BehaviorRelay<[ChannelDataSource]> { get set }
     var dmChatRelay: BehaviorRelay<[String]> { get set }
-    var workspaceID: Int? { get }
-    var channelID: Int? { get }
-    var channelName: String? { get }
+    var channelInfo: Channels? { get }
     var dmID: Int? { get }
     var roomdID: Int? { get }
     
@@ -48,7 +46,7 @@ extension ChatProtocol {
     }
     
     func createChannelID() -> Int? {
-        guard let safe = channelID else { return nil }
-        return safe
+        guard let safe = channelInfo else { return nil }
+        return safe.channelID
     }
 }
