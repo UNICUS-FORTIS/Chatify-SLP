@@ -53,8 +53,7 @@ final class DefaultWorkSpaceViewController: UIViewController {
                 cell.setLabel(text: channels.name,
                               textColor: Colors.Text.secondary,
                               symbol: .hashTagThin,
-                              font: Typography.body ??
-                              UIFont.systemFont(ofSize: 13),
+                              font: Typography.createBody(),
                               badgeCount: 5)
                 return cell
                 
