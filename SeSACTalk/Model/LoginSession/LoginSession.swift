@@ -14,8 +14,9 @@ final class LoginSession {
     
     static let shared = LoginSession()
     private init() { bind() }
-    
+
     private let networkService = NetworkService.shared
+    private let repository = RealmRepository.shared
     private let userIDSubject = PublishSubject<Int>()
     private let nickNameSubject = PublishSubject<String>()
     private var userID: Int?
@@ -58,7 +59,6 @@ final class LoginSession {
                 return sections
             }
     }
-    
     
     func handOverLoginInformation(id: Int,
                                   nick: String,
@@ -145,8 +145,7 @@ final class LoginSession {
                 case .success(let response):
                     owner.workspaceDetails.onNext(response)
                     owner.fetchMyChannelInfo()
-                    print("워크스페이스 디테일")
-                    dump(response)
+                    
                 case .failure(let error):
                     owner.errorReceriver.onNext(error)
                 }
@@ -165,7 +164,6 @@ final class LoginSession {
                 case .success(let response):
                     owner.DmsInfo.onNext(response)
                     print("DM정보 할당됨")
-                    dump(response)
                     
                 case .failure(let error):
                     owner.errorReceriver.onNext(error)
@@ -263,6 +261,7 @@ final class LoginSession {
             switch result {
             case .success(let channels):
                 owner.channelsInfo.onNext(channels)
+                
             case .failure(let error):
                 print(error.errorCode)
             }
@@ -300,7 +299,6 @@ final class LoginSession {
         .subscribe(with: self) { owner, result in
             switch result {
             case .success(_) :
-                print("채널 나가기 완료")
                 owner.fetchMyChannelInfo()
                 
             case .failure(let error):
@@ -310,8 +308,30 @@ final class LoginSession {
         .disposed(by: disposeBag)
     }
     
-    func joinToChannel() {
-        print("참여됨")
+    func fetchUnreadChannelChats(channelInfo: Channels, completion: @escaping (Int) -> Void) {
+        
+        guard let cursurDate = repository.getChannelLatestChatDate(workspaceID: channelInfo.workspaceID,
+                                                                   channelID: channelInfo.channelID) else {
+            completion(0)
+            return
+        }
+
+        let id = IDRequiredRequest(id: self.makeWorkspaceID())
+        let name = NameRequest(name: channelInfo.name)
+        let after = ChatCursorDateRequest(cursor: cursurDate)
+        
+        networkService.fetchRequest(endpoint: .loadUnreadChannelChats(id: id, name: name, cursor: after), decodeModel: UnreadChannelChatResponse.self)
+            .subscribe(with: self) { owner, result in
+                switch result {
+                case .success(let response):
+                    print(response)
+                    completion(response.count)
+                    
+                case .failure(let error):
+                    print(error)
+                }
+            }
+            .disposed(by: disposeBag)
     }
     
     func makeUserID() -> Int {
