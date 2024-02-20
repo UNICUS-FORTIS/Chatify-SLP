@@ -12,13 +12,16 @@ import RxCocoa
 
 final class MemberListFeatureClass: ListingViewControllerProtocol {
     
-    private weak var session = LoginSession.shared
-    private let tableView = UITableView(frame: .zero, style: .plain)
-    private let disposeBag = DisposeBag()
+    var session: LoginSession
+    var tableView: UITableView
+    var disposeBag = DisposeBag()
     
+    init() {
+        self.session = LoginSession.shared
+        self.tableView = UITableView()
+    }
     
     func bind(target: UIViewController) {
-        guard let session = session else { return }
         session.workspaceMember
             .map { member -> WorkspaceMemberResponse in
                 if member.count <= 1 {
@@ -29,7 +32,7 @@ final class MemberListFeatureClass: ListingViewControllerProtocol {
                     target.present(vc, animated: false)
                     return []
                 } else {
-                    return member.filter { session.makeUserID() != $0.userID }
+                    return member.filter { self.session.makeUserID() != $0.userID }
                 }
             }
             .bind(to: tableView.rx.items(cellIdentifier: MemberListCell.identifier,
@@ -41,28 +44,14 @@ final class MemberListFeatureClass: ListingViewControllerProtocol {
             }.disposed(by: disposeBag)
     }
     
-    func configure(target: UIViewController) {
-        target.view.backgroundColor = Colors.Background.primary
-        target.view.layer.cornerRadius = 25
-        target.view.clipsToBounds = true
-        target.view.addSubview(tableView)
+    func setNavigationController(target: UIViewController) {
         target.navigationController?.setCloseableNavigation(title: "워크스페이스 관리자",
                                                             target: target,
                                                             action: #selector(target.dismissTrigger))
-        tableView.register(MemberListCell.self,
-                           forCellReuseIdentifier: MemberListCell.identifier)
-        tableView.rowHeight = 60
-        tableView.backgroundColor = .clear
-        tableView.separatorStyle = .none
-        tableView.contentInset = .init(top: 8, left: 0, bottom: 0, right: 0)
-        tableView.contentInsetAdjustmentBehavior = .never
     }
     
-    func setConstraints(target: UIViewController) {
-        tableView.snp.makeConstraints { make in
-            make.top.equalTo(target.view.safeAreaLayoutGuide)
-            make.horizontalEdges.bottom.equalToSuperview()
-        }
+    func setTableViewRowheight() {
+        tableView.rowHeight = 60
     }
     
     func showActionSheet(target: UIViewController, workspace: WorkSpace) { }

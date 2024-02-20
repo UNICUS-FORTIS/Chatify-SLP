@@ -10,15 +10,21 @@ import RxSwift
 
 
 final class WorkspaceListFeatureClass: ListingViewControllerProtocol {
+    
+    
 
-    private weak var session = LoginSession.shared
-    private let tableView = UITableView(frame: .zero, style: .plain)
+    var session: LoginSession
+    var tableView: UITableView
     private let addNewWorkSpaceButton = SideMenuButton(title: "워크스페이스 추가", icon: .plus)
     private let helpButton = SideMenuButton(title: "도움말", icon: .help)
     private let disposeBag = DisposeBag()
     
+    init() {
+        self.session = LoginSession.shared
+        self.tableView = UITableView()
+    }
+    
     func bind(target: UIViewController) {
-        guard let session = session else { return }
         session.workSpacesSubject
             .map { workSpaces -> WorkSpaces in
                 guard let workSpaces = workSpaces else { return [] }
@@ -37,7 +43,7 @@ final class WorkspaceListFeatureClass: ListingViewControllerProtocol {
             .subscribe(with: self) { owner, indexPath in
                 guard let selectedCell = owner.tableView.cellForRow(at: indexPath) as? WorkspaceListingCell else { return }
                 selectedCell.selection.onNext(true)
-                session.modifyCurrentWorkspace(path: indexPath)
+                self.session.modifyCurrentWorkspace(path: indexPath)
                 target.dismissTrigger()
             }
             .disposed(by: disposeBag)
@@ -67,9 +73,6 @@ final class WorkspaceListFeatureClass: ListingViewControllerProtocol {
         target.view.addSubview(tableView)
         target.view.addSubview(addNewWorkSpaceButton)
         target.view.addSubview(helpButton)
-        tableView.register(WorkspaceListingCell.self,
-                           forCellReuseIdentifier: WorkspaceListingCell.identifier)
-        tableView.rowHeight = 72
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.contentInset = .init(top: 8, left: 0, bottom: 0, right: 0)
@@ -96,6 +99,17 @@ final class WorkspaceListFeatureClass: ListingViewControllerProtocol {
             make.centerX.equalToSuperview()
             make.height.equalTo(41)
         }
+    }
+    
+    func setNavigationController(target: UIViewController) { }
+    
+    func registerTableViewCell() {
+        tableView.register(WorkspaceListingCell.self,
+                           forCellReuseIdentifier: WorkspaceListingCell.identifier)
+    }
+    
+    func setTableViewRowheight() {
+        tableView.rowHeight = 72
     }
     
     func showActionSheet(target: UIViewController, workspace: WorkSpace) {

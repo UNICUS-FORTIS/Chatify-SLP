@@ -12,15 +12,17 @@ import RxCocoa
 
 final class ChannelListFeatureClass: ListingViewControllerProtocol {
     
-    private weak var session = LoginSession.shared
-    private let tableView = UITableView(frame: .zero, style: .plain)
+    var session: LoginSession
+    var tableView: UITableView
     private let disposeBag = DisposeBag()
     private let channelList = PublishRelay<[Channels]>()
     private let errorReceiver = PublishRelay<Notify>()
     private var channelListArray:[Channels] = []
     
     init() {
-        guard let session = session else { return }
+        self.session = LoginSession.shared
+        self.tableView = UITableView()
+        
         session.fetchChannelList()
             .subscribe(with: self) { owner, result in
                 switch result {
@@ -61,29 +63,30 @@ final class ChannelListFeatureClass: ListingViewControllerProtocol {
         target.view.layer.cornerRadius = 25
         target.view.clipsToBounds = true
         target.view.addSubview(tableView)
-        target.navigationController?.setCloseableNavigation(title: "채널 탐색",
-                                                            target: target,
-                                                            action: #selector(target.dismissTrigger))
-        tableView.register(ChannelTableViewCell.self,
-                           forCellReuseIdentifier: ChannelTableViewCell.identifier)
-        tableView.rowHeight = 41
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.contentInset = .init(top: 8, left: 0, bottom: 0, right: 0)
         tableView.contentInsetAdjustmentBehavior = .never
     }
     
-    func setConstraints(target: UIViewController) {
-        tableView.snp.makeConstraints { make in
-            make.top.equalTo(target.view.safeAreaLayoutGuide)
-            make.horizontalEdges.bottom.equalToSuperview()
-        }
+    func setNavigationController(target: UIViewController) {
+        target.navigationController?.setCloseableNavigation(title: "채널 탐색",
+                                                            target: target,
+                                                            action: #selector(target.dismissTrigger))
+    }
+    
+    func registerTableViewCell() {
+        tableView.register(ChannelTableViewCell.self,
+                           forCellReuseIdentifier: ChannelTableViewCell.identifier)
+    }
+    
+    func setTableViewRowheight() {
+        tableView.rowHeight = 41
     }
     
     func showActionSheet(target: UIViewController, workspace: WorkSpace) { }
     
     func checkJoinedChannel(target: UIViewController, workspaceID: Int, channel: Channels) {
-        guard let session = session else { return }
         session.channelsInfo.map { $0.contains(where: {$0.channelID == channel.channelID }) }
             .subscribe(with: self) { owner, isJoined in
                 if isJoined {
