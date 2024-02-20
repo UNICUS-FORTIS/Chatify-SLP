@@ -13,8 +13,8 @@ import RxCocoa
 
 final class BackdropViewController: UIViewController {
     
-    
-    private weak var session = LoginSession.shared
+    private let repository = RealmRepository.shared
+    private let session = LoginSession.shared
     private var boxType: InteractionType?
     private var channel: Channels?
     private var workspaceID: Int?
@@ -65,6 +65,9 @@ final class BackdropViewController: UIViewController {
                 
             case .loadChannels:
                 box.setConfirmButtonAction(target: self, action: #selector(confirmJoinToChannel))
+                
+            case .exitFromChannel:
+                box.setConfirmButtonAction(target: self, action: #selector(leaveFromChannel))
             }
             
         default: break
@@ -79,15 +82,13 @@ final class BackdropViewController: UIViewController {
     }
     
     @objc func confirmRemoveWorkspaceTrigger() {
-        guard let id = workspaceID,
-              let session = session else { return }
+        guard let id = workspaceID else { return }
         session.removeWorkSpace(id: id)
         self.dismiss(animated: false)
     }
     
     @objc func exitFromWorkspaceTrigger() {
-        guard let id = workspaceID,
-              let session = session else { return }
+        guard let id = workspaceID else { return }
         print(id, "현재 워크스페이스 아이디")
         session.leaveFromWorkspace(id: id)
         self.dismiss(animated: false)
@@ -95,13 +96,9 @@ final class BackdropViewController: UIViewController {
     
     @objc func confirmJoinToChannel() {
         print(#function)
-        guard let channel = channel,
-              let workspaceID = workspaceID else { return }
-        
-        session?.pushChatPageTrigger = {
-            let socketManager = SocketIOManager(workspaceID: workspaceID,
-                                                channelID: channel.channelID,
-                                                channelName: channel.name)
+        guard let channel = channel else { return }
+        session.pushChatPageTrigger = {
+            let socketManager = SocketIOManager(channelInfo: channel)
             let vc = ChannelChatViewController(manager: socketManager)
             let navVC = UINavigationController(rootViewController: vc)
             let rootVC = DefaultWorkSpaceViewController.shared
@@ -110,8 +107,19 @@ final class BackdropViewController: UIViewController {
         
         self.presentingViewController?
             .presentingViewController?.dismiss(animated: true) { [weak self] in
-                self?.session?.pushChatPageTrigger?()
+                self?.session.pushChatPageTrigger?()
             }
+    }
+    
+    @objc func leaveFromChannel() {
+        guard let channel = channel else { return }
+        session.fetchLeaveFromChannel(channelInfo: channel)
+        repository.removeChannelChatting(workspaceID: channel.workspaceID,
+                                         channelID: channel.channelID)
+        guard let presentingVC = self.presentingViewController as? UINavigationController else { return }
+        self.dismiss(animated: false) {
+            presentingVC.popToRootViewController(animated: true)
+        }
     }
     deinit {
         print("백드롭 뷰컨트롤러 Deinit됨")
