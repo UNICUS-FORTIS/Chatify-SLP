@@ -16,6 +16,8 @@ struct ListPresentableBuilder {
         feature.bind(target: target)
         feature.configure(target: target)
         feature.setConstraints(target: target)
+        feature.setNavigationController(target: target)
+        feature.registerTableViewCell()
+        feature.setTableViewRowheight()
     }
-    
 }
