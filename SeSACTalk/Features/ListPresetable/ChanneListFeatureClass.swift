@@ -41,11 +41,7 @@ final class ChannelListFeatureClass: ListingViewControllerProtocol {
                 _, item, cell in
                 
                 cell.setLabel(text: item.name,
-                              textColor: .black,
-                              symbol: .hashTag,
-                              font: Typography.bodyBold ??
-                              UIFont.systemFont(ofSize: 13),
-                              badgeCount: nil)
+                              badgeCount: 0)
                 
             }.disposed(by: disposeBag)
         
