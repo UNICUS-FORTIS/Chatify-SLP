@@ -19,13 +19,8 @@ final class ChannelTableViewCell: UITableViewCell {
                                         textColor: Colors.Text.primary,
                                         font: Typography.body ??
                                         UIFont.systemFont(ofSize: 13))
-    private var badge = UIView(frame: .zero)
-    private let badgeCount = CustomTitleLabel("",
-                                              textColor: .white,
-                                              font: Typography.caption ??
-                                              UIFont.systemFont(ofSize: 12))
-    
-    
+    private var badge = ChatBadgeLabel()
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
@@ -48,10 +43,6 @@ final class ChannelTableViewCell: UITableViewCell {
         self.addSubview(name)
         self.addSubview(badge)
         self.selectionStyle = .none
-        badge.addSubview(badgeCount)
-        badge.backgroundColor = Colors.Brand.green
-        badge.layer.cornerRadius = 8
-        badge.clipsToBounds = true
     }
     
     private func setConstraints() {
@@ -67,13 +58,7 @@ final class ChannelTableViewCell: UITableViewCell {
             make.height.equalTo(28)
         }
         
-        badgeCount.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.height.equalTo(badgeCount.font.lineHeight).multipliedBy(1.26)
-        }
-        
         badge.snp.makeConstraints { make in
-            make.width.equalTo(badgeCount.snp.width).multipliedBy(1.5)
             make.height.equalTo(18)
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(17)
@@ -81,19 +66,20 @@ final class ChannelTableViewCell: UITableViewCell {
     }
     
     func setLabel(text: String,
-                  textColor: UIColor,
-                  symbol: UIImage,
-                  font: UIFont,
-                  badgeCount: Int?) {
-        self.symbolIcon.image = symbol
+                  badgeCount: Int) {
         self.name.text = text
-        self.name.textColor = textColor
-        self.name.font = font
-        guard let count = badgeCount else { return }
-        if count == 0 {
+        if badgeCount == 0 {
+            self.symbolIcon.image = .hashTagThin
+            self.name.font = Typography.createBody()
+            self.name.textColor = Colors.Text.secondary
             self.badge.isHidden = true
         } else {
             self.badge.isHidden = false
+            self.symbolIcon.image = .hashTag
+            self.badge.text = "\(badgeCount)"
+            self.name.font = Typography.createBodyBold()
+            self.name.textColor = .black
+
         }
     }
 }
