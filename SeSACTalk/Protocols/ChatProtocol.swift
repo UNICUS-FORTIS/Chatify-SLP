@@ -34,7 +34,8 @@ protocol ChatProtocol: AnyObject {
 extension ChatProtocol {
     
     func getCurrentTimeForCursor() -> String {
-        let formatter = ISO8601DateFormatter()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
         let now = Date()
         print(formatter.string(from: now))
