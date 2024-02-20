@@ -38,6 +38,7 @@ enum APIService {
     case loadChannelMemebers(path: IDwithWorkspaceIDRequest)
     case editChannelInfo(id: IDRequiredRequest, name: NameRequest, body: ChannelAddRequest)
     case leaveFromChannel(id: IDRequiredRequest, name: NameRequest)
+    case loadUnreadChannelChats(id: IDRequiredRequest, name: NameRequest, cursor: ChatCursorDateRequest)
 }
 
 extension APIService: TargetType {
@@ -148,6 +149,13 @@ extension APIService: TargetType {
             path.PathDepthOne.channel +
             "/\(name.name)" +
             path.PathDepthTwo.leave
+            
+        case .loadUnreadChannelChats(let id, let name, _):
+            return path.workSpace +
+            "/\(id.id)" +
+            path.PathDepthOne.channel +
+            "/\(name.name)" +
+            path.PathDepthTwo.unread
         }
     }
     
@@ -176,7 +184,8 @@ extension APIService: TargetType {
                 .loadAllChannels,
                 .joinToChannelChat,
                 .loadChannelMemebers,
-                .leaveFromChannel:
+                .leaveFromChannel,
+                .loadUnreadChannelChats :
             return .get
             
         case .editWorkSpace,
@@ -278,6 +287,10 @@ extension APIService: TargetType {
             
         case .editChannelInfo(_, _, let body):
             return .requestJSONEncodable(body)
+            
+        case .loadUnreadChannelChats(_, _, let after):
+            return .requestParameters(parameters: ["after" : after.cursor],
+                                      encoding: URLEncoding.queryString)
         }
     }
     
@@ -313,7 +326,8 @@ extension APIService: TargetType {
                 .updateProfileImage,
                 .updateProfileInformations,
                 .loadChannelMemebers,
-                .leaveFromChannel:
+                .leaveFromChannel,
+                .loadUnreadChannelChats :
             
             return [
                 SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,
