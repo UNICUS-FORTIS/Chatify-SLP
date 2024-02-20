@@ -20,7 +20,7 @@ final class DefaultWorkSpaceViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     private let session = LoginSession.shared
-    private let tableView = UITableView(frame: .zero, style: .grouped)
+    private let tableView = UITableView()
     private let newMessageButton = NewMessageButton(frame: .zero)
     private var sideMenu: SideMenuNavigationController?
     
