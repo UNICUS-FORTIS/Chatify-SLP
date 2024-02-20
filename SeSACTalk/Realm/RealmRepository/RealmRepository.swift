@@ -81,7 +81,11 @@ final class RealmRepository {
         
         do {
             try realm.write {
-//                channel.chatData.forEach { realm.delete( $0.user ) }
+                channel.chatData.forEach {
+                    if let user = $0.user {
+                        realm.delete(user)
+                    }
+                }
                 realm.delete(channel.chatData)
                 realm.delete(channel)
                 print("채널 정보 지우기 성공")
