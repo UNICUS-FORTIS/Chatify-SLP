@@ -50,11 +50,11 @@ final class DefaultWorkSpaceViewController: UIViewController {
             case let .channel(channels) :
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: ChannelTableViewCell.identifier, for: indexPath) as? ChannelTableViewCell else { return UITableViewCell() }
                 
-                cell.setLabel(text: channels.name,
-                              textColor: Colors.Text.secondary,
-                              symbol: .hashTagThin,
-                              font: Typography.createBody(),
-                              badgeCount: 5)
+                self.session.fetchUnreadChannelChats(channelInfo: channels) { unread in
+                    cell.setLabel(text: channels.name,
+                                  badgeCount: unread)
+                }
+                
                 return cell
                 
             case let .dms(dms):
