@@ -17,9 +17,7 @@ final class SocketIOManager: NSObject {
     private var manager: SocketManager!
     private var socket: SocketIOClient!
     
-    var workspaceID: Int?
-    var channelName: String?
-    var channelID: Int?
+    var channelInfo: Channels?
     var dmID: Int?
     var roomdID: Int?
     
@@ -31,11 +29,9 @@ final class SocketIOManager: NSObject {
     var channelChatRelay = BehaviorRelay<[ChannelDataSource]>(value: [])
     var dmChatRelay = BehaviorRelay<[String]>(value: [])
     
-    init(workspaceID: Int, channelID: Int, channelName: String ) {
+    init(channelInfo: Channels) {
         super.init()
-        self.workspaceID = workspaceID
-        self.channelID = channelID
-        self.channelName = channelName
+        self.channelInfo = channelInfo
         self.dmID = nil
         self.roomdID = nil
         
@@ -58,15 +54,15 @@ final class SocketIOManager: NSObject {
                 self.channelChatRelay.accept(messages)
                 
                 guard let _ = self.task else {
-                    self.repository.createNewChannelChat(workspaceID: workspaceID,
+                    self.repository.createNewChannelChat(workspaceID: channelInfo.workspaceID,
                                                     chatData: decoded)
-                    self.task = self.repository.fetchStoredChatData(workspaceID: workspaceID,
-                                                          channelID: channelID)
+                    self.task = self.repository.fetchStoredChatData(workspaceID: channelInfo.workspaceID,
+                                                                    channelID: channelInfo.channelID)
                     return
                 }
                 let channelDatasource = ChannelDataSource(chatData: decoded)
-                self.repository.updateChannelChatDatabse(workspaceID: workspaceID,
-                                                    channelID: channelID,
+                self.repository.updateChannelChatDatabse(workspaceID: channelInfo.workspaceID,
+                                                         channelID: channelInfo.channelID,
                                                     newDatas: [channelDatasource])
             }
             catch {
@@ -84,8 +80,8 @@ final class SocketIOManager: NSObject {
         
         repository.checkRealmDirectory()
         
-        task = repository.fetchStoredChatData(workspaceID: workspaceID,
-                                              channelID: channelID)
+        task = repository.fetchStoredChatData(workspaceID: channelInfo.workspaceID,
+                                              channelID: channelInfo.channelID)
         loadRecentChatFromDatabse()
     }
    
@@ -98,15 +94,14 @@ extension SocketIOManager: ChatProtocol {
     
     func createSocketURL() -> String {
         return EndPoints.baseURL +
-        EndPoints.Paths.PathDepthOne.chatSocket + "\(channelID ?? 00)"
+        EndPoints.Paths.PathDepthOne.chatSocket + "\(channelInfo?.channelID ?? 00)"
     }
     
     func messageSender<T>(request: T) {
-        guard let workspaceID = workspaceID,
-              let channelName = channelName else { return }
+        guard let safeChannel = channelInfo else { return }
         guard let casted = request as? ChatBodyRequest else { return }
-        let workspaceIDRequest = IDRequiredRequest(id: workspaceID)
-        let channelNameRequest = NameRequest(name: channelName)
+        let workspaceIDRequest = IDRequiredRequest(id: safeChannel.workspaceID)
+        let channelNameRequest = NameRequest(name: safeChannel.name)
         networkService.fetchStatusCodeRequest(endpoint: .sendChannelChat(id: workspaceIDRequest,
                                                                          name: channelNameRequest,
                                                                          contents: casted))
@@ -122,17 +117,15 @@ extension SocketIOManager: ChatProtocol {
     }
         
     func createSocketNamespace() -> String {
-        guard let channelID = channelID else { return "" }
-        return "/ws-channel-" + "\(channelID)"
+        guard let safeChannel = channelInfo else { return "" }
+        return "/ws-channel-" + "\(safeChannel.channelID)"
     }
     
     func loadChatLog(completion: @escaping () -> Void) {
         print(#function)
-        guard let workspaceID = workspaceID,
-              let channelID = channelID,
-              let channelName = channelName else { return }
-        let id = IDRequiredRequest(id: workspaceID)
-        let name = NameRequest(name: channelName)
+        guard let safeChannel = channelInfo else { return }
+        let id = IDRequiredRequest(id: safeChannel.workspaceID)
+        let name = NameRequest(name: safeChannel.name)
         let cursurDate = ChatCursorDateRequest(cursor: self.getCursorDate())
         print("커서 데이트", cursurDate.cursor)
         networkService
@@ -151,8 +144,8 @@ extension SocketIOManager: ChatProtocol {
                         }
                         owner.channelChatRelay.accept(current)
                         guard let _ = owner.task else { return }
-                        owner.repository.updateChannelChatDatabse(workspaceID: workspaceID,
-                                                                  channelID: channelID,
+                        owner.repository.updateChannelChatDatabse(workspaceID: safeChannel.workspaceID,
+                                                                  channelID: safeChannel.channelID,
                                                                   newDatas: current)
                     }
                     completion()
