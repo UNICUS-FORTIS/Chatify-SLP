@@ -17,6 +17,7 @@ enum InteractionTypeCancellable {
     case exitFromWorkspace
     case removeWorkspace
     case loadChannels(name: String)
+    case exitFromChannel
     
     var title: String {
         switch self {
@@ -26,6 +27,8 @@ enum InteractionTypeCancellable {
             return "워크스페이스 삭제"
         case .loadChannels:
             return "채널 참여"
+        case .exitFromChannel:
+            return "채널에서 나가기"
         }
     }
     
@@ -40,6 +43,9 @@ enum InteractionTypeCancellable {
             """
         case .loadChannels(let name):
             return "[\(name)] 채널에 참여하시겠습니까?"
+            
+        case .exitFromChannel:
+            return "나가기를 하면 채널 목록에서 삭제됩니다."
         }
     }
     
@@ -49,7 +55,8 @@ enum InteractionTypeCancellable {
     
     var rightButton: String {
         switch self {
-        case .exitFromWorkspace:
+        case .exitFromWorkspace,
+                .exitFromChannel :
             return "나가기"
         case .removeWorkspace:
             return "삭제"
