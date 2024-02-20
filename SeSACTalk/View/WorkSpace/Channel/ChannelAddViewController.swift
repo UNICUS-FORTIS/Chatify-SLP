@@ -29,15 +29,27 @@ final class ChannelAddViewController: UIViewController, ToastPresentableProtocol
     
     private let createButton = CustomButton(title: "생성")
     private let disposeBag = DisposeBag()
+    private var viewTitle: String
     
+    init(viewTitle: String) {
+        self.viewTitle  = viewTitle
+        super.init(nibName: nil, bundle: nil)
+    }
     
-    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
         setConstraints()
         bind()
+        keyboardSetting(target: self,
+                        view: createButton,
+                        tableView: nil,
+                        scrollView: nil,
+                        disposeBag: disposeBag)
     }
     
     private func bind() {
@@ -99,7 +111,7 @@ final class ChannelAddViewController: UIViewController, ToastPresentableProtocol
         view.addSubview(channelName)
         view.addSubview(channelDescription)
         view.addSubview(createButton)
-        navigationController?.setCloseableNavigation(title: "채널 생성",
+        navigationController?.setCloseableNavigation(title: viewTitle,
                                                      target: self,
                                                      action: #selector(self.dismissTriggerNonAnimated))
         viewModel.dismissTrigger = { [weak self] in
@@ -126,7 +138,7 @@ final class ChannelAddViewController: UIViewController, ToastPresentableProtocol
             make.horizontalEdges.equalToSuperview().inset(24)
             make.height.equalTo(44)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-45)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
 }
