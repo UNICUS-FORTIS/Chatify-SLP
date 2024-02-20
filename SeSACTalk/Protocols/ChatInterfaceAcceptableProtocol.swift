@@ -69,6 +69,7 @@ extension ChatInterfaceAcceptableProtocol where Self: UIViewController {
     
     func scrollToNewestChat() {
         socketManager.loadChatLog {
+            self.session.fetchMyChannelInfo()
             if self.socketManager.checkRelayIsEmpty() == false {
                 self.scrollToEnd()
             }

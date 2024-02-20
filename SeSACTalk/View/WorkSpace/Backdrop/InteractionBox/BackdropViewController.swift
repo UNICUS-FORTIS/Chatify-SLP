@@ -103,7 +103,6 @@ final class BackdropViewController: UIViewController {
             .presentingViewController?.dismiss(animated: false) {
                 let socketManager = SocketIOManager(channelInfo: channel)
                 let vc = ChannelChatViewController(manager: socketManager)
-                self.session.fetchMyChannelInfo()
                 presentingVC.pushViewController(vc, animated: true)
             }
     }
