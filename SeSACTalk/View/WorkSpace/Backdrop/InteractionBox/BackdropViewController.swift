@@ -97,17 +97,13 @@ final class BackdropViewController: UIViewController {
     @objc func confirmJoinToChannel() {
         print(#function)
         guard let channel = channel else { return }
-        session.pushChatPageTrigger = {
-            let socketManager = SocketIOManager(channelInfo: channel)
-            let vc = ChannelChatViewController(manager: socketManager)
-            let navVC = UINavigationController(rootViewController: vc)
-            let rootVC = DefaultWorkSpaceViewController.shared
-            rootVC.navigationController?.pushViewController(navVC, animated: true)
-        }
         
+        guard let presentingVC = self.presentingViewController?.presentingViewController as? UINavigationController else { return }
         self.presentingViewController?
-            .presentingViewController?.dismiss(animated: true) { [weak self] in
-                self?.session.pushChatPageTrigger?()
+            .presentingViewController?.dismiss(animated: false) {
+                let socketManager = SocketIOManager(channelInfo: channel)
+                let vc = ChannelChatViewController(manager: socketManager)
+                presentingVC.pushViewController(vc, animated: true)
             }
     }
     
