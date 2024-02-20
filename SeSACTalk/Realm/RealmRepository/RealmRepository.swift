@@ -95,6 +95,14 @@ final class RealmRepository {
         }
     }
     
+    func getChannelLatestChatDate(workspaceID: Int, channelID: Int) -> String? {
+        guard let exist = realm.objects(ChannelChatData.self).first(where: {$0.workspaceID == workspaceID}) else { return nil }
+        
+        guard let channel = exist.channelID.first(where: { $0.id == channelID }) else { return nil }
+        
+        return channel.chatData.last?.createdAt
+    }
+    
     func checkRealmDirectory() {
         print(#function)
         print(realm.configuration.fileURL!)
