@@ -36,7 +36,7 @@ enum APIService {
     case updateProfileImage(image: ImageUpdateRequest)
     case updateProfileInformations(profile: ProfileUpdateRequest)
     case loadChannelMemebers(path: IDwithWorkspaceIDRequest)
-    case editChannelInfo(id: IDRequiredRequest, name: NameRequest, body: ChannelAddRequest)
+    case editChannelInfo(id: IDRequiredRequest, name: NameRequest, model: ChannelAddRequest)
     case leaveFromChannel(id: IDRequiredRequest, name: NameRequest)
     case loadUnreadChannelChats(id: IDRequiredRequest, name: NameRequest, cursor: ChatCursorDateRequest)
 }
@@ -285,8 +285,8 @@ extension APIService: TargetType {
         case .updateProfileInformations(let profile):
             return .requestJSONEncodable(profile)
             
-        case .editChannelInfo(_, _, let body):
-            return .requestJSONEncodable(body)
+        case .editChannelInfo(_, _, let model):
+            return .requestJSONEncodable(model)
             
         case .loadUnreadChannelChats(_, _, let after):
             return .requestParameters(parameters: ["after" : after.cursor],
