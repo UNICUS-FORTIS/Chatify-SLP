@@ -269,28 +269,6 @@ final class LoginSession {
         .disposed(by: disposeBag)
     }
     
-    func fetchEditChannelInfo(channelInfo: Channels) {
-        let id = IDRequiredRequest(id: self.makeWorkspaceID())
-        let name = NameRequest(name: channelInfo.name)
-        let body = ChannelAddRequest(name: channelInfo.name,
-                                     description: channelInfo.description)
-        
-        networkService.fetchRequest(endpoint: .editChannelInfo(id: id,
-                                                            name: name,
-                                                            body: body),
-                                                            decodeModel: Channels.self)
-        .subscribe(with: self) { owner, result in
-            switch result {
-            case .success(let channel):
-                print(channel)
-                
-            case .failure(let error):
-                print(error.errorCode)
-            }
-        }
-        .disposed(by: disposeBag)
-    }
-    
     func fetchLeaveFromChannel(channelInfo: Channels) {
         let id = IDRequiredRequest(id: self.makeWorkspaceID())
         let name = NameRequest(name: channelInfo.name)
