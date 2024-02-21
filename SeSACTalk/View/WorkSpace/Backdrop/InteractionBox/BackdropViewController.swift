@@ -68,6 +68,9 @@ final class BackdropViewController: UIViewController {
                 
             case .exitFromChannel:
                 box.setConfirmButtonAction(target: self, action: #selector(leaveFromChannel))
+                
+            case .removeChannel:
+                box.setConfirmButtonAction(target: self, action: #selector(removeChannel))
             }
             
         default: break
@@ -83,7 +86,7 @@ final class BackdropViewController: UIViewController {
     
     @objc func confirmRemoveWorkspaceTrigger() {
         guard let id = workspaceID else { return }
-        session.removeWorkSpace(id: id)
+        session.removeWorkSpace(workspaceID: id)
         self.dismiss(animated: false)
     }
     
@@ -117,6 +120,16 @@ final class BackdropViewController: UIViewController {
             presentingVC.popToRootViewController(animated: true)
         }
     }
+    
+    @objc func removeChannel() {
+        guard let channel = channel else { return }
+        session.removeChannel(channel: channel)
+        guard let presentingVC = self.presentingViewController as? UINavigationController else { return }
+        self.dismiss(animated: false) {
+            presentingVC.popToRootViewController(animated: true)
+        }
+    }
+    
     deinit {
         print("백드롭 뷰컨트롤러 Deinit됨")
     }

@@ -201,13 +201,34 @@ final class LoginSession {
         .disposed(by: disposeBag)
     }
     
-    func removeWorkSpace(id: Int) {
-        let idRequest = IDRequiredRequest(id: id)
+    func removeWorkSpace(workspaceID: Int) {
+        let idRequest = IDRequiredRequest(id: workspaceID)
         networkService.fetchStatusCodeRequest(endpoint: .removeWorkSpace(id: idRequest))
             .subscribe(with: self) { owner, result in
                 owner.fetchLoadWorkSpace()
             }
             .disposed(by: disposeBag)
+    }
+    
+    func removeChannel(channel: Channels) {
+        let idRequest = IDRequiredRequest(id: channel.workspaceID)
+        let nameRequest = NameRequest(name: channel.name)
+        networkService.fetchStatusCodeRequest(endpoint: .removeChannel(id: idRequest,
+                                                                       name: nameRequest))
+        .subscribe(with: self) { owner, result in
+            switch result {
+            case .success(_):
+                owner.fetchMyChannelInfo()
+                
+                
+            case .failure(let error):
+                print(error.errorCode)
+            }
+        }
+        .disposed(by: disposeBag)
+        
+        repository.removeChannelChatting(workspaceID: channel.workspaceID,
+                                         channelID: channel.channelID)
     }
     
     func leaveFromWorkspace(id:Int) {
