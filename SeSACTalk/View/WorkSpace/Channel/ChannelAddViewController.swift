@@ -13,9 +13,10 @@ import RxCocoa
 
 final class ChannelAddViewController: UIViewController, ToastPresentableProtocol {
 
-    private let viewModel = ChannelAddViewModel()
+    let viewModel = ChannelAddViewModel()
     private let loginSession = LoginSession.shared
     private lazy var center = ValidationCenter()
+    private var channelInfo: Channels?
     
     private let channelName = CustomInputView(label: "채널 이름",
                                         placeHolder: "채널 이름을 입력하세요 (필수)",
@@ -25,15 +26,26 @@ final class ChannelAddViewController: UIViewController, ToastPresentableProtocol
     private let channelDescription = CustomInputView(label: "채널 설명",
                                            placeHolder: "채널을 설명하세요 (옵션)",
                                            keyboardType: .default,
-                                           secureEntry: true)
+                                           secureEntry: false)
     
-    private let createButton = CustomButton(title: "생성")
+    private var completeButton: CustomButton
     private let disposeBag = DisposeBag()
     private var viewTitle: String
     
     init(viewTitle: String) {
         self.viewTitle  = viewTitle
+        self.completeButton = CustomButton(title: "생성")
         super.init(nibName: nil, bundle: nil)
+        setupCompleteButtonForChannelCreation()
+    }
+    
+    init(viewTitle: String, channelInfo: Channels) {
+        self.viewTitle = viewTitle
+        self.channelInfo = channelInfo
+        self.completeButton = CustomButton(title: "완료")
+        super.init(nibName: nil, bundle: nil)
+        bindForChannelEdit()
+        setupCompleteButtonForChannelEdit()
     }
     
     required init?(coder: NSCoder) {
@@ -46,7 +58,7 @@ final class ChannelAddViewController: UIViewController, ToastPresentableProtocol
         setConstraints()
         bind()
         keyboardSetting(target: self,
-                        view: createButton,
+                        view: completeButton,
                         tableView: nil,
                         scrollView: nil,
                         disposeBag: disposeBag)
@@ -66,7 +78,7 @@ final class ChannelAddViewController: UIViewController, ToastPresentableProtocol
             .asDriver(onErrorJustReturn: "")
             .drive(with: self) { owner, name in
                 let validation = owner.center.checkLength(target: name)
-                owner.createButton.validationBinder.onNext(validation)
+                owner.completeButton.validationBinder.onNext(validation)
             }
             .disposed(by: disposeBag)
         
@@ -77,7 +89,7 @@ final class ChannelAddViewController: UIViewController, ToastPresentableProtocol
                     let message = notify.toastMessage
                     owner.makeToastAboveView(message: message,
                                              backgroundColor: Colors.Brand.error,
-                                             aboveView: owner.createButton)
+                                             aboveView: owner.completeButton)
                     
                 default: break
                 }
@@ -91,26 +103,37 @@ final class ChannelAddViewController: UIViewController, ToastPresentableProtocol
                     let message = notify.toastMessage
                     owner.makeToastAboveView(message: message,
                                              backgroundColor: Colors.Brand.green,
-                                             aboveView: owner.createButton)
+                                             aboveView: owner.completeButton)
                 default: break
                 }
             }
             .disposed(by: disposeBag)
-        
-        createButton.rx.tap
+    }
+    
+    private func setupCompleteButtonForChannelCreation() {
+        completeButton.rx.tap
             .withLatestFrom(viewModel.form)
             .bind(with: self) { owner, form in
                 owner.viewModel.createNewChannel(form: form)
             }
             .disposed(by: disposeBag)
-        
+    }
+    
+    private func setupCompleteButtonForChannelEdit() {
+        completeButton.rx.tap
+            .withLatestFrom(viewModel.form)
+            .bind(with: self) { owner, form in
+                guard let safe = owner.channelInfo else { return }
+                owner.viewModel.fetchEditChannelInfo(name: safe.name, form: form)
+                self.dismiss(animated: true)
+            }.disposed(by: disposeBag)
     }
     
     private func configure() {
         view.backgroundColor = Colors.Background.primary
         view.addSubview(channelName)
         view.addSubview(channelDescription)
-        view.addSubview(createButton)
+        view.addSubview(completeButton)
         navigationController?.setCloseableNavigation(title: viewTitle,
                                                      target: self,
                                                      action: #selector(self.dismissTriggerNonAnimated))
@@ -134,11 +157,17 @@ final class ChannelAddViewController: UIViewController, ToastPresentableProtocol
             make.horizontalEdges.equalToSuperview().inset(24)
         }
         
-        createButton.snp.makeConstraints { make in
+        completeButton.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(24)
             make.height.equalTo(44)
             make.centerX.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
+    }
+    
+    private func bindForChannelEdit() {
+        guard let safe = channelInfo else { return }
+        channelName.textField.text = safe.name
+        channelDescription.textField.text = safe.description
     }
 }
