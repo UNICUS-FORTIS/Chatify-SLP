@@ -43,6 +43,7 @@ final class ChannelTableViewCell: UITableViewCell {
         self.addSubview(name)
         self.addSubview(badge)
         self.selectionStyle = .none
+        self.badge.isHidden = true
     }
     
     private func setConstraints() {
