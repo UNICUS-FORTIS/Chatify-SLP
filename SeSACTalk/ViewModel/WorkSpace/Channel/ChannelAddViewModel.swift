@@ -18,6 +18,7 @@ final class ChannelAddViewModel {
     let channelDescriptionSubject = BehaviorSubject<String>(value: "")
     let errorReceiver = PublishRelay<Notify>()
     let completionSubject = PublishRelay<Notify>()
+    var completionHandeler: ( (Channels) -> Void )?
     var dismissTrigger: ( ()-> Void )?
     private let disposeBag = DisposeBag()
     
@@ -51,4 +52,24 @@ final class ChannelAddViewModel {
             .disposed(by: disposeBag)
     }
     
+    func fetchEditChannelInfo(name: String, form: ChannelAddRequest) {
+        let id = IDRequiredRequest(id: session.makeWorkspaceID())
+        let name = NameRequest(name: name)
+        networkService.fetchRequest(endpoint: .editChannelInfo(id: id,
+                                                               name: name,
+                                                               model: form),
+                                    decodeModel: Channels.self)
+        .subscribe(with: self) { owner, result in
+            switch result {
+            case .success(let channel):
+                print(channel, "채널 변경완료")
+                owner.session.fetchMyChannelInfo()
+                owner.completionHandeler?(channel)
+                
+            case .failure(let error):
+                print(error.errorCode)
+            }
+        }
+        .disposed(by: disposeBag)
+    }
 }
