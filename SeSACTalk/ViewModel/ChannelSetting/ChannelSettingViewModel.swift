@@ -13,19 +13,27 @@ final class ChannelSettingViewModel {
     
     private let session = LoginSession.shared
     private let networkService = NetworkService.shared
-    private var channelInfo: Channels
-    private let disposeBag = DisposeBag()
-    var sectionExpender = true
-    
     let userModelsRelay = BehaviorRelay<[UserModel]>(value: [])
-    
+    var channelInfoRelay = PublishRelay<Channels>()
+    private let disposeBag = DisposeBag()
+
+    var channelInfo: Channels
+    var sectionExpender = true
+
     init(channelInfo: Channels) {
+        self.channelInfoRelay.accept(channelInfo)
         self.channelInfo = channelInfo
+        
+        channelInfoRelay
+            .subscribe(with: self) { owner, channels in
+                self.channelInfo = channels
+            }
+            .disposed(by: disposeBag)
+        
         fetchChannelMemebers()
     }
     
     func fetchChannelMemebers() {
-        
         let path = IDwithWorkspaceIDRequest(name: channelInfo.name,
                                             id: channelInfo.workspaceID)
         networkService.fetchRequest(endpoint: .loadChannelMemebers(path: path),
@@ -64,6 +72,14 @@ final class ChannelSettingViewModel {
     
     func checkChannelOwner() -> Bool {
         return session.makeUserID() == channelInfo.ownerID
+    }
+    
+    func checkChannelManagerModifiable() -> Bool {
+        return userModelsRelay.value.count > 1 ? true : false
+    }
+    
+    func acceptChannelInfoRelay(channel: Channels) {
+        self.channelInfoRelay.accept(channel)
     }
     
     deinit{
