@@ -78,6 +78,10 @@ final class ChannelSettingViewModel {
         return userModelsRelay.value.count > 1 ? true : false
     }
     
+    func checkChannelExitable() -> Bool {
+        return session.makeUserID() == channelInfo.ownerID ? false : true
+    }
+    
     func acceptChannelInfoRelay(channel: Channels) {
         self.channelInfoRelay.accept(channel)
     }
