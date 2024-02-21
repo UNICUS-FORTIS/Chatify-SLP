@@ -50,4 +50,18 @@ enum ToastMessages {
             }
         }
     }
+    
+    enum Channel {
+        case editComplted
+        
+        var description: String {
+            
+            switch self {
+                
+            case .editComplted:
+                return "채널이 편집되었습니다"
+            }
+            
+        }
+    }
 }
