@@ -20,7 +20,7 @@ final class DefaultWorkSpaceViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     private let session = LoginSession.shared
-    private let tableView = UITableView()
+    private let tableView = UITableView(frame: .zero, style: .grouped)
     private let newMessageButton = NewMessageButton(frame: .zero)
     private var sideMenu: SideMenuNavigationController?
     
@@ -103,6 +103,7 @@ final class DefaultWorkSpaceViewController: UIViewController {
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.rowHeight = 41
+        tableView.bounces = false
         
         tableView.register(ChannelTableViewCell.self,
                            forCellReuseIdentifier: ChannelTableViewCell.identifier)
