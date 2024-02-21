@@ -42,7 +42,15 @@ final class ChannelSettingViewController: UIViewController {
     
     init(channelInfo: Channels) {
         self.viewModel = ChannelSettingViewModel(channelInfo: channelInfo)
+        
         super.init(nibName: nil, bundle: nil)
+        
+        self.viewModel.channelInfoRelay
+            .subscribe(with: self) { owner, channel in
+                self.descriptionTitle.text = channel.name
+                self.descriptionLabel.text = channel.description
+            }
+            .disposed(by: disposeBag)
     }
     
     required init?(coder: NSCoder) {
@@ -56,6 +64,7 @@ final class ChannelSettingViewController: UIViewController {
         bind()
         setupButtonVisibility()
         setupButtonActions()
+        makeInitialChannelDesctription()
     }
     
     private func createCollectionViewLayout() -> UICollectionViewLayout {
@@ -96,6 +105,11 @@ final class ChannelSettingViewController: UIViewController {
         return layout
     }
     
+    private func makeInitialChannelDesctription() {
+        descriptionTitle.text = viewModel.channelInfo.name
+        descriptionLabel.text = viewModel.channelInfo.description
+    }
+    
     private func configure() {
         view.backgroundColor = Colors.Background.primary
         view.addSubview(descriptionTitle)
@@ -113,11 +127,6 @@ final class ChannelSettingViewController: UIViewController {
         collectionView.bounces = false
         collectionView.showsVerticalScrollIndicator = false
         navigationController?.setDefaultNavigation(target: self, title: "채널 설정")
-        
-        
-        // MARK: - 테스트
-        descriptionTitle.text = "#그냥 떠들고 싶을 때"
-        descriptionLabel.text = "안녕하세요 새싹 여러분? 심심하셨죠? 이 채널은 나머지 모든 것을 위한 채널이에요. 팀원들이 농담하거나 순간적인 아이디어를 공유하는 곳이죠! 마음껏 즐기세요!"
     }
     
     private func setConstraints() {
@@ -169,18 +178,37 @@ final class ChannelSettingViewController: UIViewController {
                 owner.collectionView.reloadData()
             }
             .disposed(by: disposeBag)
+        
     }
     
     private func setupButtonActions() {
-        editChannelButton.addTarget(self, action: #selector(editChannelAction), for: .touchUpInside)
-        exitChannelButton.addTarget(self, action: #selector(exitChannelAction), for: .touchUpInside)
-        modifyChannelManagerButton.addTarget(self, action: #selector(modifyChannelAction), for: .touchUpInside)
-        removeChannelButton.addTarget(self, action: #selector(removeChannelAction), for: .touchUpInside)
+        editChannelButton.addTarget(self,
+                                    action: #selector(editChannelAction),
+                                    for: .touchUpInside)
+        exitChannelButton.addTarget(self,
+                                    action: #selector(exitChannelAction),
+                                    for: .touchUpInside)
+        modifyChannelManagerButton.addTarget(self, 
+                                             action: #selector(modifyChannelManagerAction),
+                                             for: .touchUpInside)
+        removeChannelButton.addTarget(self, 
+                                      action: #selector(removeChannelAction),
+                                      for: .touchUpInside)
     }
     
     @objc func editChannelAction() {
-        let vc = ChannelAddViewController(viewTitle: "채널 편집")
-        navigationController?.pushViewController(vc, animated: true)
+        let vc = ChannelAddViewController(viewTitle: "채널 편집",
+                                          channelInfo: viewModel.makeChannelInfo())
+        vc.modalTransitionStyle = .coverVertical
+        vc.modalPresentationStyle = .overFullScreen
+        vc.viewModel.completionHandeler =  { [weak self] channels in
+            self?.viewModel.acceptChannelInfoRelay(channel: channels)
+            self?.makeSuccessToastView(message: ToastMessages.Channel.editComplted.description,
+                                       backgroundColor: Colors.Brand.green,
+                                       target: self ?? UIViewController() )
+        }
+        let navVC = UINavigationController(rootViewController: vc)
+        present(navVC, animated: true)
     }
     
     @objc func exitChannelAction() {
@@ -192,12 +220,25 @@ final class ChannelSettingViewController: UIViewController {
         present(vc, animated: false)
     }
     
-    @objc func modifyChannelAction() {
+    @objc func modifyChannelManagerAction() {
+        if viewModel.checkChannelManagerModifiable() {
+            let feature = ChannelMemberFeatureClass(viewModel: self.viewModel)
+            let vc = ListingViewController(feature: feature)
+            navigationController?.pushViewController(vc, animated: true)
+        } else {
+            let vc = BackdropViewController(boxType: .confirm(.modifyChannelManager),
+                                            workspaceID: nil)
+            vc.modalTransitionStyle = .coverVertical
+            vc.modalPresentationStyle = .fullScreen
+            present(vc, animated: false)
+        }
         
     }
     
     @objc func removeChannelAction() {
-        
+        if viewModel.checkChannelManagerModifiable() {
+            
+        }
     }
     
     deinit{
@@ -236,3 +277,5 @@ extension ChannelSettingViewController: UICollectionViewDataSource {
         return header
     }
 }
+
+extension ChannelSettingViewController: ToastPresentableProtocol { }
