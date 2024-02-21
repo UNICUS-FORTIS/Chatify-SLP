@@ -39,6 +39,7 @@ enum APIService {
     case editChannelInfo(id: IDRequiredRequest, name: NameRequest, model: ChannelAddRequest)
     case leaveFromChannel(id: IDRequiredRequest, name: NameRequest)
     case loadUnreadChannelChats(id: IDRequiredRequest, name: NameRequest, cursor: ChatCursorDateRequest)
+    case removeChannel(id: IDRequiredRequest, name: NameRequest)
 }
 
 extension APIService: TargetType {
@@ -85,7 +86,7 @@ extension APIService: TargetType {
             return path.tokenRefresh
             
         case .editWorkSpace(let id, _),
-                .removeWorkSpace(let id):
+                .removeWorkSpace(let id) :
             return path.workSpace+"/\(id.id)"
             
         case .leaveWorkspace(let id):
@@ -156,6 +157,13 @@ extension APIService: TargetType {
             path.PathDepthOne.channel +
             "/\(name.name)" +
             path.PathDepthTwo.unread
+            
+        case .removeChannel(let id, let name):
+            return path.workSpace +
+            "/\(id.id)" +
+            path.PathDepthOne.channel +
+            "/\(name.name)"
+            
         }
     }
     
@@ -195,7 +203,8 @@ extension APIService: TargetType {
             return .put
             
         case .removeWorkSpace,
-                .handoverWorkspaceManager:
+                .handoverWorkspaceManager,
+                .removeChannel :
             return .delete
         }
     }
@@ -244,7 +253,8 @@ extension APIService: TargetType {
                 .loadMyChannelInfo,
                 .loadAllChannels,
                 .loadChannelMemebers,
-                .leaveFromChannel:
+                .leaveFromChannel,
+                .removeChannel :
             return .requestPlain
             
         case .inviteWorkspaceMember(_, let model):
@@ -327,7 +337,8 @@ extension APIService: TargetType {
                 .updateProfileInformations,
                 .loadChannelMemebers,
                 .leaveFromChannel,
-                .loadUnreadChannelChats :
+                .loadUnreadChannelChats,
+                .removeChannel :
             
             return [
                 SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,
