@@ -124,7 +124,7 @@ final class EmailLogInViewController: UIViewController {
                 case .success(let response):
                     let group = DispatchGroup()
                     group.enter()
-                    owner.loginSession.handOverLoginInformation(id: response.userID,
+                    owner.loginSession.handOverLoginInformation(userID: response.userID,
                                                           nick: response.nickname,
                                                           access: response.accessToken,
                                                           refresh: response.refreshToken)
