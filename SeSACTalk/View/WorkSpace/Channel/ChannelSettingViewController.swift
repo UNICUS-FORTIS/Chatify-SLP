@@ -237,15 +237,19 @@ final class ChannelSettingViewController: UIViewController {
             let vc = BackdropViewController(boxType: .confirm(.modifyChannelManager),
                                             workspaceID: nil)
             vc.modalTransitionStyle = .coverVertical
-            vc.modalPresentationStyle = .fullScreen
+            vc.modalPresentationStyle = .overFullScreen
             present(vc, animated: false)
         }
-        
     }
     
     @objc func removeChannelAction() {
-        if viewModel.checkChannelManagerModifiable() {
-            
+        if viewModel.checkChannelOwner() {
+            let vc = BackdropViewController(boxType: .cancellable(.removeChannel),
+                                            workspaceID: viewModel.makeWorkspaceID(),
+                                            channel: viewModel.makeChannelInfo())
+            vc.modalTransitionStyle = .coverVertical
+            vc.modalPresentationStyle = .overFullScreen
+            present(vc, animated: false)
         }
     }
     
