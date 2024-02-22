@@ -8,17 +8,37 @@
 import Foundation
 import RealmSwift
 
-final class ChannelChatData: Object {
+final class UserData: Object {
+    
+    @Persisted(primaryKey: true) var userID: Int
+    @Persisted var workspaceList = List<WorkspaceListData>()
+    
+    convenience init(userID: Int ) {
+        self.init()
+        self.userID = userID
+    }
+}
+
+final class WorkspaceListData: Object {
     
     @Persisted(primaryKey: true) var workspaceID: Int
-    @Persisted var channelID = List<Channel>()
+    @Persisted var workspaceName: String
+    @Persisted var channelList = List<Channel>()
     
-    convenience init(workspaceID: Int, chatData: ChatModel) {
+    convenience init(workspaceID: Int, workspaceName: String) {
         self.init()
         self.workspaceID = workspaceID
+        self.workspaceName = workspaceName
+
+    }
+    
+    convenience init(workspaceID: Int,  workspaceName: String, chatData: ChatModel) {
+        self.init()
+        self.workspaceID = workspaceID
+        self.workspaceName = workspaceName
         
         let data = Channel(data: chatData)
-        self.channelID.append(data)
+        self.channelList.append(data)
     }
 }
 
@@ -29,6 +49,16 @@ final class Channel: Object {
 
     var chatDataArray: [ChannelDataSource] {
         return chatData.map { $0 }
+    }
+    
+    var latestChat: String? {
+        guard let lastCreatedAt = chatData.last else { return nil }
+        return lastCreatedAt.createdAt
+    }
+    
+    convenience init(channelID: Int) {
+        self.init()
+        self.id = channelID
     }
 
     convenience init(data: ChatModel) {
