@@ -60,7 +60,7 @@ final class LoginSession {
             }
     }
     
-    func handOverLoginInformation(id: Int,
+    func handOverLoginInformation(userID: Int,
                                   nick: String,
                                   access: String,
                                   refresh: String) {
@@ -71,11 +71,12 @@ final class LoginSession {
             }
             .disposed(by: disposeBag)
         
-        userIDSubject.onNext(id)
+        userIDSubject.onNext(userID)
         nickNameSubject.onNext(nick)
         SecureKeys.saveNewAccessToken(token: access)
         SecureKeys.saveNewRefreshToken(token: refresh)
-        
+        repository.userID = userID
+        repository.createInitialUserdata()
         // MARK: - 유저 프로파일 로드
         fetchMyProfile()
             .subscribe(with: self) { owner, result in
@@ -170,6 +171,24 @@ final class LoginSession {
                 }
             }
             .disposed(by: disposeBag)
+        
+        workSpacesSubject
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self) { owner, workspaces in
+                guard let safe = workspaces else { return }
+                owner.repository.createInitialWorkspaceData(new: safe)
+                safe.forEach { workspace in
+                    owner.createChannelDatabase(workspaceID: workspace.workspaceID)
+                }
+            }
+            .disposed(by: disposeBag)
+
+        channelsInfo
+            .subscribe(with: self) { owner, channels in
+                channels.forEach { owner.repository.createInitialChannelList(targetWorkspaceID: $0.workspaceID,
+                                                                       channelID: $0.channelID) }
+            }
+            .disposed(by: disposeBag)
     }
     
     func fetchWorkspaceDetails(id: IDRequiredRequest) -> Single<Result<WorkspaceInfoResponse, ErrorResponse>> {
@@ -194,6 +213,7 @@ final class LoginSession {
             switch result {
             case .success(let response) :
                 owner.workSpacesSubject.onNext(response)
+
             case .failure(let error) :
                 print(error.errorCode)
             }
@@ -272,6 +292,26 @@ final class LoginSession {
         let idRequest = IDRequiredRequest(id: self.makeWorkspaceID())
         return networkService.fetchRequest(endpoint: .loadAllChannels(id: idRequest)
                                            , decodeModel: [Channels].self)
+    }
+    
+    func createChannelDatabase(workspaceID: Int) {
+        let idRequest = IDRequiredRequest(id: workspaceID)
+        networkService.fetchRequest(endpoint: .loadAllChannels(id: idRequest)
+                                           , decodeModel: [Channels].self)
+        .subscribe(with: self) { owner, result in
+            switch result {
+            case .success(let channels):
+                channels.forEach { channel in
+                    owner.repository.createInitialChannelList(targetWorkspaceID: workspaceID,
+                                                              channelID: channel.channelID)
+                }
+                
+            case .failure(let error):
+                print(error.errorCode)
+                print("채널 정보 가져오지 못했음")
+            }
+        }
+        .disposed(by: disposeBag)
     }
     
     func fetchMyChannelInfo() {
