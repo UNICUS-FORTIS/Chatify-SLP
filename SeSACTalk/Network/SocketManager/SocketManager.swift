@@ -75,8 +75,6 @@ final class SocketIOManager: NSObject {
             print("SOCKET IS DISCONNECTED", data, ack)
         }
         
-        repository.checkRealmDirectory()
-        
         task = repository.fetchStoredChatData(workspaceID: channelInfo.workspaceID,
                                               channelID: channelInfo.channelID)
         loadRecentChatFromDatabse()

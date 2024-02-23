@@ -89,6 +89,8 @@ final class LoginSession {
                 }
             }
             .disposed(by: disposeBag)
+// MARK: - 경로확인
+        repository.checkRealmDirectory()
     }
     
     func modifyCurrentWorkspace(path: IndexPath) {
