@@ -270,6 +270,16 @@ final class LoginSession {
     func handoverWorkspaceManager(id: Int, receiverID: Int) {
         let request = IDwithIDRequest(id: id, receiverID: receiverID)
         networkService.fetchStatusCodeRequest(endpoint: .handoverWorkspaceManager(model: request))
+            .subscribe(with: self) { owner, result in
+                switch result {
+                case .success(_):
+                    owner.fetchLoadWorkSpace()
+                    
+                case .failure(let error):
+                    print(error.errorCode)
+                }
+            }
+            .disposed(by: disposeBag)
         
     }
     
