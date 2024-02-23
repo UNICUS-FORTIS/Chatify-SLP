@@ -21,7 +21,7 @@ final class UserData: Object {
 
 final class WorkspaceListData: Object {
     
-    @Persisted(primaryKey: true) var workspaceID: Int
+    @Persisted var workspaceID: Int
     @Persisted var workspaceName: String
     @Persisted var channelList = List<Channel>()
     
@@ -44,7 +44,7 @@ final class WorkspaceListData: Object {
 
 final class Channel: Object {
     
-    @Persisted(primaryKey: true) var id: Int
+    @Persisted var id: Int
     @Persisted var chatData = List<ChannelDataSource>()
 
     var chatDataArray: [ChannelDataSource] {
@@ -71,7 +71,7 @@ final class Channel: Object {
 
 final class ChannelDataSource: Object {
     
-    @Persisted(primaryKey: true) var chatID: Int
+    @Persisted var chatID: Int
     @Persisted var channelName: String
     @Persisted var channelID: Int
     @Persisted var content: String
