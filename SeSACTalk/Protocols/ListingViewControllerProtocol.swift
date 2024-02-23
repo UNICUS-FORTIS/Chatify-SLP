@@ -19,7 +19,7 @@ protocol ListingViewControllerProtocol: AnyObject {
     func setNavigationController(target: UIViewController)
     func registerTableViewCell()
     func setTableViewRowheight()
-    func showActionSheet(target: UIViewController, workspace: WorkSpace)
+    func showActionSheet(target: UIViewController, currendUserID: Int, workspace: WorkSpace)
 }
 
 extension ListingViewControllerProtocol {

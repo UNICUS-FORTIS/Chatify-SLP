@@ -46,5 +46,5 @@ final class ChannelMemberFeatureClass: ListingViewControllerProtocol {
         tableView.rowHeight = 60
     }
     
-    func showActionSheet(target: UIViewController, workspace: WorkSpace) { }
+    func showActionSheet(target: UIViewController, currendUserID: Int, workspace: WorkSpace) { }
 }

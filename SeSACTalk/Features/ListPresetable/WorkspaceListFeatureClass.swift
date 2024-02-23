@@ -12,7 +12,6 @@ import RxSwift
 final class WorkspaceListFeatureClass: ListingViewControllerProtocol {
     
     
-
     var session: LoginSession
     var tableView: UITableView
     private let addNewWorkSpaceButton = SideMenuButton(title: "워크스페이스 추가", icon: .plus)
@@ -35,7 +34,9 @@ final class WorkspaceListFeatureClass: ListingViewControllerProtocol {
                 row , item, cell in
                 cell.setWorkspaceData(workspace: item)
                 cell.showWorkspaceSheet = {
-                    self.showActionSheet(target: target, workspace: item)
+                    self.showActionSheet(target: target,
+                                         currendUserID: self.session.makeUserID(),
+                                         workspace: item)
                 }
             }.disposed(by: disposeBag)
         
@@ -112,8 +113,8 @@ final class WorkspaceListFeatureClass: ListingViewControllerProtocol {
         tableView.rowHeight = 72
     }
     
-    func showActionSheet(target: UIViewController, workspace: WorkSpace) {
-        target.showWorkspaceSheet(workspace: workspace)
+    func showActionSheet(target: UIViewController, currendUserID: Int, workspace: WorkSpace) {
+        target.showWorkspaceSheet(currendUserID:currendUserID, workspace: workspace)
     }
     
 //    private func guideToInitialViewController() {

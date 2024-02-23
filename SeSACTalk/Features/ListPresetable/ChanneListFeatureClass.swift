@@ -84,7 +84,7 @@ final class ChannelListFeatureClass: ListingViewControllerProtocol {
         tableView.rowHeight = 41
     }
     
-    func showActionSheet(target: UIViewController, workspace: WorkSpace) { }
+    func showActionSheet(target: UIViewController, currendUserID: Int, workspace: WorkSpace) { }
     
     func checkJoinedChannel(target: UIViewController, workspaceID: Int, channel: Channels) {
         session.channelsInfo.map { $0.contains(where: {$0.channelID == channel.channelID }) }

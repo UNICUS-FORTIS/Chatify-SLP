@@ -13,18 +13,26 @@ import RxKeyboard
 
 extension UIViewController {
     
-    func showWorkspaceSheet(workspace: WorkSpace) {
+    func showWorkspaceSheet(currendUserID: Int, workspace: WorkSpace) {
         
         let sheet = UIAlertController(title: "", message: "",
                                       preferredStyle: .actionSheet)
         
         let edit = UIAlertAction(title: "워크스페이스 편집", style: .default) { [weak self] action in
             
-            let vc = WorkSpaceEditViewController(viewModel: EmptyWorkSpaceViewModel(editMode: .edit,
-                                                                                    workspaceInfo: workspace))
-            let navVC = UINavigationController(rootViewController: vc)
-            vc.modalTransitionStyle = .coverVertical
-            self?.present(navVC, animated: true)
+            if currendUserID == workspace.ownerID {
+                let vc = WorkSpaceEditViewController(viewModel: EmptyWorkSpaceViewModel(editMode: .edit,
+                                                                                        workspaceInfo: workspace))
+                let navVC = UINavigationController(rootViewController: vc)
+                vc.modalTransitionStyle = .coverVertical
+                self?.present(navVC, animated: true)
+            } else {
+                let vc = BackdropViewController(boxType: .confirm(.editWorkspace), workspaceID: nil)
+                vc.modalTransitionStyle = .coverVertical
+                vc.modalPresentationStyle = .overFullScreen
+                self?.present(vc, animated: false)
+            }
+            
         }
         
         let exit = UIAlertAction(title: "워크스페이스 나가기", style: .default) { [weak self] action in
@@ -58,12 +66,21 @@ extension UIViewController {
         }
         
         let delete = UIAlertAction(title: "워크스페이스 삭제", style: .destructive) { [weak self] action in
-            let vc = BackdropViewController(boxType: .cancellable(.removeWorkspace),
-                                            workspaceID: workspace.workspaceID)
+            if currendUserID == workspace.ownerID {
+                let vc = BackdropViewController(boxType: .cancellable(.removeWorkspace),
+                                                workspaceID: workspace.workspaceID)
+                
+                vc.modalTransitionStyle = .coverVertical
+                vc.modalPresentationStyle = .overFullScreen
+                self?.present(vc, animated: false)
+            } else {
+                let vc = BackdropViewController(boxType: .confirm(.removeWorkspace), workspaceID: nil)
+                vc.modalTransitionStyle = .coverVertical
+                vc.modalPresentationStyle = .overFullScreen
+                self?.present(vc, animated: false)
+            }
+
             
-            vc.modalTransitionStyle = .coverVertical
-            vc.modalPresentationStyle = .overFullScreen
-            self?.present(vc, animated: false)
         }
         
         let cancel = UIAlertAction(title: "취소", style: .cancel) { action in
