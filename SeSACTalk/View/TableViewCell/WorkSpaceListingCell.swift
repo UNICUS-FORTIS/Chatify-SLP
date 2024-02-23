@@ -12,9 +12,7 @@ import RxSwift
 
 
 final class WorkspaceListingCell: UITableViewCell {
-    
-    var data = PublishSubject<WorkSpace>()
-    
+        
     var selection = PublishSubject<Bool>()
     
     var showWorkspaceSheet: ( () -> Void )?
@@ -61,6 +59,9 @@ final class WorkspaceListingCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         disposeBag = DisposeBag()
+        workspaceImage.image = nil
+        workspaceName.text = nil
+        createdDate.text = nil
         showWorkspaceSheet = nil
     }
     
@@ -108,19 +109,17 @@ final class WorkspaceListingCell: UITableViewCell {
         }
     }
     
+    func setWorkspaceData(workspace: WorkSpace) {
+        let url = EndPoints.imageBaseURL + workspace.thumbnail
+        guard let urlString = URL(string: url) else { return }
+        workspaceImage.kf.setImage(with: urlString)
+        workspaceName.text = workspace.name
+        createdDate.text = workspace.createdAt.convertDateString()
+        moreIcon.addTarget(self, action: #selector(moreIconTapped),
+                                 for: .touchUpInside)
+    }
+    
     private func bind() {
-        data.subscribe(with: self) { owner, data in
-            let url = EndPoints.imageBaseURL + data.thumbnail
-            guard let urlString = URL(string: url) else { return }
-            owner.workspaceImage.kf.setImage(with: urlString)
-            owner.workspaceName.text = data.name
-            owner.createdDate.text = data.createdAt.convertDateString()
-            owner.moreIcon.addTarget(self,
-                                     action: #selector(owner.moreIconTapped),
-                                     for: .touchUpInside)
-        }
-        .disposed(by: disposeBag)
-        
         selection.subscribe(with: self) { owner, selection in
             owner.container.backgroundColor = selection ? Colors.Brand.gray : .clear
         }
