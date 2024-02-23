@@ -21,7 +21,7 @@ protocol ChatProtocol: AnyObject {
     func messageSender<T>(request: T)
     func createSocketNamespace() -> String
     func loadRecentChatFromDatabse()
-    func getCursorDate() -> String
+    func getCursorDate(channelInfo: Channels) -> String
     func getCurrentTimeForCursor() -> String
     func judgeSender(sender: Int, userID: Int) -> Bool
     func loadChatLog(completion: @escaping () -> Void )
