@@ -78,15 +78,23 @@ enum InteractionTypeCancellable {
 
 enum InteractionConfirmAcceptable: CaseIterable {
     
+    case editWorkspace
     case exitFromWorkspace
+    case removeWorkspace
     case modifyWorkspaceMember
     case modifyChannelManager
     case exitFromChannel
     
     var title: String {
         switch self {
+        case .editWorkspace:
+            return "워크스페이스 편집"
+            
         case .exitFromWorkspace:
             return "워크스페이스 나가기"
+            
+        case .removeWorkspace:
+            return "워크스페이스 삭제"
             
         case .modifyWorkspaceMember:
             return "워크스페이스 관리자 변경 불가"
@@ -101,11 +109,17 @@ enum InteractionConfirmAcceptable: CaseIterable {
     
     var description: String {
         switch self {
+        case .editWorkspace:
+            return "워크스페이스 편집은 관리자만 할 수 있습니다."
+            
         case .exitFromWorkspace:
             return """
             회원님은 워크스페이스 관리자입니다.
             워크스페이스 관리자를 다른 멤버로 변경한 후 나갈 수 있습니다.
             """
+            
+        case .removeWorkspace:
+            return "워크스페이스 삭제는 관리자만 할 수 있습니다."
             
         case .modifyWorkspaceMember:
             return """
