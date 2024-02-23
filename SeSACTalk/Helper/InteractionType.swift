@@ -81,6 +81,7 @@ enum InteractionConfirmAcceptable: CaseIterable {
     case editWorkspace
     case exitFromWorkspace
     case removeWorkspace
+    case modifyWorkspaceManager
     case modifyWorkspaceMember
     case modifyChannelManager
     case exitFromChannel
@@ -95,6 +96,9 @@ enum InteractionConfirmAcceptable: CaseIterable {
             
         case .removeWorkspace:
             return "워크스페이스 삭제"
+            
+        case .modifyWorkspaceManager:
+            return "워크스페이스 관리자 변경"
             
         case .modifyWorkspaceMember:
             return "워크스페이스 관리자 변경 불가"
@@ -120,6 +124,9 @@ enum InteractionConfirmAcceptable: CaseIterable {
             
         case .removeWorkspace:
             return "워크스페이스 삭제는 관리자만 할 수 있습니다."
+            
+        case .modifyWorkspaceManager:
+            return "워크스페이스 관리자 변경은 관리자만 할 수 있습니다."
             
         case .modifyWorkspaceMember:
             return """
