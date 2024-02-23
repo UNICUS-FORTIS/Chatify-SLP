@@ -347,18 +347,17 @@ final class LoginSession {
         .disposed(by: disposeBag)
     }
     
-    func fetchUnreadChannelChats(channelInfo: Channels, completion: @escaping (Int) -> Void) {
+    func fetchUnreadChannelChats(targetChannel: Channels, completion: @escaping (Int) -> Void) {
         
-        guard let cursurDate = repository.getChannelLatestChatDate(workspaceID: channelInfo.workspaceID,
-                                                                   channelID: channelInfo.channelID) else {
+        guard let cursurDate = repository.getChannelLatestChatDate(channelInfo: targetChannel) else {
             completion(0)
             return
         }
 
         let id = IDRequiredRequest(id: self.makeWorkspaceID())
-        let name = NameRequest(name: channelInfo.name)
+        let name = NameRequest(name: targetChannel.name)
         let after = ChatCursorDateRequest(cursor: cursurDate)
-        
+        print(after.cursor)
         networkService.fetchRequest(endpoint: .loadUnreadChannelChats(id: id, name: name, cursor: after), decodeModel: UnreadChannelChatResponse.self)
             .subscribe(with: self) { owner, result in
                 switch result {
