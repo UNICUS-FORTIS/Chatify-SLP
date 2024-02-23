@@ -182,14 +182,17 @@ final class RealmRepository {
         }
     }
     
-    func getChannelLatestChatDate(workspaceID: Int, channelID: Int) -> String? {
+    func getChannelLatestChatDate(channelInfo: Channels) -> String? {
         guard let user = realm.objects(UserData.self).first(where: { $0.userID == self.userID}),
-              let workspace = user.workspaceList.first(where: { $0.workspaceID == workspaceID }) else {
+              let workspace = user.workspaceList.first(where: { $0.workspaceID == channelInfo.workspaceID }),
+              let channel = workspace.channelList.first(where: { $0.id == channelInfo.channelID }) else {
             return nil }
-        
-        guard let channel = workspace.channelList.first(where: { $0.id == channelID }) else { return nil }
-        
-        return channel.chatData.last?.createdAt
+               
+        if let written = channel.chatData.last?.content {
+            return written
+        } else {
+            return channelInfo.createdAt
+        }
     }
     
     func checkRealmDirectory() {
