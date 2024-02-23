@@ -46,6 +46,7 @@ final class Channel: Object {
     
     @Persisted var id: Int
     @Persisted var chatData = List<ChannelDataSource>()
+    @Persisted var channelDatabaseCreatedAt: String
 
     var chatDataArray: [ChannelDataSource] {
         return chatData.map { $0 }
@@ -59,6 +60,7 @@ final class Channel: Object {
     convenience init(channelID: Int) {
         self.init()
         self.id = channelID
+        self.channelDatabaseCreatedAt = getCurrentTimeForCursor()
     }
 
     convenience init(data: ChatModel) {
@@ -66,6 +68,16 @@ final class Channel: Object {
         let chat = ChannelDataSource(chatData: data)
         self.id = chat.channelID
         self.chatData.append(chat)
+        self.channelDatabaseCreatedAt = getCurrentTimeForCursor()
+    }
+    
+    func getCurrentTimeForCursor() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+        let now = Date()
+        print(formatter.string(from: now))
+        return formatter.string(from: now)
     }
 }
 
