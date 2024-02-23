@@ -153,6 +153,23 @@ final class RealmRepository {
         }
     }
     
+    func removeWorkspace(workspaceInfo: WorkspaceInfoResponse, completion: @escaping () -> Void) {
+        guard let user = realm.objects(UserData.self).first(where: { $0.userID == self.userID}),
+              let workspace = user.workspaceList.first(where: { $0.workspaceID == workspaceInfo.workspaceID }) else { return }
+        workspaceInfo.channels.forEach { removeChannelChatting(workspaceID: workspace.workspaceID,
+                                                               channelID: $0.channelID)
+        }
+        do {
+            try realm.write {
+                realm.delete(workspace)
+                print("워크스페이스 정보 삭제 완료")
+            }
+        } catch {
+            print("워크스페이스 정보 지우기 실패")
+        }
+        completion()
+    }
+    
     func getChannelLatestChatDate(channelInfo: Channels) -> String? {
         guard let user = realm.objects(UserData.self).first(where: { $0.userID == self.userID}),
               let workspace = user.workspaceList.first(where: { $0.workspaceID == channelInfo.workspaceID }),
