@@ -52,18 +52,15 @@ final class SocketIOManager: NSObject {
                 let data = ChannelDataSource(chatData: decoded)
                 messages.append(data)
                 self.channelChatRelay.accept(messages)
-                
-                guard let _ = self.task else {
-                    self.repository.createNewChannelChat(workspaceID: channelInfo.workspaceID,
-                                                    chatData: decoded)
-                    self.task = self.repository.fetchStoredChatData(workspaceID: channelInfo.workspaceID,
-                                                                    channelID: channelInfo.channelID)
-                    return
-                }
                 let channelDatasource = ChannelDataSource(chatData: decoded)
                 self.repository.updateChannelChatDatabse(workspaceID: channelInfo.workspaceID,
                                                          channelID: channelInfo.channelID,
                                                     newDatas: [channelDatasource])
+                guard let _ = self.task else {
+                    self.task = self.repository.fetchStoredChatData(workspaceID: channelInfo.workspaceID,
+                                                                    channelID: channelInfo.channelID)
+                    return
+                }
             }
             catch {
                 print(error)
@@ -126,7 +123,7 @@ extension SocketIOManager: ChatProtocol {
         guard let safeChannel = channelInfo else { return }
         let id = IDRequiredRequest(id: safeChannel.workspaceID)
         let name = NameRequest(name: safeChannel.name)
-        let cursurDate = ChatCursorDateRequest(cursor: self.getCursorDate())
+        let cursurDate = ChatCursorDateRequest(cursor: self.getCursorDate(channelInfo: safeChannel))
         print("커서 데이트", cursurDate.cursor)
         networkService
             .fetchRequest(endpoint: .joinToChannelChat(id: id,
@@ -146,7 +143,6 @@ extension SocketIOManager: ChatProtocol {
                         }
                         dump(newDatas)
                         owner.channelChatRelay.accept(current)
-                        guard let _ = owner.task else { return }
                         owner.repository.updateChannelChatDatabse(workspaceID: safeChannel.workspaceID,
                                                                   channelID: safeChannel.channelID,
                                                                   newDatas: newDatas)
@@ -160,13 +156,11 @@ extension SocketIOManager: ChatProtocol {
             .disposed(by: disposeBag)
     }
     
-    func getCursorDate() -> String {
-        return task?.first?.chatDataArray.last?.createdAt ?? getCurrentTimeForCursor()
+    func getCursorDate(channelInfo: Channels) -> String {
+        return repository.getChannelLatestChatDate(channelInfo: channelInfo) ?? getCurrentTimeForCursor()
     }
     
     func checkRelayIsEmpty() -> Bool {
-        print(#function)
-        print("엠티", channelChatRelay.value.isEmpty)
         return channelChatRelay.value.isEmpty
     }
     
@@ -180,7 +174,6 @@ extension SocketIOManager: ChatProtocol {
         } else {
             channelChatRelay.accept(target)
         }
-        print(target.count, "target의 count")
     }
     
     func connectSocket() {
