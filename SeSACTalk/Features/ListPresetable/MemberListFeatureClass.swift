@@ -42,6 +42,22 @@ final class MemberListFeatureClass: ListingViewControllerProtocol {
                 cell.data.onNext(item)
                 
             }.disposed(by: disposeBag)
+        
+        tableView.rx.itemSelected
+            .subscribe(with: self) { owner, indexPath in
+                guard let selectedCell = owner.tableView.cellForRow(at: indexPath) as? MemberListCell else { return }
+                do {
+                    guard let currentWorkspace = try owner.session.currentWorkspaceSubject.value() else { return }
+                    let member = try owner.session.workspaceMember.value()
+                    print(member, "멤버")
+                    owner.session.handoverWorkspaceManager(id: currentWorkspace.workspaceID,
+                                                           receiverID: member[indexPath.row + 1].userID)
+                } catch {
+                    print("멤버 리스트 밸류를 가져오지 못함")
+                }
+                target.dismissTrigger()
+            }
+            .disposed(by: disposeBag)
     }
     
     func setNavigationController(target: UIViewController) {
