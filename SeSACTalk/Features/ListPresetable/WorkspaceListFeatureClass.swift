@@ -33,7 +33,7 @@ final class WorkspaceListFeatureClass: ListingViewControllerProtocol {
             .bind(to: tableView.rx.items(cellIdentifier: WorkspaceListingCell.identifier,
                                          cellType: WorkspaceListingCell.self)) {
                 row , item, cell in
-                cell.data.onNext(item)
+                cell.setWorkspaceData(workspace: item)
                 cell.showWorkspaceSheet = {
                     self.showActionSheet(target: target, workspace: item)
                 }
