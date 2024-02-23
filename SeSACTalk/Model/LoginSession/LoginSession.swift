@@ -105,7 +105,6 @@ final class LoginSession {
     }
     
     func assginWorkSpaces(spaces: WorkSpaces) {
-        print(#function)
         workSpacesSubject.onNext(spaces)
         let filtered = spaces.first { $0.workspaceID == recentVisitedWorkspace }
         guard let safeFiltered = filtered else {
@@ -223,7 +222,24 @@ final class LoginSession {
         .disposed(by: disposeBag)
     }
     
-    func removeWorkSpace(workspaceID: Int) {
+    func removeWorkspaceDatabase(workspaceID: Int) {
+        let idRequest = IDRequiredRequest(id: workspaceID)
+        fetchWorkspaceDetails(id: idRequest)
+            .subscribe(with: self) { owner, result in
+                switch result {
+                case .success(let response):
+                    owner.repository.removeWorkspace(workspaceInfo: response) {
+                        owner.fetchRemoveWorkspace(workspaceID: workspaceID)
+                    }
+                case .failure(let error):
+                    print(error.errorCode)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+    }
+    
+    private func fetchRemoveWorkspace(workspaceID: Int) {
         let idRequest = IDRequiredRequest(id: workspaceID)
         networkService.fetchStatusCodeRequest(endpoint: .removeWorkSpace(id: idRequest))
             .subscribe(with: self) { owner, result in
@@ -241,7 +257,6 @@ final class LoginSession {
             switch result {
             case .success(_):
                 owner.fetchMyChannelInfo()
-                
                 
             case .failure(let error):
                 print(error.errorCode)
