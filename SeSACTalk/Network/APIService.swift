@@ -95,9 +95,9 @@ extension APIService: TargetType {
             
         case .handoverWorkspaceManager(let model):
             return path.workSpace +
-            "\(model.id)" +
+            "/\(model.id)" +
             path.PathDepthOne.handoverWorkspace +
-            "\(model.receiverID)"
+            "/\(model.receiverID)"
             
         case .loadWorkspaceMember(let id):
             return path.workSpace +
@@ -197,13 +197,13 @@ extension APIService: TargetType {
             return .get
             
         case .editWorkSpace,
+                .handoverWorkspaceManager,
                 .updateProfileImage,
                 .updateProfileInformations,
                 .editChannelInfo :
             return .put
             
         case .removeWorkSpace,
-                .handoverWorkspaceManager,
                 .removeChannel :
             return .delete
         }
