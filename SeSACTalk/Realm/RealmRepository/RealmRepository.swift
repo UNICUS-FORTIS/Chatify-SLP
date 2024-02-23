@@ -16,6 +16,7 @@ final class RealmRepository {
     private let realm = try! Realm()
     var userID: Int?
     
+    // MARK: - 초기 유저데이터 작성
     func createInitialUserdata() {
         guard let _ = realm.objects(UserData.self).first(where: { $0.userID == self.userID}) else {
             do {
@@ -33,6 +34,7 @@ final class RealmRepository {
         print("아무것도 생성하지 않았음")
     }
     
+    // MARK: - 초기 모든 워크스페이스 데이터 작성
     func createInitialWorkspaceData(new: WorkSpaces) {
         guard let userID = realm.objects(UserData.self).first(where: { $0.userID == self.userID}) else { return }
         let workspacesArray = new.map { $0 }
@@ -66,6 +68,7 @@ final class RealmRepository {
         }
     }
     
+    // MARK: - 초기 채널 데이터 작성
     func createInitialChannelList(targetWorkspaceID: Int, channelID: Int) {
         print(#function)
         guard let userID = realm.objects(UserData.self).first(where: { $0.userID == self.userID}),
@@ -99,6 +102,7 @@ final class RealmRepository {
         }
     }
     
+    // MARK: - 채팅 데이터 로드
     func fetchStoredChatData(workspaceID:Int, channelID: Int) -> Results<Channel>? {
         print("저장된 채팅 로드", self.userID ?? 00000000)
         guard let user = realm.objects(UserData.self).first(where: { $0.userID == self.userID}),
@@ -108,38 +112,6 @@ final class RealmRepository {
         
         guard !target.isEmpty else { return nil }
         return target
-    }
-    
-    func createNewChannelChat(workspaceID: Int, chatData: ChatModel) {
-        
-        // MARK: - 새로운 워크스페이스의 채팅인경우
-        guard let user = realm.objects(UserData.self).first(where: { $0.userID == self.userID}),
-              let workspace = user.workspaceList.first(where: { $0.workspaceID == workspaceID }) else {
-            do { // 새로운 워크스페이스에서 채팅을 보낼경우
-                try realm.write {
-                    let newWorkspaceData = Channel(data: chatData)
-                    realm.add(newWorkspaceData)
-                    print("새로운 워크스페이스 데이터 생성 완료")
-                }
-            } catch {
-                print("새로운 워크스페이스 데이터 생성 못함")
-            }
-            return
-        }
-        
-        // MARK: - 채팅에 참여했던 워크스페이스가 존재하지만 해당 채널에 첫 채팅인경우
-        guard let _ = workspace.channelList.first(where: { $0.id == chatData.channelID }) else {
-            let newChat = Channel(data: chatData)
-            do {
-                try realm.write {
-                    workspace.channelList.append(newChat)
-                    print("DB에 새로운 신규채널 데이터 입력")
-                }
-            } catch {
-                print(error)
-            }
-            return
-        }
     }
     
     func updateChannelChatDatabse(workspaceID: Int, channelID: Int, newDatas: [ChannelDataSource]) {
@@ -188,7 +160,7 @@ final class RealmRepository {
               let channel = workspace.channelList.first(where: { $0.id == channelInfo.channelID }) else {
             return nil }
                
-        if let written = channel.chatData.last?.content {
+        if let written = channel.chatData.last?.createdAt {
             return written
         } else {
             return channelInfo.createdAt
