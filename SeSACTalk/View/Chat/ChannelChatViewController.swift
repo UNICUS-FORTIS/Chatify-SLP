@@ -95,6 +95,7 @@ extension ChannelChatViewController: ChatInterfaceAcceptableProtocol {
     
     func setupNavigation() {
         navigationController?.setChannelChatNavigation(target: self,
+                                                       title: socketManager.channelInfo?.name ?? "",
                                                        rightAction: #selector(setNavigationRightAction))
     }
     

@@ -83,11 +83,12 @@ extension UINavigationController {
     }
     
     func setChannelChatNavigation(target: UIViewController,
+                                  title: String,
                                   rightAction: Selector) {
         let appearance = UINavigationBarAppearance()
         appearance.shadowColor = Colors.Border.naviShadow
         appearance.backgroundColor = .white
-
+        target.title = "#\(title)"
         let rightItem = UIBarButtonItem(image: .list,
                                         style: .plain,
                                         target: target,
