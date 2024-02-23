@@ -43,7 +43,7 @@ final class RealmRepository {
             do {
                 try realm.write {
                     let newWorkspaceList = workspacesArray.map { WorkspaceListData(workspaceID: $0.workspaceID,
-                                                                                workspaceName: $0.name ) }
+                                                                                   workspaceName: $0.name ) }
                     userID.workspaceList.append(objectsIn: newWorkspaceList)
                     
                 }
@@ -72,7 +72,7 @@ final class RealmRepository {
     func createInitialChannelList(targetWorkspaceID: Int, channelID: Int) {
         print(#function)
         guard let userID = realm.objects(UserData.self).first(where: { $0.userID == self.userID}),
-        let workspaceList = userID.workspaceList.first(where: { $0.workspaceID == targetWorkspaceID}) else { return }
+              let workspaceList = userID.workspaceList.first(where: { $0.workspaceID == targetWorkspaceID}) else { return }
         let newChannel = Channel(channelID: channelID)
         
         if workspaceList.channelList.isEmpty {
@@ -94,7 +94,7 @@ final class RealmRepository {
                     print("필터링된 채널 append 실패")
                 }
                 print("신규 채널 append 성공", newChannel)
-
+                
             } else {
                 print("채널 필터링 안하고 아무동작 안함")
             }
@@ -133,10 +133,9 @@ final class RealmRepository {
     
     func removeChannelChatting(workspaceID: Int, channelID: Int) {
         guard let user = realm.objects(UserData.self).first(where: { $0.userID == self.userID}),
-              let workspace = user.workspaceList.first(where: { $0.workspaceID == workspaceID }) else {
+              let workspace = user.workspaceList.first(where: { $0.workspaceID == workspaceID }),
+              let channel = workspace.channelList.first(where: { $0.id == channelID }) else {
             return }
-        
-        guard let channel = workspace.channelList.first(where: { $0.id == channelID }) else { return }
         
         do {
             try realm.write {
@@ -159,11 +158,11 @@ final class RealmRepository {
               let workspace = user.workspaceList.first(where: { $0.workspaceID == channelInfo.workspaceID }),
               let channel = workspace.channelList.first(where: { $0.id == channelInfo.channelID }) else {
             return nil }
-               
+        
         if let written = channel.chatData.last?.createdAt {
             return written
         } else {
-            return channelInfo.createdAt
+            return channel.channelDatabaseCreatedAt
         }
     }
     
