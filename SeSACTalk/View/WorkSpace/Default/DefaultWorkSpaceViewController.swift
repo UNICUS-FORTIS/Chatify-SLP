@@ -30,12 +30,16 @@ final class DefaultWorkSpaceViewController: UIViewController {
         
         configure()
         setConstraints()
-        sideMenuSetup()
         bind()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        sideMenuSetup()
     }
     
     private func bind() {
@@ -89,6 +93,15 @@ final class DefaultWorkSpaceViewController: UIViewController {
                     print(dm)
                     
                 default: break
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        session.workSpacesSubject
+            .subscribe(with: self) { owner, workspaces in
+                if workspaces?.count == 0 {
+                    owner.sideMenu = nil
+                    owner.navigationController?.setViewControllers([HomeEmptyViewController()], animated: true)
                 }
             }
             .disposed(by: disposeBag)
