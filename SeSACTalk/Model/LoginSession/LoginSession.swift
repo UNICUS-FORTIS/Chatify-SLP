@@ -404,6 +404,15 @@ final class LoginSession {
         return id
     }
     
+    func makeUserNickname() -> String {
+        do {
+            guard let profile = try myProfile.value() else { return "" }
+            return profile.nickname
+        } catch {
+            return ""
+        }
+    }
+    
     func makeWorkspaceID() -> Int {
         guard let safe = currentWorkspaceID else { return 000 }
         return safe
