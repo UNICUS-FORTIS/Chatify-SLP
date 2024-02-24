@@ -12,13 +12,14 @@ import RxCocoa
 
 final class EmptyWorkSpaceViewModel {
     
+    let session = LoginSession.shared
     private let networkService = NetworkService.shared
     private let disposeBag = DisposeBag()
     var storedNickname: String {
         if let nickname = UserDefaults.standard.string(forKey: "AppleLoginName") {
             return nickname
         } else {
-            return ""
+            return session.makeUserNickname()
         }
     }
     
@@ -31,12 +32,14 @@ final class EmptyWorkSpaceViewModel {
     let workspaceImage = PublishSubject<Data>()
     let workspaceImageMounted = BehaviorSubject<Bool>(value: false)
     let spaceDescription = BehaviorSubject<String>(value: "")
+    var editViewControllerTransferTrigger: (() -> Void)?
     var HomeDefaultTrasferTrigger: (() -> Void)?
     
     init(editMode: WorkSpaceEditMode, workspaceInfo: WorkSpace?) {
         self.workspaceEditMode = editMode
         guard let safeInfo = workspaceInfo else { return }
         print(safeInfo)
+        self.bind()
         self.workspaceInfoForEdit.onNext(safeInfo)
     }
     
@@ -73,5 +76,8 @@ final class EmptyWorkSpaceViewModel {
                 owner.workspaceID = safe.workspaceID
             }
             .disposed(by: disposeBag)
+    }
+    deinit {
+        print("엠티 워크스페이스 뷰모델 Deinit됨")
     }
 }
