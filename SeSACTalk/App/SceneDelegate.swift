@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         guard let user = UserDefaults.standard.string(forKey: "AppleUser") else {
-            print("No User")
+            print("등록된 유저 없음")
             window = UIWindow(windowScene: windowScene)
             let naviVC = UINavigationController(rootViewController: OnboardingViewController())
             window?.rootViewController = naviVC
@@ -31,18 +31,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
         appleIDProvider.getCredentialState(forUserID: user) { credentialState, error in
             switch credentialState {
-            case .revoked: print("Revokedㅋㅋㅋ")
+            case .revoked:
+                print("Revoked")
             
             case .authorized:
-                print("hi")
-//                DispatchQueue.main.asyncAndWait {
-//                    let window = UIWindow(windowScene: windowScene)
-//                    window.rootViewController = MainViewController()
-//                    self.window = window
-//                    window.makeKeyAndVisible()
-//                }
+                print("애플로그인 인가 됨")
+                DispatchQueue.main.async {
+                    self.window = UIWindow(windowScene: windowScene)
+                    let naviVC = UINavigationController(rootViewController: LoginGateViewController(loginMethod: .apple))
+                    self.window?.rootViewController = naviVC
+                    self.window?.makeKeyAndVisible()
+                    return
+                }
             
-            default: print("not Found !@!@!@!@")
+            default:
+                print("not Found !@!@!@!@")
             }
         }
         
@@ -50,7 +53,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let naviVC = UINavigationController(rootViewController: OnboardingViewController())
         window?.rootViewController = naviVC
         window?.makeKeyAndVisible()
-        
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
