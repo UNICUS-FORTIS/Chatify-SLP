@@ -155,6 +155,11 @@ extension ProfileViewController: UITableViewDataSource {
                 
                 cell.setCellValue(value: viewModel.makeEmailInfo())
                 
+            case .connectedAccounts:
+                
+                cell.setConnectedSocialAccount(vendor: viewModel.makeVendorInfo())
+                
+                
             default :
                 break
             }

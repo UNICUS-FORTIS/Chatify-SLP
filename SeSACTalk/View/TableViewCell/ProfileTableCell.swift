@@ -12,20 +12,22 @@ import SnapKit
 
 final class ProfileTableCell: UITableViewCell {
     
-    private var cellTitle = CustomTitleLabel("",
+    private let cellTitle = CustomTitleLabel("",
                                              textColor: .black,
                                              font: Typography.bodyBold ??
                                              UIFont.systemFont(ofSize: 13))
     
-    private var coinValue = CustomTitleLabel("",
+    private let coinValue = CustomTitleLabel("",
                                              textColor: Colors.Brand.green,
                                              font: Typography.bodyBold ??
                                              UIFont.systemFont(ofSize: 13))
     
-    private var cellValue = CustomTitleLabel("",
+    private let cellValue = CustomTitleLabel("",
                                              textColor: Colors.Text.secondary,
                                              font: Typography.body ??
                                              UIFont.systemFont(ofSize: 13))
+    
+    private let socialIcon = UIImageView()
     
     private let moreButton = CustomButton(.chevronRightGray)
     
@@ -43,6 +45,7 @@ final class ProfileTableCell: UITableViewCell {
     func addSubview() {
         contentView.addSubview(cellTitle)
         contentView.addSubview(cellValue)
+        contentView.addSubview(socialIcon)
         contentView.addSubview(moreButton)
     }
     
@@ -63,6 +66,12 @@ final class ProfileTableCell: UITableViewCell {
             make.trailing.equalTo(moreButton.snp.leading).offset(-10)
             make.centerY.equalToSuperview()
         }
+        
+        socialIcon.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.size.equalTo(22)
+            make.trailing.equalToSuperview().inset(14)
+        }
     }
     
     func setTitle(value: String) {
@@ -80,6 +89,16 @@ final class ProfileTableCell: UITableViewCell {
             make.centerY.equalToSuperview()
             make.leading.equalTo(cellTitle.snp.trailing).offset(6)
             make.height.equalTo(cellTitle)
+        }
+    }
+    
+    func setConnectedSocialAccount(vendor: String) {
+        if vendor == "apple" {
+            socialIcon.image = .appleVendor
+        } else if vendor == "kakao" {
+            socialIcon.image = .kakaoVendor
+        } else {
+            socialIcon.isHidden = true
         }
     }
     
