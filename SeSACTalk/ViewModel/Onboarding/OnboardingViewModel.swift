@@ -41,15 +41,7 @@ final class OnboardingViewModel {
         return sortedResponse
     }
     
-    func fetchKakaoLoginRequest(info: KakaoLoginRequest) -> Single<Result<SignInResponse, ErrorResponse>> {
-        return networkService.fetchRequest(endpoint: .kakaoLogin(model: info),
-                                           decodeModel: SignInResponse.self)
-    }
     
-    func fetchAppleLoginRequest(info: AppleLoginRequest) -> Single<Result<SignInResponse, ErrorResponse>> {
-        return networkService.fetchRequest(endpoint: .appleLogin(model: info),
-                                           decodeModel: SignInResponse.self)
-    }
     
     func fetchLoadWorkSpace() -> Single<Result<WorkSpaces, ErrorResponse>> {
         return networkService.fetchRequest(endpoint: .loadWorkSpace,
