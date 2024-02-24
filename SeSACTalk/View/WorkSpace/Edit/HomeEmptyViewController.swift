@@ -35,8 +35,12 @@ final class HomeEmptyViewController: UIViewController {
         configure()
         setConstraints()
         bind()
+        guideToInitialViewController()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         sideMenuSetup()
-//        guideToInitialViewController()
     }
     
     private func bind() {
@@ -71,7 +75,6 @@ final class HomeEmptyViewController: UIViewController {
                                                      leftAction: #selector(workSpaceTitleTapped),
                                                      rightActoin: #selector(profileImageTapped))
     }
-    
 
     @objc func workSpaceTitleTapped() {
         present(SideMenuManager.default.leftMenuNavigationController!, animated: true, completion: nil)
@@ -115,5 +118,8 @@ final class HomeEmptyViewController: UIViewController {
         sideMenu?.presentationStyle = .menuSlideIn
         sideMenu?.presentationStyle.presentingEndAlpha = 0.5
         sideMenu?.menuWidth = view.frame.width * 0.8
+    }
+    deinit {
+        print("홈 엠티뷰컨 deinit 됨")
     }
 }
