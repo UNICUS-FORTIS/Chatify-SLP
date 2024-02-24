@@ -13,6 +13,7 @@ import RxCocoa
 final class SignInViewModel {
     
     private let networkService = NetworkService.shared
+    let session = LoginSession.shared
     let emailSubject = PublishSubject<String>()
     let nicknameSubject = PublishSubject<String>()
     let contactSubject = PublishSubject<String>()
@@ -106,11 +107,6 @@ final class SignInViewModel {
                 self.validationCenter.validatePasscode(passcode) &&
                 passcode == confirmPasscode
             }
-    }
-    
-    func saveTokens(access: String, refresh: String) {
-        UserDefaults.standard.setValue(access, forKey: "accessToken")
-        UserDefaults.standard.setValue(refresh, forKey: "refreshToken")
     }
     
     func fetchEmailValidationRequest(info: EmailValidationRequest) -> Single<Result<Int, ErrorResponse>> {
