@@ -44,7 +44,9 @@ final class WorkspaceListFeatureClass: ListingViewControllerProtocol {
             .subscribe(with: self) { owner, indexPath in
                 guard let selectedCell = owner.tableView.cellForRow(at: indexPath) as? WorkspaceListingCell else { return }
                 selectedCell.selection.onNext(true)
-                self.session.modifyCurrentWorkspace(path: indexPath)
+                if owner.session.makeWorkspaceListCount() > 0 {
+                    self.session.modifyCurrentWorkspace(path: indexPath)
+                }
                 target.dismissTrigger()
             }
             .disposed(by: disposeBag)
@@ -116,12 +118,4 @@ final class WorkspaceListFeatureClass: ListingViewControllerProtocol {
     func showActionSheet(target: UIViewController, currendUserID: Int, workspace: WorkSpace) {
         target.showWorkspaceSheet(currendUserID:currendUserID, workspace: workspace)
     }
-    
-//    private func guideToInitialViewController() {
-//        let vc = WorkSpaceInitialViewController()
-//        let navVC = UINavigationController(rootViewController: vc)
-//        navVC.modalPresentationStyle = .fullScreen
-//        navVC.modalTransitionStyle = .coverVertical
-//        navigationController?.present(navVC, animated: true)
-//    }
 }
