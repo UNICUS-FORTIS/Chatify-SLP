@@ -104,7 +104,7 @@ final class LoginSession {
             .disposed(by: disposeBag)
     }
     
-    func assginWorkSpaces(spaces: WorkSpaces) {
+    func assignWorkspace(spaces: WorkSpaces) {
         workSpacesSubject.onNext(spaces)
         let filtered = spaces.first { $0.workspaceID == recentVisitedWorkspace }
         guard let safeFiltered = filtered else {
@@ -176,6 +176,13 @@ final class LoginSession {
         workSpacesSubject
             .observe(on: MainScheduler.instance)
             .subscribe(with: self) { owner, workspaces in
+                
+                owner.currentWorkspaceSubject.onNext(workspaces?.first)
+                if workspaces?.count == 0 {
+                    owner.leftCustomView = CustomNavigationLeftView()
+                    owner.leftCustomLabel = CustomLeftNaviLabel()
+                }
+                
                 guard let safe = workspaces else { return }
                 owner.repository.createInitialWorkspaceData(new: safe)
                 safe.forEach { workspace in
@@ -389,7 +396,7 @@ final class LoginSession {
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(let response):
-                    print(response)
+                    
                     completion(response.count)
                     
                 case .failure(let error):
@@ -416,5 +423,14 @@ final class LoginSession {
     func makeWorkspaceID() -> Int {
         guard let safe = currentWorkspaceID else { return 000 }
         return safe
+    }
+    
+    func makeWorkspaceListCount() -> Int {
+        do {
+            guard let count = try workSpacesSubject.value()?.count else { return 0 }
+            return count
+        } catch {
+            return 0
+        }
     }
 }
