@@ -14,7 +14,6 @@ import PhotosUI
 // MARK: - 워크스페이스 생성 바텀시트
 final class WorkSpaceEditViewController: UIViewController, ToastPresentableProtocol {
     
-    
     private let spaceImage = CustomSpaceImageView()
     private let spaceName = CustomInputView(label: "워크스페이스 이름", placeHolder: "", keyboardType: .default)
     private let spaceDescription = CustomInputView(label: "워크스페이스 설명", placeHolder: "", keyboardType: .default)
@@ -22,12 +21,10 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
     private let center = ValidationCenter()
     private let disposeBag = DisposeBag()
     private let tapGesture = UITapGestureRecognizer()
-    var viewModel: EmptyWorkSpaceViewModel!
-    private let networkService = NetworkService.shared
-    private let session = LoginSession.shared
     private var viewTitle: String?
-    
-    
+    var viewModel: EmptyWorkSpaceViewModel!
+
+
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
     }
@@ -43,11 +40,11 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configure()
         setConstraints()
         bind()
         viewModel.bind()
+        print("워크스페이스 에딧뷰컨 생성됨")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -74,7 +71,6 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
     }
     
     private func bind() {
-        print("에딧뷰컨트롤러 bind 실행됨")
         spaceImage.addGestureRecognizer(tapGesture)
         
         tapGesture.rx.event
@@ -108,10 +104,10 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
         
         spaceName.textField.rx.text.orEmpty
             .asDriver()
-            .drive { [weak self] text in
+            .drive(with: self) { owner, text in
                 let isValid = text.count > 0
-                self?.createButton.validationBinder.onNext(isValid)
-                self?.createButton.buttonEnabler.onNext(isValid)
+                owner.createButton.validationBinder.onNext(isValid)
+                owner.createButton.buttonEnabler.onNext(isValid)
             }
             .disposed(by: disposeBag)
         
@@ -151,8 +147,20 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(_):
-                    owner.session.fetchLoadWorkSpace()
-                    owner.dismiss(animated: true)
+                    owner.viewModel.session.fetchLoadWorkSpace()
+                    
+                    if owner.viewModel.session.makeWorkspaceListCount() > 0 {
+                        owner.dismissTrigger()
+                    } else {
+                        let previous = owner.presentingViewController as? UINavigationController
+                        owner.viewModel.HomeDefaultTrasferTrigger = {
+                            previous?.setViewControllers([DefaultWorkSpaceViewController.shared], animated: true)
+                        }
+                        owner.dismiss(animated: true) {
+                            owner.viewModel.HomeDefaultTrasferTrigger?()
+                        } 
+                    }
+                               
                 case .failure(let error):
                     print(error.errorCode)
                 }
@@ -167,7 +175,7 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
         configuration.filter = .any(of: [.images])
         let picker = PHPickerViewController(configuration: configuration)
         picker.delegate = self
-        self.present(picker, animated: true, completion: nil)
+        self.present(picker, animated: true)
     }
     
     private func setConstraints() {
@@ -203,12 +211,9 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
         self.spaceName.textField.resignFirstResponder()
         self.spaceDescription.textField.resignFirstResponder()
     }
-    
-    
     deinit {
-        print("워크스페이스 deinit 됨")
+        print("워크스페이스 Edit뷰컨 deinit 됨")
     }
-    
 }
 
 extension WorkSpaceEditViewController: PHPickerViewControllerDelegate {
@@ -218,17 +223,17 @@ extension WorkSpaceEditViewController: PHPickerViewControllerDelegate {
         
         let itemProvider = results.first?.itemProvider
         if let itemProvider = itemProvider, itemProvider.canLoadObject(ofClass: UIImage.self) {
-            itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
+            itemProvider.loadObject(ofClass: UIImage.self) { [weak self] (image, error) in
                 if let image = image as? UIImage {
                     DispatchQueue.main.async {
                         let downSampledImage = image.downSample(size: CGSize(width: 100, height: 100),
                                                                 scale: 1.0)
-                        self.spaceImage.setImage(image: downSampledImage)
-                        self.spaceImage.setContentMode(mode: .scaleAspectFill)
+                        self?.spaceImage.setImage(image: downSampledImage)
+                        self?.spaceImage.setContentMode(mode: .scaleAspectFill)
                         
                         if let imageData = downSampledImage.jpegData(compressionQuality: 1.0) {
-                            self.viewModel.workspaceImage.onNext(imageData)
-                            self.viewModel.workspaceImageMounted.onNext(true)
+                            self?.viewModel.workspaceImage.onNext(imageData)
+                            self?.viewModel.workspaceImageMounted.onNext(true)
                         }
                     }
                 }
