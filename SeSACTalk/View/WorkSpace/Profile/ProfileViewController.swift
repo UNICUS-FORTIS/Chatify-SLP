@@ -196,16 +196,16 @@ extension ProfileViewController: PHPickerViewControllerDelegate {
         
         let itemProvider = results.first?.itemProvider
         if let itemProvider = itemProvider, itemProvider.canLoadObject(ofClass: UIImage.self) {
-            itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
+            itemProvider.loadObject(ofClass: UIImage.self) { [weak self] (image, error) in
                 if let image = image as? UIImage {
                     DispatchQueue.main.async {
                         let downSampledImage = image.downSample(size: CGSize(width: 100, height: 100),
                                                                 scale: 1.0)
-                        self.profileImage.setImage(image: downSampledImage)
-                        self.profileImage.setContentMode(mode: .scaleAspectFill)
+                        self?.profileImage.setImage(image: downSampledImage)
+                        self?.profileImage.setContentMode(mode: .scaleAspectFill)
                         
                         if let imageData = downSampledImage.jpegData(compressionQuality: 1.0) {
-                            self.viewModel.profileImageData.onNext(imageData)
+                            self?.viewModel.profileImageData.onNext(imageData)
                         }
                     }
                 }

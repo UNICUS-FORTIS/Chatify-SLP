@@ -31,6 +31,21 @@ final class ProfileViewModel {
             }
             .disposed(by: disposeBag)
         
+        profileImageData
+            .flatMapLatest { data -> Single<Result<MyProfileResponse, ErrorResponse>> in
+                let request = ImageUpdateRequest(image: data)
+                return self.networkService.fetchRequest(endpoint: .updateProfileImage(image: request), decodeModel: MyProfileResponse.self)
+            }
+            .subscribe(with: self) { owner, result in
+                switch result {
+                case .success(let response):
+                    owner.session.myProfile.onNext(response)
+                    
+                case .failure(let error):
+                    print(error.errorCode)
+                }
+            }
+            .disposed(by: disposeBag)
     }
     
     func makeProfileURL(profile: MyProfileResponse) {
@@ -65,26 +80,6 @@ final class ProfileViewModel {
                                        value: profile.phone ?? "")
         
         profileDataRelay.accept([coinInfo, nickname, contact])
-    }
-    
- 
-    
-    func fetchNewProfileImage() {
-        profileImageData
-            .flatMapLatest { data -> Single<Result<MyProfileResponse, ErrorResponse>> in
-                let request = ImageUpdateRequest(image: data)
-                return self.networkService.fetchRequest(endpoint: .updateProfileImage(image: request), decodeModel: MyProfileResponse.self)
-            }
-            .subscribe(with: self) { owner, result in
-                switch result {
-                case .success(let response):
-                    owner.session.myProfile.onNext(response)
-                    
-                case .failure(let error):
-                    print(error.errorCode)
-                }
-            }
-            .disposed(by: disposeBag)
     }
     
     deinit {
