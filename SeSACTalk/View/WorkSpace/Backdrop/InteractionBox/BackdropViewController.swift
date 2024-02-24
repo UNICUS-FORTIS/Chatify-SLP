@@ -87,7 +87,10 @@ final class BackdropViewController: UIViewController {
     @objc func confirmRemoveWorkspaceTrigger() {
         guard let id = workspaceID else { return }
         session.removeWorkspaceDatabase(workspaceID: id)
-        self.dismiss(animated: false)
+        let prestingVC = self.presentingViewController
+        self.dismiss(animated: false) {
+            prestingVC?.dismissTrigger()
+        }
     }
     
     @objc func exitFromWorkspaceTrigger() {
