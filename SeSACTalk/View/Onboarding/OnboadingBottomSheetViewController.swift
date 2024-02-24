@@ -20,6 +20,8 @@ import AuthenticationServices
 
 final class OnboadingBottomSheetViewController: UIViewController {
     
+    private let session = LoginSession.shared
+    private let handler = SocialLoginHandler()
     private let appleLoginButton = CustomButton(.appleLogin)
     private let kakaoLoginButton = CustomButton(.kakaoLogin)
     private let emailLoginButton = CustomButton(title: ScreenTitles
@@ -93,7 +95,7 @@ final class OnboadingBottomSheetViewController: UIViewController {
                     return Observable.just(form)
                 }
                 .flatMapLatest { form -> Observable<Result<SignInResponse, ErrorResponse>> in
-                    let result = viewModel.fetchKakaoLoginRequest(info: form)
+                    let result = self.handler.fetchKakaoLoginRequest(info: form)
                     return result.asObservable()
                 }
                 .subscribe(with: self) { owner, result in
@@ -228,56 +230,24 @@ extension OnboadingBottomSheetViewController: ASAuthorizationControllerDelegate 
                           let givenName = fullName.givenName else { return }
                     
                     let name = givenName+familyName
-                    print(name)
-                    UserDefaults.standard.set(name, forKey: "AppleLoginName")
+                    SecureKeys.saveAppleUsername(name: name)
                 }
                 
                 if let email = email {
-                    UserDefaults.standard.set(email, forKey: "AppleLoginEmail")
+                    SecureKeys.saveAppleEmail(email: email)
                 }
                 
                 guard let token = appleIDCredential.identityToken,
                       let tokenToString = String(data: token, encoding: .utf8) else {
                     print("Token Error")
                     return }
+                SecureKeys.saveAppleAppleIDToken(token: tokenToString)
                 
                 if email?.isEmpty ?? true {
                     let result = decode(jwtToken: tokenToString)["email"] as? String ?? ""
-                    print("이메일이 없어서 디코드한", result) // 모 이 데이터를 userDefault 에 업데이트 해줄수 있다
+                    print("이메일이 없어서 디코드한", result)
+                    SecureKeys.saveAppleAppleIDToken(token: tokenToString)
                 }
-                
-                // MARK: - 애플로그인 후처리 필요
-                guard let viewModel = viewModel else { return }
-                if let fullName = fullName {
-                    guard let familyName = fullName.familyName,
-                          let givenName = fullName.givenName else { return }
-                    let name = givenName+familyName
-                    let form = AppleLoginRequest(idToken: tokenToString,
-                                                 nickname: name,
-                                                 deviceToken: viewModel.deviceToken ?? "")
-                    let group = DispatchGroup()
-                    group.enter()
-                    viewModel.fetchAppleLoginRequest(info: form)
-                    group.leave()
-                    
-                    group.notify(queue: .main) {
-                        self.dismiss(animated: true)
-                        print("완료")
-                    }
-                }
-                // MARK: - 여기부터 없어도 될듯
-//                else {
-//                    if let storedFullName = viewModel.appleFullName {
-//                        let form = AppleLoginRequest(idToken: tokenToString,
-//                                                     nickname: storedFullName,
-//                                                     deviceToken: viewModel.deviceToken ?? "")
-//                        print("else문 Form ",form)
-//                        viewModel.fetchAppleLogin(form: form)
-//                    }
-//                }
-                
-    // 이메일, 토큰, 이름 -> UserDefault & API 서버에 POST
-    // 서버에 Request 이후 Response 를 받게되면, 성공시 화면을 전환해조야됨
                 
             case let passwordCredential as ASPasswordCredential:
                 
@@ -287,5 +257,8 @@ extension OnboadingBottomSheetViewController: ASAuthorizationControllerDelegate 
             default : break
                 
             }
-        }
+        // MARK: - 애플로그인 후처리 필요
+        let vc = LoginGateViewController(loginMethod: .apple)
+        navigationController?.setViewControllers([vc], animated: false)
+    }
 }
