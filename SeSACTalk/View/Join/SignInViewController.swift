@@ -105,9 +105,10 @@ final class SignInViewController: UIViewController {
             .subscribe(with: self) { owner, response in
                 switch response {
                 case .success(let result):
-                    owner.viewModel.saveTokens(access: result.token.accessToken,
-                                         refresh: result.token.refreshToken)
-                    
+                    owner.viewModel.session.handOverLoginInformation(userID: result.userID,
+                                                                     nick: result.nickname,
+                                                                     access: result.token.accessToken,
+                                                                     refresh: result.token.refreshToken)
                     owner.dismiss(animated: true)
                     owner.delegate?.pushToWorkSpace()
                     
