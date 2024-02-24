@@ -14,6 +14,7 @@ import RxCocoa
 
 final class SideMenuEmptyViewController: UIViewController {
     
+    
     private let mainTitle = CustomTitleLabel(ScreenTitles.WorkspaceList.mainTitle,
                                                textColor: .black,
                                                font: Typography.title1 ??
@@ -27,12 +28,14 @@ final class SideMenuEmptyViewController: UIViewController {
     
     private let addNewWorkSpaceButton = SideMenuButton(title: "워크스페이스 추가", icon: .plus)
     private let helpButton = SideMenuButton(title: "도움말", icon: .help)
-
+    private let disposeBag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         configure()
         setConstraints()
+        bind()
     }
     
     private func configure() {
@@ -47,8 +50,7 @@ final class SideMenuEmptyViewController: UIViewController {
         view.addSubview(helpButton)
 
         createWorkSpaceButton.validationBinder.onNext(true)
-
-    
+        
     }
     
     private func setConstraints() {
@@ -87,5 +89,31 @@ final class SideMenuEmptyViewController: UIViewController {
             make.height.equalTo(41)
         }
     }
-
+    
+    private func bind() {
+        createWorkSpaceButton.rx.tap
+            .subscribe(with: self) { owner, _ in
+                let vc = WorkSpaceEditViewController(viewModel:
+                                                        EmptyWorkSpaceViewModel(editMode: .create,
+                                                                                workspaceInfo: nil))
+                vc.modalTransitionStyle = .coverVertical
+                let navVC = UINavigationController(rootViewController: vc)
+                
+                let previous = owner.presentingViewController as? UINavigationController
+                vc.viewModel.editViewControllerTransferTrigger = { 
+                    previous?.present(navVC, animated: true)
+                }
+                vc.viewModel.HomeDefaultTrasferTrigger = {
+                    owner.dismissTrigger()
+                    previous?.setViewControllers([DefaultWorkSpaceViewController.shared], animated: true)
+                }
+                owner.dismiss(animated: true) {
+                    vc.viewModel.editViewControllerTransferTrigger?()
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    deinit {
+        print("사이드메뉴 deinit 됨")
+    }
 }
