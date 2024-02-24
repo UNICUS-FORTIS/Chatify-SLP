@@ -25,7 +25,6 @@ final class OnboardingViewController: UIViewController {
     private let loginSession = LoginSession.shared
     private let disposeBag = DisposeBag()
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
@@ -104,13 +103,13 @@ final class OnboardingViewController: UIViewController {
                                 strongSelf.navigationController?.setViewControllers([vc], animated: true)
                             } else if response.count == 1 {
                                 let vc = DefaultWorkSpaceViewController.shared
-                                owner.loginSession.assginWorkSpaces(spaces: response)
+                                owner.loginSession.assignWorkspace(spaces: response)
                                 UserDefaults.createRecentWorkspace(workspaces: response)
                                 strongSelf.navigationController?.setViewControllers([vc], animated: true)
                             } else {
                                 let vc = DefaultWorkSpaceViewController.shared
                                 let sortedReponse  = owner.viewModel.sortResponseByDate(response)
-                                owner.loginSession.assginWorkSpaces(spaces: sortedReponse)
+                                owner.loginSession.assignWorkspace(spaces: sortedReponse)
                                 print("--------sortedResponse------")
                                 dump(sortedReponse)
                                 print("--------sortedResponse------")
@@ -151,9 +150,7 @@ final class OnboardingViewController: UIViewController {
 extension OnboardingViewController: ToWorkSpaceTriggerProtocol {
     
     func pushToWorkSpace() {
-        let vc = WorkSpaceInitialViewController()
+        let vc = HomeEmptyViewController()
         self.navigationController?.setViewControllers([vc], animated: true)
     }
-    
-    
 }
