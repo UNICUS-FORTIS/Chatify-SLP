@@ -18,6 +18,7 @@ final class ProfileViewModel {
     private let disposeBag = DisposeBag()
     private var currentProfileImgURL: String?
     private var currentProfileEmail: String?
+    private var vendorInfo: String?
     var profileImageData = PublishSubject<Data>()
     
     init() {
@@ -28,6 +29,7 @@ final class ProfileViewModel {
                 owner.makeProfileDatas(profile: safe)
                 owner.makeProfileURL(profile: safe)
                 owner.createEmailInfo(profile: safe)
+                owner.vendorInfo = safe.vendor
             }
             .disposed(by: disposeBag)
         
@@ -80,6 +82,11 @@ final class ProfileViewModel {
                                        value: profile.phone ?? "")
         
         profileDataRelay.accept([coinInfo, nickname, contact])
+    }
+    
+    func makeVendorInfo() -> String {
+        guard let safe = vendorInfo else { return ""}
+        return safe
     }
     
     deinit {
