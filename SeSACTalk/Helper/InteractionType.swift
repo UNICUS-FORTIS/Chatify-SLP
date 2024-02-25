@@ -19,6 +19,7 @@ enum InteractionTypeCancellable {
     case loadChannels(name: String)
     case exitFromChannel
     case removeChannel
+    case logout
     
     var title: String {
         switch self {
@@ -32,6 +33,8 @@ enum InteractionTypeCancellable {
             return "채널에서 나가기"
         case .removeChannel:
             return "채널 삭제"
+        case .logout:
+            return "로그아웃"
         }
     }
     
@@ -53,6 +56,9 @@ enum InteractionTypeCancellable {
             
         case .removeChannel:
             return "정말 이 채널을 삭제하시겠습니까? 삭제 시 멤버/채팅 등 채널 내의 모든 정보가 삭제되며 복구할 수 없습니다."
+            
+        case .logout:
+            return "정말 로그아웃 할까요?"
         }
     }
     
@@ -72,6 +78,9 @@ enum InteractionTypeCancellable {
             
         case .loadChannels:
             return "확인"
+            
+        case .logout:
+            return "로그아웃"
         }
     }
 }
