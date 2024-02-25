@@ -10,6 +10,6 @@ import Foundation
 
 struct AppleLoginRequest: Encodable {
     let idToken: String
-    let nickname: String
+    let nickname: String?
     let deviceToken: String
 }
