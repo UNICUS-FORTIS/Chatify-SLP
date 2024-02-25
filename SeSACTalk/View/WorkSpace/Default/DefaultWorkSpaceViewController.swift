@@ -31,6 +31,9 @@ final class DefaultWorkSpaceViewController: UIViewController {
         configure()
         setConstraints()
         bind()
+        session.setViewControllerActor = {
+            self.navigationController?.setViewControllers([OnboardingViewController()], animated: true)
+        }
     }
     
     required init?(coder: NSCoder) {

@@ -27,6 +27,7 @@ final class HomeEmptyViewController: UIViewController {
     private let viewModel = EmptyWorkSpaceViewModel(editMode: .create,
                                                     workspaceInfo: nil)
     private var sideMenu: SideMenuNavigationController?
+    private var session = LoginSession.shared
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -36,6 +37,9 @@ final class HomeEmptyViewController: UIViewController {
         setConstraints()
         bind()
         guideToInitialViewController()
+        session.setViewControllerActor = {
+=            self.navigationController?.setViewControllers([OnboardingViewController()], animated: true)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
