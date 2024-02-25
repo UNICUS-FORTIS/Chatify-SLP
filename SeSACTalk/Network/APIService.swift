@@ -40,6 +40,7 @@ enum APIService {
     case leaveFromChannel(id: IDRequiredRequest, name: NameRequest)
     case loadUnreadChannelChats(id: IDRequiredRequest, name: NameRequest, cursor: ChatCursorDateRequest)
     case removeChannel(id: IDRequiredRequest, name: NameRequest)
+    case logout
 }
 
 extension APIService: TargetType {
@@ -164,6 +165,9 @@ extension APIService: TargetType {
             path.PathDepthOne.channel +
             "/\(name.name)"
             
+        case .logout:
+            return path.logout
+            
         }
     }
     
@@ -193,7 +197,8 @@ extension APIService: TargetType {
                 .joinToChannelChat,
                 .loadChannelMemebers,
                 .leaveFromChannel,
-                .loadUnreadChannelChats :
+                .loadUnreadChannelChats,
+                .logout:
             return .get
             
         case .editWorkSpace,
@@ -254,7 +259,8 @@ extension APIService: TargetType {
                 .loadAllChannels,
                 .loadChannelMemebers,
                 .leaveFromChannel,
-                .removeChannel :
+                .removeChannel,
+                .logout :
             return .requestPlain
             
         case .inviteWorkspaceMember(_, let model):
@@ -311,7 +317,8 @@ extension APIService: TargetType {
                 .join,
                 .emailLogin,
                 .kakaoLogin,
-                .appleLogin :
+                .appleLogin,
+                .logout:
             
             return [
                 SecureKeys.Headers.contentsType : SecureKeys.Headers.contentsTypePair,
