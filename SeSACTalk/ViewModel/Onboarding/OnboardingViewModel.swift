@@ -16,7 +16,8 @@ final class OnboardingViewModel {
     
     let networkService = NetworkService.shared
     var joinPagePushTrigger: (() -> Void)?
-    var emailLoginPushTrigger: (()-> Void)?
+    var emailLoginPushTrigger: (() -> Void)?
+    var appleLoginPushTrigger: (() -> Void)?
     var afterLoginSucceedTrigger: (() -> Void)?
     let deviceToken = UserDefaults.standard.value(forKey: "tempDeviceToken") as? String
     lazy var appleFullName = UserDefaults.standard.string(forKey: "AppleLoginName")

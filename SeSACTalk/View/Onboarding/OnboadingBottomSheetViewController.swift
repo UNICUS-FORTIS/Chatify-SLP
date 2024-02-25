@@ -160,10 +160,8 @@ final class OnboadingBottomSheetViewController: UIViewController {
     }
     
     private func moveToNextView() {
-        let vc = LoginGateViewController(loginMethod: .apple)
-        let presentingViewcontroller = self.presentingViewController as? UINavigationController
-        self.dismiss(animated: true) {
-            presentingViewcontroller?.pushViewController(vc, animated: false)
+        self.dismiss(animated: true) { [weak self] in
+            self?.viewModel?.appleLoginPushTrigger?()
         }
     }
     

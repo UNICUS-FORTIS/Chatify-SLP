@@ -56,6 +56,7 @@ final class OnboardingViewController: UIViewController {
         fpc.layout = OnboardingFloatingPanelLayout()
         fpc.surfaceView.appearance = appearance
         fpc.set(contentViewController: contentVC)
+        
     }
   
     
@@ -83,6 +84,11 @@ final class OnboardingViewController: UIViewController {
                     self?.present(NavVC, animated: true, completion: nil)
                 }
             }
+        }
+        
+        viewModel.appleLoginPushTrigger = { [weak self] in
+            let vc = LoginGateViewController(loginMethod: .apple)
+            vc.setInfoByLoginMethod(target: self)
         }
     }
     
