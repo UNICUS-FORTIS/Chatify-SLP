@@ -88,7 +88,7 @@ final class OnboardingViewController: UIViewController {
         
         viewModel.appleLoginPushTrigger = { [weak self] in
             let vc = LoginGateViewController(loginMethod: .apple)
-            vc.setInfoByLoginMethod(target: self)
+            vc.gateAction(target: self)
         }
     }
     
