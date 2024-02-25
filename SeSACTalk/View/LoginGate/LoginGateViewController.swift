@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 
 final class LoginGateViewController: UIViewController {
-
+    
     private let session = LoginSession.shared
     private let handler = SocialLoginHandler()
     private var loginMethod: LoginMethod
@@ -27,23 +27,31 @@ final class LoginGateViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setInfoByLoginMethod { [weak self] in
-            self?.trasferToViewController()
-        }
+        setInfoByLoginMethod(target: nil)
     }
     
-    private func trasferToViewController() {
-        
-        if session.makeWorkspaceListCount() > 0 {
-            let vc = DefaultWorkSpaceViewController.shared
-            self.navigationController?.setViewControllers([vc], animated: false)
-        } else {
-            let vc = HomeEmptyViewController()
-            self.navigationController?.setViewControllers([vc], animated: false)
-        }
-    }
+//    private func trasferToViewController(target: UIViewController?) {
+//        
+//        guard let safeTarget = target else {
+//            if session.makeWorkspaceListCount() > 0 {
+//                let vc = DefaultWorkSpaceViewController.shared
+//                target?.navigationController?.setViewControllers([vc], animated: false)
+//            } else {
+//                let vc = HomeEmptyViewController()
+//                target?.navigationController?.setViewControllers([vc], animated: false)
+//            }
+//            return
+//        }
+//        if session.makeWorkspaceListCount() > 0 {
+//            let vc = DefaultWorkSpaceViewController.shared
+//            self.navigationController?.setViewControllers([vc], animated: false)
+//        } else {
+//            let vc = HomeEmptyViewController()
+//            self.navigationController?.setViewControllers([vc], animated: false)
+//        }
+//    }
     
-    private func setInfoByLoginMethod(completion: @escaping () -> Void) {
+    func setInfoByLoginMethod(target: UIViewController?) {
         print(#function)
         switch loginMethod {
         case .apple:
@@ -63,7 +71,27 @@ final class LoginGateViewController: UIViewController {
                                                                nick: response.nickname,
                                                                access: response.token.accessToken,
                                                                refresh: response.token.refreshToken)
-                        completion()
+                        
+                        guard let safeTarget = target else {
+                            if owner.session.makeWorkspaceListCount() > 0 {
+                                let vc = DefaultWorkSpaceViewController.shared
+                                self.navigationController?.setViewControllers([vc], animated: false)
+                            } else {
+                                let vc = HomeEmptyViewController()
+                                self.navigationController?.setViewControllers([vc], animated: false)
+                            }
+                            return
+                        }
+                        print("여기실행되니?222")
+                        if owner.session.makeWorkspaceListCount() > 0 {
+                            let vc = DefaultWorkSpaceViewController.shared
+                            safeTarget.navigationController?.setViewControllers([vc], animated: false)
+                        } else {
+                            let vc = HomeEmptyViewController()
+                            safeTarget.navigationController?.setViewControllers([vc], animated: false)
+                        }
+                        print("실행완료")
+                        
                     case .failure(let error):
                         print(error.errorCode)
                     }
