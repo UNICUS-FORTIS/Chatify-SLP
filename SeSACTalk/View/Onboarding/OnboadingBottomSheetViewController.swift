@@ -111,6 +111,7 @@ final class OnboadingBottomSheetViewController: UIViewController {
     }
     
     @objc private func startAppleLogin() {
+
         let provider = ASAuthorizationAppleIDProvider()
         let request = provider.createRequest()
         request.requestedScopes = [.email, .fullName]
@@ -159,6 +160,14 @@ final class OnboadingBottomSheetViewController: UIViewController {
         
     }
     
+    private func moveToNextView() {
+        let vc = LoginGateViewController(loginMethod: .apple)
+        let presentingViewcontroller = self.presentingViewController as? UINavigationController
+        self.dismiss(animated: true) {
+            presentingViewcontroller?.pushViewController(vc, animated: false)
+        }
+    }
+    
     // MARK: - 두번째 로그인때부터 이메일 정보가 없을 경우
     private func decode(jwtToken jwt: String) -> [String: Any] {
         
@@ -177,7 +186,6 @@ final class OnboadingBottomSheetViewController: UIViewController {
             return Data(base64Encoded: base64, options: .ignoreUnknownCharacters)
         }
         
-        
         func decodeJWTPart(_ value: String) -> [String: Any]? {
             guard let bodyData = base64UrlDecode(value),
                   let json = try? JSONSerialization.jsonObject(with: bodyData, options: []), let payload = json as? [String: Any] else {
@@ -190,8 +198,6 @@ final class OnboadingBottomSheetViewController: UIViewController {
         let segments = jwt.components(separatedBy: ".")
         return decodeJWTPart(segments[1]) ?? [:]
     }
-    
-    
 }
 
 extension OnboadingBottomSheetViewController: ASAuthorizationControllerPresentationContextProviding {
@@ -211,7 +217,6 @@ extension OnboadingBottomSheetViewController: ASAuthorizationControllerDelegate 
     
     // MARK: - 로그인 성공한경우
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-            
             switch authorization.credential {
                 
             case let appleIDCredential as ASAuthorizationAppleIDCredential :
@@ -227,7 +232,9 @@ extension OnboadingBottomSheetViewController: ASAuthorizationControllerDelegate 
 
                 if let fullName = fullName {
                     guard let familyName = fullName.familyName,
-                          let givenName = fullName.givenName else { return }
+                          let givenName = fullName.givenName else { 
+                        moveToNextView()
+                        return }
                     
                     let name = givenName+familyName
                     SecureKeys.saveAppleUsername(name: name)
@@ -247,7 +254,10 @@ extension OnboadingBottomSheetViewController: ASAuthorizationControllerDelegate 
                     let result = decode(jwtToken: tokenToString)["email"] as? String ?? ""
                     print("이메일이 없어서 디코드한", result)
                     SecureKeys.saveAppleAppleIDToken(token: tokenToString)
+                    moveToNextView()
                 }
+                
+                moveToNextView()
                 
             case let passwordCredential as ASPasswordCredential:
                 
@@ -257,8 +267,5 @@ extension OnboadingBottomSheetViewController: ASAuthorizationControllerDelegate 
             default : break
                 
             }
-        // MARK: - 애플로그인 후처리 필요
-        let vc = LoginGateViewController(loginMethod: .apple)
-        navigationController?.setViewControllers([vc], animated: false)
     }
 }
