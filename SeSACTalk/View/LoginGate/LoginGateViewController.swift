@@ -11,6 +11,7 @@ import RxSwift
 final class LoginGateViewController: UIViewController {
     
     private let session = LoginSession.shared
+    private let networkService = NetworkService.shared
     private let handler = SocialLoginHandler()
     private var loginMethod: LoginMethod
     private let disposeBag = DisposeBag()
@@ -27,31 +28,16 @@ final class LoginGateViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setInfoByLoginMethod(target: nil)
+        gateAction(target: nil)
     }
     
-//    private func trasferToViewController(target: UIViewController?) {
-//        
-//        guard let safeTarget = target else {
-//            if session.makeWorkspaceListCount() > 0 {
-//                let vc = DefaultWorkSpaceViewController.shared
-//                target?.navigationController?.setViewControllers([vc], animated: false)
-//            } else {
-//                let vc = HomeEmptyViewController()
-//                target?.navigationController?.setViewControllers([vc], animated: false)
-//            }
-//            return
-//        }
-//        if session.makeWorkspaceListCount() > 0 {
-//            let vc = DefaultWorkSpaceViewController.shared
-//            self.navigationController?.setViewControllers([vc], animated: false)
-//        } else {
-//            let vc = HomeEmptyViewController()
-//            self.navigationController?.setViewControllers([vc], animated: false)
-//        }
-//    }
-    
-    func setInfoByLoginMethod(target: UIViewController?) {
+    func gateAction(target: UIViewController?) {
+        setInfoByLoginMethod {
+            self.transferViewcController(target: target)
+        }
+    }
+
+    func setInfoByLoginMethod(completion: @escaping () -> Void) {
         print(#function)
         switch loginMethod {
         case .apple:
@@ -66,32 +52,12 @@ final class LoginGateViewController: UIViewController {
                     print(result)
                     switch result {
                     case .success(let response):
-                        print(response)
                         owner.session.handOverLoginInformation(userID: response.userID,
                                                                nick: response.nickname,
                                                                access: response.token.accessToken,
                                                                refresh: response.token.refreshToken)
-                        
-                        guard let safeTarget = target else {
-                            if owner.session.makeWorkspaceListCount() > 0 {
-                                let vc = DefaultWorkSpaceViewController.shared
-                                self.navigationController?.setViewControllers([vc], animated: false)
-                            } else {
-                                let vc = HomeEmptyViewController()
-                                self.navigationController?.setViewControllers([vc], animated: false)
-                            }
-                            return
-                        }
-                        print("여기실행되니?222")
-                        if owner.session.makeWorkspaceListCount() > 0 {
-                            let vc = DefaultWorkSpaceViewController.shared
-                            safeTarget.navigationController?.setViewControllers([vc], animated: false)
-                        } else {
-                            let vc = HomeEmptyViewController()
-                            safeTarget.navigationController?.setViewControllers([vc], animated: false)
-                        }
-                        print("실행완료")
-                        
+                        owner.session.fetchLoadWorkSpace()
+                        completion()
                     case .failure(let error):
                         print(error.errorCode)
                     }
@@ -102,6 +68,37 @@ final class LoginGateViewController: UIViewController {
         case .email:
             break
         }
+    }
+    
+    private func transferViewcController(target: UIViewController?) {
+        networkService.fetchRequest(endpoint: .loadWorkSpace,
+                                    decodeModel: WorkSpaces.self)
+        .subscribe(with: self) { owner, result in
+            switch result {
+            case .success(let response):
+                guard let safeTarget = target else {
+                    if response.count > 0 {
+                        let vc = DefaultWorkSpaceViewController.shared
+                        self.navigationController?.setViewControllers([vc], animated: false)
+                    } else {
+                        let vc = HomeEmptyViewController()
+                        self.navigationController?.setViewControllers([vc], animated: false)
+                    }
+                    return
+                }
+                if response.count  > 0 {
+                    let vc = DefaultWorkSpaceViewController.shared
+                    safeTarget.navigationController?.setViewControllers([vc], animated: false)
+                } else {
+                    let vc = HomeEmptyViewController()
+                    safeTarget.navigationController?.setViewControllers([vc], animated: false)
+                }
+                
+            case .failure(let error):
+                print(error.errorCode)
+            }
+        }
+        .disposed(by: disposeBag)
     }
     
     deinit {
