@@ -19,9 +19,6 @@ final class OnboardingViewModel {
     var emailLoginPushTrigger: (() -> Void)?
     var appleLoginPushTrigger: (() -> Void)?
     var afterLoginSucceedTrigger: (() -> Void)?
-    let deviceToken = UserDefaults.standard.value(forKey: "tempDeviceToken") as? String
-    lazy var appleFullName = UserDefaults.standard.string(forKey: "AppleLoginName")
-    lazy var appleEmail = UserDefaults.standard.string(forKey: "AppleLoginEmail")
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
