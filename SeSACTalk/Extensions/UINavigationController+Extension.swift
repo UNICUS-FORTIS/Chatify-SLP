@@ -112,6 +112,14 @@ extension UINavigationController {
         navigationBar.standardAppearance = appearance
         navigationBar.compactAppearance = appearance
         navigationBar.scrollEdgeAppearance = appearance
-        
+    }
+    
+    func setOnboardingNavigation() {
+        let appearance = UINavigationBarAppearance()
+        appearance.shadowColor = .clear
+        appearance.backgroundColor = Colors.Background.primary
+        navigationBar.standardAppearance = appearance
+        navigationBar.compactAppearance = appearance
+        navigationBar.scrollEdgeAppearance = appearance
     }
 }
