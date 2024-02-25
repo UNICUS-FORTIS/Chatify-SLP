@@ -31,8 +31,7 @@ final class OnboadingBottomSheetViewController: UIViewController {
     private let joinButton = CustomLabel(ScreenTitles.Onboarding
         .BottomSheet
         .joinButton
-        .greenColored(), font: Typography.title2 ??
-                                         UIFont.systemFont(ofSize: 13))
+        .greenColored(), font: Typography.createTitle2())
     
     private var viewModel: OnboardingViewModel?
     private let disposeBag = DisposeBag()
@@ -228,8 +227,9 @@ extension OnboadingBottomSheetViewController: ASAuthorizationControllerDelegate 
                 let email = appleIDCredential.email
 
                 // MARK: - userIdentifier 저장
-                UserDefaults.standard.set(userIdentifier, forKey: "AppleUser")
-
+                SecureKeys.saveAppleUserIdentifier(identifier: userIdentifier)
+                
+                
                 if let fullName = fullName {
                     guard let familyName = fullName.familyName,
                           let givenName = fullName.givenName else { 
