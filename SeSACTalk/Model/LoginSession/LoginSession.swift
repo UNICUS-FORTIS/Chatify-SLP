@@ -66,6 +66,7 @@ final class LoginSession {
                                   access: String,
                                   refresh: String) {
         print(#function)
+        
         userIDSubject
             .asDriver(onErrorJustReturn: 000)
             .drive(with: self) { owner, id in
@@ -449,9 +450,5 @@ final class LoginSession {
         } catch {
             return 0
         }
-    }
-    
-    func resetLoginSession() {
-        Self.shared = LoginSession()
     }
 }
