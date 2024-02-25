@@ -32,6 +32,7 @@ final class EmptyWorkSpaceViewModel {
     let workspaceImage = PublishSubject<Data>()
     let workspaceImageMounted = BehaviorSubject<Bool>(value: false)
     let spaceDescription = BehaviorSubject<String>(value: "")
+    var setViewControllerHandeler: ( () -> Void )?
     var editViewControllerTransferTrigger: (() -> Void)?
     var HomeDefaultTrasferTrigger: (() -> Void)?
     
