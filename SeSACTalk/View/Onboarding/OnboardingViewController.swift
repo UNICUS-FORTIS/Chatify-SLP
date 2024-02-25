@@ -17,12 +17,11 @@ final class OnboardingViewController: UIViewController {
     private let mainImage = UIImageView(image: .onboarding)
     private let mainTitle = CustomTitleLabel(ScreenTitles.Onboarding.mainTitle,
                                              textColor: .black,
-                                             font: Typography.title1 ??
-                                             UIFont.systemFont(ofSize: 22))
+                                             font: Typography.createTitle1())
     private let startButton = CustomButton(title: ScreenTitles.Onboarding.startButton)
     private var fpc: FloatingPanelController!
     private let viewModel = OnboardingViewModel()
-    private let loginSession = LoginSession.shared
+    private let session = LoginSession.shared
     private let disposeBag = DisposeBag()
 
     override func viewDidLoad() {
@@ -41,6 +40,7 @@ final class OnboardingViewController: UIViewController {
         mainImage.contentMode = .scaleAspectFit
         startButton.validationBinder.onNext(true)
         startButton.addTarget(self, action: #selector(presentBottomSheet), for: .touchUpInside)
+        navigationController?.setOnboardingNavigation()
     }
     
     private func setFloatingPanel() {
@@ -103,16 +103,13 @@ final class OnboardingViewController: UIViewController {
                                 strongSelf.navigationController?.setViewControllers([vc], animated: true)
                             } else if response.count == 1 {
                                 let vc = DefaultWorkSpaceViewController.shared
-                                owner.loginSession.assignWorkspace(spaces: response)
+                                owner.session.assignWorkspace(spaces: response)
                                 UserDefaults.createRecentWorkspace(workspaces: response)
                                 strongSelf.navigationController?.setViewControllers([vc], animated: true)
                             } else {
                                 let vc = DefaultWorkSpaceViewController.shared
                                 let sortedReponse  = owner.viewModel.sortResponseByDate(response)
-                                owner.loginSession.assignWorkspace(spaces: sortedReponse)
-                                print("--------sortedResponse------")
-                                dump(sortedReponse)
-                                print("--------sortedResponse------")
+                                owner.session.assignWorkspace(spaces: sortedReponse)
                                 strongSelf.navigationController?.setViewControllers([vc], animated: true)
                             }
                                 
