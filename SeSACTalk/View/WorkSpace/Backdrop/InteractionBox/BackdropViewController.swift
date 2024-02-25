@@ -140,10 +140,9 @@ final class BackdropViewController: UIViewController {
         session.setViewControllerActor?()
         guard let previous = self.presentingViewController as? UINavigationController else { return }
             session.fetchLogout { [weak self] in
-                self?.dismiss(animated: false) { [weak self] in
+                self?.dismiss(animated: false) {
                     previous.popToRootViewController(animated: false)
                     SecureKeys.removeAppleUserIdentifier()
-                    self?.session.resetLoginSession()
             }
         }
     }
