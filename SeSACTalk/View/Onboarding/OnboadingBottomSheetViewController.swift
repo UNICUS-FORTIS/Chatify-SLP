@@ -218,35 +218,19 @@ extension OnboadingBottomSheetViewController: ASAuthorizationControllerDelegate 
                 
             case let appleIDCredential as ASAuthorizationAppleIDCredential :
                 
-                print(appleIDCredential)
-                
-                let userIdentifier = appleIDCredential.user
-                let fullName = appleIDCredential.fullName
-                let email = appleIDCredential.email
-
-                // MARK: - userIdentifier 저장
-                SecureKeys.saveAppleUserIdentifier(identifier: userIdentifier)
-                
-                
-                if let fullName = fullName {
-                    guard let familyName = fullName.familyName,
-                          let givenName = fullName.givenName else { 
-                        moveToNextView()
-                        return }
-                    
-                    let name = givenName+familyName
-                    SecureKeys.saveAppleUsername(name: name)
-                }
-                
-                if let email = email {
-                    SecureKeys.saveAppleEmail(email: email)
-                }
-                
                 guard let token = appleIDCredential.identityToken,
                       let tokenToString = String(data: token, encoding: .utf8) else {
                     print("Token Error")
                     return }
                 SecureKeys.saveAppleAppleIDToken(token: tokenToString)
+
+                let userIdentifier = appleIDCredential.user
+                let fullName = appleIDCredential.fullName
+                let email = appleIDCredential.email
+                
+                if let email = email {
+                    SecureKeys.saveAppleEmail(email: email)
+                }
                 
                 if email?.isEmpty ?? true {
                     let result = decode(jwtToken: tokenToString)["email"] as? String ?? ""
@@ -254,6 +238,20 @@ extension OnboadingBottomSheetViewController: ASAuthorizationControllerDelegate 
                     SecureKeys.saveAppleAppleIDToken(token: tokenToString)
                     moveToNextView()
                 }
+
+                // MARK: - userIdentifier 저장
+                SecureKeys.saveAppleUserIdentifier(identifier: userIdentifier)
+                                
+                if let fullName = fullName {
+                    guard let familyName = fullName.familyName,
+                          let givenName = fullName.givenName else { return }
+                    
+                    let name = givenName+familyName
+                    SecureKeys.saveAppleUsername(name: name)
+                }
+                print("여기실행 5")
+
+                
                 
                 moveToNextView()
                 
