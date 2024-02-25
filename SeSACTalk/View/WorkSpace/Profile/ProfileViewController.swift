@@ -159,7 +159,6 @@ extension ProfileViewController: UITableViewDataSource {
                 
                 cell.setConnectedSocialAccount(vendor: viewModel.makeVendorInfo())
                 
-                
             default :
                 break
             }
@@ -187,9 +186,23 @@ extension ProfileViewController: UITableViewDelegate {
                 
                 let vc = ProfileEditViewController(editMode: .contact)
                 navigationController?.pushViewController(vc, animated: true)
+                
             }
             
-        default: break
+            
+        case .systemMenu:
+            let index = SystemMenu.allCases[indexPath.row]
+            switch index {
+            case .logout:
+                let vc = BackdropViewController(boxType: .cancellable(.logout),
+                                                workspaceID: nil)
+                
+                vc.modalTransitionStyle = .coverVertical
+                vc.modalPresentationStyle = .overFullScreen
+                present(vc, animated: false)
+                
+            default: break
+            }
         }
     }
 }
