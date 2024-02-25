@@ -12,7 +12,7 @@ import RxCocoa
 
 final class LoginSession {
     
-    static let shared = LoginSession()
+    static var shared = LoginSession()
     private init() { bind() }
 
     private let networkService = NetworkService.shared
@@ -24,6 +24,7 @@ final class LoginSession {
     let workSpacesSubject = BehaviorSubject<WorkSpaces?>(value: nil)
     let currentWorkspaceSubject = BehaviorSubject<WorkSpace?>(value: nil)
     private var currentWorkspaceID: Int?
+    var setViewControllerActor : (() -> Void)?
     
     // MARK: - Navigation
     var leftCustomView = CustomNavigationLeftView()
@@ -64,6 +65,7 @@ final class LoginSession {
                                   nick: String,
                                   access: String,
                                   refresh: String) {
+        print(#function)
         userIDSubject
             .asDriver(onErrorJustReturn: 000)
             .drive(with: self) { owner, id in
@@ -210,6 +212,7 @@ final class LoginSession {
     }
     
     func fetchMyProfile() -> Single<Result<MyProfileResponse, ErrorResponse>> {
+        print(#function)
         return networkService.fetchRequest(endpoint: .loadMyProfile,
                                            decodeModel: MyProfileResponse.self)
     }
@@ -406,6 +409,20 @@ final class LoginSession {
             .disposed(by: disposeBag)
     }
     
+    func fetchLogout(completion: @escaping () -> Void) {
+        networkService.fetchStatusCodeRequest(endpoint: .logout)
+            .subscribe(with: self) { owner, result in
+                switch result {
+                case .success(_):
+                    completion()
+                    
+                case .failure(let error):
+                    print(error.errorCode)
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
     func makeUserID() -> Int {
         guard let id = userID else { return 000 }
         return id
@@ -432,5 +449,9 @@ final class LoginSession {
         } catch {
             return 0
         }
+    }
+    
+    func resetLoginSession() {
+        Self.shared = LoginSession()
     }
 }
