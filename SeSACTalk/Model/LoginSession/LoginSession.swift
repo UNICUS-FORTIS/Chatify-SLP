@@ -76,8 +76,8 @@ final class LoginSession {
         
         userIDSubject.onNext(userID)
         nickNameSubject.onNext(nick)
-        SecureKeys.saveNewAccessToken(token: access)
-        SecureKeys.saveNewRefreshToken(token: refresh)
+        UserdefaultManager.saveNewAccessToken(token: access)
+        UserdefaultManager.saveNewRefreshToken(token: refresh)
         repository.userID = userID
         repository.createInitialUserdata()
         // MARK: - 유저 프로파일 로드

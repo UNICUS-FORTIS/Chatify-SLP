@@ -20,7 +20,7 @@ final class RefreshTokenInterceptor: RequestInterceptor {
         
         var urlRQ = urlRequest
         
-        urlRQ.headers.update(name: SecureKeys.Headers.auth, value: SecureKeys.createAccessToken())
+        urlRQ.headers.update(name: SecureKeys.Headers.auth, value: UserdefaultManager.createAccessToken())
         
         completion(.success(urlRQ))
     }
@@ -43,13 +43,13 @@ final class RefreshTokenInterceptor: RequestInterceptor {
                     retryCount += 1
                     
                     dispatchGroup.enter()
-                    let token = AccessTokenRequest(accessToken: SecureKeys.createAccessToken())
+                    let token = AccessTokenRequest(accessToken: UserdefaultManager.createAccessToken())
                     networkService.fetchRequest(endpoint: .refreshToken(token: token),
                                                 decodeModel: AccessTokenRequest.self)
                     .subscribe(with: self) { owner, result in
                         switch result {
                         case .success(let response) :
-                            SecureKeys.saveNewAccessToken(token: response.accessToken)
+                            UserdefaultManager.saveNewAccessToken(token: response.accessToken)
                             print("토큰저장완료")
                             completion(.retry)
                             dispatchGroup.leave()

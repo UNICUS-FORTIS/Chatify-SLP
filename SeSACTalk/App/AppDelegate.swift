@@ -63,7 +63,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        SecureKeys.saveDeviceToken(token: token)
+        UserdefaultManager.saveDeviceToken(token: token)
         print("디바이스토큰", token)
 
     }

@@ -37,13 +37,13 @@ final class LoginGateViewController: UIViewController {
         }
     }
 
-    func setInfoByLoginMethod(completion: @escaping () -> Void) {
+    private func setInfoByLoginMethod(completion: @escaping () -> Void) {
         print(#function)
         switch loginMethod {
         case .apple:
-            guard let appleToken = SecureKeys.createAppleIDToken(),
-                  let deviceToken = SecureKeys.createDeviceToken() else { return }
-            let name = SecureKeys.createAppleLoginName()
+            guard let appleToken = UserdefaultManager.createAppleIDToken(),
+                  let deviceToken = UserdefaultManager.createDeviceToken() else { return }
+            let name = UserdefaultManager.createAppleLoginName()
             let form = AppleLoginRequest(idToken: appleToken,
                                          nickname: name,
                                          deviceToken: deviceToken)
@@ -56,7 +56,6 @@ final class LoginGateViewController: UIViewController {
                                                                nick: response.nickname,
                                                                access: response.token.accessToken,
                                                                refresh: response.token.refreshToken)
-                        owner.session.fetchLoadWorkSpace()
                         completion()
                     case .failure(let error):
                         print(error.errorCode)
@@ -64,7 +63,9 @@ final class LoginGateViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         case .kakao:
-            break
+            
+            completion()
+            
         case .email:
             break
         }

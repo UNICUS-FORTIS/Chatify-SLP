@@ -14,19 +14,13 @@ import AuthenticationServices
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
-    
-    
+        
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        guard let user = UserDefaults.standard.string(forKey: "AppleUser") else {
+        guard let user = UserdefaultManager.createAppleLoginName() else {
             print("등록된 유저 없음")
-            window = UIWindow(windowScene: windowScene)
-            let naviVC = UINavigationController(rootViewController: OnboardingViewController())
-            window?.rootViewController = naviVC
-            window?.makeKeyAndVisible()
-            return
-        }
+            return }
         
         let appleIDProvider = ASAuthorizationAppleIDProvider()
         appleIDProvider.getCredentialState(forUserID: user) { credentialState, error in
@@ -48,6 +42,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 print("not Found !@!@!@!@")
             }
         }
+        
         
         window = UIWindow(windowScene: windowScene)
         let naviVC = UINavigationController(rootViewController: OnboardingViewController())
