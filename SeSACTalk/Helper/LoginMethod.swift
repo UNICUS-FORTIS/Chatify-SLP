@@ -14,4 +14,15 @@ enum LoginMethod {
     case kakao
     case email
     
+    var description: String {
+        switch self {
+        case .apple:
+            return "apple"
+        case .kakao:
+            return "kakao"
+        case .email:
+            return "email"
+        }
+    }
+    
 }
