@@ -71,6 +71,9 @@ final class BackdropViewController: UIViewController {
                 
             case .removeChannel:
                 box.setConfirmButtonAction(target: self, action: #selector(removeChannel))
+                
+            case .logout:
+                box.setConfirmButtonAction(target: self, action: #selector(logoutAction))
             }
             
         default: break
@@ -130,6 +133,17 @@ final class BackdropViewController: UIViewController {
         guard let presentingVC = self.presentingViewController as? UINavigationController else { return }
         self.dismiss(animated: false) {
             presentingVC.popToRootViewController(animated: true)
+        }
+    }
+    
+    @objc func logoutAction() {
+        session.setViewControllerActor?()
+        guard let previous = self.presentingViewController as? UINavigationController else { return }
+            session.fetchLogout { [weak self] in
+                self?.dismiss(animated: true) { [weak self] in
+                    previous.popToRootViewController(animated: true)
+                    self?.session.resetLoginSession()                
+            }
         }
     }
     
