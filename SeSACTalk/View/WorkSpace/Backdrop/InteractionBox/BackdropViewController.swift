@@ -137,13 +137,13 @@ final class BackdropViewController: UIViewController {
     }
     
     @objc func logoutAction() {
+        UserdefaultManager.setLogout()
         session.setViewControllerActor?()
         guard let previous = self.presentingViewController as? UINavigationController else { return }
             session.fetchLogout { [weak self] in
                 self?.dismiss(animated: false) {
-                    UserdefaultManager.setLogout()
                     previous.popToRootViewController(animated: false)
-                    
+                    print("로그아웃 완료")
             }
         }
     }
