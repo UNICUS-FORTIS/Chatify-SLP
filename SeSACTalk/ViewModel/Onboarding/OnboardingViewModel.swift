@@ -19,7 +19,6 @@ final class OnboardingViewModel {
     var emailLoginPushTrigger: (() -> Void)?
     var appleLoginPushTrigger: (() -> Void)?
     var kakaoLoginPushTrigger: (() -> Void)?
-    var afterLoginSucceedTrigger: (() -> Void)?
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"

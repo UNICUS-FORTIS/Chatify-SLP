@@ -49,7 +49,6 @@ final class MemberListFeatureClass: ListingViewControllerProtocol {
                 do {
                     guard let currentWorkspace = try owner.session.currentWorkspaceSubject.value() else { return }
                     let member = try owner.session.workspaceMember.value()
-                    print(member, "멤버")
                     owner.session.handoverWorkspaceManager(id: currentWorkspace.workspaceID,
                                                            receiverID: member[indexPath.row + 1].userID)
                 } catch {

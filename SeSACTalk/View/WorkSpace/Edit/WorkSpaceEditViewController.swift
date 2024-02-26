@@ -158,7 +158,7 @@ final class WorkSpaceEditViewController: UIViewController, ToastPresentableProto
                         }
                         owner.dismiss(animated: true) {
                             owner.viewModel.HomeDefaultTrasferTrigger?()
-                        } 
+                        }
                     }
                                
                 case .failure(let error):

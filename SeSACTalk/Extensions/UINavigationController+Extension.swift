@@ -69,10 +69,10 @@ extension UINavigationController {
         navigationBar.clipsToBounds = true
         toolbar.layer.cornerRadius = 25
         appearance.shadowColor = .clear
-        appearance.backgroundColor = Colors.Border.naviShadow
+        appearance.backgroundColor = .white
         let titleLabel = UILabel()
         titleLabel.text = "워크스페이스"
-        titleLabel.font = Typography.title1 ?? UIFont.systemFont(ofSize: 22)
+        titleLabel.font = Typography.createTitle1()
         
         let leftItem = UIBarButtonItem(customView: titleLabel)
         topViewController?.navigationItem.leftBarButtonItem = leftItem

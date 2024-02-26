@@ -80,7 +80,6 @@ final class ChannelTableViewCell: UITableViewCell {
             self.badge.text = "\(badgeCount)"
             self.name.font = Typography.createBodyBold()
             self.name.textColor = .black
-
         }
     }
 }

@@ -39,7 +39,6 @@ enum LoginMethod {
         } else if LoginMethod.email.isTrue {
             return .email
         }
-        
         return nil
     }
     

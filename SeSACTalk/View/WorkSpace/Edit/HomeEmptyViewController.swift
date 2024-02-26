@@ -38,7 +38,7 @@ final class HomeEmptyViewController: UIViewController {
         bind()
         guideToInitialViewController()
         session.setViewControllerActor = {
-=            self.navigationController?.setViewControllers([OnboardingViewController()], animated: true)
+            self.navigationController?.setViewControllers([OnboardingViewController()], animated: true)
         }
     }
     

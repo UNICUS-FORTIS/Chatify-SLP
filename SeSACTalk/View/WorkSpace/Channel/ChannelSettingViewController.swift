@@ -126,7 +126,6 @@ final class ChannelSettingViewController: UIViewController {
                                 withReuseIdentifier: ChannelSettingHeaderCell.identifier)
         collectionView.bounces = false
         collectionView.showsVerticalScrollIndicator = false
-        navigationController?.setDefaultNavigation(target: self, title: "채널 설정")
     }
     
     private func setConstraints() {
