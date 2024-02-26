@@ -9,12 +9,6 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
-import KakaoSDKCommon
-import RxKakaoSDKCommon
-import KakaoSDKAuth
-import RxKakaoSDKAuth
-import KakaoSDKUser
-import RxKakaoSDKUser
 import AuthenticationServices
 
 
@@ -84,28 +78,11 @@ final class OnboadingBottomSheetViewController: UIViewController {
     }
     
     @objc private func startKakaoLogin() {
-        print(#function)
-        guard let viewModel = viewModel else { return }
-        if (UserApi.isKakaoTalkLoginAvailable()) {
-            UserApi.shared.rx.loginWithKakaoTalk()
-                .flatMap { token -> Observable<KakaoLoginRequest> in
-                    let form = KakaoLoginRequest(oauthToken: token.accessToken,
-                                                 deviceToken: viewModel.deviceToken ?? "")
-                    return Observable.just(form)
-                }
-                .flatMapLatest { form -> Observable<Result<SignInResponse, ErrorResponse>> in
-                    let result = self.handler.fetchKakaoLoginRequest(info: form)
-                    return result.asObservable()
-                }
-                .subscribe(with: self) { owner, result in
-                    switch result {
-                    case .success(let response):
-                        print("응답왔음",response)
-                    case .failure(let error):
-                        print(error.errorCode)
-                    }
-                }
-                .disposed(by: disposeBag)
+        handler.fetchKakaoLoginRequest() { [weak self] in
+            self?.dismiss(animated: true) { [weak self] in
+                UserdefaultManager.setLoginMethod(isLogin: true, method: .kakao)
+                self?.viewModel?.kakaoLoginPushTrigger?()
+            }
         }
     }
     
@@ -161,6 +138,7 @@ final class OnboadingBottomSheetViewController: UIViewController {
     
     private func moveToNextView() {
         self.dismiss(animated: true) { [weak self] in
+            UserdefaultManager.setLoginMethod(isLogin: true, method: .apple)
             self?.viewModel?.appleLoginPushTrigger?()
         }
     }
@@ -214,6 +192,7 @@ extension OnboadingBottomSheetViewController: ASAuthorizationControllerDelegate 
     
     // MARK: - 로그인 성공한경우
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+
             switch authorization.credential {
                 
             case let appleIDCredential as ASAuthorizationAppleIDCredential :
@@ -222,36 +201,33 @@ extension OnboadingBottomSheetViewController: ASAuthorizationControllerDelegate 
                       let tokenToString = String(data: token, encoding: .utf8) else {
                     print("Token Error")
                     return }
-                SecureKeys.saveAppleAppleIDToken(token: tokenToString)
+                UserdefaultManager.saveAppleAppleIDToken(token: tokenToString)
 
                 let userIdentifier = appleIDCredential.user
                 let fullName = appleIDCredential.fullName
                 let email = appleIDCredential.email
                 
                 if let email = email {
-                    SecureKeys.saveAppleEmail(email: email)
+                    UserdefaultManager.saveAppleEmail(email: email)
                 }
                 
                 if email?.isEmpty ?? true {
                     let result = decode(jwtToken: tokenToString)["email"] as? String ?? ""
                     print("이메일이 없어서 디코드한", result)
-                    SecureKeys.saveAppleAppleIDToken(token: tokenToString)
+                    UserdefaultManager.saveAppleAppleIDToken(token: tokenToString)
                     moveToNextView()
                 }
 
                 // MARK: - userIdentifier 저장
-                SecureKeys.saveAppleUserIdentifier(identifier: userIdentifier)
+                UserdefaultManager.saveAppleUserIdentifier(identifier: userIdentifier)
                                 
                 if let fullName = fullName {
                     guard let familyName = fullName.familyName,
                           let givenName = fullName.givenName else { return }
                     
                     let name = givenName+familyName
-                    SecureKeys.saveAppleUsername(name: name)
+                    UserdefaultManager.saveAppleUsername(name: name)
                 }
-                print("여기실행 5")
-
-                
                 
                 moveToNextView()
                 
