@@ -90,6 +90,11 @@ final class OnboardingViewController: UIViewController {
             let vc = LoginGateViewController(loginMethod: .apple)
             vc.gateAction(target: self)
         }
+        
+        viewModel.kakaoLoginPushTrigger = { [weak self] in
+            let vc = LoginGateViewController(loginMethod: .kakao)
+            vc.gateAction(target: self)
+        }
     }
     
     @objc private func presentBottomSheet() {

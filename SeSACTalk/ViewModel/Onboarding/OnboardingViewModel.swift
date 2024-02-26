@@ -18,6 +18,7 @@ final class OnboardingViewModel {
     var joinPagePushTrigger: (() -> Void)?
     var emailLoginPushTrigger: (() -> Void)?
     var appleLoginPushTrigger: (() -> Void)?
+    var kakaoLoginPushTrigger: (() -> Void)?
     var afterLoginSucceedTrigger: (() -> Void)?
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
