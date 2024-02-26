@@ -14,40 +14,62 @@ import AuthenticationServices
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
+    private let handler = SocialLoginHandler()
         
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        guard let user = UserdefaultManager.createAppleLoginName() else {
-            print("등록된 유저 없음")
-            return }
-        
-        let appleIDProvider = ASAuthorizationAppleIDProvider()
-        appleIDProvider.getCredentialState(forUserID: user) { credentialState, error in
-            switch credentialState {
-            case .revoked:
-                print("Revoked")
-            
-            case .authorized:
-                print("애플로그인 인가 됨")
-                DispatchQueue.main.async {
-                    self.window = UIWindow(windowScene: windowScene)
-                    let naviVC = UINavigationController(rootViewController: LoginGateViewController(loginMethod: .apple))
-                    self.window?.rootViewController = naviVC
-                    self.window?.makeKeyAndVisible()
-                    return
-                }
-            
-            default:
-                print("not Found !@!@!@!@")
-            }
+        guard let method = LoginMethod.activeMethod() else { 
+            window = UIWindow(windowScene: windowScene)
+            let naviVC = UINavigationController(rootViewController: OnboardingViewController())
+            window?.rootViewController = naviVC
+            window?.makeKeyAndVisible()
+            return
         }
         
-        
-        window = UIWindow(windowScene: windowScene)
-        let naviVC = UINavigationController(rootViewController: OnboardingViewController())
-        window?.rootViewController = naviVC
-        window?.makeKeyAndVisible()
+        switch method {
+        case .apple:
+            guard let user = UserdefaultManager.createAppleLoginName() else {
+                print("등록된 유저 없음")
+            return }
+            
+            let appleIDProvider = ASAuthorizationAppleIDProvider()
+            appleIDProvider.getCredentialState(forUserID: user) { credentialState, error in
+                switch credentialState {
+                case .revoked:
+                    print("Revoked")
+                
+                case .authorized:
+                    print("애플로그인 인가 됨")
+                    DispatchQueue.main.async {
+                        self.window = UIWindow(windowScene: windowScene)
+                        let naviVC = UINavigationController(rootViewController: LoginGateViewController(loginMethod: method))
+                        self.window?.rootViewController = naviVC
+                        self.window?.makeKeyAndVisible()
+                        return
+                    }
+                
+                default:
+                    print("not Found !@!@!@!@")
+                }
+            }
+            
+        case .kakao:
+            print("카카오 로그인 시도중")
+            handler.fetchKakaoLoginRequest() { [weak self] in
+                DispatchQueue.main.async {
+                    self?.window = UIWindow(windowScene: windowScene)
+                    let naviVC = UINavigationController(rootViewController: LoginGateViewController(loginMethod: method))
+                    self?.window?.rootViewController = naviVC
+                    self?.window?.makeKeyAndVisible()
+                    return
+                }
+            }
+            
+            
+        case .email:
+            return
+        }
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
