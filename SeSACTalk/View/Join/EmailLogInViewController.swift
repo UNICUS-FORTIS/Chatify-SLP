@@ -15,7 +15,8 @@ final class EmailLogInViewController: UIViewController {
     
     
     private let viewModel = EmailLoginViewModel()
-    private let loginSession = LoginSession.shared
+    private let session = LoginSession.shared
+    private let handler = SocialLoginHandler()
     private lazy var center = ValidationCenter()
     
     private let email = CustomInputView(label: "이메일",
@@ -74,7 +75,7 @@ final class EmailLogInViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.height.equalTo(76)
         }
-
+        
         password.snp.makeConstraints { make in
             make.top.equalTo(email.snp.bottom).offset(24)
             make.height.equalTo(email.textField.snp.height)
@@ -112,35 +113,21 @@ final class EmailLogInViewController: UIViewController {
             .withLatestFrom(viewModel.isFormValid)
             .filter { $0 }
             .withLatestFrom(viewModel.emailLoginRequestForm)
-            .flatMapLatest { form -> Observable<Result<EmailLoginResponse, ErrorResponse>> in
+            .subscribe(with: self) { owner, form in
                 let logInForm = EmailLoginRequest(email: form.email,
                                                   password: form.password,
                                                   deviceToken: form.deviceToken)
-                let result = self.viewModel.fetchEmailLoginRequest(info: logInForm)
-                return result.asObservable()
-            }
-            .subscribe(with: self) { owner, result in
-                switch result {
-                case .success(let response):
-                    let group = DispatchGroup()
-                    group.enter()
-                    owner.loginSession.handOverLoginInformation(userID: response.userID,
-                                                          nick: response.nickname,
-                                                          access: response.accessToken,
-                                                          refresh: response.refreshToken)
-                    print("핸드오버 엑세스토큰", response.accessToken)
-                    group.leave()
-                    dump(response)
-                    owner.dismiss(animated: true)
-                    group.notify(queue: .main) {
-                        owner.onBoardingViewModel.afterLoginSucceedTrigger?()
+                UserdefaultManager.saveEmailLoginInfo(email: form.email,
+                                                      password: form.password)
+                UserdefaultManager.setLoginMethod(isLogin: true, method: .email)
+                owner.handler.fetchEmailLoginRequest(info: logInForm) {
+                    self.dismiss(animated: true) {
+                        owner.onBoardingViewModel.emailLoginPushTrigger?()
                     }
-                case .failure(let error):
-                    print(error)
                 }
+                print("dispose됨")
             }
             .disposed(by: disposeBag)
-
     }
     
     private func checkEachInputs() -> Observable<Bool> {
