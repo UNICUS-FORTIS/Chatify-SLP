@@ -62,8 +62,9 @@ final class LoginGateViewController: UIViewController {
                     }
                 }
                 .disposed(by: disposeBag)
-        case .kakao:
             
+        case .kakao:
+            print("카카오 로그인 게이트 오픈")
             completion()
             
         case .email:
@@ -77,6 +78,8 @@ final class LoginGateViewController: UIViewController {
         .subscribe(with: self) { owner, result in
             switch result {
             case .success(let response):
+                print(response,"리스폰스")
+                owner.session.workSpacesSubject.onNext(response)
                 guard let safeTarget = target else {
                     if response.count > 0 {
                         let vc = DefaultWorkSpaceViewController.shared
