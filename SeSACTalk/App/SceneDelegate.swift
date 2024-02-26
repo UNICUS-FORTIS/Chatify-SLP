@@ -80,7 +80,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             
         case .email:
-            return
+            guard let loginInfo = UserdefaultManager.createEmailInfo() else { return }
+            handler.fetchEmailLoginRequest(info: loginInfo) { [weak self] in
+                DispatchQueue.main.async {
+                    self?.window = UIWindow(windowScene: windowScene)
+                    let naviVC = UINavigationController(rootViewController: LoginGateViewController(loginMethod: method))
+                    self?.window?.rootViewController = naviVC
+                    self?.window?.makeKeyAndVisible()
+                    return
+                }
+            }
         }
     }
     
