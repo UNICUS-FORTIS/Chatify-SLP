@@ -43,6 +43,9 @@ final class DefaultWorkSpaceViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         sideMenuSetup()
+        navigationController?.setWorkSpaceNavigation(target: self,
+                                                     leftAction: #selector(workSpaceTitleTapped),
+                                                     rightActoin: #selector(profileImageTapped))
     }
     
     private func bind() {
@@ -132,10 +135,6 @@ final class DefaultWorkSpaceViewController: UIViewController {
         
         tableView.register(ChannelFooterCell.self,
                            forHeaderFooterViewReuseIdentifier: ChannelFooterCell.identifier)
-        
-        navigationController?.setWorkSpaceNavigation(target: self,
-                                                     leftAction: #selector(workSpaceTitleTapped),
-                                                     rightActoin: #selector(profileImageTapped))
     }
     
     @objc func workSpaceTitleTapped() {
