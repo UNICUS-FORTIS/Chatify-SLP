@@ -65,6 +65,7 @@ final class ChannelSettingViewController: UIViewController {
         setupButtonVisibility()
         setupButtonActions()
         makeInitialChannelDesctription()
+        navigationController?.setDefaultNavigation(target: self, title: "채널 설정")
     }
     
     private func createCollectionViewLayout() -> UICollectionViewLayout {
