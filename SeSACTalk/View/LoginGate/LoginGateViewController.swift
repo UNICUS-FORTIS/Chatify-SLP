@@ -41,6 +41,7 @@ final class LoginGateViewController: UIViewController {
         print(#function)
         switch loginMethod {
         case .apple:
+            print("애플 로그인 게이트 오픈")
             guard let appleToken = UserdefaultManager.createAppleIDToken(),
                   let deviceToken = UserdefaultManager.createDeviceToken() else { return }
             let name = UserdefaultManager.createAppleLoginName()
@@ -56,6 +57,7 @@ final class LoginGateViewController: UIViewController {
                                                                nick: response.nickname,
                                                                access: response.token.accessToken,
                                                                refresh: response.token.refreshToken)
+                        UserdefaultManager.saveAppleUsername(name: response.nickname)
                         completion()
                     case .failure(let error):
                         print(error.errorCode)
@@ -68,7 +70,8 @@ final class LoginGateViewController: UIViewController {
             completion()
             
         case .email:
-            break
+            print("이메일 로그인 게이트 오픈")
+            completion()
         }
     }
     
@@ -78,7 +81,6 @@ final class LoginGateViewController: UIViewController {
         .subscribe(with: self) { owner, result in
             switch result {
             case .success(let response):
-                print(response,"리스폰스")
                 owner.session.workSpacesSubject.onNext(response)
                 guard let safeTarget = target else {
                     if response.count > 0 {
