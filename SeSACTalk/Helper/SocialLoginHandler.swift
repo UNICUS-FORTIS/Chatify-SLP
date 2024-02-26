@@ -22,7 +22,7 @@ final class SocialLoginHandler {
     private let session = LoginSession.shared
     private let disposeBag = DisposeBag()
     
-    func fetchKakaoLoginRequest(completion: @escaping () -> Void ) {
+    func fetchKakaoLoginRequest(completion: @escaping () -> Void) {
         if (UserApi.isKakaoTalkLoginAvailable()) {
             UserApi.shared.rx.loginWithKakaoTalk()
                 .flatMap { token -> Observable<KakaoLoginRequest> in
@@ -38,9 +38,9 @@ final class SocialLoginHandler {
                     switch result {
                     case .success(let response):
                         owner.session.handOverLoginInformation(userID: response.userID,
-                                                         nick: response.nickname,
-                                                         access: response.token.accessToken,
-                                                         refresh: response.token.refreshToken)
+                                                               nick: response.nickname,
+                                                               access: response.token.accessToken,
+                                                               refresh: response.token.refreshToken)
                         completion()
                     case .failure(let error):
                         print(error.errorCode)
@@ -54,6 +54,28 @@ final class SocialLoginHandler {
         print(#function)
         return networkService.fetchRequest(endpoint: .appleLogin(model: info),
                                            decodeModel: SignInResponse.self)
+    }
+    
+    
+    func fetchEmailLoginRequest(info: EmailLoginRequest, completion: @escaping () -> Void) {
+        print(#function)
+        networkService.fetchRequest(endpoint: .emailLogin(model: info),
+                                    decodeModel: EmailLoginResponse.self)
+        .subscribe(with: self) { owner, result in
+            switch result {
+            case .success(let response):
+                print(response)
+                owner.session.handOverLoginInformation(userID: response.userID,
+                                                      nick: response.nickname,
+                                                       access: response.accessToken,
+                                                       refresh: response.refreshToken)
+                print("컴플리션 실행됨")
+                completion()
+            case .failure(let error):
+                print(error)
+            }
+        }
+        .disposed(by: disposeBag)
     }
     
 }
