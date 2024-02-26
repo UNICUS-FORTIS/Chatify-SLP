@@ -32,9 +32,8 @@ final class ChannelMemberFeatureClass: ListingViewControllerProtocol {
     }
     
     func setNavigationController(target: UIViewController) {
-        target.navigationController?.setCloseableNavigation(title: "채널 관리자 변경",
-                                                            target: target,
-                                                            action: #selector(target.dismissTrigger))
+        target.navigationController?.setDefaultNavigation(target: target,
+                                                          title: "채널 관리자 변경")
     }
     
     func registerTableViewCell() {
