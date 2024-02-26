@@ -74,16 +74,8 @@ final class OnboardingViewController: UIViewController {
         }
         
         viewModel.emailLoginPushTrigger = { [weak self] in
-            if let strongSelf = self {
-                strongSelf.setAfterLoginSucceed()
-                let vc = EmailLogInViewController(viewModel: strongSelf.viewModel)
-                let NavVC = UINavigationController(rootViewController: vc)
-                if let sheet = NavVC.presentationController as? UISheetPresentationController {
-                    sheet.detents = [.large()]
-                    sheet.prefersGrabberVisible = true
-                    self?.present(NavVC, animated: true, completion: nil)
-                }
-            }
+            let vc = LoginGateViewController(loginMethod: .email)
+            vc.gateAction(target: self)
         }
         
         viewModel.appleLoginPushTrigger = { [weak self] in
@@ -101,38 +93,7 @@ final class OnboardingViewController: UIViewController {
 
         self.present(fpc, animated: true, completion: nil)
     }
-    
-    private func setAfterLoginSucceed() {
-        viewModel.afterLoginSucceedTrigger = { [weak self] in
-            if let strongSelf = self {
-                strongSelf.viewModel.fetchLoadWorkSpace()
-                    .subscribe(with: strongSelf) { owner, result in
-                        switch result {
-                        case .success(let response):
-                            if response.count == 0 {
-                                let vc = HomeEmptyViewController()
-                                strongSelf.navigationController?.setViewControllers([vc], animated: true)
-                            } else if response.count == 1 {
-                                let vc = DefaultWorkSpaceViewController.shared
-                                owner.session.assignWorkspace(spaces: response)
-                                UserDefaults.createRecentWorkspace(workspaces: response)
-                                strongSelf.navigationController?.setViewControllers([vc], animated: true)
-                            } else {
-                                let vc = DefaultWorkSpaceViewController.shared
-                                let sortedReponse  = owner.viewModel.sortResponseByDate(response)
-                                owner.session.assignWorkspace(spaces: sortedReponse)
-                                strongSelf.navigationController?.setViewControllers([vc], animated: true)
-                            }
-                                
-                        case .failure(let error):
-                            print("로그인망함",error.errorCode)
-                        }
-                    }
-                    .disposed(by: strongSelf.disposeBag)
-            }
-        }
-    }
-    
+
     private func setConstraints() {
         
         mainTitle.snp.makeConstraints { make in
