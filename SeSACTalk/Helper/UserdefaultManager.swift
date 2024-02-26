@@ -12,7 +12,6 @@ struct UserdefaultManager {
     static func createAccessToken() -> String {
         print(#function)
         guard let accessToken = UserDefaults.standard.string(forKey: "accessToken") else { return "" }
-        print("저장된 엑세스토큰", accessToken)
         return accessToken
     }
     
@@ -67,6 +66,11 @@ struct UserdefaultManager {
         return token
     }
     
+    static func createAppleUserIdentifier() -> String? {
+        guard let identifier = UserDefaults.standard.string(forKey: "AppleUser") else { return nil }
+        return identifier
+    }
+    
     static func saveAppleUserIdentifier(identifier: String) {
         UserDefaults.standard.set(identifier, forKey: "AppleUser")
     }
@@ -76,6 +80,7 @@ struct UserdefaultManager {
     }
     
     static func setLoginMethod(isLogin: Bool, method: LoginMethod) {
+        print("셋 로그인 메서드", method)
         UserDefaults.standard.set(isLogin, forKey: method.description)
     }
     
@@ -83,7 +88,18 @@ struct UserdefaultManager {
         UserDefaults.standard.set(false, forKey: LoginMethod.apple.description)
         UserDefaults.standard.set(false, forKey: LoginMethod.kakao.description)
         UserDefaults.standard.set(false, forKey: LoginMethod.apple.description)
+    } 
+    
+    static func saveEmailLoginInfo(email: String, password: String) {
+        UserDefaults.standard.set(email, forKey: "emailAddress")
+        UserDefaults.standard.set(password, forKey: "password")
     }
     
-    
+    static func createEmailInfo() -> EmailLoginRequest? {
+        guard let email = UserDefaults.standard.string(forKey: "emailAddress"),
+              let password = UserDefaults.standard.string(forKey: "password"),
+              let deviceToken = UserdefaultManager.createDeviceToken() else { return nil }
+              
+        return EmailLoginRequest(email: email, password: password, deviceToken: deviceToken)
+    }
 }
