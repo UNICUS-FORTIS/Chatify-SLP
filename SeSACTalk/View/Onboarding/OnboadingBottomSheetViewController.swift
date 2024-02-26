@@ -99,8 +99,17 @@ final class OnboadingBottomSheetViewController: UIViewController {
     }
     
     @objc private func startEmailLogin() {
-        dismiss(animated: true)
-        viewModel?.emailLoginPushTrigger?()
+        guard let safe = viewModel else { return }
+        let vc = EmailLogInViewController(viewModel: safe)
+        let NavVC = UINavigationController(rootViewController: vc)
+        let presentingVC = self.presentingViewController
+        dismiss(animated: true) {
+                if let sheet = NavVC.presentationController as? UISheetPresentationController {
+                sheet.detents = [.large()]
+                sheet.prefersGrabberVisible = true
+                    presentingVC?.present(NavVC, animated: true)
+            }
+        }
     }
     
     
