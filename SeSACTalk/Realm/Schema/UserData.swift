@@ -24,21 +24,12 @@ final class WorkspaceListData: Object {
     @Persisted var workspaceID: Int
     @Persisted var workspaceName: String
     @Persisted var channelList = List<Channel>()
+    @Persisted var dmList = List<DM>()
     
     convenience init(workspaceID: Int, workspaceName: String) {
         self.init()
         self.workspaceID = workspaceID
         self.workspaceName = workspaceName
-
-    }
-    
-    convenience init(workspaceID: Int,  workspaceName: String, chatData: ChatModel) {
-        self.init()
-        self.workspaceID = workspaceID
-        self.workspaceName = workspaceName
-        
-        let data = Channel(data: chatData)
-        self.channelList.append(data)
     }
 }
 
@@ -89,7 +80,7 @@ final class ChannelDataSource: Object {
     @Persisted var content: String
     @Persisted var createdAt: String
     @Persisted var files = List<String>()
-    @Persisted var user: ChatUserModel?
+    @Persisted var user: ChatUserModel
     
     var filesArray:[String] {
         return files.map { $0 }
@@ -130,4 +121,57 @@ final class ChatUserModel: Object {
     }
 }
 
+final class DM: Object {
+    
+    @Persisted var workspacdID: Int
+    @Persisted var roomID: Int
+    @Persisted var dmData = List<DMDataSource>()
+    @Persisted var DMDatabaseCreatedAt: String
+    
+    var dmDataArray: [DMDataSource] {
+        return dmData.map { $0 }
+    }
+    
+    var latestChat: String? {
+        guard let lastCreatedAt = dmData.last else { return nil }
+        return lastCreatedAt.createdAt
+    }
 
+    convenience init(dm: DMChatResponse) {
+        self.init()
+        self.workspacdID = dm.workspaceID
+        self.roomID = dm.roomID
+        self.DMDatabaseCreatedAt = getCurrentTimeForCursor()
+    }
+    
+    func getCurrentTimeForCursor() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+        let now = Date()
+        print(formatter.string(from: now))
+        return formatter.string(from: now)
+    }
+}
+
+final class DMDataSource: Object {
+    
+    @Persisted var dmID: Int
+    @Persisted var content: String?
+    @Persisted var files = List<String>()
+    @Persisted var createdAt: String
+    @Persisted var user: ChatUserModel
+    
+    convenience init(dm: DMChatModel) {
+        self.init()
+        self.dmID = dm.dmID
+        self.content = dm.content ?? ""
+        self.createdAt = dm.createdAt
+        self.files.append(objectsIn: dm.files ?? [])
+        let user = ChatUserModel(userID: dm.user.userID,
+                                 email: dm.user.email,
+                                 nickname: dm.user.nickname,
+                                 profileImage: dm.user.profileImage)
+        self.user = user
+    }
+}
