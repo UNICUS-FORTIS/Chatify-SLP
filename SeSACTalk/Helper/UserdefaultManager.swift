@@ -87,7 +87,7 @@ struct UserdefaultManager {
     static func setLogout() {
         UserDefaults.standard.set(false, forKey: LoginMethod.apple.description)
         UserDefaults.standard.set(false, forKey: LoginMethod.kakao.description)
-        UserDefaults.standard.set(false, forKey: LoginMethod.apple.description)
+        UserDefaults.standard.set(false, forKey: LoginMethod.email.description)
     } 
     
     static func saveEmailLoginInfo(email: String, password: String) {
