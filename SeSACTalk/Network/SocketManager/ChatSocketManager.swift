@@ -1,5 +1,5 @@
 //
-//  SocketManager.swift
+//  SocketIOManager.swift
 //  SeSACTalk
 //
 //  Created by LOUIE MAC on 2/6/24.
@@ -12,14 +12,13 @@ import RxCocoa
 import RealmSwift
 
 
-final class SocketIOManager: NSObject {
+final class ChatSocketManager: NSObject {
 
     private var manager: SocketManager!
     private var socket: SocketIOClient!
     
     var channelInfo: Channels?
-    var dmID: Int?
-    var roomdID: Int?
+    var dmInfo: DMs?
     
     private let networkService = NetworkService.shared
     private let repository = RealmRepository.shared
@@ -27,13 +26,12 @@ final class SocketIOManager: NSObject {
     private let disposeBag = DisposeBag()
 
     var channelChatRelay = BehaviorRelay<[ChannelDataSource]>(value: [])
-    var dmChatRelay = BehaviorRelay<[String]>(value: [])
+    var dmChatRelay = BehaviorRelay<[DMDataSource]>(value: [])
     
     init(channelInfo: Channels) {
         super.init()
         self.channelInfo = channelInfo
-        self.dmID = nil
-        self.roomdID = nil
+        self.dmInfo = nil
         
         guard let url = URL(string: createSocketURL()) else { return }
         manager = SocketManager(socketURL: url,
@@ -49,10 +47,9 @@ final class SocketIOManager: NSObject {
                 let decoded = try JSONDecoder().decode(ChatModel.self,from: serialized)
                 print(decoded)
                 var messages = self.channelChatRelay.value
-                let data = ChannelDataSource(chatData: decoded)
-                messages.append(data)
-                self.channelChatRelay.accept(messages)
                 let channelDatasource = ChannelDataSource(chatData: decoded)
+                messages.append(channelDatasource)
+                self.channelChatRelay.accept(messages)
                 self.repository.updateChannelChatDatabse(workspaceID: channelInfo.workspaceID,
                                                          channelID: channelInfo.channelID,
                                                     newDatas: [channelDatasource])
@@ -85,8 +82,8 @@ final class SocketIOManager: NSObject {
     }
 }
 
-extension SocketIOManager: ChatProtocol {
-    
+extension ChatSocketManager: ChatProtocol {
+
     func createSocketURL() -> String {
         return EndPoints.baseURL +
         EndPoints.Paths.PathDepthOne.chatSocket + "\(channelInfo?.channelID ?? 00)"
