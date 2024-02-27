@@ -236,7 +236,12 @@ extension DefaultWorkSpaceViewController: UITableViewDelegate {
     }
     
     @objc private func newMessageFooterTapped() {
-        print("새로운 메세지 시작")
+        session.loadWorkspaceMember(id: session.makeWorkspaceID()) { [weak self] in
+            let feature = MemberListFeatureClass(mode: .dm)
+            let vc = ListingViewController(feature: feature)
+            let navVC = UINavigationController(rootViewController: vc)
+            self?.present(navVC, animated: true)
+        }
     }
     
     @objc private func newMemberFooterTapped() {
