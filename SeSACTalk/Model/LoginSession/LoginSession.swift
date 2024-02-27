@@ -132,9 +132,10 @@ final class LoginSession {
         currentWorkspaceSubject
             .bind(with: self) { owner, info in
                 guard let safe = info else { return }
+                owner.currentWorkspaceID = safe.workspaceID
                 owner.leftCustomView.data = safe.thumbnail
                 owner.leftCustomLabel.buttonTitle.onNext(safe.name)
-                owner.currentWorkspaceID = safe.workspaceID
+                owner.fetchMyChannelInfo()
             }
             .disposed(by: disposeBag)
         
@@ -149,7 +150,6 @@ final class LoginSession {
                 switch result {
                 case .success(let response):
                     owner.workspaceDetails.onNext(response)
-                    owner.fetchMyChannelInfo()
                     
                 case .failure(let error):
                     owner.errorReceriver.onNext(error)
@@ -210,6 +210,16 @@ final class LoginSession {
     func fetchDms(id: IDRequiredRequest) -> Single<Result<DMsResponse, ErrorResponse>> {
         return networkService.fetchRequest(endpoint: .loadDms(id: id),
                                            decodeModel: DMsResponse.self)
+    }
+    
+    func fetchStartDM(targetUserID: Int, cursorDate: String) -> Single<Result<DMChatResponse, ErrorResponse>> {
+        let workspaceID = IDRequiredRequest(id: self.makeWorkspaceID())
+        let target = IDRequiredRequest(id: targetUserID)
+        let cursor = ChatCursorDateRequest(cursor: cursorDate)
+        return networkService.fetchRequest(endpoint: .loadDMChats(workspaceID: workspaceID,
+                                                                  targetUserID: target,
+                                                                  cursor: cursor), decodeModel: DMChatResponse.self)
+        
     }
     
     func fetchMyProfile() -> Single<Result<MyProfileResponse, ErrorResponse>> {
@@ -316,7 +326,8 @@ final class LoginSession {
         .subscribe(with: self) { owner, result in
             switch result {
             case .success(let workspace):
-                owner.workspaceMember.onNext(workspace)
+                let new = workspace.filter { owner.makeUserID() != $0.userID }
+                owner.workspaceMember.onNext(new)
                 print("워크스페이스멤버 할당됨")
                 completion()
             case .failure(let error):
@@ -404,7 +415,8 @@ final class LoginSession {
                     completion(response.count)
                     
                 case .failure(let error):
-                    print(error)
+                    print("unread count 실패",error.errorCode)
+                    owner.fetchMyChannelInfo()
                 }
             }
             .disposed(by: disposeBag)
