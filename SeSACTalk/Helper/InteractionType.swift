@@ -94,6 +94,7 @@ enum InteractionConfirmAcceptable: CaseIterable {
     case modifyWorkspaceMember
     case modifyChannelManager
     case exitFromChannel
+    case findDmTarget
     
     var title: String {
         switch self {
@@ -117,6 +118,9 @@ enum InteractionConfirmAcceptable: CaseIterable {
             
         case .exitFromChannel:
             return "채널에서 나가기"
+            
+        case .findDmTarget:
+            return "DM 시작하기"
         }
     }
     
@@ -151,6 +155,9 @@ enum InteractionConfirmAcceptable: CaseIterable {
             회원님은 채널 관리자입니다.
             채널 관리자를 다른 멤버로 변경한 후 나갈 수 있습니다.
             """
+            
+        case .findDmTarget:
+            return "워크스페이스 멤버가 없습니다."
         }
     }
     
