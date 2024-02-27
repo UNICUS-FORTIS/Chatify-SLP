@@ -80,7 +80,7 @@ final class ChannelDataSource: Object {
     @Persisted var content: String
     @Persisted var createdAt: String
     @Persisted var files = List<String>()
-    @Persisted var user: ChatUserModel
+    @Persisted var user: ChatUserModel?
     
     var filesArray:[String] {
         return files.map { $0 }
@@ -160,7 +160,7 @@ final class DMDataSource: Object {
     @Persisted var content: String?
     @Persisted var files = List<String>()
     @Persisted var createdAt: String
-    @Persisted var user: ChatUserModel
+    @Persisted var user: ChatUserModel?
     
     convenience init(dm: DMChatModel) {
         self.init()

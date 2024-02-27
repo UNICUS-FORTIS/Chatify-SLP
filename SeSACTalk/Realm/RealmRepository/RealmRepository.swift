@@ -140,9 +140,8 @@ final class RealmRepository {
         do {
             try realm.write {
                 channel.chatData.forEach {
-                    if let user = $0.user {
-                        realm.delete(user)
-                    }
+                    guard let user = $0.user else { return }
+                    realm.delete(user)
                 }
                 realm.delete(channel.chatData)
                 realm.delete(channel)

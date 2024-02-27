@@ -144,11 +144,11 @@ final class MessageTableCell: UITableViewCell {
     }
     
     func bind(chatData: ChannelDataSource) {
-        nickname.text = chatData.user.nickname
+        nickname.text = chatData.user?.nickname
         communications.text = chatData.content
         sentTime.text = chatData.createdAt.chatDateString()
         
-        guard let profileImgURL = chatData.user.profileImage else { return }
+        guard let profileImgURL = chatData.user?.profileImage else { return }
         let urlString = EndPoints.imageBaseURL + profileImgURL
         let url = URL(string: urlString)
         profileImage.kf.setImage(with: url)
@@ -156,11 +156,11 @@ final class MessageTableCell: UITableViewCell {
     }
     
     func bind(dmData: DMDataSource) {
-        nickname.text = dmData.user.nickname
+        nickname.text = dmData.user?.nickname
         communications.text = dmData.content
         sentTime.text = dmData.createdAt.chatDateString()
         
-        guard let profileImgURL = dmData.user.profileImage else { return }
+        guard let profileImgURL = dmData.user?.profileImage else { return }
         let urlString = EndPoints.imageBaseURL + profileImgURL
         let url = URL(string: urlString)
         profileImage.kf.setImage(with: url)
