@@ -64,4 +64,12 @@ final class UserProfileCVCell: UICollectionViewCell {
         profileImage.setProfileImage(thumbnail: profileImgURL)
         profileImage.contentMode = .scaleAspectFill
     }
+    
+    func bind(workspaceUser: WorkspaceMember) {
+        usernameLabel.text = workspaceUser.nickname
+        
+        guard let profileImgURL = workspaceUser.profileImage else { return }
+        profileImage.setProfileImage(thumbnail: profileImgURL)
+        profileImage.contentMode = .scaleAspectFill
+    }
 }
