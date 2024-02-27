@@ -143,12 +143,24 @@ final class MessageTableCell: UITableViewCell {
         }
     }
     
-    func bind(data: ChannelDataSource) {
-        nickname.text = data.user?.nickname
-        communications.text = data.content
-        sentTime.text = data.createdAt.chatDateString()
+    func bind(chatData: ChannelDataSource) {
+        nickname.text = chatData.user.nickname
+        communications.text = chatData.content
+        sentTime.text = chatData.createdAt.chatDateString()
         
-        guard let profileImgURL = data.user?.profileImage else { return }
+        guard let profileImgURL = chatData.user.profileImage else { return }
+        let urlString = EndPoints.imageBaseURL + profileImgURL
+        let url = URL(string: urlString)
+        profileImage.kf.setImage(with: url)
+        profileImage.contentMode = .scaleAspectFill
+    }
+    
+    func bind(dmData: DMDataSource) {
+        nickname.text = dmData.user.nickname
+        communications.text = dmData.content
+        sentTime.text = dmData.createdAt.chatDateString()
+        
+        guard let profileImgURL = dmData.user.profileImage else { return }
         let urlString = EndPoints.imageBaseURL + profileImgURL
         let url = URL(string: urlString)
         profileImage.kf.setImage(with: url)

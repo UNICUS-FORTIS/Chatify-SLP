@@ -116,9 +116,14 @@ final class MessageSenderTableCell: UITableViewCell {
         }
     }
     
-    func bind(data: ChannelDataSource) {
-        communications.text = data.content
-        sentTime.text = data.createdAt.chatDateString()
+    func bind(channelData: ChannelDataSource) {
+        communications.text = channelData.content
+        sentTime.text = channelData.createdAt.chatDateString()
+    }
+    
+    func bind(dmData: DMDataSource) {
+        communications.text = dmData.content
+        sentTime.text = dmData.createdAt.chatDateString()
     }
 }
 
