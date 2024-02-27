@@ -33,6 +33,7 @@ enum APIService {
     case loadAllChannels(id: IDRequiredRequest)
     case joinToChannelChat(id: IDRequiredRequest, name: NameRequest, cursor: ChatCursorDateRequest)
     case sendChannelChat(id: IDRequiredRequest, name: NameRequest, contents: ChatBodyRequest)
+    case sendDMsChat(workspaceID: IDRequiredRequest, roomID: IDRequiredRequest, contents: ChatBodyRequest )
     case updateProfileImage(image: ImageUpdateRequest)
     case updateProfileInformations(profile: ProfileUpdateRequest)
     case loadChannelMemebers(path: IDwithWorkspaceIDRequest)
@@ -124,8 +125,17 @@ extension APIService: TargetType {
             
         case .joinToChannelChat(let id, let name, _),
                 .sendChannelChat(let id, let name, _):
-            return path.workSpace+"/\(id.id)" +
-            path.PathDepthOne.channel+"/\(name.name)" +
+            return path.workSpace +
+            "/\(id.id)" +
+            path.PathDepthOne.channel +
+            "/\(name.name)" +
+            path.PathDepthTwo.chat
+            
+        case .sendDMsChat(let workspaceID, let roomID, _):
+            return path.workSpace +
+            "/\(workspaceID.id)" +
+            path.PathDepthOne.dms +
+            "/\(roomID.id)" +
             path.PathDepthTwo.chat
             
         case .updateProfileImage:
@@ -182,7 +192,8 @@ extension APIService: TargetType {
                 .createWorkSpace,
                 .inviteWorkspaceMember,
                 .createChannel,
-                .sendChannelChat :
+                .sendChannelChat,
+                .sendDMsChat:
             return .post
             
         case .loadWorkSpace,
@@ -273,7 +284,8 @@ extension APIService: TargetType {
             return .requestParameters(parameters: ["cursor_date" : cursor.cursor],
                                       encoding: URLEncoding.queryString)
             
-        case .sendChannelChat(_ , _, let body):
+        case .sendChannelChat(_ , _, let body),
+                .sendDMsChat(_ , _, let body):
             
             var multipartData = [MultipartFormData]()
             
@@ -361,7 +373,8 @@ extension APIService: TargetType {
                 SecureKeys.Headers.Headerkey : SecureKeys.APIKey.secretKey
             ]
             
-        case .sendChannelChat :
+        case .sendChannelChat,
+                .sendDMsChat:
             return [
                 SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,
                 SecureKeys.Headers.contentsType : SecureKeys.Headers.multipartTypePair,
