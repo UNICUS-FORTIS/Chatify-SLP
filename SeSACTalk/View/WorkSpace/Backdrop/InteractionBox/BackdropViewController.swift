@@ -110,7 +110,7 @@ final class BackdropViewController: UIViewController {
         guard let presentingVC = self.presentingViewController?.presentingViewController as? UINavigationController else { return }
         self.presentingViewController?
             .presentingViewController?.dismiss(animated: false) {
-                let socketManager = SocketIOManager(channelInfo: channel)
+                let socketManager = ChatSocketManager(channelInfo: channel)
                 let vc = ChannelChatViewController(manager: socketManager)
                 presentingVC.pushViewController(vc, animated: true)
             }
