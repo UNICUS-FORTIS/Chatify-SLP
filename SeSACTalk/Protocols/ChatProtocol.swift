@@ -12,10 +12,9 @@ import RxCocoa
 protocol ChatProtocol: AnyObject {
     
     var channelChatRelay: BehaviorRelay<[ChannelDataSource]> { get set }
-    var dmChatRelay: BehaviorRelay<[String]> { get set }
+    var dmChatRelay: BehaviorRelay<[DMDataSource]> { get set }
     var channelInfo: Channels? { get }
-    var dmID: Int? { get }
-    var roomdID: Int? { get }
+    var dmInfo: DMs? { get }
     
     func createSocketURL() -> String
     func messageSender<T>(request: T)
