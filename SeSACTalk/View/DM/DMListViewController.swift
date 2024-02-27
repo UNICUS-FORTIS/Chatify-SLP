@@ -43,7 +43,9 @@ final class DMListViewController: UIViewController {
         separatorView.backgroundColor = Colors.Border.naviShadow
         tableView.rowHeight = UIScreen.main.bounds.height * 0.08
         tableView.separatorStyle = .none
+        tableView.backgroundColor = .clear
         collectionView.collectionViewLayout = createLayout()
+        collectionView.backgroundColor = .clear
         tableView.register(DMListTableCell.self,
                            forCellReuseIdentifier: DMListTableCell.identifier)
         collectionView.register(UserProfileCVCell.self,
@@ -73,7 +75,7 @@ final class DMListViewController: UIViewController {
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.horizontalEdges.equalToSuperview()
-            make.height.equalToSuperview().multipliedBy(0.12)
+            make.height.equalToSuperview().multipliedBy(0.11)
         }
         
         separatorView.snp.makeConstraints { make in
