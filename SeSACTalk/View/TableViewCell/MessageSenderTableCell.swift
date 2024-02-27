@@ -19,8 +19,7 @@ final class MessageSenderTableCell: UITableViewCell {
     
     private let sentTime = CustomTitleLabel("",
                                             textColor: Colors.Text.secondary,
-                                            font: Typography.caption2 ??
-                                            UIFont.systemFont(ofSize: 11))
+                                            font: Typography.createCaption2())
     
     private let communications = ChatBubbleLabel(text: "")
     

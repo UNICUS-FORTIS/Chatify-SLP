@@ -70,11 +70,9 @@ final class DefaultWorkSpaceViewController: UIViewController {
             case let .dms(dms):
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DMTableCell.identifier) as? DMTableCell else { return UITableViewCell() }
                 
-                let username = dms.user.nickname
-                let profileImage = dms.user.profileImage
-                cell.setDms(username: username,
-                            profileImage: profileImage ?? nil,
-                            count: 5)
+                
+                cell.setDms(data: dms)
+                
                 return cell
                 
             case .member: break

@@ -81,14 +81,14 @@ final class DMTableCell: UITableViewCell {
         }
     }
     
-    func setDms(username: String, profileImage: String?, count: Int) {
-        if let safeImage = profileImage {
+    func setDms(data: DMs) {
+        if let safeImage = data.user.profileImage {
             let url = EndPoints.baseURL + safeImage
             let urlString = URL(string: url)
             symbolIcon.kf.setImage(with: urlString)
         }
         
-        name.text = username
-        badgeCount.text = "\(count)"
+        name.text = data.user.nickname
+        badgeCount.text = "\(5)"
     }
 }

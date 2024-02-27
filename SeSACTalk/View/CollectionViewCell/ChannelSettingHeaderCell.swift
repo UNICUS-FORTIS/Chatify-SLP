@@ -8,8 +8,6 @@
 import UIKit
 import SnapKit
 import Kingfisher
-import RxSwift
-import RxCocoa
 
 final class ChannelSettingHeaderCell: UICollectionReusableView {
     
@@ -19,7 +17,6 @@ final class ChannelSettingHeaderCell: UICollectionReusableView {
     var expendor: ( () -> Void )?
     
 
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -59,5 +56,4 @@ final class ChannelSettingHeaderCell: UICollectionReusableView {
     @objc func doExpender() {
         expendor?()
     }
-    
 }
