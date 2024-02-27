@@ -14,12 +14,11 @@ final class ChannelHeaderCell: UITableViewHeaderFooterView {
     
     private let name = CustomTitleLabel("",
                                         textColor: .black,
-                                        font: Typography.title2 ??
-                                        UIFont.systemFont(ofSize: 14))
+                                        font: Typography.createTitle2())
     
     private let moreButton: UIButton = {
         var configuration = UIButton.Configuration.plain()
-        configuration.image = .chevronRight
+        configuration.image = .chevronDown
         configuration.imagePlacement = .all
         configuration.baseForegroundColor = .clear
         let button = UIButton(configuration: configuration, primaryAction: nil)

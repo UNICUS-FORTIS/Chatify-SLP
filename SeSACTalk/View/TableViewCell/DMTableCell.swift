@@ -17,13 +17,11 @@ final class DMTableCell: UITableViewCell {
     private let symbolIcon = UIImageView(image: .dummyTypeA)
     private let name = CustomTitleLabel("",
                                         textColor: Colors.Text.primary,
-                                        font: Typography.body ??
-                                        UIFont.systemFont(ofSize: 13))
+                                        font: Typography.createBody())
     private var badge = UIView(frame: .zero)
     private let badgeCount = CustomTitleLabel("",
                                               textColor: .white,
-                                              font: Typography.caption ??
-                                              UIFont.systemFont(ofSize: 12))
+                                              font: Typography.createCaption())
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

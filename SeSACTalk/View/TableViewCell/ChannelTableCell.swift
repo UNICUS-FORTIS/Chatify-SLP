@@ -17,8 +17,7 @@ final class ChannelTableViewCell: UITableViewCell {
     private let symbolIcon = UIImageView(image: .hashTagThin)
     private let name = CustomTitleLabel("", 
                                         textColor: Colors.Text.primary,
-                                        font: Typography.body ??
-                                        UIFont.systemFont(ofSize: 13))
+                                        font: Typography.createBody())
     private var badge = ChatBadgeLabel()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
