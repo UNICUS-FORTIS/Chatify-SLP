@@ -41,6 +41,8 @@ enum APIService {
     case editChannelInfo(id: IDRequiredRequest, name: NameRequest, model: ChannelAddRequest)
     case leaveFromChannel(id: IDRequiredRequest, name: NameRequest)
     case loadUnreadChannelChats(id: IDRequiredRequest, name: NameRequest, cursor: ChatCursorDateRequest)
+    case loadUnreadDMChats(workspaceID: IDRequiredRequest, roomID: IDRequiredRequest,
+                           cursor: ChatCursorDateRequest)
     case removeChannel(id: IDRequiredRequest, name: NameRequest)
     case logout
 }
@@ -177,6 +179,13 @@ extension APIService: TargetType {
             "/\(name.name)" +
             path.PathDepthTwo.unread
             
+        case .loadUnreadDMChats(let workspaceID, let roomID, _):
+            return path.workSpace +
+            "/\(workspaceID.id)" +
+            path.PathDepthOne.dms +
+            "/\(roomID.id)" +
+            path.PathDepthTwo.unread
+            
         case .removeChannel(let id, let name):
             return path.workSpace +
             "/\(id.id)" +
@@ -218,6 +227,7 @@ extension APIService: TargetType {
                 .loadChannelMemebers,
                 .leaveFromChannel,
                 .loadUnreadChannelChats,
+                .loadUnreadDMChats,
                 .logout:
             return .get
             
@@ -326,7 +336,8 @@ extension APIService: TargetType {
         case .editChannelInfo(_, _, let model):
             return .requestJSONEncodable(model)
             
-        case .loadUnreadChannelChats(_, _, let after):
+        case .loadUnreadChannelChats(_, _, let after),
+                .loadUnreadDMChats(_, _, let after):
             return .requestParameters(parameters: ["after" : after.cursor],
                                       encoding: URLEncoding.queryString)
         }
@@ -367,6 +378,7 @@ extension APIService: TargetType {
                 .loadChannelMemebers,
                 .leaveFromChannel,
                 .loadUnreadChannelChats,
+                .loadUnreadDMChats,
                 .removeChannel :
             
             return [
