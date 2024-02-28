@@ -10,6 +10,7 @@ import Foundation
 import SocketIO
 import RxSwift
 import RxCocoa
+import RealmSwift
 
 
 final class DMSocketManager: NSObject {

@@ -91,6 +91,12 @@ final class DefaultWorkSpaceViewController: UIViewController {
                 case .channel(let item):
                     let socketManager = ChatSocketManager(channelInfo: item)
                     let vc = ChannelChatViewController(manager: socketManager)
+                    
+                    if let indexPath = owner.tableView.indexPathForSelectedRow,
+                       let cell = owner.tableView.cellForRow(at: indexPath) as? ChannelTableViewCell {
+                        cell.setBadgeToHidden()
+                    }
+                    
                     owner.navigationController?.pushViewController(vc, animated: true)
                     
                 case .dms(let dm):
