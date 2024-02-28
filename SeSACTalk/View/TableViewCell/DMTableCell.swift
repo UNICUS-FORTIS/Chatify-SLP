@@ -46,6 +46,8 @@ final class DMTableCell: UITableViewCell {
         self.selectionStyle = .none
         profileImage.setImage(image: .dummyTypeA)
         profileImage.inactiveCameraIcon()
+        profileImage.layer.cornerRadius = 4
+        profileImage.clipsToBounds = true
     }
     
     private func setConstraints() {
@@ -86,5 +88,9 @@ final class DMTableCell: UITableViewCell {
             self.name.font = Typography.createBodyBold()
             self.name.textColor = .black
         }
+    }
+    
+    func setBadgeToHidden() {
+        self.badge.isHidden = true
     }
 }
