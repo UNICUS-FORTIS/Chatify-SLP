@@ -70,8 +70,9 @@ final class DefaultWorkSpaceViewController: UIViewController {
             case let .dms(dms):
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DMTableCell.identifier) as? DMTableCell else { return UITableViewCell() }
                 
-                
-                cell.setDms(data: dms)
+                self.session.fetchUnreadDMChats(dm: dms) { unread in
+                    cell.setDms(data: dms, badgeCount: unread)
+                }
                 
                 return cell
                 
@@ -93,8 +94,14 @@ final class DefaultWorkSpaceViewController: UIViewController {
                     owner.navigationController?.pushViewController(vc, animated: true)
                     
                 case .dms(let dm):
-                    let dm = dm.createdAt
-                    print(dm)
+                    let manager = DMSocketManager(dmInfo: dm)
+                    let vc = DMChatViewController(manager: manager)
+                    
+                    if let indexPath = owner.tableView.indexPathForSelectedRow,
+                       let cell = owner.tableView.cellForRow(at: indexPath) as? DMTableCell {
+                        cell.setBadgeToHidden()
+                    }
+                    owner.navigationController?.pushViewController(vc, animated: true)
                     
                 default: break
                 }
