@@ -75,7 +75,6 @@ final class MemberListFeatureClass: ListingViewControllerProtocol {
                     let manager = DMSocketManager(targetUserID: member[indexPath.row].userID,
                                                   workspaceID: workspace.workspaceID)
                     let vc = DMChatViewController(manager: manager)
-//                    let navVC = UINavigationController(rootViewController: vc)
                     target.dismiss(animated: true) {
                         previous?.pushViewController(vc, animated: true)
                     }
@@ -86,7 +85,17 @@ final class MemberListFeatureClass: ListingViewControllerProtocol {
     }
     
     func setNavigationController(target: UIViewController) {
-        target.navigationController?.setCloseableNavigation(title: "워크스페이스 관리자",
+        
+        var title = ""
+        
+        switch mode {
+        case .handoverWorkspaceManager:
+            title = "워크스페이스 관리자"
+        case .dm:
+            title = "DM"
+        }
+        
+        target.navigationController?.setCloseableNavigation(title: title,
                                                             target: target,
                                                             action: #selector(target.dismissTrigger))
     }
