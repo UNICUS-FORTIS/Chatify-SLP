@@ -123,7 +123,6 @@ final class ChatUserModel: Object {
 
 final class DM: Object {
     
-    @Persisted var workspacdID: Int
     @Persisted var roomID: Int
     @Persisted var dmData = List<DMDataSource>()
     @Persisted var DMDatabaseCreatedAt: String
@@ -137,9 +136,8 @@ final class DM: Object {
         return lastCreatedAt.createdAt
     }
 
-    convenience init(dm: DMChatResponse) {
+    convenience init(dm: DMs) {
         self.init()
-        self.workspacdID = dm.workspaceID
         self.roomID = dm.roomID
         self.DMDatabaseCreatedAt = getCurrentTimeForCursor()
     }
