@@ -81,4 +81,8 @@ final class ChannelTableViewCell: UITableViewCell {
             self.name.textColor = .black
         }
     }
+    
+    func setBadgeToHidden() {
+        self.badge.isHidden = true
+    }
 }
