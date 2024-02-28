@@ -37,13 +37,12 @@ final class RealmRepository {
     // MARK: - 초기 모든 워크스페이스 데이터 작성
     func createInitialWorkspaceData(new: WorkSpaces) {
         guard let userID = realm.objects(UserData.self).first(where: { $0.userID == self.userID}) else { return }
-        let workspacesArray = new.map { $0 }
-        
+        let newWorkspaceList = new.map { WorkspaceListData(workspaceID: $0.workspaceID,
+                                                                       workspaceName: $0.name ) }
         if userID.workspaceList.isEmpty {
             do {
                 try realm.write {
-                    let newWorkspaceList = workspacesArray.map { WorkspaceListData(workspaceID: $0.workspaceID,
-                                                                                   workspaceName: $0.name ) }
+                    
                     userID.workspaceList.append(objectsIn: newWorkspaceList)
                     
                 }
@@ -52,7 +51,7 @@ final class RealmRepository {
             }
             print("초기 데이터 작성 완료")
         } else {
-            let filtered = workspacesArray.filter { workspace in
+            let filtered = new.filter { workspace in
                 !userID.workspaceList.contains(where: { $0.workspaceID == workspace.workspaceID })
             }
             do {
