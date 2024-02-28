@@ -18,7 +18,7 @@ final class ChatSocketManager: NSObject {
     private var socket: SocketIOClient!
     
     var channelInfo: Channels?
-    var dmInfo: DMs?
+    var dmRoomInfo: DMRoomInfo?
     
     private let networkService = NetworkService.shared
     private let repository = RealmRepository.shared
@@ -31,7 +31,6 @@ final class ChatSocketManager: NSObject {
     init(channelInfo: Channels) {
         super.init()
         self.channelInfo = channelInfo
-        self.dmInfo = nil
         
         guard let url = URL(string: createSocketURL()) else { return }
         manager = SocketManager(socketURL: url,
@@ -83,11 +82,6 @@ final class ChatSocketManager: NSObject {
 }
 
 extension ChatSocketManager: ChatProtocol {
-
-    func createSocketURL() -> String {
-        return EndPoints.baseURL +
-        EndPoints.Paths.PathDepthOne.chatSocket + "\(channelInfo?.channelID ?? 00)"
-    }
     
     func messageSender<T>(request: T) {
         guard let safeChannel = channelInfo else { return }
@@ -106,11 +100,6 @@ extension ChatSocketManager: ChatProtocol {
             }
         }
         .disposed(by: disposeBag)
-    }
-        
-    func createSocketNamespace() -> String {
-        guard let safeChannel = channelInfo else { return "" }
-        return "/ws-channel-" + "\(safeChannel.channelID)"
     }
     
     func loadChatLog(completion: @escaping () -> Void) {
