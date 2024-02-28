@@ -20,6 +20,7 @@ enum APIService {
     case loadWorkSpace
     case loadWorkspaceDetails(workspaceID: IDRequiredRequest)
     case loadDms(id: IDRequiredRequest)
+    case loadDMChats(workspaceID: IDRequiredRequest, targetUserID: IDRequiredRequest, cursor: ChatCursorDateRequest)
     case loadMyProfile
     case refreshToken(token: AccessTokenRequest)
     case editWorkSpace(id: IDRequiredRequest, model:NewWorkSpaceRequest)
@@ -79,6 +80,13 @@ extension APIService: TargetType {
             
         case .loadDms(let id):
             return path.workSpace+"/\(id.id)"+path.PathDepthOne.dms
+            
+        case .loadDMChats(let workspaceID, let targetUserID , _):
+            return path.workSpace +
+            "/\(workspaceID.id)" +
+            path.PathDepthOne.dms +
+            "/\(targetUserID.id)" +
+            path.PathDepthTwo.chat
             
         case .loadMyProfile,
                 .updateProfileInformations :
@@ -206,6 +214,7 @@ extension APIService: TargetType {
                 .loadMyChannelInfo,
                 .loadAllChannels,
                 .joinToChannelChat,
+                .loadDMChats,
                 .loadChannelMemebers,
                 .leaveFromChannel,
                 .loadUnreadChannelChats,
@@ -280,7 +289,8 @@ extension APIService: TargetType {
         case .createChannel(_, let model):
             return .requestJSONEncodable(model)
             
-        case .joinToChannelChat(_, _, let cursor):
+        case .joinToChannelChat(_, _, let cursor),
+                .loadDMChats(_, _, let cursor):
             return .requestParameters(parameters: ["cursor_date" : cursor.cursor],
                                       encoding: URLEncoding.queryString)
             
@@ -365,6 +375,7 @@ extension APIService: TargetType {
             ]
             
         case .joinToChannelChat,
+                .loadDMChats,
                 .editChannelInfo:
             
             return [
