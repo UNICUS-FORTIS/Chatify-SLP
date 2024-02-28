@@ -36,8 +36,8 @@ final class CustomSpaceImageView: UIImageView {
         spaceImage.backgroundColor = Colors.Brand.green
         spaceImage.image = .chatBubble
         spaceImage.contentMode = .scaleAspectFit
-        self.layer.cornerRadius = 4
-        self.clipsToBounds = true
+        spaceImage.layer.cornerRadius = 4
+        spaceImage.clipsToBounds = true
     }
     
     private func setConstraints() {
