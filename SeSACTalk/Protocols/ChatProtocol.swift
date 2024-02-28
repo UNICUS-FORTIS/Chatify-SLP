@@ -13,8 +13,8 @@ protocol ChatProtocol: AnyObject {
     
     var channelChatRelay: BehaviorRelay<[ChannelDataSource]> { get set }
     var dmChatRelay: BehaviorRelay<[DMDataSource]> { get set }
+    var dmRoomInfo: DMRoomInfo? { get set }
     var channelInfo: Channels? { get }
-    var dmInfo: DMs? { get }
     
     func createSocketURL() -> String
     func messageSender<T>(request: T)
@@ -31,6 +31,16 @@ protocol ChatProtocol: AnyObject {
 }
 
 extension ChatProtocol {
+    
+    func createSocketURL() -> String {
+        return EndPoints.baseURL +
+        EndPoints.Paths.PathDepthOne.chatSocket + "\(channelInfo?.channelID ?? 00)"
+    }
+    
+    func createSocketNamespace() -> String {
+        guard let safeChannel = channelInfo else { return "" }
+        return "/ws-channel-" + "\(safeChannel.channelID)"
+    }
     
     func getCurrentTimeForCursor() -> String {
         let formatter = DateFormatter()
