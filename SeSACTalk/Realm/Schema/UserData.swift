@@ -123,6 +123,7 @@ final class ChatUserModel: Object {
 
 final class DM: Object {
     
+    @Persisted var withUserID: Int
     @Persisted var roomID: Int
     @Persisted var dmData = List<DMDataSource>()
     @Persisted var DMDatabaseCreatedAt: String
@@ -138,6 +139,7 @@ final class DM: Object {
 
     convenience init(dm: DMs) {
         self.init()
+        self.withUserID = dm.user.userID
         self.roomID = dm.roomID
         self.DMDatabaseCreatedAt = getCurrentTimeForCursor()
     }
