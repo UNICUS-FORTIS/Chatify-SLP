@@ -17,6 +17,7 @@ final class CustomNavigationRightView: UIView {
             guard let safeImage = profileImage else { return }
             let url = URL(string: EndPoints.imageBaseURL + safeImage)
             self.image.kf.setImage(with: url)
+            self.contentMode = .scaleAspectFill
         }
     }
     
