@@ -56,7 +56,7 @@ extension UIViewController {
             if currendUserID == workspace.ownerID {
                 DispatchQueue.main.async {
                     session.loadWorkspaceMember(id: workspace.workspaceID) {
-                        let feature = MemberListFeatureClass()
+                        let feature = MemberListFeatureClass(mode: .handoverWorkspaceManager)
                         let vc = ListingViewController(feature: feature)
                         let navVC = UINavigationController(rootViewController: vc)
                         navVC.modalTransitionStyle = .coverVertical

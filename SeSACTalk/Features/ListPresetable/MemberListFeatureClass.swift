@@ -15,8 +15,10 @@ final class MemberListFeatureClass: ListingViewControllerProtocol {
     var session: LoginSession
     var tableView: UITableView
     var disposeBag = DisposeBag()
+    var mode: MemberListingMode
     
-    init() {
+    init(mode: MemberListingMode) {
+        self.mode = mode
         self.session = LoginSession.shared
         self.tableView = UITableView()
     }
@@ -24,15 +26,25 @@ final class MemberListFeatureClass: ListingViewControllerProtocol {
     func bind(target: UIViewController) {
         session.workspaceMember
             .map { member -> WorkspaceMemberResponse in
+                print(member)
                 if member.count <= 1 {
-                    let vc = BackdropViewController(boxType: .confirm(.modifyWorkspaceMember),
-                                                    workspaceID: nil)
-                    vc.modalTransitionStyle = .coverVertical
-                    vc.modalPresentationStyle = .overFullScreen
-                    target.present(vc, animated: false)
-                    return []
+                    switch self.mode {
+                    case .handoverWorkspaceManager:
+                        let vc = BackdropViewController(boxType: .confirm(.modifyWorkspaceMember),
+                                                        workspaceID: nil)
+                        vc.modalTransitionStyle = .coverVertical
+                        vc.modalPresentationStyle = .overFullScreen
+                        target.present(vc, animated: false)
+                    case .dm:
+                        let vc = BackdropViewController(boxType: .confirm(.findDmTarget),
+                                                        workspaceID: nil)
+                        vc.modalTransitionStyle = .coverVertical
+                        vc.modalPresentationStyle = .overFullScreen
+                        target.present(vc, animated: false)
+                    }
+                    return []                    
                 } else {
-                    return member.filter { self.session.makeUserID() != $0.userID }
+                    return member
                 }
             }
             .bind(to: tableView.rx.items(cellIdentifier: MemberListCell.identifier,
@@ -45,16 +57,30 @@ final class MemberListFeatureClass: ListingViewControllerProtocol {
         
         tableView.rx.itemSelected
             .subscribe(with: self) { owner, indexPath in
-                guard let selectedCell = owner.tableView.cellForRow(at: indexPath) as? MemberListCell else { return }
-                do {
-                    guard let currentWorkspace = try owner.session.currentWorkspaceSubject.value() else { return }
-                    let member = try owner.session.workspaceMember.value()
-                    owner.session.handoverWorkspaceManager(id: currentWorkspace.workspaceID,
-                                                           receiverID: member[indexPath.row + 1].userID)
-                } catch {
-                    print("멤버 리스트 밸류를 가져오지 못함")
+                let currentWorkspace = try? owner.session.currentWorkspaceSubject.value()
+                let member = try? owner.session.workspaceMember.value()
+
+                switch owner.mode {
+                case .handoverWorkspaceManager:
+                    guard let workspace = currentWorkspace,
+                          let member = member else { return }
+//                    owner.session.handoverWorkspaceManager(id: workspace.workspaceID,
+//                                                           receiverID: member[indexPath.row].userID)
+                    print("관리자 변경 to", member[indexPath.row].userID)
+                    target.dismissTrigger()
+                case .dm:
+                    guard let workspace = currentWorkspace,
+                          let member = member else { return }
+                    let previous = target.presentingViewController as? UINavigationController
+                    let manager = DMSocketManager(targetUserID: member[indexPath.row].userID,
+                                                  workspaceID: workspace.workspaceID)
+                    let vc = DMChatViewController(manager: manager)
+//                    let navVC = UINavigationController(rootViewController: vc)
+                    target.dismiss(animated: true) {
+                        previous?.pushViewController(vc, animated: true)
+                    }
                 }
-                target.dismissTrigger()
+                
             }
             .disposed(by: disposeBag)
     }
