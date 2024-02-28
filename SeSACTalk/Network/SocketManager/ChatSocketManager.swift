@@ -27,7 +27,8 @@ final class ChatSocketManager: NSObject {
 
     var channelChatRelay = BehaviorRelay<[ChannelDataSource]>(value: [])
     var dmChatRelay = BehaviorRelay<[DMDataSource]>(value: [])
-    
+    var scroller: ( ()  -> Void )?
+
     init(channelInfo: Channels) {
         super.init()
         self.channelInfo = channelInfo
@@ -108,7 +109,6 @@ extension ChatSocketManager: ChatProtocol {
         let id = IDRequiredRequest(id: safeChannel.workspaceID)
         let name = NameRequest(name: safeChannel.name)
         let cursurDate = ChatCursorDateRequest(cursor: self.getCursorDate(channelInfo: safeChannel))
-        print("커서 데이트", cursurDate.cursor)
         networkService
             .fetchRequest(endpoint: .joinToChannelChat(id: id,
                                                        name: name,
@@ -143,6 +143,8 @@ extension ChatSocketManager: ChatProtocol {
     func getCursorDate(channelInfo: Channels) -> String {
         return repository.getChannelLatestChatDate(channelInfo: channelInfo) ?? getCurrentTimeForCursor()
     }
+        
+    func getCursorDate(workspaceID: Int, withUserID: Int) -> String { return "" }
     
     func checkRelayIsEmpty() -> Bool {
         return channelChatRelay.value.isEmpty
