@@ -14,15 +14,11 @@ import Kingfisher
 final class DMTableCell: UITableViewCell {
     
     
-    private let symbolIcon = UIImageView(image: .dummyTypeA)
+    private let profileImage = CustomSpaceImageView(frame: .zero)
     private let name = CustomTitleLabel("",
                                         textColor: Colors.Text.primary,
                                         font: Typography.createBody())
-    private var badge = UIView(frame: .zero)
-    private let badgeCount = CustomTitleLabel("",
-                                              textColor: .white,
-                                              font: Typography.createCaption())
-    
+    private var badge = ChatBadgeLabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -36,27 +32,24 @@ final class DMTableCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        symbolIcon.image = nil
+        profileImage.image = .dummyTypeA
         name.text = nil
         name.textColor = Colors.Text.primary
-        badgeCount.text = ""
+        badge.text = ""
+        badge.isHidden = true
     }
     
     private func configure() {
-        self.addSubview(symbolIcon)
+        self.addSubview(profileImage)
         self.addSubview(name)
         self.addSubview(badge)
         self.selectionStyle = .none
-        badge.addSubview(badgeCount)
-        badge.backgroundColor = Colors.Brand.green
-        badge.layer.cornerRadius = 8
-        badge.clipsToBounds = true
-        symbolIcon.layer.cornerRadius = 4
-        symbolIcon.clipsToBounds = true
+        profileImage.setImage(image: .dummyTypeA)
+        profileImage.inactiveCameraIcon()
     }
     
     private func setConstraints() {
-        symbolIcon.snp.makeConstraints { make in
+        profileImage.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.size.equalTo(18)
             make.leading.equalToSuperview().inset(16)
@@ -64,31 +57,34 @@ final class DMTableCell: UITableViewCell {
         
         name.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalTo(symbolIcon.snp.trailing).offset(16)
+            make.leading.equalTo(profileImage.snp.trailing).offset(16)
             make.height.equalTo(28)
         }
         
-        badgeCount.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.height.equalTo(badgeCount.font.lineHeight).multipliedBy(1.26)
-        }
-        
         badge.snp.makeConstraints { make in
-            make.width.equalTo(badgeCount.snp.width).multipliedBy(1.5)
             make.height.equalTo(18)
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(17)
         }
     }
     
-    func setDms(data: DMs) {
+    func setDms(data: DMs, badgeCount: Int) {
         if let safeImage = data.user.profileImage {
             let url = EndPoints.baseURL + safeImage
             let urlString = URL(string: url)
-            symbolIcon.kf.setImage(with: urlString)
+            profileImage.kf.setImage(with: urlString)
         }
         
         name.text = data.user.nickname
-        badgeCount.text = "\(5)"
+        if badgeCount == 0 {
+            self.name.font = Typography.createBody()
+            self.name.textColor = Colors.Text.secondary
+            self.badge.isHidden = true
+        } else {
+            self.badge.isHidden = false
+            self.badge.text = "\(badgeCount)"
+            self.name.font = Typography.createBodyBold()
+            self.name.textColor = .black
+        }
     }
 }
