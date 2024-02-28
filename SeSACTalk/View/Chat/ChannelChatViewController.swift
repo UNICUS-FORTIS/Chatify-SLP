@@ -110,14 +110,14 @@ extension ChannelChatViewController: ChatInterfaceAcceptableProtocol {
                     
                     guard let senderCell = tableView.dequeueReusableCell(withIdentifier: MessageSenderTableCell.identifier) as? MessageSenderTableCell else { return UITableViewCell() }
                     
-                    senderCell.bind(data: item)
+                    senderCell.bind(channelData: item)
                     return senderCell
                     
                 } else {
                     
                     guard let otherUserCell = tableView.dequeueReusableCell(withIdentifier: MessageTableCell.identifier) as? MessageTableCell else { return UITableViewCell() }
                     
-                    otherUserCell.bind(data: item)
+                    otherUserCell.bind(chatData: item)
                     return otherUserCell
                 }
             }
