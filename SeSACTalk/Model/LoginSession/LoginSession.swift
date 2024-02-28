@@ -12,11 +12,12 @@ import RxCocoa
 
 final class LoginSession {
     
-    static var shared = LoginSession()
+    static let shared = LoginSession()
     private init() { bind() }
 
     private let networkService = NetworkService.shared
     private let repository = RealmRepository.shared
+    private let dmRepository = DMRealmRepository.shared
     private let userIDSubject = PublishSubject<Int>()
     private let nickNameSubject = PublishSubject<String>()
     private var userID: Int?
@@ -65,8 +66,6 @@ final class LoginSession {
                                   nick: String,
                                   access: String,
                                   refresh: String) {
-        print(#function)
-        
         userIDSubject
             .asDriver(onErrorJustReturn: 000)
             .drive(with: self) { owner, id in
@@ -79,6 +78,7 @@ final class LoginSession {
         UserdefaultManager.saveNewAccessToken(token: access)
         UserdefaultManager.saveNewRefreshToken(token: refresh)
         repository.userID = userID
+        dmRepository.userID = userID
         repository.createInitialUserdata()
         // MARK: - 유저 프로파일 로드
         fetchMyProfile()
@@ -121,11 +121,11 @@ final class LoginSession {
         
         myProfile
             .bind(with: self) { owner, profile in
-                guard let safe = profile else {
+                guard let safe = profile?.profileImage else {
                     self.rightCustomView.dummyImage = .dummyTypeA
                     return
                 }
-                self.rightCustomView.profileImage = safe.profileImage
+                self.rightCustomView.profileImage = safe
             }
             .disposed(by: disposeBag)
         
@@ -176,10 +176,9 @@ final class LoginSession {
             }
             .disposed(by: disposeBag)
         
+        // MARK: - 초기 데이터베이스 생성
         workSpacesSubject
-            .observe(on: MainScheduler.instance)
             .subscribe(with: self) { owner, workspaces in
-                
                 owner.currentWorkspaceSubject.onNext(workspaces?.first)
                 if workspaces?.count == 0 {
                     owner.leftCustomView = CustomNavigationLeftView()
@@ -187,10 +186,14 @@ final class LoginSession {
                 }
                 
                 guard let safe = workspaces else { return }
-                owner.repository.createInitialWorkspaceData(new: safe)
-                safe.forEach { workspace in
-                    owner.createChannelDatabase(workspaceID: workspace.workspaceID)
+                DispatchQueue.main.async {
+                    owner.repository.createInitialWorkspaceData(new: safe)
+                    safe.forEach { workspace in /////
+                        owner.createChannelDatabase(workspaceID: workspace.workspaceID)
+                        owner.createDMDatabase(workspaceID: workspace.workspaceID)
+                    }
                 }
+                
             }
             .disposed(by: disposeBag)
 
@@ -198,6 +201,12 @@ final class LoginSession {
             .subscribe(with: self) { owner, channels in
                 channels.forEach { owner.repository.createInitialChannelList(targetWorkspaceID: $0.workspaceID,
                                                                        channelID: $0.channelID) }
+            }
+            .disposed(by: disposeBag)
+        
+        DmsInfo
+            .subscribe(with: self) { owner, DMS in
+                DMS.forEach { owner.dmRepository.createDMRoom(dm: $0) }
             }
             .disposed(by: disposeBag)
     }
@@ -363,6 +372,21 @@ final class LoginSession {
         .disposed(by: disposeBag)
     }
     
+    func createDMDatabase(workspaceID: Int) {
+        let idRequest = IDRequiredRequest(id: workspaceID)
+        fetchDms(id: idRequest)
+            .subscribe(with: self) { owner, result in
+                switch result {
+                case .success(let response):
+                    
+                    response.forEach { owner.dmRepository.createDMRoom(dm: $0) }
+                    
+                case .failure(let error):
+                    print("DM 데이터베이스 작성 실패", error.errorCode)
+                }
+            }.disposed(by: disposeBag)
+    }
+    
     func fetchMyChannelInfo() {
         let idRequest = IDRequiredRequest(id: self.makeWorkspaceID())
         networkService.fetchRequest(endpoint: .loadMyChannelInfo(id: idRequest),
@@ -398,16 +422,19 @@ final class LoginSession {
     
     func fetchUnreadChannelChats(targetChannel: Channels, completion: @escaping (Int) -> Void) {
         
-        guard let cursurDate = repository.getChannelLatestChatDate(channelInfo: targetChannel) else {
+        guard let cursorDate = repository.getChannelLatestChatDate(channelInfo: targetChannel) else {
             completion(0)
             return
         }
 
         let id = IDRequiredRequest(id: self.makeWorkspaceID())
         let name = NameRequest(name: targetChannel.name)
-        let after = ChatCursorDateRequest(cursor: cursurDate)
+        let after = ChatCursorDateRequest(cursor: cursorDate)
         print(after.cursor)
-        networkService.fetchRequest(endpoint: .loadUnreadChannelChats(id: id, name: name, cursor: after), decodeModel: UnreadChannelChatResponse.self)
+        networkService.fetchRequest(endpoint: .loadUnreadChannelChats(id: id,
+                                                                      name: name,
+                                                                      cursor: after),
+                                    decodeModel: UnreadChannelChatResponse.self)
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(let response):
@@ -415,8 +442,34 @@ final class LoginSession {
                     completion(response.count)
                     
                 case .failure(let error):
-                    print("unread count 실패",error.errorCode)
-                    owner.fetchMyChannelInfo()
+                    print("Channel unread count 실패",error.errorCode)
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    func fetchUnreadDMChats(dm: DMs, completion: @escaping (Int) -> Void) {
+        guard let cursorDate = dmRepository.getDMLatestChatData(workspaceID: dm.workspaceID,
+                                                                userID: dm.user.userID) else {
+            completion(0)
+            return
+        }
+    print("커서데이트", cursorDate)
+        let roomID = IDRequiredRequest(id: dm.roomID)
+        let workspaceID = IDRequiredRequest(id: dm.workspaceID)
+        let after = ChatCursorDateRequest(cursor: cursorDate)
+        networkService.fetchRequest(endpoint: .loadUnreadDMChats(workspaceID: workspaceID,
+                                                                 roomID: roomID,
+                                                                 cursor: after),
+                                    decodeModel: UnreadDMChatResponse.self)
+            .subscribe(with: self) { owner, result in
+                switch result {
+                case .success(let response):
+                    
+                    completion(response.count)
+                    
+                case .failure(let error):
+                    print("DM unread count 실패",error.errorCode)
                 }
             }
             .disposed(by: disposeBag)
