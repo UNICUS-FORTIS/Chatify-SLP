@@ -15,12 +15,15 @@ protocol ChatProtocol: AnyObject {
     var dmChatRelay: BehaviorRelay<[DMDataSource]> { get set }
     var dmRoomInfo: DMRoomInfo? { get set }
     var channelInfo: Channels? { get }
+    var scroller: ( ()  -> Void )? { get set }
+
     
     func createSocketURL() -> String
     func messageSender<T>(request: T)
     func createSocketNamespace() -> String
     func loadRecentChatFromDatabse()
     func getCursorDate(channelInfo: Channels) -> String
+    func getCursorDate(workspaceID: Int, withUserID: Int) -> String
     func getCurrentTimeForCursor() -> String
     func judgeSender(sender: Int, userID: Int) -> Bool
     func loadChatLog(completion: @escaping () -> Void )
