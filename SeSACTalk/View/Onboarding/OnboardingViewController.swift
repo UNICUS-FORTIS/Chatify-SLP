@@ -12,10 +12,10 @@ import RxCocoa
 import FloatingPanel
 
 
-final class OnboardingViewController: UIViewController {
+class OnboardingViewController: UIViewController {
     
-    private let mainImage = UIImageView(image: .onboarding)
-    private let mainTitle = CustomTitleLabel(ScreenTitles.Onboarding.mainTitle,
+    let mainImage = UIImageView(image: .onboarding)
+    let mainTitle = CustomTitleLabel(ScreenTitles.Onboarding.mainTitle,
                                              textColor: .black,
                                              font: Typography.createTitle1())
     private let startButton = CustomButton(title: ScreenTitles.Onboarding.startButton)
@@ -32,7 +32,7 @@ final class OnboardingViewController: UIViewController {
         setTriggers()
     }
         
-    private func configure() {
+    func configure() {
         view.backgroundColor = Colors.Background.primary
         view.addSubview(mainImage)
         view.addSubview(mainTitle)
@@ -94,7 +94,7 @@ final class OnboardingViewController: UIViewController {
         self.present(fpc, animated: true, completion: nil)
     }
 
-    private func setConstraints() {
+    func setConstraints() {
         
         mainTitle.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(39)

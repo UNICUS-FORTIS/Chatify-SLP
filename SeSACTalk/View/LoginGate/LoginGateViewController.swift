@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-final class LoginGateViewController: UIViewController {
+final class LoginGateViewController: OnboardingViewController {
     
     private let session = LoginSession.shared
     private let networkService = NetworkService.shared
@@ -29,6 +29,21 @@ final class LoginGateViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         gateAction(target: nil)
+        configure()
+        setConstraints()
+    }
+    
+    override func setConstraints() {
+        mainTitle.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(39)
+            make.horizontalEdges.equalToSuperview().inset(24)
+            make.centerX.equalToSuperview()
+        }
+        
+        mainImage.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.horizontalEdges.equalToSuperview().inset(12)
+        }
     }
     
     func gateAction(target: UIViewController?) {
