@@ -18,6 +18,7 @@ final class BackdropViewController: UIViewController {
     private var boxType: InteractionType?
     private var channel: Channels?
     private var workspaceID: Int?
+    private var workspaceManagerReceiverID: Int?
     
     convenience init(boxType: InteractionType, workspaceID: Int?) {
         self.init(nibName: nil, bundle: nil)
@@ -30,6 +31,13 @@ final class BackdropViewController: UIViewController {
         self.boxType = boxType
         self.workspaceID = workspaceID
         self.channel = channel
+    }
+    
+    convenience init(boxType: InteractionType, workspaceID: Int, receiver: Int) {
+        self.init(nibName: nil, bundle: nil)
+        self.boxType = boxType
+        self.workspaceID = workspaceID
+        self.workspaceManagerReceiverID = receiver
     }
     
     override func viewDidLoad() {
@@ -62,6 +70,9 @@ final class BackdropViewController: UIViewController {
                 
             case .removeWorkspace:
                 box.setConfirmButtonAction(target: self, action: #selector(confirmRemoveWorkspaceTrigger))
+                
+            case .handoverWorkspaceManager(_):
+                box.setConfirmButtonAction(target: self, action: #selector(confirmHandoverWorkspaceManager))
                 
             case .loadChannels:
                 box.setConfirmButtonAction(target: self, action: #selector(confirmJoinToChannel))
@@ -96,9 +107,18 @@ final class BackdropViewController: UIViewController {
         }
     }
     
+    @objc func confirmHandoverWorkspaceManager() {
+        guard let id = workspaceID,
+        let receiver = workspaceManagerReceiverID else { return }
+        session.handoverWorkspaceManager(id: id, receiverID: receiver)
+        let prestingVC = self.presentingViewController
+        self.dismiss(animated: false) {
+            prestingVC?.dismissTrigger()
+        }
+    }
+    
     @objc func exitFromWorkspaceTrigger() {
         guard let id = workspaceID else { return }
-        print(id, "현재 워크스페이스 아이디")
         session.leaveFromWorkspace(id: id)
         self.dismiss(animated: false)
     }
