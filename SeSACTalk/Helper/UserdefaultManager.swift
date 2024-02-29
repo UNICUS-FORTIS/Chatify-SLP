@@ -10,7 +10,6 @@ import Foundation
 struct UserdefaultManager {
     
     static func createAccessToken() -> String {
-        print(#function)
         guard let accessToken = UserDefaults.standard.string(forKey: "accessToken") else { return "" }
         return accessToken
     }
@@ -101,5 +100,9 @@ struct UserdefaultManager {
               let deviceToken = UserdefaultManager.createDeviceToken() else { return nil }
               
         return EmailLoginRequest(email: email, password: password, deviceToken: deviceToken)
+    }
+    
+    static func saveFCMToken(token: String) {
+        UserDefaults.standard.set(token, forKey: "FCMToken")
     }
 }
