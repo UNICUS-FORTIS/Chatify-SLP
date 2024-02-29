@@ -141,7 +141,7 @@ final class SignInViewController: UIViewController {
                 let current = self.email.textField.text
                 if previous == current {
                     self.createInformationToast(message: ToastMessages.Join.availiableEmail.description,
-                                                backgroundColor: Colors.Brand.green,
+                                                backgroundColor: Colors.Brand.identity,
                                                 aboveView: self.signInButton)
                     return true
                 } else {
@@ -168,7 +168,7 @@ final class SignInViewController: UIViewController {
                         owner.emailCheckButton.validationBinder.onNext(true)
                         owner.viewModel.emailValidationSubject.onNext(true)
                         owner.createInformationToast(message: ToastMessages.Join.availiableEmail.description,
-                                                     backgroundColor: Colors.Brand.green,
+                                                     backgroundColor: Colors.Brand.identity,
                                                      aboveView: owner.signInButton)
                     }
                     

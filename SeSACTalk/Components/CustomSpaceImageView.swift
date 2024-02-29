@@ -33,7 +33,7 @@ final class CustomSpaceImageView: UIImageView {
         self.addSubview(spaceImage)
         self.addSubview(cameraImage)
         self.isUserInteractionEnabled = true
-        spaceImage.backgroundColor = Colors.Brand.green
+        spaceImage.backgroundColor = Colors.Brand.identity
         spaceImage.image = .chatBubble
         spaceImage.contentMode = .scaleAspectFit
         spaceImage.layer.cornerRadius = 4

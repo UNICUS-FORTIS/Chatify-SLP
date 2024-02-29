@@ -18,7 +18,7 @@ final class ProfileTableCell: UITableViewCell {
                                              UIFont.systemFont(ofSize: 13))
     
     private let coinValue = CustomTitleLabel("",
-                                             textColor: Colors.Brand.green,
+                                             textColor: Colors.Brand.identity,
                                              font: Typography.bodyBold ??
                                              UIFont.systemFont(ofSize: 13))
     

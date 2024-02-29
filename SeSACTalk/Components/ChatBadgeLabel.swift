@@ -40,7 +40,7 @@ final class ChatBadgeLabel: UILabel {
     
     private func configure() {
         self.textColor = .white
-        self.backgroundColor = Colors.Brand.green
+        self.backgroundColor = Colors.Brand.identity
         self.font = Typography.createCaption()
         self.textAlignment = .center
         self.numberOfLines = 1

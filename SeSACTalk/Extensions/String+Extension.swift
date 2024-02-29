@@ -54,7 +54,7 @@ extension String {
             let nsRange = NSRange(match, in: self)
             if nsRange.location != NSNotFound, let swiftRange = Range(nsRange, in: self) {
                 let range = NSRange(swiftRange, in: self)
-                attributedString.addAttribute(.foregroundColor, value: Colors.Brand.green, range: range)
+                attributedString.addAttribute(.foregroundColor, value: Colors.Brand.identity, range: range)
                 
                 let blackRange = NSRange(location: 0, length: 2)
                 attributedString.addAttribute(.foregroundColor, value: UIColor.black, range: blackRange)

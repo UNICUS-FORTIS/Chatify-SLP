@@ -110,7 +110,7 @@ final class CustomButton: UIButton {
             .subscribe(with: self) { owner, validation in
                 var updatedConfiguration = self.configuration
                 updatedConfiguration?.background.backgroundColor = validation ?
-                Colors.Brand.green :
+                Colors.Brand.identity :
                 Colors.Brand.inactive
                 self.configuration = updatedConfiguration
             }

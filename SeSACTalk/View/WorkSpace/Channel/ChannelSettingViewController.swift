@@ -204,7 +204,7 @@ final class ChannelSettingViewController: UIViewController {
         vc.viewModel.completionHandeler =  { [weak self] channels in
             self?.viewModel.acceptChannelInfoRelay(channel: channels)
             self?.makeSuccessToastView(message: ToastMessages.Channel.editComplted.description,
-                                       backgroundColor: Colors.Brand.green,
+                                       backgroundColor: Colors.Brand.identity,
                                        target: self ?? UIViewController() )
         }
         let navVC = UINavigationController(rootViewController: vc)

@@ -94,7 +94,7 @@ final class InviteMemberViewController: UIViewController, ToastPresentableProtoc
                 case .InviteMember(let notify):
                     let message = notify.toastMessage
                     owner.makeToastAboveView(message: message,
-                                             backgroundColor: Colors.Brand.green,
+                                             backgroundColor: Colors.Brand.identity,
                                              aboveView: owner.confirmButton)
                 default: break
                 }

@@ -102,7 +102,7 @@ final class ChannelAddViewController: UIViewController, ToastPresentableProtocol
                 case .InviteMember(let notify):
                     let message = notify.toastMessage
                     owner.makeToastAboveView(message: message,
-                                             backgroundColor: Colors.Brand.green,
+                                             backgroundColor: Colors.Brand.identity,
                                              aboveView: owner.completeButton)
                 default: break
                 }
