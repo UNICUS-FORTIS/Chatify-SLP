@@ -64,4 +64,15 @@ enum ToastMessages {
             
         }
     }
+    
+    enum Coin {
+        case purchaseCompleted(coin: String)
+        
+        var description: String {
+            switch self {
+            case .purchaseCompleted(let coin):
+                return "\(coin) 결제가 완료되었습니다."
+            }
+        }
+    }
 }
