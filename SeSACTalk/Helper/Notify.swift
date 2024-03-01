@@ -54,3 +54,23 @@ enum CreateChannelErrors: String {
         }
     }
 }
+
+enum CoinErrors: String {
+    
+    case NonexistentPayment = "E81"
+    case invalidPayment = "E82"
+    case cancel = "cancel"
+
+    var description: String {
+        switch self {
+        case .NonexistentPayment:
+            return "존재하지 않는 결제건입니다."
+            
+        case .invalidPayment:
+            return "유효하지 않은 결제건입니다. "
+            
+        case .cancel:
+            return "결제를 취소하였습니다."
+        }
+    }
+}
