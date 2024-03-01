@@ -81,6 +81,18 @@ final class ProfileEditViewController: UIViewController {
                 .bind(to: viewModel.contactRelay)
                 .disposed(by: disposeBag)
             
+            profileInputView.textField.rx.text.orEmpty
+                .map { text in
+                    switch text.count {
+                    case 13:
+                        return text.formated(by: "###-####-####")
+                    default:
+                        return text.formated(by: "###-###-####")
+                    }
+                }
+                .bind(to: profileInputView.textField.rx.text)
+                .disposed(by: disposeBag)
+            
             viewModel.contactRelay
                 .asDriver(onErrorJustReturn: "")
                 .drive(with: self) { owner, contact in
@@ -113,6 +125,11 @@ final class ProfileEditViewController: UIViewController {
         view.addSubview(completeButton)
         guard let safe = editMode else { return }
         navigationController?.setDefaultNavigation(target: self, title: safe.title)
+        keyboardSetting(target: self,
+                        view: completeButton,
+                        tableView: nil,
+                        scrollView: nil,
+                        disposeBag: disposeBag)
     }
     
     private func setConstraints() {
