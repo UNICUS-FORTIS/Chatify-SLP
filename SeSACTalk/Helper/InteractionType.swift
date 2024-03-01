@@ -16,6 +16,7 @@ enum InteractionTypeCancellable {
     
     case exitFromWorkspace
     case removeWorkspace
+    case handoverWorkspaceManager(name: String)
     case loadChannels(name: String)
     case exitFromChannel
     case removeChannel
@@ -27,6 +28,8 @@ enum InteractionTypeCancellable {
             return "워크스페이스 나가기"
         case .removeWorkspace:
             return "워크스페이스 삭제"
+        case .handoverWorkspaceManager(let name):
+            return "\(name) 님을 관리자로 지정하시겠습니까?"
         case .loadChannels:
             return "채널 참여"
         case .exitFromChannel:
@@ -47,6 +50,14 @@ enum InteractionTypeCancellable {
             return """
             정말 이 워크스페이스를 삭제하시겠습니까?
             삭제 시 채널/멤버/채팅 등 워크스페이스 내의 모든 정보가 삭제되며 복구할 수 없습니다.
+            """
+            
+        case .handoverWorkspaceManager(_):
+            return """
+            워크스페이스 관리자는 다음과 같은 권한이 있습니다.
+            워크스페이스 이름 또는 설명 변경
+            워크스페이스 삭제
+            워크스페이스 멤버 초대
             """
         case .loadChannels(let name):
             return "[\(name)] 채널에 참여하시겠습니까?"
@@ -76,7 +87,8 @@ enum InteractionTypeCancellable {
                 .removeChannel:
             return "삭제"
             
-        case .loadChannels:
+        case .loadChannels,
+                .handoverWorkspaceManager(_):
             return "확인"
             
         case .logout:
