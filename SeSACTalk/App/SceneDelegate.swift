@@ -18,9 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        print(LoginMethod.activeMethod(), "로그인 메서드")
         guard let method = LoginMethod.activeMethod() else {
-            print("온보딩 화면으로 전환")
             window = UIWindow(windowScene: windowScene)
             let naviVC = UINavigationController(rootViewController: OnboardingViewController())
             window?.rootViewController = naviVC
@@ -31,7 +29,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         switch method {
         case .apple:
             guard let user = UserdefaultManager.createAppleUserIdentifier() else {
-                print("등록된 유저 없음")
                 window = UIWindow(windowScene: windowScene)
                 let naviVC = UINavigationController(rootViewController: OnboardingViewController())
                 window?.rootViewController = naviVC
@@ -42,7 +39,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             appleIDProvider.getCredentialState(forUserID: user) { credentialState, error in
                 switch credentialState {
                 case .revoked:
-                    print("Revoked")
                     DispatchQueue.main.async {
                         self.window = UIWindow(windowScene: windowScene)
                         let naviVC = UINavigationController(rootViewController: OnboardingViewController())
@@ -52,7 +48,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     }
                 
                 case .authorized:
-                    print("애플로그인 인가 됨")
                     DispatchQueue.main.async {
                         self.window = UIWindow(windowScene: windowScene)
                         let naviVC = UINavigationController(rootViewController: LoginGateViewController(loginMethod: method))
