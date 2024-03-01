@@ -7,26 +7,17 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 import Kingfisher
 
 
 final class CustomNavigationRightView: UIView {
     
-    var profileImage: String? {
-        didSet {
-            guard let safeImage = profileImage else { return }
-            let url = URL(string: EndPoints.imageBaseURL + safeImage)
-            self.image.kf.setImage(with: url)
-            self.contentMode = .scaleAspectFill
-        }
-    }
-    
-    var dummyImage: UIImage? {
-        didSet {
-            guard let safeDummyImage = dummyImage else { return }
-            self.image.image = safeDummyImage
-        }
-    }
+    let profileImage = PublishRelay<String>()
+    let dummyImage = PublishRelay<UIImage>()
+    private let disposeBag = DisposeBag()
+
     
     var button = UIButton()
     
@@ -36,6 +27,7 @@ final class CustomNavigationRightView: UIView {
         super.init(frame: frame)
         configure()
         setConstraints()
+        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -63,5 +55,21 @@ final class CustomNavigationRightView: UIView {
         button.snp.makeConstraints { make in
             make.size.equalToSuperview()
         }
+    }
+    
+    func bind() {
+        profileImage
+            .bind(with: self) { owner, profile in
+                let url = URL(string: EndPoints.imageBaseURL + profile)
+                self.image.kf.setImage(with: url)
+                self.contentMode = .scaleAspectFill
+            }
+            .disposed(by: disposeBag)
+        
+        dummyImage
+            .bind(with: self) { owner, dummy in
+                self.image.image = dummy
+            }
+            .disposed(by: disposeBag)
     }
 }
