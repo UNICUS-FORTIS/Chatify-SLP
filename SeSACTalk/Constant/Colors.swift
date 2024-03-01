@@ -12,7 +12,7 @@ enum Colors {
     
     enum Brand {
         
-        static let green = UIColor(red: 0.29, green: 0.78, blue: 0.27, alpha: 1.00)
+        static let identity = UIColor(red: 0.52, green: 0.00, blue: 0.86, alpha: 1.00)
         static let error = UIColor(red: 0.91, green: 0.40, blue: 0.42, alpha: 1.00)
         static let inactive = UIColor(red: 0.67, green: 0.67, blue: 0.67, alpha: 1.00)
         static let gray = UIColor(red: 0.87, green: 0.87, blue: 0.87, alpha: 1.00)
@@ -20,7 +20,7 @@ enum Colors {
     }
     
     enum Background {
-        static let primary = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1.00)
+        static let primary = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1.00)
     }
     
     enum Text {
