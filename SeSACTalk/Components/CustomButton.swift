@@ -7,12 +7,13 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 
 final class CustomButton: UIButton {
     
     
-    private var title = BehaviorSubject<String>(value: "")
+    private var title = BehaviorRelay<String>(value: "")
     private var attrTitle: NSAttributedString?
     private var buttonImage: UIImage?
     var validationBinder = PublishSubject<Bool>()
@@ -22,6 +23,10 @@ final class CustomButton: UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     convenience init(channelEditTitle: String, color: UIColor) {
@@ -45,7 +50,7 @@ final class CustomButton: UIButton {
     
     convenience init(title: String) {
         self.init(frame: .zero)
-        self.title.onNext(title)
+        self.title.accept(title)
         configure()
         bindColor()
     }
@@ -81,7 +86,6 @@ final class CustomButton: UIButton {
                 attrTitle.font = Typography.title2
                 configuration.attributedTitle = attrTitle
                 
-                
                 var background = UIBackgroundConfiguration.listPlainCell()
                 background.backgroundColor = Colors.Brand.inactive
                 
@@ -98,10 +102,6 @@ final class CustomButton: UIButton {
                 self.contentHorizontalAlignment = .center
             }
             .disposed(by: disposeBag)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     private func bindColor() {
@@ -124,7 +124,7 @@ final class CustomButton: UIButton {
     }
     
     func defineTitle(title: String) {
-        self.title.onNext(title)
+        self.title.accept(title)
     }
     
     func setIcon(image: UIImage) {
