@@ -46,10 +46,10 @@ extension ToastPresentableProtocol where Self: UIViewController {
     func makeSuccessToastView(message: String, backgroundColor: UIColor, target: UIViewController) {
         let overlayView = UIView(frame: CGRect(x: 0,
                                                y: 0,
-                                               width: 200,
+                                               width: UIScreen.main.bounds.width,
                                                height: 50))
         overlayView.backgroundColor = UIColor.clear
-        self.view.addSubview(overlayView)
+        target.view.addSubview(overlayView)
         overlayView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.width.equalTo(target.view.safeAreaLayoutGuide)
