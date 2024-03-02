@@ -82,16 +82,7 @@ final class LoginSession {
         repository.createInitialUserdata()
         // MARK: - 유저 프로파일 로드
         fetchMyProfile()
-            .subscribe(with: self) { owner, result in
-                switch result {
-                case .success(let response):
-                    owner.myProfile.onNext(response)
-                    
-                case .failure(let error):
-                    owner.errorReceriver.onNext(error)
-                }
-            }
-            .disposed(by: disposeBag)
+        
 // MARK: - 경로확인
         repository.checkRealmDirectory()
     }
@@ -122,10 +113,10 @@ final class LoginSession {
         myProfile
             .bind(with: self) { owner, profile in
                 guard let safe = profile?.profileImage else {
-                    self.rightCustomView.dummyImage = .dummyTypeA
+                    self.rightCustomView.dummyImage.accept(.dummyTypeA)
                     return
                 }
-                self.rightCustomView.profileImage = safe
+                self.rightCustomView.profileImage.accept(safe)
             }
             .disposed(by: disposeBag)
         
@@ -168,7 +159,6 @@ final class LoginSession {
                 switch result {
                 case .success(let response):
                     owner.DmsInfo.onNext(response)
-                    print("DM정보 할당됨")
                     
                 case .failure(let error):
                     owner.errorReceriver.onNext(error)
@@ -188,7 +178,7 @@ final class LoginSession {
                 guard let safe = workspaces else { return }
                 DispatchQueue.main.async {
                     owner.repository.createInitialWorkspaceData(new: safe)
-                    safe.forEach { workspace in /////
+                    safe.forEach { workspace in
                         owner.createChannelDatabase(workspaceID: workspace.workspaceID)
                         owner.createDMDatabase(workspaceID: workspace.workspaceID)
                     }
@@ -221,6 +211,23 @@ final class LoginSession {
                                            decodeModel: DMsResponse.self)
     }
     
+    func reloadDMInfo() {
+        print(#function)
+        let id = IDRequiredRequest(id: self.makeWorkspaceID())
+        return networkService.fetchRequest(endpoint: .loadDms(id: id),
+                                           decodeModel: DMsResponse.self)
+        .subscribe(with: self) { owner, result in
+            switch result {
+            case .success(let response):
+                owner.DmsInfo.onNext(response)
+                
+            case .failure(let error):
+                owner.errorReceriver.onNext(error)
+            }
+        }
+        .disposed(by: disposeBag)
+    }
+    
     func fetchStartDM(targetUserID: Int, cursorDate: String) -> Single<Result<DMChatResponse, ErrorResponse>> {
         let workspaceID = IDRequiredRequest(id: self.makeWorkspaceID())
         let target = IDRequiredRequest(id: targetUserID)
@@ -231,10 +238,20 @@ final class LoginSession {
         
     }
     
-    func fetchMyProfile() -> Single<Result<MyProfileResponse, ErrorResponse>> {
+    func fetchMyProfile() {
         print(#function)
-        return networkService.fetchRequest(endpoint: .loadMyProfile,
-                                           decodeModel: MyProfileResponse.self)
+        networkService.fetchRequest(endpoint: .loadMyProfile,
+                                    decodeModel: MyProfileResponse.self)
+        .subscribe(with: self) { owner, result in
+            switch result {
+            case .success(let response):
+                owner.myProfile.onNext(response)
+                
+            case .failure(let error):
+                owner.errorReceriver.onNext(error)
+            }
+        }
+        .disposed(by: disposeBag)
     }
     
     func fetchLoadWorkSpace() {
@@ -304,6 +321,7 @@ final class LoginSession {
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(_):
+                    owner.removeWorkspaceDatabase(workspaceID: id)
                     owner.fetchLoadWorkSpace()
                 case .failure(let error):
                     print(error.errorCode)
@@ -337,7 +355,7 @@ final class LoginSession {
             case .success(let workspace):
                 let new = workspace.filter { owner.makeUserID() != $0.userID }
                 owner.workspaceMember.onNext(new)
-                print("워크스페이스멤버 할당됨")
+                print("워크스페이스멤버 할당됨", new)
                 completion()
             case .failure(let error):
                 print(error)
@@ -484,6 +502,21 @@ final class LoginSession {
                     
                 case .failure(let error):
                     print(error.errorCode)
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    func fetchSaveFCMToken(token: String) {
+        let request = FCMTokenRequest(deviceToken: token)
+        networkService.fetchStatusCodeRequest(endpoint: .deviceToken(token: request))
+            .subscribe(with: self) { owner, result in
+                switch result {
+                case .success(let statuscode):
+                    print(statuscode, "FCM토큰 저장완료", token)
+                    
+                case .failure(let error):
+                    print(error.errorCode, "FCM토큰 저장하지 못함")
                 }
             }
             .disposed(by: disposeBag)
