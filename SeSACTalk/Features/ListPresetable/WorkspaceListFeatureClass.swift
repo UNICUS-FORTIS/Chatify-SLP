@@ -42,21 +42,28 @@ final class WorkspaceListFeatureClass: ListingViewControllerProtocol {
         
         tableView.rx.itemSelected
             .subscribe(with: self) { owner, indexPath in
-                guard let selectedCell = owner.tableView.cellForRow(at: indexPath) as? WorkspaceListingCell else { return }
-                selectedCell.selection.onNext(true)
-                if owner.session.makeWorkspaceListCount() > 0 {
+                
+                let selectedIndexPath = indexPath
+                
+                let deselectedIndexPaths = owner.tableView.indexPathsForVisibleRows?.filter { $0 != selectedIndexPath } ?? []
+                
+                deselectedIndexPaths.forEach { indexPath in
+                    if let cell = owner.tableView.cellForRow(at: indexPath) as? WorkspaceListingCell {
+                        cell.selection.onNext(false)
+                    }
+                }
+                
+                if let selectedCell = owner.tableView.cellForRow(at: selectedIndexPath) as? WorkspaceListingCell {
+                    selectedCell.selection.onNext(true)
+                }
+                    if owner.session.makeWorkspaceListCount() > 0 {
                     self.session.modifyCurrentWorkspace(path: indexPath)
                 }
+                
                 target.dismissTrigger()
             }
             .disposed(by: disposeBag)
-        
-        tableView.rx.itemDeselected
-            .subscribe(with: self) { owner, indexPath in
-                guard let selectedCell = owner.tableView.cellForRow(at: indexPath) as? WorkspaceListingCell else { return }
-                selectedCell.selection.onNext(false)
-            }
-            .disposed(by: disposeBag)
+
         
         addNewWorkSpaceButton.rx.tap
             .subscribe(with: target) { owner, _ in
