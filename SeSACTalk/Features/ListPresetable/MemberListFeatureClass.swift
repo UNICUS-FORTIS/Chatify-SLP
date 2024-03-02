@@ -27,7 +27,7 @@ final class MemberListFeatureClass: ListingViewControllerProtocol {
         session.workspaceMember
             .map { member -> WorkspaceMemberResponse in
                 print(member)
-                if member.count <= 1 {
+                if member.count < 1 {
                     switch self.mode {
                     case .handoverWorkspaceManager:
                         let vc = BackdropViewController(boxType: .confirm(.modifyWorkspaceMember),
@@ -64,16 +64,19 @@ final class MemberListFeatureClass: ListingViewControllerProtocol {
                 case .handoverWorkspaceManager:
                     guard let workspace = currentWorkspace,
                           let member = member else { return }
-//                    owner.session.handoverWorkspaceManager(id: workspace.workspaceID,
-//                                                           receiverID: member[indexPath.row].userID)
+                    let vc = BackdropViewController(boxType: .cancellable(.handoverWorkspaceManager(name: member[indexPath.row].nickname)), workspaceID: workspace.workspaceID, receiver: member[indexPath.row].userID)
+                    vc.modalTransitionStyle = .coverVertical
+                    vc.modalPresentationStyle = .overFullScreen
+                    target.present(vc, animated: false)
+            
                     print("관리자 변경 to", member[indexPath.row].userID)
-                    target.dismissTrigger()
                 case .dm:
                     guard let workspace = currentWorkspace,
                           let member = member else { return }
                     let previous = target.presentingViewController as? UINavigationController
                     let manager = DMSocketManager(targetUserID: member[indexPath.row].userID,
-                                                  workspaceID: workspace.workspaceID)
+                                                  workspaceID: workspace.workspaceID,
+                                                  nickname: member[indexPath.row].nickname)
                     let vc = DMChatViewController(manager: manager)
                     target.dismiss(animated: true) {
                         previous?.pushViewController(vc, animated: true)
