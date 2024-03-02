@@ -37,7 +37,7 @@ final class DMChatViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
@@ -66,13 +66,7 @@ final class DMChatViewController: UIViewController {
         super.viewDidDisappear(animated)
         socketManager.disconnectSocket()
     }
-    
-    @objc private func setNavigationRightAction() {
-        guard let channelInfo = socketManager.channelInfo else { return }
-        let vc = ChannelSettingViewController(channelInfo: channelInfo)
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
+        
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
@@ -82,10 +76,9 @@ final class DMChatViewController: UIViewController {
     }
 }
 
-
 extension DMChatViewController: ChatInterfaceAcceptableProtocol {
-   
-
+    
+    
     func setTextViewDelegate() {
         accView.textView.delegate = self
     }
@@ -96,9 +89,11 @@ extension DMChatViewController: ChatInterfaceAcceptableProtocol {
     }
     
     func setupNavigation() {
-        navigationController?.setChannelChatNavigation(target: self,
-                                                       title: socketManager.channelInfo?.name ?? "",
-                                                       rightAction: #selector(setNavigationRightAction))
+        socketManager.titlenameRelay
+            .bind(with: self) { owner, title in
+                owner.navigationController?.setDefaultNavigation(target: self, title: title)
+            }
+            .disposed(by: disposeBag)
     }
     
     func bindTableView() {
