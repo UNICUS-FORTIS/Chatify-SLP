@@ -45,6 +45,9 @@ enum APIService {
                            cursor: ChatCursorDateRequest)
     case removeChannel(id: IDRequiredRequest, name: NameRequest)
     case logout
+    case deviceToken(token: FCMTokenRequest)
+    case loadProductList
+    case purchaseValidation(uids: PurchaseValidationRequest)
 }
 
 extension APIService: TargetType {
@@ -195,6 +198,15 @@ extension APIService: TargetType {
         case .logout:
             return path.logout
             
+        case .deviceToken(_):
+            return path.deviceToken
+            
+        case .loadProductList:
+            return path.productList
+            
+        case .purchaseValidation:
+            return path.perchaseValidation
+            
         }
     }
     
@@ -210,7 +222,9 @@ extension APIService: TargetType {
                 .inviteWorkspaceMember,
                 .createChannel,
                 .sendChannelChat,
-                .sendDMsChat:
+                .sendDMsChat,
+                .deviceToken,
+                .purchaseValidation:
             return .post
             
         case .loadWorkSpace,
@@ -228,7 +242,8 @@ extension APIService: TargetType {
                 .leaveFromChannel,
                 .loadUnreadChannelChats,
                 .loadUnreadDMChats,
-                .logout:
+                .logout,
+                .loadProductList:
             return .get
             
         case .editWorkSpace,
@@ -290,7 +305,8 @@ extension APIService: TargetType {
                 .loadChannelMemebers,
                 .leaveFromChannel,
                 .removeChannel,
-                .logout :
+                .logout,
+                .loadProductList:
             return .requestPlain
             
         case .inviteWorkspaceMember(_, let model):
@@ -340,6 +356,12 @@ extension APIService: TargetType {
                 .loadUnreadDMChats(_, _, let after):
             return .requestParameters(parameters: ["after" : after.cursor],
                                       encoding: URLEncoding.queryString)
+            
+        case .deviceToken(let token):
+            return .requestJSONEncodable(token)
+            
+        case .purchaseValidation(let uids):
+            return .requestJSONEncodable(uids)
         }
     }
     
@@ -379,7 +401,8 @@ extension APIService: TargetType {
                 .leaveFromChannel,
                 .loadUnreadChannelChats,
                 .loadUnreadDMChats,
-                .removeChannel :
+                .removeChannel,
+                .loadProductList:
             
             return [
                 SecureKeys.Headers.auth : SecureKeys.Headers.accessToken,
@@ -388,7 +411,9 @@ extension APIService: TargetType {
             
         case .joinToChannelChat,
                 .loadDMChats,
-                .editChannelInfo:
+                .editChannelInfo,
+                .deviceToken,
+                .purchaseValidation :
             
             return [
                 SecureKeys.Headers.contentsType : SecureKeys.Headers.contentsTypePair,
