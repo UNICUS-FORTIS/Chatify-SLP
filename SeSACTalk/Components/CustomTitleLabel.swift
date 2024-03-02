@@ -16,7 +16,7 @@ final class CustomTitleLabel: UILabel {
         self.init()
         self.text = text
         self.font = font
-        self.textColor = Colors.Text.primary
+        self.textColor = textColor
     }
     
     override init(frame: CGRect) {
