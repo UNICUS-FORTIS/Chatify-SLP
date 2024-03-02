@@ -24,14 +24,15 @@ final class ChatSocketManager: NSObject {
     private let repository = RealmRepository.shared
     private var task: Results<Channel>?
     private let disposeBag = DisposeBag()
-
     var channelChatRelay = BehaviorRelay<[ChannelDataSource]>(value: [])
     var dmChatRelay = BehaviorRelay<[DMDataSource]>(value: [])
+    var titlenameRelay = BehaviorRelay<String>(value: "")
     var scroller: ( ()  -> Void )?
 
     init(channelInfo: Channels) {
         super.init()
         self.channelInfo = channelInfo
+        self.titlenameRelay.accept(channelInfo.name)
         
         guard let url = URL(string: createSocketURL()) else { return }
         manager = SocketManager(socketURL: url,

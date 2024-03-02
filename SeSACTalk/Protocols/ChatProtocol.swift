@@ -13,6 +13,7 @@ protocol ChatProtocol: AnyObject {
     
     var channelChatRelay: BehaviorRelay<[ChannelDataSource]> { get set }
     var dmChatRelay: BehaviorRelay<[DMDataSource]> { get set }
+    var titlenameRelay: BehaviorRelay<String> {get set}
     var dmRoomInfo: DMRoomInfo? { get set }
     var channelInfo: Channels? { get }
     var scroller: ( ()  -> Void )? { get set }
