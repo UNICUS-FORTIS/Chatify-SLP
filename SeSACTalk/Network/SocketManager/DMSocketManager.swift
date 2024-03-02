@@ -22,11 +22,13 @@ final class DMSocketManager: NSObject {
     
     private let networkService = NetworkService.shared
     private let repository = DMRealmRepository.shared
+    private let session = LoginSession.shared
     private var task: Results<DM>?
     private let disposeBag = DisposeBag()
     
     var channelChatRelay = BehaviorRelay<[ChannelDataSource]>(value: [])
     var dmChatRelay = BehaviorRelay<[DMDataSource]>(value: [])
+    var titlenameRelay = BehaviorRelay<String>(value: "")
     var dmRoomInfo: DMRoomInfo?
     var temporaryChats = [DMDataSource]()
     var cursorDate: String?
@@ -35,11 +37,13 @@ final class DMSocketManager: NSObject {
     init(dmInfo: DMs) {
         super.init()
         self.dmRoomInfo = DMRoomInfo(roomID: dmInfo.roomID, workspaceID: dmInfo.workspaceID)
+        self.titlenameRelay.accept(dmInfo.user.nickname)
         startDM(targetUserID: dmInfo.user.userID, workspaceID: dmInfo.workspaceID)
     }
     
-    init(targetUserID: Int, workspaceID: Int) {
+    init(targetUserID: Int, workspaceID: Int, nickname: String) {
         super.init()
+        self.titlenameRelay.accept(nickname)
         startDM(targetUserID: targetUserID, workspaceID: workspaceID)
     }
     
@@ -48,14 +52,15 @@ final class DMSocketManager: NSObject {
         let target = IDRequiredRequest(id: targetUserID)
         let cursor = ChatCursorDateRequest(cursor: self.getCursorDate(workspaceID: workspaceID,
                                                                       withUserID: targetUserID))
-        print(cursor,"커서다---------@@@@@@@")
         networkService.fetchRequest(endpoint: .loadDMChats(workspaceID: workspace,
                                                            targetUserID: target,
                                                            cursor: cursor), decodeModel: DMChatResponse.self)
         .subscribe(with: self) { owner, result in
+            if owner.dmRoomInfo == nil {
+                owner.session.reloadDMInfo()
+            }
             switch result {
             case .success(let response):
-                print(response)
                 DispatchQueue.main.async {
                     self.dmRoomInfo = DMRoomInfo(roomID: response.roomID, workspaceID: response.workspaceID)
                     owner.task = owner.repository.fetchDMDatas(dmRoomID: response.roomID,
@@ -91,7 +96,6 @@ final class DMSocketManager: NSObject {
                 }
                 
                 owner.socket?.on("dm") { dataArray, ack in
-                    print("🏷️🏷️🏷️ dm")
                     guard let received = dataArray.first as? [String: Any],
                           let roomInfo = self.dmRoomInfo else { return }
                     do {
@@ -147,7 +151,7 @@ extension DMSocketManager: ChatProtocol {
     }
     
     func loadChatLog(completion: @escaping () -> Void) {
-        guard let safeTask = self.task else { return }
+        guard let _ = self.task else { return }
         completion()
     }
     
