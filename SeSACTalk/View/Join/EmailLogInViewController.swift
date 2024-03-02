@@ -117,11 +117,12 @@ final class EmailLogInViewController: UIViewController {
                 let logInForm = EmailLoginRequest(email: form.email,
                                                   password: form.password,
                                                   deviceToken: form.deviceToken)
-                UserdefaultManager.saveEmailLoginInfo(email: form.email,
-                                                      password: form.password)
-                UserdefaultManager.setLoginMethod(isLogin: true, method: .email)
+                
                 owner.handler.fetchEmailLoginRequest(info: logInForm) {
                     self.dismiss(animated: true) {
+                        UserdefaultManager.saveEmailLoginInfo(email: form.email,
+                                                              password: form.password)
+                        UserdefaultManager.setLoginMethod(isLogin: true, method: .email)
                         owner.onBoardingViewModel.emailLoginPushTrigger?()
                     }
                 }
