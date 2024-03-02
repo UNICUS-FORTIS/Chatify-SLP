@@ -23,7 +23,7 @@ enum AccountInformation: CaseIterable {
     var title: String {
         switch self {
         case .myCoin:
-            return "내 새싹 코인"
+            return "내 채티 코인"
         case .nickname:
             return "닉네임"
         case .contact:

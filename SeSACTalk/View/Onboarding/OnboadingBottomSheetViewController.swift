@@ -242,8 +242,8 @@ extension OnboadingBottomSheetViewController: ASAuthorizationControllerDelegate 
                 
             case let passwordCredential as ASPasswordCredential:
                 
-                let username = passwordCredential.user
-                let password = passwordCredential.password
+                let _ = passwordCredential.user
+                let _ = passwordCredential.password
                 
             default : break
                 

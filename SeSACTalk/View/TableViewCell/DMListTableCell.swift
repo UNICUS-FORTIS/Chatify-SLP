@@ -102,7 +102,7 @@ final class DMListTableCell: UITableViewCell {
             profileImage.kf.setImage(with: urlString)
         }
         name.text = data.user.nickname
-        latestChat.text = "안녕하세요 테스트입니다. 안녕하세요 테스트입니다.안녕하세요 테스트입니다.안녕하세요 테스트입니다.안녕하세요 테스트입니다.안녕하세요 테스트입니다.안녕하세요 테스트입니다.안녕하세요 테스트입니다.안녕하세요 테스트입니다."
+        latestChat.text = "안녕하세요 테스트입니다."
         receivedTime.text = data.createdAt.chatDateString()
         if badgeCount == 0 {
             self.name.font = Typography.createBody()
