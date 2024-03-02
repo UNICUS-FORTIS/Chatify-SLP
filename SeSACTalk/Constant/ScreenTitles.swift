@@ -13,7 +13,7 @@ enum ScreenTitles {
     enum Onboarding {
         static let mainTitle =
             """
-            새싹톡을 사용하면 어디서나
+            Chatify를 사용하면 어디서나
             팀을 모을 수 있습니다.
             """
         static let startButton = "시작하기"
@@ -27,7 +27,7 @@ enum ScreenTitles {
     enum WorkSpaceInitial {
         static let mainTitle = "출시 준비 완료!"
         static let subTitle = """
-        님의 조직을 위해 새로운 새싹톡 워크스페이스를
+        님의 조직을 위해 새로운 채티파이 워크스페이스를
         시작할 준비가 완료되었어요!
         """
         static let createWorkSpace = "워크스페이스 생성"
