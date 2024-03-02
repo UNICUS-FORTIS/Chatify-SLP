@@ -175,7 +175,9 @@ extension ProfileViewController: UITableViewDelegate {
         case .accountInfo:
             let index = AccountInformation.allCases[indexPath.row]
             switch index {
-            case .myCoin: break
+            case .myCoin:
+                let vc = CoinViewController()
+                navigationController?.pushViewController(vc, animated: true)
                 
             case .nickname:
                 
