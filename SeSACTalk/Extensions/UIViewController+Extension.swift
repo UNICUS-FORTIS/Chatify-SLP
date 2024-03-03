@@ -88,7 +88,7 @@ extension UIViewController {
                 vc.modalPresentationStyle = .overFullScreen
                 self?.present(vc, animated: false)
             }
-
+            
             
         }
         
@@ -151,20 +151,18 @@ extension UIViewController {
         
         RxKeyboard.instance.visibleHeight
             .drive(with: target) { owner, height in
-                view.snp.updateConstraints { make in
-                    let bottomInset = max(0, height - owner.view.safeAreaInsets.bottom)
-                    make.bottom.equalTo(owner.view.safeAreaLayoutGuide).inset(bottomInset + 12)
-                }
-                
-                if let tableView = tableView {
-                    tableView.contentOffset.y += height
-                }
-                                
                 UIView.animate(withDuration: 0.25) {
-                    owner.view.layoutIfNeeded()
+                    view.snp.updateConstraints { make in
+                        let bottomInset = max(0, height - owner.view.safeAreaInsets.bottom)
+                        make.bottom.equalTo(owner.view.safeAreaLayoutGuide).inset(bottomInset + 12)
+                    }
+                    if let tableView = tableView {
+                        tableView.contentOffset.y += height
+                    }
                 }
+                owner.view.layoutIfNeeded()
             }
             .disposed(by: disposeBag)
     }
-
+    
 }
