@@ -178,18 +178,21 @@
 
 </p>
 
-1. 회원가입 (유효성검사)
+#### 1. 회원가입 (유효성검사)
 - 이메일 형식, 이메일 중복검사(API), 닉네임 글자 수 제한, 비밀번호 (영문 대소문자+숫자+특수문자 조합), 비밀번호 확인 일치여부
 - 유효성을 통과하지 못했을 때 레이블 위 PlaceHolder 를 Error Color 로 변경.
 - 여러 항목이 유효성을 통과하지 못했을 때 가장 위에있는 항목의 TextField 를 FirstResponder 로 설정
 - 토스트 메시지 출력
-2. 이메일 로그인
+
+  
+#### 2. 이메일 로그인
 - 이메일 형식, 비밀번호 유효성 통과시에만 로그인 요청 네트워킹 실행
 - 유효성을 통과하지 못했을 때 레이블 위 PlaceHolder 를 Error Color 로 변경.
 - 여러 항목이 유효성을 통과하지 못했을 때 가장 위에있는 항목의 TextField 를 FirstResponder 로 설정
 - 토스트 메시지 출력
 
-3. 로그인 직후
+
+#### 3. 로그인 직후
 <p>
 <img width="19%" src="https://private-user-images.githubusercontent.com/110699030/311744140-4270fb8c-dcb4-4f85-8946-95b3d4bbe036.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTAxNjgzMzIsIm5iZiI6MTcxMDE2ODAzMiwicGF0aCI6Ii8xMTA2OTkwMzAvMzExNzQ0MTQwLTQyNzBmYjhjLWRjYjQtNGY4NS04OTQ2LTk1YjNkNGJiZTAzNi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwMzExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDMxMVQxNDQwMzJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1kOWI5ZTNjMDY1M2Q0NjliNjA3MjdlMDhhMzg5M2E2ZTNhZTZhNTUzMTA4ODFlNWQzMGE1Y2RhNGM3YTA4MjFkJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.qcQVPT0ddPEeh8wmV_63BwxVRbwx4jS_aVM8Fclsvl8"/>
 
@@ -201,16 +204,17 @@
 - 워크스페이스 보유시 DefaultViewController 로 전환
 - 워크스페이스 미보유시 HomeEmptyViewController 로 전환
 
-4. HomeEmptyViewController 로 전환시
+
+#### 4. HomeEmptyViewController 로 전환시
 - 사이드메뉴의 컨텐츠가 빈 워크스페이스 목록이 아니라 워크스페이스가 없다는 리터럴 노출 및 생성 버튼을 노출
 - 네비게이션 영역의 워크스페이스 타이틀을 No Workspace 로 설정.
 
 
-5. DefaultViewController 로 전환시
+#### 5. DefaultViewController 로 전환시
 - 사이드메뉴의 컨텐츠가 워크스페이스 목록으로 노출
 - 네비게이션 영역의 Left View 가 선택된 워크스페이스 이름으로 노출
 
-6. 워크스페이스 컨트롤 옵션 (편집, 나가기, 관리자변경, 삭제)
+#### 6. 워크스페이스 컨트롤 옵션 (편집, 나가기, 관리자변경, 삭제)
 
 <p>
 
@@ -226,13 +230,15 @@
 
 </p>
 
-7. 워크스페이스 멤버 초대
+
+#### 7. 워크스페이스 멤버 초대
 
 <img width="19%" src="https://private-user-images.githubusercontent.com/110699030/311748664-f6758c94-eaf5-4995-b580-c84add7d0aed.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTAxNjkwNzIsIm5iZiI6MTcxMDE2ODc3MiwicGF0aCI6Ii8xMTA2OTkwMzAvMzExNzQ4NjY0LWY2NzU4Yzk0LWVhZjUtNDk5NS1iNTgwLWM4NGFkZDdkMGFlZC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwMzExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDMxMVQxNDUyNTJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zMjA5MGI5MDdhMTQyZjc4MTcyM2EyMTI3NzVkOWIyNmE3N2FkOTNjMjAyMTBjZjVjMjEyYTQzNWZhYTJiMGZhJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9._OeX5ZOiM4aXWt5--RE9jRoYx-fWQhSViBDiE_J8NQM"/>
 
 - 서버에 초대 요청 Fetch 후 200 OK 응답 시 토스트 메세지 출력
 
-8. 채널 (편집, 관리자 변경, 삭제, 나가기)
+
+#### 8. 채널 (편집, 관리자 변경, 삭제, 나가기)
 <p>
 <img width="19%" src="https://private-user-images.githubusercontent.com/110699030/311753581-1f45d4e2-cb4d-4c45-909f-35fb7f17d3c9.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTAxNjk5NDAsIm5iZiI6MTcxMDE2OTY0MCwicGF0aCI6Ii8xMTA2OTkwMzAvMzExNzUzNTgxLTFmNDVkNGUyLWNiNGQtNGM0NS05MDlmLTM1ZmI3ZjE3ZDNjOS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwMzExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDMxMVQxNTA3MjBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT02Nzk3ZDRjNTBlZWI2ZGE3OWJkYjVlNjFmMDkzMjRlZTY1NDI1ZGI2NzJhMjg3N2RkNzNhNWYzYTliYTNhYTgyJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.toRI4RDVkaGsGLXetK0M40V2gSKEAEKkavnHv20VXXA"/>
 
@@ -252,13 +258,15 @@
 - 채널에 멤버가 본인만 존재 할 경우 관리자를 변경 할 수 없는 백드롭 뷰의 인터렉션이 등장합니다.
 - 채널의 관리자가 나가기를 선택 할 경우 관리자 권한을 양도하고 나갈 수 있다는 인터렉션이 등장합니다.
 
-9. PG 결제 화면
+
+#### 9. PG 결제 화면
 
 <img width="19%" src="https://private-user-images.githubusercontent.com/110699030/311765590-fc98b738-48ce-416a-a18a-cf0902996883.gif?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTAxNzE5MTEsIm5iZiI6MTcxMDE3MTYxMSwicGF0aCI6Ii8xMTA2OTkwMzAvMzExNzY1NTkwLWZjOThiNzM4LTQ4Y2UtNDE2YS1hMThhLWNmMDkwMjk5Njg4My5naWY_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwMzExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDMxMVQxNTQwMTFaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT01MjM3OTZkNmY2MTY2MDU4MDRjMTdmZDI0N2UzNTQwMzQ3N2JkZTE2MzYyYTBhY2RkNTQ3YzJlNzBjZTVmYzI5JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.rGsYZ16tap5ehjunzyiONTe0Vip0prevDWF8Kt1zzuU"/>
 
 - 결제가 완료되고 uid 응답 두가지로 서버에 영수증 검증을 Fetch 후 200 OK 응답이 왔을 때 코인이 충전이 완료되었다는 토스트 메세지를 출력합니다.
 
-10. Sign In with Apple & Kakao Login + Log out
+
+#### 10. Sign In with Apple & Kakao Login + Log out
 
 <img width="25%" src="https://private-user-images.githubusercontent.com/110699030/311769876-0ae03515-0310-44e3-b032-5dd7e55dfd0b.gif?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTAxNzI2NTQsIm5iZiI6MTcxMDE3MjM1NCwicGF0aCI6Ii8xMTA2OTkwMzAvMzExNzY5ODc2LTBhZTAzNTE1LTAzMTAtNDRlMy1iMDMyLTVkZDdlNTVkZmQwYi5naWY_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwMzExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDMxMVQxNTUyMzRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1hYmY5ZDdmOTAwYTg0MWNlMmZiYmU5ZjUyN2M2OGJiZTk0MDQ3NTU1YmVmZWE5ZDFjMmFhZGExMGVlMmU5YWZhJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.zg-8UcR8M4p7hmAg8bc2NyyDH27y84yctJjnY8UcEpM"/>
 
@@ -266,7 +274,7 @@
 - 앱 이름 변경 전에 실기기에 빌드되어 녹화된 화면입니다.
 
 
-11. 프로필 사진 변경 및 네비게이션 영역에 즉시 반영
+#### 11. 프로필 사진 변경 및 네비게이션 영역에 즉시 반영
 
 <img width="25%" src="https://private-user-images.githubusercontent.com/110699030/311771586-a062c210-7d31-4dc9-bd2e-64c3e307e6a5.gif?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTAxNzMwMTcsIm5iZiI6MTcxMDE3MjcxNywicGF0aCI6Ii8xMTA2OTkwMzAvMzExNzcxNTg2LWEwNjJjMjEwLTdkMzEtNGRjOS1iZDJlLTY0YzNlMzA3ZTZhNS5naWY_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwMzExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDMxMVQxNTU4MzdaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT04MWRjNWQ4ZGE3ZmIxYTgzODc5ODM2YzU3ZTZhNjM0ZDE2MmI4NDJkZTVmNDg2MDJlYTc3ZTMxMmFkNTcyYzgyJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.JpSLwN7-_xsDiQzFHNM4UCKYJOW7p51XUDbNvPqNjxA"/>
 
