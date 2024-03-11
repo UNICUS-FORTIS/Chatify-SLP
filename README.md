@@ -139,7 +139,7 @@
 #### Solution: 
 <img width="70%" src="https://private-user-images.githubusercontent.com/110699030/311612202-ff471b08-bf82-4049-8e60-a0be87da7412.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTAxNDA2MzAsIm5iZiI6MTcxMDE0MDMzMCwicGF0aCI6Ii8xMTA2OTkwMzAvMzExNjEyMjAyLWZmNDcxYjA4LWJmODItNDA0OS04ZTYwLWEwYmU4N2RhNzQxMi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwMzExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDMxMVQwNjU4NTBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT02MTQxNjg1MzU4ZmQyNDRiNmViODBjM2ZkYzQwMjU5NzUwZmVjZmUwOGRlNjRhZmM5OTFkNTJmYzM4ZmFjNDljJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.8s-Ow9C1cTG6n-zlGrmy0JnwrQdZhJ029juyvCeb8J0"/>
 
-- UI 제약조건에 설정시 SnapKit 을 사용중입니다.
+- 앱 내 UI 오토레이아웃 제약조건 설정시 SnapKit 을 사용했습니다.
 - 타임스탬프 컨테이너의 너비의 Hugging Priorty 를 내부 컨텐츠 사이즈인 intrinsicContentSize.width 보다 크거나 같도록 하고 우선순위를 높였습니다.
 - 동시에 컨텐츠를 담는 컨테이너, 즉 텍스트 채팅과 사진을 포함하여 이 컨테이너의 내부 컨텐츠 사이즈보다 작거나 같도록 하고 우선순위를 높였습니다.
 - 타임 스탬프의 너비를 실제 너비만큼 늘리는 속성을 부여하고 채팅 컨텐츠의 양에 의해 contentsContainer 가 늘어나지만 타임스탬프 너비가 보장되고 있을 때 contentsContainer 는 작아지려하기때문에 타임스탬프의 넓이를 확보할 수 있었습니다.
