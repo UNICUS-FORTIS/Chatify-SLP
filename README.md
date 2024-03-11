@@ -61,11 +61,11 @@
 - RxDataSource 의 Multiple Section과 섹션 별 다른 타입, 다른 셀을 적용하였습니다.
 - RxKeyboard 를 UIViewController 확장에 구현해 좀더 간단히 키보드 Show Up / Down 에 반응하여 원하는 버튼과 채팅입력 텍스트필드가 이동하도록 하였습니다.
 - Protocol과 Protocol 의 Extension 을 사용한 코드의 양 경감, 하나의 뷰에서 여러 데이터를 받을 수 있도록 추상화 시켰습니다.
-- Moya 의 TargetType 을 사용한 라우터 추상하고, RxMoya와 Generic Syntax 를 사용하여 네트워크 리퀘스트모델을 범용적으로 사용하도록 하였습니다.
-- Moya 가 Alamofire 기반임을 인식하고 Interceptor 를 사용하여 엑세스 토큰이 만료되었을 때 자동으로 갱신하고 Retry 하도록 로직을 구성했습니다.
-- Custom Delegate Pattern 과 Closure 전달 방식으로 화면 이동에 대한 동작을 사용하고 PresentingViewController 에 대하여 이해하고 뷰컨트롤러에서의 dismiss 이후 Completion Handler 에서 사후 동작을 정의하였습니다.
+- Moya 의 TargetType 을 사용한 라우터를 추상화 하고, RxMoya와 Generic Syntax 를 사용하여 네트워크 리퀘스트모델을 범용적으로 사용하도록 하였습니다.
+- Moya 가 Alamofire 기반임을 인식하고 Interceptor를 사용하여 엑세스 토큰이 만료되었을 때 자동으로 갱신하고 Retry 하도록 로직을 구성했습니다.
+- Custom Delegate Pattern 과 Closure 전달 방식으로 화면 이동에 대한 동작을 사용하고 PresentingViewController 에 대하여 이해하여 두개의 뷰를 dismiss 이후 Completion Handler 에서 사후 동작을 정의하였습니다.
 - 유저와 Cancel 또는 Confirm 으로 인터렉션할때 각 동작에 대한 타입을 프로토콜로 추상화 하고 해당 뷰를 초기화 할 때 의존성을 주입하는 방식으로 하나의 뷰에서 두가지 인터렉션 타입을 받을 수 있도록 구현하였습니다.
-- PortOne PaymentGateway 를 사용하여 거의 모든 신용카드, 네이버페이 등 각종 결제수단을 제공하여 앱 내에서 webView 로 연동해 실 결제기능을 구현했습니다.
+- PortOne PaymentGateway SDK 를 사용하여 거의 모든 신용카드, 네이버페이 등 각종 결제수단을 제공하여 앱 내에서 webView 로 연동해 실 결제기능을 구현했습니다.
 
 
 ## 개발시 고려 사항 💎
