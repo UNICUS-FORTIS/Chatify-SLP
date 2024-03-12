@@ -1,6 +1,6 @@
 # <p align="center">Chatify 🍇</p>
 <p align="center">
-    <img width="30%" src="https://github.com/UNICUS-FORTIS/assets/assets/110699030/2b8afdc3-d468-4ec8-afe6-517ca5a205f7"/>
+    <img width="30%" src="https://private-user-images.githubusercontent.com/110699030/312160692-2b8afdc3-d468-4ec8-afe6-517ca5a205f7.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTAyNjI0OTMsIm5iZiI6MTcxMDI2MjE5MywicGF0aCI6Ii8xMTA2OTkwMzAvMzEyMTYwNjkyLTJiOGFmZGMzLWQ0NjgtNGVjOC1hZmU2LTUxN2NhNWEyMDVmNy5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwMzEyJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDMxMlQxNjQ5NTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0wOGMyMjFjM2NjMDRjNjY0ZTU5OGM5ZjhmZDYzOWUwYmI3N2IxMDI3NTE4ODMxMzJmZmM3YTcyYmUzMzA2NTBjJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.nQ0FRmZ7cRhrK5khvdOc-r4zJkLUrwDSd6IyR4qXVls"/>
 
 
 #### <p align="center">Chatify 는 여러명의 유저가 다양한 공간에서 워크스페이스 그룹을 형성하고 소통하는 공간입니다.<br></br></p>
