@@ -165,7 +165,7 @@
 - RxSwift 를 사용할 때 In-Out 패턴을 사용하지 않았으나 다음 프로젝트에서는 In-Out 패턴으로 좀더 코드를 깔끔하게 작성할것입니다.
 - 커밋을 너무 과하게 쪼개서 친것같다는 느낌을 지울수가 없습니다. 기능의 수정과 불합리한 코드의 업데이트, 새로운 피처 단위 등 조금 더 우아한 커밋을 할것입니다.
 
-## 화면별 기능사항 ⚡
+## Scene & Interactions ⚡
 
 <p>
 <img width="19%" src="https://private-user-images.githubusercontent.com/110699030/311742120-3d25f28f-0ea7-4382-a12a-2e8bff1913ec.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTAxNjgwMDQsIm5iZiI6MTcxMDE2NzcwNCwicGF0aCI6Ii8xMTA2OTkwMzAvMzExNzQyMTIwLTNkMjVmMjhmLTBlYTctNDM4Mi1hMTJhLTJlOGJmZjE5MTNlYy5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwMzExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDMxMVQxNDM1MDRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT03YjQ3YWU4Mjk3NzE1NDBiMjY0NTkzMDkwZTMyZDQ3MGJhNzE2NTU1NTMyYTI1MzIzODE0OTQ3Njg3NmY4MGZjJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.JXmVh9qM_kjP5d7jbtNDEnyiX032yY4cBPy9jfanBFI"/>
