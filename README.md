@@ -1,6 +1,6 @@
 # <p align="center">Chatify 🍇</p>
 <p align="center">
-    <img width="30%" src="https://github.com/UNICUS-FORTIS/GARDEN-LSLP/assets/110699030/c2ee10b7-6460-47e9-bcca-a2d7e4c952c3"/>
+    <img width="30%" src="https://github.com/UNICUS-FORTIS/Chatify-SLP/assets/110699030/4c30f394-a92e-4d04-af64-0f73f8ba9ed1"/>
 
 
 #### <p align="center">Chatify 는 여러명의 유저가 다양한 공간에서 워크스페이스 그룹을 형성하고 소통하는 공간입니다.<br></br></p>
