@@ -14,7 +14,8 @@
 
 <img width="19%" src="https://github.com/UNICUS-FORTIS/Chatify-SLP/assets/110699030/0048c49e-d042-4e64-b9e9-5b053c1f8f1d"/>
 
-<img width="19%" src="https://private-user-images.githubusercontent.com/110699030/312164588-44674936-847c-490a-b28d-440a347e890a.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTAyNjI1MzcsIm5iZiI6MTcxMDI2MjIzNywicGF0aCI6Ii8xMTA2OTkwMzAvMzEyMTY0NTg4LTQ0Njc0OTM2LTg0N2MtNDkwYS1iMjhkLTQ0MGEzNDdlODkwYS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwMzEyJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDMxMlQxNjUwMzdaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1jODJkN2ZlOGY3MTA1YmQ3MDczYjFkM2I5YmU3N2Q2YmZiZThkNGJlNTBlYTc2ZmRhNjRmOTM3NGMwMmE4ODIxJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.f84YLpxdwebOTv6hrhEuDM23EvGqPhYckAdbevFcpME"/>
+<img width="19%" src="https://github.com/UNICUS-FORTIS/Chatify-SLP/assets/110699030/61386b35-b7f4-41a0-8996-591a0fb2cc23"/>
+
 </p>
 
 ## 프로젝트 기간 🎀 
@@ -70,7 +71,8 @@
 
 ## 개발시 고려 사항 💎
 1. Apple Login / Kakao Login / Email Login
-<img width="70%" src="https://private-user-images.githubusercontent.com/110699030/312168483-7d80df4e-5132-4c1f-bf72-b2be0a5c3585.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTAyNjI3NDAsIm5iZiI6MTcxMDI2MjQ0MCwicGF0aCI6Ii8xMTA2OTkwMzAvMzEyMTY4NDgzLTdkODBkZjRlLTUxMzItNGMxZi1iZjcyLWIyYmUwYTVjMzU4NS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwMzEyJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDMxMlQxNjU0MDBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT01ZjA1OTM0NGE3Y2I3NWQ2MzE2MWJiYmVkOGVkOWE2NDYwN2I3YTRkMzQwNjgyOWUwYzdhNTI3YTZhMWQzNzljJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.2flnj8D5bZDuwZ3y3lz3il4Dc9HtwRfnte_XJ0XQzFk"/>
+<img width="70%" src="https://github.com/UNICUS-FORTIS/Chatify-SLP/assets/110699030/1b46ab5c-4de5-4408-a92b-a8f41ca4c5fd"/>
+
 - 애플로그인
 애플로그인은 설정에서 앱에 대한 애플로그인을 Revoke 시키지 않는 한 첫 로그인때만 유저에 대한 정보(풀네임, 이메일주소)를 얻을 수 있기 때문에 적절한 시점에 UserDefault 또는 KeyChain 에 저장해야 했습니다. UserDefault, Keychain 둘다 기기 디바이스에 저장하는데 있어서 100% 보안이 완벽한것은 아닐것입니다.
 키체인 접근을 사용하면 저장된 키나 인증서 등을 볼 수 있게되고 UserDefault 또한 Jail Break 같은 행위를 통해 볼수 있게 됩니다. 그래서 저는 UserDefalut에 최소한의 정보만 저장하고 또 필요치 않을때는 삭제하는 방식을 택했습니다. 따라서 최초 로그인때 유저의 풀네임을 UserDefault 에 저장하였습니다.
@@ -90,8 +92,8 @@
 
 
 2. 디바이스에서 로그인시 데이터베이스 빌드 로직
-  <img width="70%" src="https://private-user-images.githubusercontent.com/110699030/312168390-5c75b652-f2e4-4032-befc-71bb9fbb1af6.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTAyNjI3NDAsIm5iZiI6MTcxMDI2MjQ0MCwicGF0aCI6Ii8xMTA2OTkwMzAvMzEyMTY4MzkwLTVjNzViNjUyLWYyZTQtNDAzMi1iZWZjLTcxYmI5ZmJiMWFmNi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwMzEyJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDMxMlQxNjU0MDBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0yMjY3Nzc3ZGUwYTk5YTU1ODg4NjlhNjlhNjIyODE3NjNjZDdiZDhlYzM3MGFlNmFkYTU2MDk4MzYwN2M4MzU4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.URJ0tM-EK5GqtE64gX9TvwPzTgysF9opoV7_ioNhgBA"/>
-  
+  <img width="70%" src="https://github.com/UNICUS-FORTIS/Chatify-SLP/assets/110699030/e2009057-3c92-45bf-ab12-f81a7c12d296"/>
+
 - 하나의 디바이스에서 로그아웃 이후 다른 아이디로 로그인 하는 경우에 대비하여 userID 를 PK 로 지정하고 각각의 userID 별 워크스페이스, 채널, DM 의 공간을 로그인 시점에 확보하도록 하였습니다.
 - 현재의 채널에서 다른 채널로 옮겨가기 위해 사이드 메뉴의 채널을 선택 했을 때 해당 워크스페이스의 정보를 fetch 하고 그 워크스페이스의 채널 리스트와 DM 리스트를 갱신하면서 혹시라도 그 사이에 추가 되었을 채널 리스트와 DM 리스트의 데이터베이스 정보를 다시한번 확인하고 존재하지 않는 리스트를 기존의 데이터베이스에 Append 하도록 하였습니다.
 
