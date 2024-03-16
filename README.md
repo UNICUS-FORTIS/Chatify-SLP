@@ -22,7 +22,10 @@
 2024.01.03 ~ 2024.02.29
 
 ## 프로젝트 구분 🎀
-iOS 1인 개발 (Design & Server part 협업)\
+iOS 1인 개발 (Design & Server part 협업)
+
+## Deploy Target 🎀
+
  
 ## Main Features ✨
 - 로컬 이메일 & 소셜 로그인 (Apple / Kakao)
@@ -55,8 +58,8 @@ iOS 1인 개발 (Design & Server part 협업)\
   -> 신규 워크스페이스 및 채널생성, 채널 채팅, DM 채팅 발생시 데이터 업데이트 로직을 간소화 하였습니다.<BR>
   -> 이 부분에서 Realm 의 Transaction 이 중복되지 않도록 하여 런타임 에러가 발생하지 않도록 고려하였습니다.
 - SocketIO를 활용한 리얼타임 채팅구현, Realm Swift의 적절한 스케마 구현으로 읽지 않은 채팅까지만 DB에 저장하고 신규채팅이 로드되면 DB에 업데이트하는 로직을 구현하였습니다.
-- RxDataSource 를 사용하여 섹션 별 다른 타입, 다른 셀을 적용하였습니다.
-- RxKeyboard 를 사용하여 간단히 키보드 Show Up / Down 에 반응하여 원하는 버튼과 채팅입력 텍스트필드가 이동하도록 하였습니다.
+- RxDataSource 를 사용하여 섹션 별 다른 타입, 다른 셀을 적용하는것으로 채널 리스트와 DM채팅 리스트를 구현하였습니다.
+- RxKeyboard 를 사용하여 간단히 키보드 Up / Down 을 반응형으로 대응하였습니다.
 - Protocol과 Protocol의 Extension 사용으로 비슷한 기능을 가진 요소들을 추상화 하여 기능 구현시 편의성을 높였습니다.
 - Moya 의 TargetType 을 사용한 라우터를 추상화 하고, RxMoya와 Generic Syntax 를 사용하여 네트워크 리퀘스트모델을 범용적으로 사용하도록 하였습니다.
 - Interceptor를 사용하여 엑세스 토큰이 만료되었을 때 자동으로 토큰을 갱신하고 Retry 하도록 로직을 구성했습니다.
