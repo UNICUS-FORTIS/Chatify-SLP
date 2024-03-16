@@ -22,26 +22,22 @@
 2024.01.03 ~ 2024.02.29
 
 ## 프로젝트 구분 🎀
-미출시 솔로 프로젝트
-
+iOS 1인 개발 (Design & Server part 협업)\
  
 ## Main Features ✨
-- Apple Login
-- Kakao Login
-- E-mail Account Login
-- In App Purchase (PortOne payment)
-- Auto Login
-- Channel Chatting + DM Chatting
-- Chatting Push Notification
-- [Create / Delete] Workspace + Channel in Workspace
+- 로컬 이메일 & 소셜 로그인 (Apple / Kakao)
+- 자동 로그인
+- Payment Gayway SDK 를 통한 결제 지원
+- 채널 채팅 & DM 채팅
+- 채팅 Push Notification
+- 워크스페이스 생성 / 삭제
+- 워크스페이스 내 채널 생성 / 삭제
 
 
 ## Sub Features 🌙
-- Handover Workspace / Channel Manager
-- Realtime Profile updates
-- Workspace members Invitation
-- [Join / Leave] Channel or Workspace
-- etc
+- 워크스페이스 관리자, 채널 관리자 위임
+- 워크스페이스 멤버 초대
+- 워크스페이스, 채널의 참여와 탈퇴
 
 ## Tech Stacks 🛠
 - CodeBase UIKit, MVVM Architecture
@@ -49,24 +45,24 @@
 - RxKakao Open SDK, Sigin In with Apple
 - RealmSwift, SocketIO, Firebase Cloud Messaging
 - Moya, SnapKit, Toast, SideMenu, FloatingPanel, Kingfisher
-- iamport-iOS
+- Payment Gateway SDK
 - CollectionView Compositional Layout, UserDefaults,
 - Apple Push Notification service
 
 ## 주요 기술 🌖
-- 로그인 방법에 따라 서버에서 요구하는 정보를 각자 다르게 제공하는 Login Gate 개념을 도입하여 로그인 방법에 대한 사후 동작을 유연하게 대응하였습니다.
+- 로그인 방법에 따라 각자 다른 로그인 프로세스에 대응하기 위하여 뷰컨트롤러에서 분기처리를 통해 로컬 이메일 로그인과, 소셜 로그인 기능을 구현하였습니다.
 - RealmSwift를 사용하여 로그인하는 어카운트 별 워크스페이스, 채널, DM 정보 데이터베이스 빌드 로직 구현<BR>
   -> 신규 워크스페이스 및 채널생성, 채널 채팅, DM 채팅 발생시 데이터 업데이트 로직을 간소화 하였습니다.<BR>
-  -> 이 부분에서 Realm 의 Transaction 이 중복되지 않도록 하여 Runtime Error 가 발생하지 않도록 고려하였습니다.
+  -> 이 부분에서 Realm 의 Transaction 이 중복되지 않도록 하여 런타임 에러가 발생하지 않도록 고려하였습니다.
 - SocketIO를 활용한 리얼타임 채팅구현, Realm Swift의 적절한 스케마 구현으로 읽지 않은 채팅까지만 DB에 저장하고 신규채팅이 로드되면 DB에 업데이트하는 로직을 구현하였습니다.
-- RxDataSource 의 Multiple Section과 섹션 별 다른 타입, 다른 셀을 적용하였습니다.
-- RxKeyboard 를 UIViewController 확장에 구현해 좀더 간단히 키보드 Show Up / Down 에 반응하여 원하는 버튼과 채팅입력 텍스트필드가 이동하도록 하였습니다.
-- Protocol과 Protocol 의 Extension 을 사용한 코드의 양 경감, 하나의 뷰에서 여러 데이터를 받을 수 있도록 추상화 시켰습니다.
+- RxDataSource 를 사용하여 섹션 별 다른 타입, 다른 셀을 적용하였습니다.
+- RxKeyboard 를 사용하여 간단히 키보드 Show Up / Down 에 반응하여 원하는 버튼과 채팅입력 텍스트필드가 이동하도록 하였습니다.
+- Protocol과 Protocol의 Extension 사용으로 비슷한 기능을 가진 요소들을 추상화 하여 기능 구현시 편의성을 높였습니다.
 - Moya 의 TargetType 을 사용한 라우터를 추상화 하고, RxMoya와 Generic Syntax 를 사용하여 네트워크 리퀘스트모델을 범용적으로 사용하도록 하였습니다.
-- Moya 가 Alamofire 기반임을 인식하고 Interceptor를 사용하여 엑세스 토큰이 만료되었을 때 자동으로 갱신하고 Retry 하도록 로직을 구성했습니다.
+- Interceptor를 사용하여 엑세스 토큰이 만료되었을 때 자동으로 토큰을 갱신하고 Retry 하도록 로직을 구성했습니다.
 - Custom Delegate Pattern 과 Closure 전달 방식으로 화면 이동에 대한 동작을 사용하고 PresentingViewController 에 대하여 이해하여 두개의 뷰를 dismiss 이후 Completion Handler 에서 사후 동작을 정의하였습니다.
-- 유저와 Cancel 또는 Confirm 으로 인터렉션할때 각 동작에 대한 타입을 프로토콜로 추상화 하고 해당 뷰를 초기화 할 때 의존성을 주입하는 방식으로 하나의 뷰에서 두가지 인터렉션 타입을 받을 수 있도록 구현하였습니다.
-- PortOne PaymentGateway SDK 를 사용하여 거의 모든 신용카드, 네이버페이 등 각종 결제수단을 제공하여 앱 내에서 webView 로 연동해 실 결제기능을 구현했습니다.
+- 유저와 인터렉션시 각 케이스를 프로토콜로 추상화 하고 해당 뷰를 초기화 할 때 의존성을 주입하는 방식으로 하나의 뷰에서 두가지 인터렉션 타입을 받을 수 있도록 구현하였습니다.
+- PaymentGateway SDK 를 사용하여 신용카드결제 등 다양한 결제 수단에 대응 하였습니다.
 
 
 ## 개발시 고려 사항 💎
@@ -156,16 +152,16 @@
 - 이번 프로젝트는 솔로 프로젝트로 커밋과 푸시가 전부 저의 주도 아래에 있었기 때문에 프로젝트 초기부터 파일 단위 또는 피쳐 단위와 같은 어떠한 컨벤션을 정하고 작업하지 못했던 부분이 아쉽습니다.
 
 ## 회고 & Future Action
-- 애플과 카카오로그인을 구현하면서 Sign in with Apple 과 Kakao SDK 에 대한 사용경험을 얻을 수 있게 되었습니다.
-- PG 사의 SDK 를 사용하여 실제 결제를 구현해본 경험을 얻게 되어 모바일 결제 구현에 대한 어려움을 많이 떨쳐 낼 수 있었습니다.
-- RxSwift 기반의 프로젝트속에서 각각의 옵저버블의 구독시점에 따른 행동을 좀더 알 수 있게 되면서 제가 그동안 잘못해왔던 부분들에 대해 자기 객관화를 할 수 있었습니다.
+- 소셜 로그인 기능을 구현하면서 Sign in with Apple 과 Kakao SDK 에 대한 사용경험을 얻을 수 있게 되었습니다.
+- Payment Gateway SDK 를 사용하여 실제 결제를 구현해본 경험으로부터 모바일 결제 구현에 대한 어려움을 떨쳐 낼 수 있었습니다. 
+ - RxSwift 기반의 프로젝트속에서 각각의 옵저버블의 구독시점에 따른 행동을 좀더 알 수 있게 되면서 제가 그동안 잘못해왔던 부분들에 대해 자기 객관화를 할 수 있었습니다.
 - 두개의 뷰를 dismiss 하는 동작이 요구 될 때 PresentingViewController 와 PresentedViewController 의 차이점을 알게 되었고 이런 화면 이동을 구현하는데 있어서 겪었던 지식적인 어려움을 많은 부분 극복 할 수 있었습니다.
 - 실시간 채팅 기능을 구현 할 때 서버에 과도한 데이터를 요청하지 않기 위해 읽지 않은 채팅 기능을 구현하면서 Realm 의 트랙잭션이 중복되지 않도록 고민할 수 있는 좋은 기회가 되었고 또 SocketIO 라이브러리를 사용했는데 새로운 라이브러리를 사용해 볼 수 있어서 흥미로웠습니다.
 - 단순히 기능 구현 뿐만 아니라 데이터가 앱 내에서 업데이트 되었을 때 그 업데이트 된 데이터를 어떤 순간에 유저에게 업데이트 시켜야 할 지, 또 유저가 이전 화면으로 돌아갔을 때 즉각적으로 업데이트 된 데이터를 확인 할 수 있는지 사용자 측면에서의 고민을 할 수 있었습니다.
-- 피그마와 기획 문서에 대해서 의미가 잘 이해되지 않는 부분에 대해 소통할 수 있는 기회를 얻었고 개발자 입장에서 이해하고 개발해야 할 현업 개발자의 마음가짐을 어느정도 간접 체험 할 수 있는 귀중한 계기가 되었습니다.
-- 이후 또다른 프로젝트나 제 출시 앱에 대한 리팩토링 시 지금까지의 그 어떤 프로젝트보다 더 구조적으로 아름다운 아키텍처를 고민하고 설계하고싶습니다.
+- 피그마와 기획 문서에 대해서 의미가 잘 이해되지 않는 부분에 대해 협업 할 수 있는 기회를 얻었고 개발자 입장에서 이해하고 개발해야 할 현업 개발자의 마음가짐을 어느정도 간접 체험 할 수 있는 귀중한 계기가 되었습니다.
+- 이후 또다른 프로젝트나 제 출시 앱에 대한 리팩토링 시 지금까지의 그 어떤 프로젝트보다 더 구조적으로 아름다운 아키텍처를 고민하고 설계할것입니다.
 - RxSwift 를 사용할 때 In-Out 패턴을 사용하지 않았으나 다음 프로젝트에서는 In-Out 패턴으로 좀더 코드를 깔끔하게 작성할것입니다.
-- 커밋을 너무 과하게 쪼개서 친것같다는 느낌을 지울수가 없습니다. 기능의 수정과 불합리한 코드의 업데이트, 새로운 피처 단위 등 조금 더 우아한 커밋을 할것입니다.
+- 커밋을 다소 작은 단위로 실행했습니다. 그래서 갈수록 커밋 히스토리가 복잡해지고 팀 협업에서 어려움을 초래하지 않도록 피처 또는 업데이트 등 커밋을 더 묶어서 처리하여 전체적인 컨텍스트를 이해하는데 도움이 되도록 할것입니다.
 
 ## Scene & Interactions ⚡
 
