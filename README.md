@@ -25,7 +25,7 @@
 iOS 1인 개발 (Design & Server part 협업)
 
 ## Deploy Target 🎀
-
+iOS 15.0
  
 ## Main Features ✨
 - 로컬 이메일 & 소셜 로그인 (Apple / Kakao)
