@@ -24,7 +24,7 @@
 ## 프로젝트 구분 🎀
 iOS 1인 개발 (Design & Server part 협업)
 
-## Deploy Target 🎀
+## Deploy Target 🎀
 
  
 ## Main Features ✨
