@@ -30,7 +30,7 @@ iOS 15.0
 ## Main Features ✨
 - 로컬 이메일 & 소셜 로그인 (Apple / Kakao)
 - 자동 로그인
-- Payment Gayway SDK 를 통한 결제 지원
+- Payment Gateway SDK 를 통한 결제 지원
 - 채널 채팅 & DM 채팅
 - 채팅 Push Notification
 - 워크스페이스 생성 / 삭제
